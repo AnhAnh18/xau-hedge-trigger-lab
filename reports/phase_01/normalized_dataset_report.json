@@ -1,0 +1,216 @@
+{
+  "reports": 4,
+  "positions": 7084,
+  "orders": 14165,
+  "deals": 14169,
+  "open_position_snapshots": 8,
+  "deal_order_difference": 4,
+  "deal_order_explanation": "8 'out by' deals map to 4 orders; each of those orders produces two deal rows, explaining the net 4 additional deals.",
+  "deal_groups": [
+    {
+      "deal_type": "buy",
+      "direction": "in",
+      "symbol": "XAUUSD",
+      "volume": 0.2,
+      "count": 235
+    },
+    {
+      "deal_type": "buy",
+      "direction": "in",
+      "symbol": "XAUUSD",
+      "volume": 0.3,
+      "count": 3198
+    },
+    {
+      "deal_type": "buy",
+      "direction": "in",
+      "symbol": "XAUUSD",
+      "volume": 1.0,
+      "count": 2
+    },
+    {
+      "deal_type": "buy",
+      "direction": "out",
+      "symbol": "XAUUSD",
+      "volume": 0.2,
+      "count": 217
+    },
+    {
+      "deal_type": "buy",
+      "direction": "out",
+      "symbol": "XAUUSD",
+      "volume": 0.3,
+      "count": 3427
+    },
+    {
+      "deal_type": "buy",
+      "direction": "out",
+      "symbol": "XAUUSD",
+      "volume": 1.0,
+      "count": 1
+    },
+    {
+      "deal_type": "buy",
+      "direction": "out by",
+      "symbol": "XAUUSD",
+      "volume": 0.2,
+      "count": 2
+    },
+    {
+      "deal_type": "buy",
+      "direction": "out by",
+      "symbol": "XAUUSD",
+      "volume": 0.3,
+      "count": 2
+    },
+    {
+      "deal_type": "sell",
+      "direction": "in",
+      "symbol": "XAUUSD",
+      "volume": 0.2,
+      "count": 219
+    },
+    {
+      "deal_type": "sell",
+      "direction": "in",
+      "symbol": "XAUUSD",
+      "volume": 0.3,
+      "count": 3430
+    },
+    {
+      "deal_type": "sell",
+      "direction": "in",
+      "symbol": "XAUUSD",
+      "volume": 1.0,
+      "count": 1
+    },
+    {
+      "deal_type": "sell",
+      "direction": "out",
+      "symbol": "XAUUSD",
+      "volume": 0.2,
+      "count": 234
+    },
+    {
+      "deal_type": "sell",
+      "direction": "out",
+      "symbol": "XAUUSD",
+      "volume": 0.3,
+      "count": 3195
+    },
+    {
+      "deal_type": "sell",
+      "direction": "out",
+      "symbol": "XAUUSD",
+      "volume": 1.0,
+      "count": 2
+    },
+    {
+      "deal_type": "sell",
+      "direction": "out by",
+      "symbol": "XAUUSD",
+      "volume": 0.2,
+      "count": 2
+    },
+    {
+      "deal_type": "sell",
+      "direction": "out by",
+      "symbol": "XAUUSD",
+      "volume": 0.3,
+      "count": 2
+    }
+  ],
+  "per_report_reconciliation": [
+    {
+      "report_id": "0507-1107",
+      "positions": 575,
+      "orders": 1149,
+      "deals": 1150,
+      "profit": 7485.3,
+      "swap": -66.75999999999999,
+      "commission": 0.0,
+      "calculated_net": 7418.54,
+      "reported_net": 7418.54,
+      "net_delta": 0.0,
+      "status": "PASS"
+    },
+    {
+      "report_id": "1207-1807",
+      "positions": 3118,
+      "orders": 6234,
+      "deals": 6236,
+      "profit": 45414.3,
+      "swap": -102.94,
+      "commission": 0.0,
+      "calculated_net": 45311.36,
+      "reported_net": 45311.36,
+      "net_delta": 0.0,
+      "status": "PASS"
+    },
+    {
+      "report_id": "1907-2507",
+      "positions": 2938,
+      "orders": 5876,
+      "deals": 5876,
+      "profit": 57639.0,
+      "swap": -86.44,
+      "commission": 0.0,
+      "calculated_net": 57552.56,
+      "reported_net": 57552.56,
+      "net_delta": 0.0,
+      "status": "PASS"
+    },
+    {
+      "report_id": "2806-0407",
+      "positions": 453,
+      "orders": 906,
+      "deals": 907,
+      "profit": 5628.4,
+      "swap": -26.08,
+      "commission": 0.0,
+      "calculated_net": 5602.32,
+      "reported_net": 5602.32,
+      "net_delta": 0.0,
+      "status": "PASS"
+    }
+  ],
+  "integrity_checks": {
+    "position_id_unique": true,
+    "order_id_unique": true,
+    "deal_id_unique": true,
+    "closed_position_time_order": true,
+    "position_open_snapshot_overlap": 0,
+    "required_volumes_present": true
+  },
+  "ticks": 984883,
+  "missing_quote_updates": {
+    "bid": 156759,
+    "ask": 157568
+  },
+  "duplicate_time_msc": 0,
+  "symbols": [
+    "XAUUSD"
+  ],
+  "volume_distribution": {
+    "0.2": 455,
+    "0.3": 6626,
+    "1.0": 3
+  },
+  "earliest_trade": "2026-06-25 23:57:12",
+  "latest_trade": "2026-07-24 23:45:31",
+  "total_profit": 116167.0,
+  "total_swap": -282.22,
+  "spread_min": 0.21999999999934516,
+  "spread_max": 0.3000000000001819,
+  "spread_mean": 0.22645668571799885,
+  "trade_tick_overlap": {
+    "tick_first": "2026-07-23 12:00:00.046000",
+    "tick_last": "2026-07-24 23:56:57.758000",
+    "active_at_start": 2,
+    "opens": 1046,
+    "closes": 1048,
+    "active_at_end": 0,
+    "equation_result": 0,
+    "status": "PASS"
+  }
+}

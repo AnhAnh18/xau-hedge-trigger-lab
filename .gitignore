@@ -1,15 +1,19 @@
-# Sensitive/raw datasets
-data/raw/
-data/interim/
-data/processed/
-*.html
-*.csv
-*.zip
-*.parquet
+# Private/local datasets
+/data/raw/
+/data/interim/
+/data/processed/
+/data/private/
 
-# MT5 personal data
-*ReportHistory*
-*SOURCE_ACCOUNT_ID*
+# Common MT5 raw exports outside test fixtures
+/data/**/*.csv
+/data/**/*.tsv
+/data/**/*.html
+/data/**/*.parquet
+/data/**/*.zip
+
+# Local privacy terms and generated artifacts
+/.local_secrets/
+/reports/private/
 
 # Python
 .venv/
@@ -25,5 +29,5 @@ __pycache__/
 Thumbs.db
 
 # Temporary analysis
-tmp/
+/tmp/
 .local_ai/temp/

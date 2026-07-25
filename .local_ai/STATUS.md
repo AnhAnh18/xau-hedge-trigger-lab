@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M1 — Data Foundation
+M2 — State Reconstruction
 
 ## Completed
 
@@ -13,6 +13,10 @@ M1 — Data Foundation
 - Repository bootstrapped
 - Initial project memory committed
 - One month of MT5 reports and XAUUSD ticks documented in the manifest
+- Canonical MT5 report and tick parsers
+- Dataset validation and anonymized fixtures
+- Per-report financial reconciliation
+- Trade/tick overlap inventory validation
 
 ## Current data
 
@@ -22,11 +26,11 @@ M1 — Data Foundation
 
 ## Current focus
 
-Create a reproducible and validated dataset from MT5 reports and tick data.
+Reconstruct chronological hedge position states from normalized Positions and Deals.
 
 ## Next executable task
 
-Run `python scripts/audit_data.py` after placing private raw files under `data/raw/`.
+Reconstruct hedge position states and classify unlock/re-hedge events from normalized Deals and Positions.
 
 ## Current blockers
 
