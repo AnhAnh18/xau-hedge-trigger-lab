@@ -6,5 +6,5 @@
 - [x] T-004 Implement raw data inventory and audit
 - [x] T-005 Parse MT5 reports and XAUUSD ticks into canonical Parquet tables
 - [ ] T-006 Add four trade reports to external data storage
-- [ ] T-007 Reconstruct event timeline
+- [x] T-007 Reconstruct lifecycle and hedge-state timeline
 - [ ] T-008 Test rolling-extreme hypothesis

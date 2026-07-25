@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M2 — State Reconstruction
+M3 — Event–Tick Alignment
 
 ## Completed
 
@@ -17,6 +17,8 @@ M2 — State Reconstruction
 - Dataset validation and anonymized fixtures
 - Per-report financial reconciliation
 - Trade/tick overlap inventory validation
+- Lifecycle/state reconstruction with exception accounting
+- M2 event accounting and boundary validation
 
 ## Current data
 
@@ -26,11 +28,11 @@ M2 — State Reconstruction
 
 ## Current focus
 
-Reconstruct chronological hedge position states from normalized Positions and Deals.
+Align reconstructed lifecycle events with millisecond broker Bid/Ask ticks for 2026-07-23 to 2026-07-24.
 
 ## Next executable task
 
-Reconstruct hedge position states and classify unlock/re-hedge events from normalized Deals and Positions.
+Build deterministic candidate tick matching using reported time, execution price, side, and state consistency.
 
 ## Current blockers
 

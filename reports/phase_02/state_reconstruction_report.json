@@ -1,0 +1,268 @@
+{
+  "unique_positions": 7086,
+  "closed_positions": 7084,
+  "open_positions": 2,
+  "snapshot_rows_merged": 6,
+  "carry_over_positions": 2,
+  "exceptions": 630,
+  "event_counts": {
+    "UNLOCK_TO_BUY": 3254,
+    "REHEDGE_SELL": 3253,
+    "REHEDGE_BUY": 3024,
+    "UNLOCK_TO_SELL": 3022,
+    "UNCLASSIFIED": 803,
+    "OPEN_ADDITIONAL_BUY": 409,
+    "OPEN_ADDITIONAL_SELL": 394,
+    "CLOSE_TO_FLAT": 5,
+    "INITIAL_OPEN_BUY": 3,
+    "INITIAL_OPEN_SELL": 3
+  },
+  "event_accounting": {
+    "classified_standard": 12006,
+    "multi_position": 1524,
+    "ambiguous_ordering": 630,
+    "boundary": 8,
+    "unbalanced_hedge": 2,
+    "total": 14170,
+    "event_total": 14170
+  },
+  "unlock_rehedge_boundary": {
+    "unlock_count": 6276,
+    "rehedge_count": 6277,
+    "initial_state": "FLAT",
+    "final_state": "HEDGED_1X1",
+    "explanation": "The timeline starts FLAT and ends HEDGED_1X1; its final event is REHEDGE_SELL, so one re-hedge has no subsequent observed unlock within the report boundary."
+  },
+  "interval_validation": {
+    "count": 14169,
+    "zero_duration": 315,
+    "overlap_count": 0,
+    "duration_conserved": true
+  },
+  "state_duration_seconds": {
+    "FLAT": 338032.0,
+    "HEDGED_1X1": 1477633.0,
+    "MULTI_POSITION": 89449.0,
+    "ONE_BUY": 422867.0,
+    "ONE_SELL": 167367.0,
+    "UNBALANCED_HEDGE": 9919.0
+  },
+  "transition_matrix": [
+    {
+      "state_before": "FLAT",
+      "behavior_type": "INITIAL_OPEN_BUY",
+      "state_after": "ONE_BUY",
+      "count": 3
+    },
+    {
+      "state_before": "FLAT",
+      "behavior_type": "INITIAL_OPEN_SELL",
+      "state_after": "ONE_SELL",
+      "count": 3
+    },
+    {
+      "state_before": "HEDGED_1X1",
+      "behavior_type": "OPEN_ADDITIONAL_BUY",
+      "state_after": "MULTI_POSITION",
+      "count": 332
+    },
+    {
+      "state_before": "HEDGED_1X1",
+      "behavior_type": "OPEN_ADDITIONAL_SELL",
+      "state_after": "MULTI_POSITION",
+      "count": 1
+    },
+    {
+      "state_before": "HEDGED_1X1",
+      "behavior_type": "UNLOCK_TO_BUY",
+      "state_after": "ONE_BUY",
+      "count": 3254
+    },
+    {
+      "state_before": "HEDGED_1X1",
+      "behavior_type": "UNLOCK_TO_SELL",
+      "state_after": "ONE_SELL",
+      "count": 3022
+    },
+    {
+      "state_before": "MULTI_POSITION",
+      "behavior_type": "OPEN_ADDITIONAL_BUY",
+      "state_after": "MULTI_POSITION",
+      "count": 76
+    },
+    {
+      "state_before": "MULTI_POSITION",
+      "behavior_type": "OPEN_ADDITIONAL_SELL",
+      "state_after": "MULTI_POSITION",
+      "count": 102
+    },
+    {
+      "state_before": "MULTI_POSITION",
+      "behavior_type": "UNCLASSIFIED",
+      "state_after": "HEDGED_1X1",
+      "count": 333
+    },
+    {
+      "state_before": "MULTI_POSITION",
+      "behavior_type": "UNCLASSIFIED",
+      "state_after": "MULTI_POSITION",
+      "count": 178
+    },
+    {
+      "state_before": "MULTI_POSITION",
+      "behavior_type": "UNCLASSIFIED",
+      "state_after": "UNBALANCED_HEDGE",
+      "count": 290
+    },
+    {
+      "state_before": "ONE_BUY",
+      "behavior_type": "CLOSE_TO_FLAT",
+      "state_after": "FLAT",
+      "count": 3
+    },
+    {
+      "state_before": "ONE_BUY",
+      "behavior_type": "OPEN_ADDITIONAL_BUY",
+      "state_after": "UNBALANCED_HEDGE",
+      "count": 1
+    },
+    {
+      "state_before": "ONE_BUY",
+      "behavior_type": "OPEN_ADDITIONAL_SELL",
+      "state_after": "UNBALANCED_HEDGE",
+      "count": 1
+    },
+    {
+      "state_before": "ONE_BUY",
+      "behavior_type": "REHEDGE_SELL",
+      "state_after": "HEDGED_1X1",
+      "count": 3253
+    },
+    {
+      "state_before": "ONE_SELL",
+      "behavior_type": "CLOSE_TO_FLAT",
+      "state_after": "FLAT",
+      "count": 2
+    },
+    {
+      "state_before": "ONE_SELL",
+      "behavior_type": "REHEDGE_BUY",
+      "state_after": "HEDGED_1X1",
+      "count": 3024
+    },
+    {
+      "state_before": "UNBALANCED_HEDGE",
+      "behavior_type": "OPEN_ADDITIONAL_SELL",
+      "state_after": "MULTI_POSITION",
+      "count": 290
+    },
+    {
+      "state_before": "UNBALANCED_HEDGE",
+      "behavior_type": "UNCLASSIFIED",
+      "state_after": "ONE_BUY",
+      "count": 1
+    },
+    {
+      "state_before": "UNBALANCED_HEDGE",
+      "behavior_type": "UNCLASSIFIED",
+      "state_after": "ONE_SELL",
+      "count": 1
+    }
+  ],
+  "volume_regimes": {
+    "0.2": 455,
+    "0.3": 6628,
+    "1.0": 3
+  },
+  "ordering_quality": {
+    "deterministic": 13540,
+    "ambiguous": 630
+  },
+  "daily_events": [
+    {
+      "day": "2026-06-25",
+      "events": 1,
+      "exceptions": 0
+    },
+    {
+      "day": "2026-06-29",
+      "events": 5,
+      "exceptions": 4
+    },
+    {
+      "day": "2026-06-30",
+      "events": 517,
+      "exceptions": 4
+    },
+    {
+      "day": "2026-07-01",
+      "events": 385,
+      "exceptions": 2
+    },
+    {
+      "day": "2026-07-06",
+      "events": 2,
+      "exceptions": 2
+    },
+    {
+      "day": "2026-07-09",
+      "events": 366,
+      "exceptions": 16
+    },
+    {
+      "day": "2026-07-10",
+      "events": 782,
+      "exceptions": 34
+    },
+    {
+      "day": "2026-07-13",
+      "events": 1709,
+      "exceptions": 82
+    },
+    {
+      "day": "2026-07-14",
+      "events": 1092,
+      "exceptions": 88
+    },
+    {
+      "day": "2026-07-15",
+      "events": 769,
+      "exceptions": 32
+    },
+    {
+      "day": "2026-07-16",
+      "events": 1298,
+      "exceptions": 62
+    },
+    {
+      "day": "2026-07-17",
+      "events": 1368,
+      "exceptions": 74
+    },
+    {
+      "day": "2026-07-20",
+      "events": 1187,
+      "exceptions": 68
+    },
+    {
+      "day": "2026-07-21",
+      "events": 945,
+      "exceptions": 44
+    },
+    {
+      "day": "2026-07-22",
+      "events": 994,
+      "exceptions": 38
+    },
+    {
+      "day": "2026-07-23",
+      "events": 1901,
+      "exceptions": 54
+    },
+    {
+      "day": "2026-07-24",
+      "events": 849,
+      "exceptions": 26
+    }
+  ]
+}
