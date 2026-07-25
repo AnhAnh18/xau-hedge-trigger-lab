@@ -1,0 +1,29 @@
+# Sensitive/raw datasets
+data/raw/
+data/interim/
+data/processed/
+*.html
+*.csv
+*.zip
+*.parquet
+
+# MT5 personal data
+*ReportHistory*
+*SOURCE_ACCOUNT_ID*
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# IDE/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary analysis
+tmp/
+.local_ai/temp/
