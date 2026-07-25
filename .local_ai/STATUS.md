@@ -2,14 +2,17 @@
 
 ## Current phase
 
-M0 — Repository bootstrap
+M1 — Data Foundation
 
-## Confirmed
+## Completed
 
 - The bot uses a hedging account.
 - The usual state is one position or one Buy plus one Sell.
 - After closing one leg, the bot generally reopens the same side.
 - The resulting advantage occurs during one-sided exposure.
+- Repository bootstrapped
+- Initial project memory committed
+- One month of MT5 reports and XAUUSD ticks documented in the manifest
 
 ## Current data
 
@@ -19,12 +22,13 @@ M0 — Repository bootstrap
 
 ## Current focus
 
-Create a reproducible event-to-tick dataset for 23–24 July.
+Create a reproducible and validated dataset from MT5 reports and tick data.
 
-## Next action
+## Next executable task
 
-Parse trade reports and tick CSV into normalized tables.
+Run `python scripts/audit_data.py` after placing private raw files under `data/raw/`.
 
-## Blockers
+## Current blockers
 
-None
+- Server timezone not formally confirmed
+- MT5 report event time has only second-level resolution

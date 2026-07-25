@@ -1,0 +1,87 @@
+{
+  "root": "D:\\Claude\\1xau-hedge-trigger-lab\\data\\raw",
+  "files": [
+    {
+      "path": "data/raw/ticks/XAUUSD_202607231200_202607242356.csv",
+      "bytes": 42119497,
+      "sha256": "e531916aa4100892ffd17f157d72c96d36785ca2379241d0b3163d6409e11f97",
+      "tick_audit": {
+        "rows": 984883,
+        "columns": [
+          "<DATE>",
+          "<TIME>",
+          "<BID>",
+          "<ASK>",
+          "<LAST>",
+          "<VOLUME>",
+          "<FLAGS>"
+        ],
+        "first_timestamp": "2026.07.23 12:00:00.046",
+        "last_timestamp": "2026.07.24 23:56:57.758",
+        "duplicate_timestamps": 0,
+        "zero_bid_or_ask": 0,
+        "ask_below_bid": 0
+      }
+    },
+    {
+      "path": "data/raw/trades/0507-1107.html",
+      "bytes": 2181680,
+      "sha256": "4bf54181d75a8d7b66a369ac4c647754f6f7f6f287981152d18c136f673daf83",
+      "report_sections": {
+        "Positions": false,
+        "Orders": false,
+        "Deals": false
+      }
+    },
+    {
+      "path": "data/raw/trades/0507-1107.png",
+      "bytes": 8482,
+      "sha256": "7ff36be43e3143bf1a5a33606fb3b992187f5330c105c13d45f100e5c1abfa7f"
+    },
+    {
+      "path": "data/raw/trades/1207-1807.html",
+      "bytes": 11723374,
+      "sha256": "3b0a7170ffcf41fcadcd1c9bcee918bd68b8da8cb269e6a7e6c147a1744a196c",
+      "report_sections": {
+        "Positions": false,
+        "Orders": false,
+        "Deals": false
+      }
+    },
+    {
+      "path": "data/raw/trades/1207-1807.png",
+      "bytes": 8136,
+      "sha256": "3b19117612f7a83dc508a39496a4c3d29006d49c08087060e7ca7e0d7fb26779"
+    },
+    {
+      "path": "data/raw/trades/1907-2507.html",
+      "bytes": 11055820,
+      "sha256": "12586641e7605c6ac56ea6e6b8e8c422081037e07f49cf34ad20c161a27dc2c9",
+      "report_sections": {
+        "Positions": false,
+        "Orders": false,
+        "Deals": false
+      }
+    },
+    {
+      "path": "data/raw/trades/1907-2507.png",
+      "bytes": 8054,
+      "sha256": "1cdf17def3202d201f553e8859e468701e0c41ec64c8d20b800ef68612d188c9"
+    },
+    {
+      "path": "data/raw/trades/2806-0407.html",
+      "bytes": 1725244,
+      "sha256": "69b10d7c94aa63ddd784d57b4d6b50d9360606c3b9783862bd2f69c76b0c67d1",
+      "report_sections": {
+        "Positions": false,
+        "Orders": false,
+        "Deals": false
+      }
+    },
+    {
+      "path": "data/raw/trades/2806-0407.png",
+      "bytes": 8299,
+      "sha256": "b7dfc4c7864cf12ddfaebbfc557193e9f22d96d5e914b118e1c8cfbbb9becd45"
+    }
+  ]
+}

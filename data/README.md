@@ -1,11 +1,16 @@
-# Data handling
+# Data
 
-Raw and derived datasets are intentionally excluded from Git. Store them in access-controlled external storage, using stable dataset names and recording checksums outside the raw files.
+Raw MT5 account reports and broker tick data are not committed to Git.
 
-Expected private inputs:
+## Local layout
 
-- Four MT5 weekly trade reports
-- One XAUUSD tick file covering 2026-07-23 to 2026-07-24
-- Approximately one month of trade history
+- `data/raw/trades/`: MT5 HTML history reports
+- `data/raw/ticks/`: broker XAUUSD tick CSV files
+- `data/interim/`: parsed but not fully validated tables
+- `data/processed/`: validated analysis datasets
 
-For each dataset, record its source, timezone, coverage, schema version, processing code version, and SHA-256 checksum in the relevant research notes. Never commit account numbers, names, balances, cash flows, trade reports, or broker tick data.
+## Privacy
+
+Raw reports can contain account-holder identity, account number, balance, and transaction history. Never commit passwords, account-identifying HTML reports, raw tick exports, or balance/deposit/withdrawal records.
+
+Dataset identity and integrity are recorded in `manifest.yaml`. Run `python scripts/audit_data.py` after copying private files locally.

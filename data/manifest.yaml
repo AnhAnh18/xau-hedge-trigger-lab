@@ -1,0 +1,43 @@
+schema_version: 1
+
+datasets:
+  - id: trades_week_2026_06_28_07_04
+    kind: mt5_trade_report
+    local_path: data/raw/trades/2806-0407.html
+    date_from: "2026-06-28"
+    date_to: "2026-07-04"
+    server_timezone: unknown
+    account_alias: source_account_a
+    committed_to_git: false
+  - id: trades_week_2026_07_05_07_11
+    kind: mt5_trade_report
+    local_path: data/raw/trades/0507-1107.html
+    date_from: "2026-07-05"
+    date_to: "2026-07-11"
+    server_timezone: unknown
+    account_alias: source_account_a
+    committed_to_git: false
+  - id: trades_week_2026_07_12_07_18
+    kind: mt5_trade_report
+    local_path: data/raw/trades/1207-1807.html
+    date_from: "2026-07-12"
+    date_to: "2026-07-18"
+    server_timezone: unknown
+    account_alias: source_account_a
+    committed_to_git: false
+  - id: trades_week_2026_07_19_07_25
+    kind: mt5_trade_report
+    local_path: data/raw/trades/1907-2507.html
+    date_from: "2026-07-19"
+    date_to: "2026-07-25"
+    server_timezone: unknown
+    account_alias: source_account_a
+    committed_to_git: false
+  - id: ticks_xauusd_2026_07_23_24
+    kind: mt5_tick_export
+    local_path: data/raw/ticks/XAUUSD_202607231200_202607242356.csv
+    symbol: XAUUSD
+    date_from: "2026-07-23 12:00:00"
+    date_to: "2026-07-24 23:56:58"
+    server_timezone: unknown
+    committed_to_git: false
