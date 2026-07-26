@@ -98,3 +98,22 @@ Finding: These events are real but cannot occupy a complete 1-second or
 500-millisecond causal risk bin. They remain in accounting and are excluded
 from primary M5 inference under the structural support limitation tracked in
 issue #3.
+
+## F-007 — Unlock has an approximate six-second dwell floor
+
+Status: Candidate pre-fit finding
+Confidence: High from M2 durations; M5-002 session report pending
+
+Evidence:
+
+- 6,275 of 6,276 M2 `HEDGED_1X1` intervals ending in unlock last at least six
+  seconds; the sole exception lasts one second.
+- `ONE_BUY -> REHEDGE_SELL` has 32.555% of events below six seconds.
+- `ONE_SELL -> REHEDGE_BUY` has 30.820% of events below six seconds.
+- 333 hedged competing additional-position endpoints exist; 154 (46.246%)
+  occur below six seconds, so cause-specific censoring is age-dependent.
+
+Candidate finding: Unlock behavior is consistent with an approximately
+six-second minimum hedged dwell, while re-hedge behavior has no comparable
+floor. M5-002 must verify the pattern by observed tick session and publish the
+single month-wide exception rather than claiming an absolute structural zero.

@@ -184,3 +184,35 @@ calibration but are not algebraically invariant to an intercept shift.
 Consequences: Final M5 inference reports both co-primary timing comparisons and
 waits for pre-registered external sessions. Neither post-hoc recalibration nor
 standalone calibration can promote a result.
+
+## D-011 — Amend M5-002 support and age buckets before fitting
+
+Date: 2026-07-26
+Status: Accepted before M5-002 fitting
+
+Decision: Keep internal and retrospective tick cohorts as separate support
+domains and define left truncation relative to each cohort. Never append the
+retrospective export to the canonical M2-M4 `ticks.parquet`. Lay complete risk
+bins on the wall-clock grid inside tradeable fragments and evaluate paused
+tradeable state age at bin start.
+
+Amend the age grid around the M2-observed six-second unlock boundary to include
+`[5,6)`, `[6,8)`, and `[8,10)`. Keep Jeffreys smoothing as the primary finite
+estimate, publish unsmoothed rates and alpha sensitivity, and do not hard-code
+the early unlock hazard to zero because M2 contains one sub-six-second
+exception.
+
+For M5-002 timing inference, use the within-interval conditional statistic as
+primary and cause-specific occurrence likelihood as secondary. Preserve their
+different estimands. Supplemental sessions describe per-session base-hazard
+variation only and must leave the internal fitted-parameter hash unchanged.
+
+Reason: M2 durations show 6,275 of 6,276 unlocks at or beyond six seconds,
+whereas roughly one third of re-hedges occur earlier. The original `[5,10)`
+bucket obscures that boundary. Separate cohort support also preserves M2-M4
+reproducibility and removes ambiguity around the 43,320-second inter-export
+gap.
+
+Consequences: This is a dated pre-fit amendment based only on canonical M2
+durations. It does not use price data, held-out model performance, or M5-002
+fit results. Final M5 external validation remains unchanged.
