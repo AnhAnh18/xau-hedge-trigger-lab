@@ -14,5 +14,6 @@
 - [x] T-012 Complete bounded M4 remediation and pass Draft PR gates
 - [ ] T-013 M4-005 Model the 0–6s structural control-support gap ([#3](https://github.com/AnhAnh18/xau-hedge-trigger-lab/issues/3))
 - [x] T-014 M5-000 Lock timezone, roadmap, causal time support, and validation protocol
+- [x] T-017 Remediate M5-000 censoring, estimand, gap taxonomy, and comparison protocol
 - [ ] T-015 M5-001 Acquire pre-registered 2026-07-27 through 2026-07-29 tick/report sessions
 - [ ] T-016 M5-002 Build state-age-only hazard pilot after acquisition gate review

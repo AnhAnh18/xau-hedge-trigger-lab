@@ -12,7 +12,7 @@ from typing import Iterable
 import pandas as pd
 
 
-MARKET_BREAK_THRESHOLD_SECONDS = 60.0
+COVERAGE_GAP_THRESHOLD_SECONDS = 60.0
 COMMON_SERVER_HOUR_START = 12
 COMMON_SERVER_HOUR_END = 24
 ELIGIBLE_STATES = ("HEDGED_1X1", "ONE_BUY", "ONE_SELL")
@@ -37,6 +37,7 @@ FRAGMENT_COLUMNS = [
     "is_left_truncated",
     "is_right_censored",
     "is_cross_midnight",
+    "is_primary_inference_eligible",
 ]
 
 
@@ -50,10 +51,10 @@ def _rounded(value: float, digits: int = 6) -> float:
     return round(float(value), digits)
 
 
-def detect_market_breaks(
+def detect_coverage_gaps(
     ticks: pd.DataFrame,
     *,
-    threshold_seconds: float = MARKET_BREAK_THRESHOLD_SECONDS,
+    threshold_seconds: float = COVERAGE_GAP_THRESHOLD_SECONDS,
 ) -> pd.DataFrame:
     """Return consecutive-tick gaps strictly longer than the locked threshold."""
     if threshold_seconds <= 0:
@@ -76,11 +77,14 @@ def detect_market_breaks(
         }
     ).reset_index(drop=True)
     gaps.insert(0, "break_id", [f"gap-{index:03d}" for index in range(1, len(gaps) + 1)])
-    gaps["exclusion_reason"] = "market_break_no_tick_coverage"
+    gaps["gap_classification"] = "unknown_coverage_gap"
+    gaps["exclusion_reason"] = "unknown_coverage_gap"
     return gaps
 
 
-def _break_records(breaks: pd.DataFrame) -> list[tuple[pd.Timestamp, pd.Timestamp]]:
+def _break_records(
+    breaks: pd.DataFrame,
+) -> list[tuple[pd.Timestamp, pd.Timestamp, str]]:
     if breaks.empty:
         return []
     _require_columns(breaks, ["break_start", "break_end"])
@@ -89,9 +93,93 @@ def _break_records(breaks: pd.DataFrame) -> list[tuple[pd.Timestamp, pd.Timestam
         start = pd.Timestamp(row.break_start)
         end = pd.Timestamp(row.break_end)
         if end <= start:
-            raise ValueError("Market-break end must be after its start")
-        records.append((start, end))
-    return sorted(records)
+            raise ValueError("Coverage-gap end must be after its start")
+        reason = getattr(row, "exclusion_reason", "unknown_coverage_gap")
+        records.append((start, end, str(reason)))
+    return sorted(records, key=lambda item: (item[0], item[1], item[2]))
+
+
+def append_right_censored_tail(
+    intervals: pd.DataFrame,
+    lifecycle_events: pd.DataFrame,
+    *,
+    coverage_end: pd.Timestamp,
+) -> pd.DataFrame:
+    """Append the state after the last event through the merged coverage end.
+
+    M2 intervals are event-to-event and therefore omit the state after the
+    final event.  M5 adds one synthetic, explicitly censored interval without
+    mutating the canonical M2 output.
+    """
+    _require_columns(
+        intervals,
+        [
+            "interval_id",
+            "start_time",
+            "end_time",
+            "state",
+            "preceding_event_type",
+            "following_event_type",
+        ],
+    )
+    _require_columns(
+        lifecycle_events,
+        ["event_time", "state_after", "behavior_type"],
+    )
+    end_bound = pd.Timestamp(coverage_end)
+    frame = intervals.copy()
+    frame["start_time"] = pd.to_datetime(frame["start_time"], errors="raise")
+    frame["end_time"] = pd.to_datetime(frame["end_time"], errors="raise")
+    if "terminal_kind" not in frame:
+        frame["terminal_kind"] = "event"
+    else:
+        frame["terminal_kind"] = frame["terminal_kind"].fillna("event")
+    if "is_synthetic_tail" not in frame:
+        frame["is_synthetic_tail"] = False
+    else:
+        frame["is_synthetic_tail"] = frame["is_synthetic_tail"].fillna(False)
+
+    covering = frame[
+        (frame["start_time"] <= end_bound) & (frame["end_time"] >= end_bound)
+    ]
+    if not covering.empty:
+        return frame
+
+    events = lifecycle_events.copy()
+    events["event_time"] = pd.to_datetime(events["event_time"], errors="raise")
+    events = events[events["event_time"] <= end_bound]
+    if events.empty:
+        return frame
+    sort_columns = ["event_time"] + (
+        ["event_sequence"] if "event_sequence" in events.columns else []
+    )
+    last_event = events.sort_values(sort_columns, kind="stable").iloc[-1]
+    tail_start = pd.Timestamp(last_event["event_time"])
+    if tail_start >= end_bound:
+        return frame
+    if pd.isna(last_event["state_after"]):
+        raise ValueError("Cannot synthesize censored tail without state_after")
+
+    event_key = (
+        last_event["event_id"]
+        if "event_id" in last_event.index
+        else last_event.get("event_sequence", "last")
+    )
+    tail = {column: pd.NA for column in frame.columns}
+    tail.update(
+        {
+            "interval_id": f"m5-tail-{event_key}",
+            "start_time": tail_start,
+            "end_time": end_bound,
+            "duration_seconds": (end_bound - tail_start).total_seconds(),
+            "state": last_event["state_after"],
+            "preceding_event_type": last_event["behavior_type"],
+            "following_event_type": pd.NA,
+            "terminal_kind": "right_censored",
+            "is_synthetic_tail": True,
+        }
+    )
+    return pd.concat([frame, pd.DataFrame([tail])], ignore_index=True)
 
 
 def _midnights_between(start: pd.Timestamp, end: pd.Timestamp) -> list[pd.Timestamp]:
@@ -110,10 +198,10 @@ def partition_risk_time(
     coverage_end: pd.Timestamp,
     breaks: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Clip intervals, split them at midnight/breaks, and label exclusions.
+    """Clip intervals, split them at midnight/gaps, and label exclusions.
 
     Zero-duration source intervals are preserved as accounting-only fragments.
-    Positive-duration fragments inside a detected market break are excluded
+    Positive-duration fragments inside a detected coverage gap are excluded
     from risk time; all other fragments remain tradeable.
     """
     required = [
@@ -147,7 +235,10 @@ def partition_risk_time(
         clipped_start = max(source_start, start_bound)
         clipped_end = min(source_end, end_bound)
         left_truncated = source_start < start_bound
-        right_censored = source_end > end_bound
+        terminal_kind = getattr(row, "terminal_kind", "event")
+        right_censored = (
+            source_end > end_bound or terminal_kind == "right_censored"
+        )
         cross_midnight = source_start.normalize() != source_end.normalize()
 
         base = {
@@ -170,13 +261,14 @@ def partition_risk_time(
                     "duration_seconds": 0.0,
                     "is_tradeable": False,
                     "exclusion_reason": "zero_duration",
+                    "is_primary_inference_eligible": False,
                 }
             )
             continue
 
         boundaries = {clipped_start, clipped_end}
         boundaries.update(_midnights_between(clipped_start, clipped_end))
-        for gap_start, gap_end in gap_records:
+        for gap_start, gap_end, _ in gap_records:
             if gap_end <= clipped_start or gap_start >= clipped_end:
                 continue
             boundaries.add(max(gap_start, clipped_start))
@@ -187,10 +279,15 @@ def partition_risk_time(
             zip(ordered, ordered[1:]),
             start=1,
         ):
-            inside_break = any(
-                segment_start < gap_end and segment_end > gap_start
-                for gap_start, gap_end in gap_records
+            gap_reason = next(
+                (
+                    reason
+                    for gap_start, gap_end, reason in gap_records
+                    if segment_start < gap_end and segment_end > gap_start
+                ),
+                None,
             )
+            is_tradeable = gap_reason is None
             fragments.append(
                 {
                     **base,
@@ -199,9 +296,12 @@ def partition_risk_time(
                     "segment_end": segment_end,
                     "day": segment_start.strftime("%Y-%m-%d"),
                     "duration_seconds": (segment_end - segment_start).total_seconds(),
-                    "is_tradeable": not inside_break,
-                    "exclusion_reason": (
-                        "market_break_no_tick_coverage" if inside_break else None
+                    "is_tradeable": is_tradeable,
+                    "exclusion_reason": gap_reason,
+                    "is_primary_inference_eligible": (
+                        is_tradeable
+                        and not left_truncated
+                        and row.state in ELIGIBLE_STATES
                     ),
                 }
             )
@@ -210,7 +310,7 @@ def partition_risk_time(
         return pd.DataFrame(columns=FRAGMENT_COLUMNS)
     return (
         pd.DataFrame(fragments)[FRAGMENT_COLUMNS]
-        .sort_values(["segment_start", "interval_id", "segment_id"], kind="stable")
+        .sort_values(["segment_start", "segment_id"], kind="stable")
         .reset_index(drop=True)
     )
 
@@ -256,14 +356,14 @@ def tradeable_elapsed_seconds(
     end: pd.Timestamp,
     breaks: pd.DataFrame,
 ) -> float:
-    """Return elapsed seconds after pausing the clock inside market breaks."""
+    """Return elapsed seconds after pausing the clock inside coverage gaps."""
     start_time = pd.Timestamp(start)
     end_time = pd.Timestamp(end)
     if end_time < start_time:
         raise ValueError("end must not precede start")
     elapsed = (end_time - start_time).total_seconds()
     excluded = 0.0
-    for gap_start, gap_end in _break_records(breaks):
+    for gap_start, gap_end, _ in _break_records(breaks):
         overlap_start = max(start_time, gap_start)
         overlap_end = min(end_time, gap_end)
         if overlap_end > overlap_start:
@@ -283,9 +383,12 @@ def _event_mask(
     day_start = pd.Timestamp(day)
     window_start = max(day_start + pd.Timedelta(hours=start_hour), coverage_start)
     window_end = min(day_start + pd.Timedelta(hours=end_hour), coverage_end)
-    return (intervals["end_time"] > window_start) & (
+    time_mask = (intervals["end_time"] > window_start) & (
         intervals["end_time"] <= window_end
     )
+    if "terminal_kind" in intervals:
+        return time_mask & intervals["terminal_kind"].eq("event")
+    return time_mask & intervals["following_event_type"].notna()
 
 
 def summarize_fragments(
@@ -322,14 +425,15 @@ def summarize_fragments(
                 coverage_end=pd.Timestamp(coverage_end),
             )
         ]
-        eligible_interval_ids = set(
+        primary_interval_ids = set(
             group.loc[
-                group["is_tradeable"] & (group["duration_seconds"] > 0),
+                group["is_primary_inference_eligible"]
+                & (group["duration_seconds"] > 0),
                 "interval_id",
             ].tolist()
         )
         events = all_events[
-            all_events["interval_id"].isin(eligible_interval_ids)
+            all_events["interval_id"].isin(primary_interval_ids)
         ]
         target_endpoints = TARGET_ENDPOINTS.get(state, set())
         target_count = int(events["following_event_type"].isin(target_endpoints).sum())
@@ -337,6 +441,12 @@ def summarize_fragments(
         eligible_terminal_count = int(len(events))
         tradeable_seconds = _rounded(
             group.loc[group["is_tradeable"], "duration_seconds"].sum()
+        )
+        primary_risk_seconds = _rounded(
+            group.loc[
+                group["is_primary_inference_eligible"],
+                "duration_seconds",
+            ].sum()
         )
         excluded_seconds = _rounded(
             group.loc[~group["is_tradeable"], "duration_seconds"].sum()
@@ -347,6 +457,9 @@ def summarize_fragments(
                 "state": state,
                 "source_interval_count": int(group["interval_id"].nunique()),
                 "tradeable_segment_count": int(group["is_tradeable"].sum()),
+                "primary_risk_segment_count": int(
+                    group["is_primary_inference_eligible"].sum()
+                ),
                 "zero_duration_interval_count": int(
                     group.loc[
                         group["exclusion_reason"] == "zero_duration",
@@ -363,9 +476,10 @@ def summarize_fragments(
                 "raw_overlap_seconds": _rounded(group["duration_seconds"].sum()),
                 "excluded_break_seconds": excluded_seconds,
                 "tradeable_risk_seconds": tradeable_seconds,
-                "target_events_per_1000_tradeable_seconds": (
-                    _rounded(1000.0 * target_count / tradeable_seconds)
-                    if tradeable_seconds
+                "primary_risk_seconds": primary_risk_seconds,
+                "target_events_per_1000_primary_risk_seconds": (
+                    _rounded(1000.0 * target_count / primary_risk_seconds)
+                    if primary_risk_seconds
                     else None
                 ),
             }
@@ -411,9 +525,11 @@ def _aggregate_day_state(records: list[dict]) -> list[dict]:
     if not records:
         return []
     frame = pd.DataFrame(records)
+    frame = frame[frame["state"].isin(ELIGIBLE_STATES)]
     output = []
     for day, group in frame.groupby("day", sort=True):
         tradeable_seconds = _rounded(group["tradeable_risk_seconds"].sum())
+        primary_risk_seconds = _rounded(group["primary_risk_seconds"].sum())
         target_count = int(group["target_event_count"].sum())
         output.append(
             {
@@ -433,9 +549,10 @@ def _aggregate_day_state(records: list[dict]) -> list[dict]:
                     group["excluded_break_seconds"].sum()
                 ),
                 "tradeable_risk_seconds": tradeable_seconds,
+                "primary_risk_seconds": primary_risk_seconds,
                 "target_event_density_percent": (
-                    _rounded(100.0 * target_count / tradeable_seconds)
-                    if tradeable_seconds
+                    _rounded(100.0 * target_count / primary_risk_seconds)
+                    if primary_risk_seconds
                     else None
                 ),
             }
@@ -446,8 +563,9 @@ def _aggregate_day_state(records: list[dict]) -> list[dict]:
 def build_risk_time_audit(
     intervals: pd.DataFrame,
     ticks: pd.DataFrame,
+    lifecycle_events: pd.DataFrame,
     *,
-    break_threshold_seconds: float = MARKET_BREAK_THRESHOLD_SECONDS,
+    gap_threshold_seconds: float = COVERAGE_GAP_THRESHOLD_SECONDS,
 ) -> dict:
     """Return the deterministic M5-000 risk-time audit payload."""
     _require_columns(ticks, ["timestamp"])
@@ -456,38 +574,85 @@ def build_risk_time_audit(
     timestamps = pd.to_datetime(ticks["timestamp"], errors="raise")
     coverage_start = pd.Timestamp(timestamps.min())
     coverage_end = pd.Timestamp(timestamps.max())
-    breaks = detect_market_breaks(
+    canonical_intervals = append_right_censored_tail(
+        intervals,
+        lifecycle_events,
+        coverage_end=coverage_end,
+    )
+    breaks = detect_coverage_gaps(
         ticks,
-        threshold_seconds=break_threshold_seconds,
+        threshold_seconds=gap_threshold_seconds,
     )
     fragments = partition_risk_time(
-        intervals,
+        canonical_intervals,
         coverage_start=coverage_start,
         coverage_end=coverage_end,
         breaks=breaks,
     )
 
     full_by_state = summarize_fragments(
-        intervals,
+        canonical_intervals,
         fragments,
         coverage_start=coverage_start,
         coverage_end=coverage_end,
     )
     common_by_state = summarize_fragments(
-        intervals,
+        canonical_intervals,
         fragments,
         coverage_start=coverage_start,
         coverage_end=coverage_end,
         start_hour=COMMON_SERVER_HOUR_START,
         end_hour=COMMON_SERVER_HOUR_END,
     )
-
-    overlap_mask = (pd.to_datetime(intervals["end_time"]) >= coverage_start) & (
-        pd.to_datetime(intervals["start_time"]) <= coverage_end
+    early_by_state = summarize_fragments(
+        canonical_intervals,
+        fragments,
+        coverage_start=coverage_start,
+        coverage_end=coverage_end,
+        start_hour=1,
+        end_hour=COMMON_SERVER_HOUR_START,
     )
-    overlap = intervals.loc[overlap_mask].copy()
+    full_by_day = _aggregate_day_state(full_by_state)
+    common_by_day = _aggregate_day_state(common_by_state)
+    early_by_day = _aggregate_day_state(early_by_state)
+
+    overlap_mask = (
+        pd.to_datetime(canonical_intervals["end_time"]) >= coverage_start
+    ) & (
+        pd.to_datetime(canonical_intervals["start_time"]) <= coverage_end
+    )
+    overlap = canonical_intervals.loc[overlap_mask].copy()
     overlap["start_time"] = pd.to_datetime(overlap["start_time"])
     overlap["end_time"] = pd.to_datetime(overlap["end_time"])
+    original_overlap_mask = (
+        pd.to_datetime(intervals["end_time"]) >= coverage_start
+    ) & (pd.to_datetime(intervals["start_time"]) <= coverage_end)
+    original_overlap = intervals.loc[original_overlap_mask].copy()
+    original_overlap["start_time"] = pd.to_datetime(original_overlap["start_time"])
+    original_overlap["end_time"] = pd.to_datetime(original_overlap["end_time"])
+
+    zero_duration = original_overlap[
+        original_overlap["end_time"] == original_overlap["start_time"]
+    ].copy()
+    zero_target_mask = pd.Series(
+        [
+            endpoint in TARGET_ENDPOINTS.get(state, set())
+            for state, endpoint in zip(
+                zero_duration["state"],
+                zero_duration["following_event_type"],
+            )
+        ],
+        index=zero_duration.index,
+        dtype=bool,
+    )
+    zero_target = zero_duration.loc[zero_target_mask]
+    common_zero_target = zero_target[
+        zero_target["end_time"].dt.hour >= COMMON_SERVER_HOUR_START
+    ]
+
+    right_censored_mask = overlap["terminal_kind"].eq("right_censored") | (
+        overlap["end_time"] > coverage_end
+    )
     boundary_cases = {
         "left_truncated_interval_ids": sorted(
             overlap.loc[overlap["start_time"] < coverage_start, "interval_id"]
@@ -495,9 +660,15 @@ def build_risk_time_audit(
             .tolist()
         ),
         "right_censored_interval_ids": sorted(
-            overlap.loc[overlap["end_time"] > coverage_end, "interval_id"]
+            overlap.loc[right_censored_mask, "interval_id"]
             .astype(str)
             .tolist()
+        ),
+        "right_censored_tail_seconds": _rounded(
+            overlap.loc[
+                overlap["terminal_kind"].eq("right_censored"),
+                "duration_seconds",
+            ].sum()
         ),
         "cross_midnight_interval_ids": sorted(
             overlap.loc[
@@ -511,17 +682,46 @@ def build_risk_time_audit(
         "zero_duration_interval_count": int(
             (overlap["end_time"] == overlap["start_time"]).sum()
         ),
-        "market_break_intersection_interval_ids": sorted(
+        "coverage_gap_intersection_interval_ids": sorted(
             fragments.loc[
-                fragments["exclusion_reason"] == "market_break_no_tick_coverage",
+                fragments["exclusion_reason"].notna()
+                & (fragments["exclusion_reason"] != "zero_duration"),
                 "interval_id",
             ]
             .astype(str)
             .unique()
             .tolist()
         ),
+        "left_truncated_excluded_from_primary": True,
     }
 
+    common_lookup = {row["day"]: row for row in common_by_day}
+    common_days = sorted(common_lookup)
+    development_day = common_days[0]
+    holdout_day = common_days[-1]
+    development_density = common_lookup[development_day][
+        "target_event_density_percent"
+    ]
+    holdout_density = common_lookup[holdout_day][
+        "target_event_density_percent"
+    ]
+    base_rate_ratio = (
+        _rounded(development_density / holdout_density)
+        if development_density is not None and holdout_density
+        else None
+    )
+    early_lookup = {row["day"]: row for row in early_by_day}
+    holdout_early_density = early_lookup.get(holdout_day, {}).get(
+        "target_event_density_percent"
+    )
+    holdout_session_ratio = (
+        _rounded(holdout_density / holdout_early_density)
+        if holdout_density is not None and holdout_early_density
+        else None
+    )
+
+    tick_differences = timestamps.diff().dt.total_seconds().dropna()
+    subthreshold = tick_differences[tick_differences <= gap_threshold_seconds]
     tick_counts = (
         pd.DataFrame({"hour": timestamps.dt.hour})
         .groupby("hour", as_index=False)
@@ -529,26 +729,32 @@ def build_risk_time_audit(
         .sort_values(["size", "hour"], ascending=[False, True], kind="stable")
     )
     payload = {
-        "schema_version": 1,
+        "schema_version": 2,
         "milestone": "M5-000",
         "status": "pilot_accounting_only",
         "configuration": {
             "coverage_start": coverage_start.isoformat(),
             "coverage_end": coverage_end.isoformat(),
-            "market_break_rule": (
+            "coverage_gap_rule": (
                 f"exclude full consecutive-tick gaps > "
-                f"{break_threshold_seconds:g} seconds"
+                f"{gap_threshold_seconds:g} seconds"
             ),
-            "market_break_threshold_seconds": break_threshold_seconds,
+            "coverage_gap_threshold_seconds": gap_threshold_seconds,
             "common_server_hours": [
                 COMMON_SERVER_HOUR_START,
                 COMMON_SERVER_HOUR_END,
             ],
-            "state_age_clock": "elapsed time minus detected market-break overlap",
+            "eligible_states": list(ELIGIBLE_STATES),
+            "state_age_clock": "elapsed time minus excluded coverage-gap overlap",
+            "left_truncation_scope": "merged_tick_coverage_not_individual_files",
         },
         "coverage": {
             "tick_count": int(len(ticks)),
-            "source_interval_count": int(len(overlap)),
+            "m2_source_interval_count": int(len(original_overlap)),
+            "canonical_source_interval_count": int(len(overlap)),
+            "synthetic_right_censored_interval_count": int(
+                overlap["terminal_kind"].eq("right_censored").sum()
+            ),
             "positive_duration_interval_count": int(
                 (overlap["end_time"] > overlap["start_time"]).sum()
             ),
@@ -559,20 +765,97 @@ def build_risk_time_audit(
             coverage_start=coverage_start,
             coverage_end=coverage_end,
         ),
-        "canonical_full_coverage_by_day": _aggregate_day_state(full_by_state),
-        "canonical_common_hours_by_day": _aggregate_day_state(common_by_state),
+        "canonical_full_coverage_by_day": full_by_day,
+        "canonical_common_hours_by_day": common_by_day,
+        "canonical_holdout_hours_01_12_by_day": early_by_day,
         "canonical_full_coverage_by_day_and_state": full_by_state,
         "canonical_common_hours_by_day_and_state": common_by_state,
-        "market_breaks": [
+        "cohort_comparability": {
+            "development_day": development_day,
+            "holdout_day": holdout_day,
+            "development_common_hour_density_percent": development_density,
+            "holdout_common_hour_density_percent": holdout_density,
+            "development_to_holdout_density_ratio": base_rate_ratio,
+            "holdout_hours_01_12_density_percent": holdout_early_density,
+            "holdout_12_24_to_01_12_density_ratio": holdout_session_ratio,
+            "coverage_support_aligned": True,
+            "base_rate_aligned": False,
+            "development_weekday": pd.Timestamp(development_day).day_name(),
+            "holdout_weekday": pd.Timestamp(holdout_day).day_name(),
+            "external_validation_weekdays": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+            ],
+            "day_of_week_perfectly_confounded": True,
+        },
+        "inference_protocol": {
+            "primary_occurrence_model": "discrete_time_hazard",
+            "co_primary_timing_comparisons": [
+                "paired_per_interval_log_likelihood_C_minus_A_common_and_C_minus_B",
+                "within_interval_conditional_likelihood_given_one_representable_event",
+            ],
+            "conditional_event_probability": (
+                "exp(eta_event_bin) / sum(exp(eta_bin)) within interval"
+            ),
+            "raw_calibration_role": "descriptive_only",
+            "posthoc_intercept_recalibration": (
+                "diagnostic_only_uses_holdout_labels_no_verdict_or_gate"
+            ),
+            "primary_server_hours": [12, 24],
+            "secondary_external_analysis": (
+                "full_session_2026_07_27_to_2026_07_29_non_gating"
+            ),
+        },
+        "primary_estimand": {
+            "description": (
+                "Transition timing among eligible states with at least one "
+                "complete causal risk bin on merged tick coverage"
+            ),
+            "primary_bin_width_seconds": 1.0,
+            "zero_duration_target_events_excluded_full_coverage": int(
+                len(zero_target)
+            ),
+            "zero_duration_target_events_excluded_common_hours": int(
+                len(common_zero_target)
+            ),
+            "left_truncated_interval_ids_excluded": boundary_cases[
+                "left_truncated_interval_ids"
+            ],
+            "structural_support_issue": (
+                "https://github.com/AnhAnh18/xau-hedge-trigger-lab/issues/3"
+            ),
+        },
+        "coverage_gaps": [
             {
                 "break_id": row.break_id,
                 "break_start": pd.Timestamp(row.break_start).isoformat(),
                 "break_end": pd.Timestamp(row.break_end).isoformat(),
                 "duration_seconds": _rounded(row.duration_seconds),
+                "gap_classification": row.gap_classification,
                 "exclusion_reason": row.exclusion_reason,
+                "schedule_note": (
+                    "Consistent with a daily halt under D-007, but remains "
+                    "unknown until repeated across additional sessions."
+                ),
             }
             for row in breaks.itertuples(index=False)
         ],
+        "coverage_gap_threshold_diagnostic": {
+            "maximum_subthreshold_gap_seconds": (
+                _rounded(subthreshold.max()) if not subthreshold.empty else None
+            ),
+            "gap_count_from_10_to_60_seconds": int(
+                (
+                    (tick_differences >= 10.0)
+                    & (tick_differences <= gap_threshold_seconds)
+                ).sum()
+            ),
+            "scope_note": (
+                "Threshold robustness is established only for the current "
+                "tick window and is not retuned after external data arrive."
+            ),
+        },
         "boundary_cases": boundary_cases,
         "timezone_decision": {
             "server_timezone": "UTC+03:00",
@@ -590,13 +873,18 @@ def build_risk_time_audit(
                 int(hour) for hour in tick_counts.head(3)["hour"].tolist()
             ],
             "scope_note": (
-                "The inference is valid for this July 2026 dataset window; "
-                "it does not establish a year-round DST rule."
+                "The inference is propagated to reports from the same account "
+                "server in the 2026 summer period; it does not establish a "
+                "year-round DST rule."
             ),
         },
         "limitations": [
-            "Development begins at server hour 12; full-day development and holdout are not comparable.",
-            "A/B/C comparisons are restricted to common server hours 12-23.",
+            "Common hours align coverage support but do not align the development and holdout base rates.",
+            "Primary M5 v1 inference is restricted to server hours 12-23 and does not generalize to the Asian session.",
+            "Day of week is perfectly confounded with the current development, holdout, and external-validation split.",
+            "A pre-registered full-session external analysis is secondary and cannot override the primary 12-23 verdict.",
+            "Raw calibration is descriptive; any holdout-label intercept recalibration is post-hoc diagnostic only.",
+            "Paired likelihood increments remain base-rate sensitive; a within-interval conditional statistic is co-primary for timing comparison.",
             "Only one partial-plus-one-near-full tick session is available.",
             "This audit defines support only and does not fit or evaluate a model.",
         ],

@@ -67,7 +67,11 @@ Work packages:
 
 Gate:
 
-- Risk bins use tradeable time and exclude recorded market breaks.
+- Risk bins use tradeable time and exclude recorded coverage gaps.
+- M5 appends explicit right-censored state tails through merged tick coverage;
+  censored tails never create terminal or competing events.
+- Left-truncated and zero-duration cases remain fully accounted but outside the
+  complete-risk-bin primary estimand.
 - A/B/C headline comparisons use identical bins on common server-hour support.
 - ONE_BUY and ONE_SELL re-hedge processes are evaluated separately.
 - Unlock direction is a conditional cause split, not an independent hazard.
@@ -75,6 +79,8 @@ Gate:
   predictors.
 - Headline inference reports both `C - A_common` and `C - B`, clustered by
   `interval_id`.
+- A within-interval conditional timing statistic is co-primary for robustness
+  to between-session intercept shifts.
 - Results survive pre-registered additional tick sessions. The current
   partial-plus-one-session dataset may produce a pilot only and cannot close M5.
 

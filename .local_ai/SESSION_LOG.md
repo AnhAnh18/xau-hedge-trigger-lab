@@ -15,3 +15,15 @@
   support, and window-scoped UTC+3 inference.
 - Pre-registered three contiguous external validation sessions.
 - Stopped before risk-bin generation or model fitting.
+
+## 2026-07-26 — M5-000 review remediation
+
+- Added the 318.758-second synthetic right-censored final-state tail without
+  changing M2 output.
+- Excluded left-truncated and zero-duration cases from the primary risk-bin
+  estimand while preserving complete accounting.
+- Separated eligible-state exposure from all-state audit exposure.
+- Classified the current long gap as unknown pending recurrence evidence.
+- Pre-registered a co-primary within-interval timing statistic and a secondary
+  full-session external analysis.
+- Kept M5-002 out of scope.

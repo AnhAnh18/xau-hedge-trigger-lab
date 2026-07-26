@@ -1,8 +1,9 @@
-schema_version: 2
+schema_version: 3
 
 time_basis:
   server_timezone: "UTC+03:00"
-  status: inferred_high_confidence_for_2026_07_window
+  status: inferred_high_confidence_from_2026_07_tick_window
+  propagation_scope: same_account_server_2026_summer_reports
   globally_confirmed: false
   evidence:
     - unique_long_tick_gap_near_server_midnight
@@ -29,6 +30,28 @@ validation_plan:
     status: planned
   raw_files_committed_to_git: false
   substitution_policy: amend_manifest_before_inspecting_any_replacement_result
+  analysis_windows:
+    primary:
+      server_hours: "12:00-24:00"
+      applies_to: development_holdout_and_external_validation
+      gate_eligible: true
+      locked_before_external_acquisition: true
+    secondary_full_session:
+      server_hours: full_registered_session
+      applies_to: external_validation_2026_07_27_to_2026_07_29
+      gate_eligible: false
+      purpose: asian_session_transportability
+      locked_before_external_acquisition: true
+  day_of_week_limitation:
+    development: Thursday
+    holdout: Friday
+    external_validation: Monday_Tuesday_Wednesday
+    status: perfectly_confounded_in_current_split
+  coverage_gap_policy:
+    threshold_seconds: 60
+    default_classification: unknown_coverage_gap
+    scheduled_classification_rule: recurring_same_server_clock_pattern_across_sessions
+    retune_after_results: false
 
 datasets:
   - id: trades_week_2026_06_28_07_04
@@ -37,7 +60,7 @@ datasets:
     date_from: "2026-06-28"
     date_to: "2026-07-04"
     server_timezone: "UTC+03:00"
-    timezone_status: inferred_not_formally_confirmed
+    timezone_status: inferred_from_same_account_server_summer_2026_tick_window
     account_alias: source_account_a
     committed_to_git: false
   - id: trades_week_2026_07_05_07_11
@@ -46,7 +69,7 @@ datasets:
     date_from: "2026-07-05"
     date_to: "2026-07-11"
     server_timezone: "UTC+03:00"
-    timezone_status: inferred_not_formally_confirmed
+    timezone_status: inferred_from_same_account_server_summer_2026_tick_window
     account_alias: source_account_a
     committed_to_git: false
   - id: trades_week_2026_07_12_07_18
@@ -55,7 +78,7 @@ datasets:
     date_from: "2026-07-12"
     date_to: "2026-07-18"
     server_timezone: "UTC+03:00"
-    timezone_status: inferred_not_formally_confirmed
+    timezone_status: inferred_from_same_account_server_summer_2026_tick_window
     account_alias: source_account_a
     committed_to_git: false
   - id: trades_week_2026_07_19_07_25
@@ -64,7 +87,7 @@ datasets:
     date_from: "2026-07-19"
     date_to: "2026-07-25"
     server_timezone: "UTC+03:00"
-    timezone_status: inferred_not_formally_confirmed
+    timezone_status: inferred_from_same_account_server_summer_2026_tick_window
     account_alias: source_account_a
     committed_to_git: false
   - id: ticks_xauusd_2026_07_23_24
@@ -74,5 +97,5 @@ datasets:
     date_from: "2026-07-23 12:00:00"
     date_to: "2026-07-24 23:56:58"
     server_timezone: "UTC+03:00"
-    timezone_status: inferred_not_formally_confirmed
+    timezone_status: direct_inference_source_not_formally_confirmed
     committed_to_git: false

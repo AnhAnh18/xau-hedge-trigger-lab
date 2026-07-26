@@ -1,22 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "milestone": "M5-000",
   "status": "pilot_accounting_only",
   "configuration": {
     "coverage_start": "2026-07-23T12:00:00.046000",
     "coverage_end": "2026-07-24T23:56:57.758000",
-    "market_break_rule": "exclude full consecutive-tick gaps > 60 seconds",
-    "market_break_threshold_seconds": 60.0,
+    "coverage_gap_rule": "exclude full consecutive-tick gaps > 60 seconds",
+    "coverage_gap_threshold_seconds": 60.0,
     "common_server_hours": [
       12,
       24
     ],
-    "state_age_clock": "elapsed time minus detected market-break overlap"
+    "eligible_states": [
+      "HEDGED_1X1",
+      "ONE_BUY",
+      "ONE_SELL"
+    ],
+    "state_age_clock": "elapsed time minus excluded coverage-gap overlap",
+    "left_truncation_scope": "merged_tick_coverage_not_individual_files"
   },
   "coverage": {
     "tick_count": 984883,
-    "source_interval_count": 2096,
-    "positive_duration_interval_count": 2062,
+    "m2_source_interval_count": 2096,
+    "canonical_source_interval_count": 2097,
+    "synthetic_right_censored_interval_count": 1,
+    "positive_duration_interval_count": 2063,
     "days": [
       "2026-07-23",
       "2026-07-24"
@@ -41,27 +49,29 @@
       "day": "2026-07-23",
       "source_interval_count": 1248,
       "terminal_event_count": 1247,
-      "eligible_terminal_event_count": 1226,
-      "nonrisk_terminal_event_count": 21,
-      "target_event_count": 1226,
+      "eligible_terminal_event_count": 1225,
+      "nonrisk_terminal_event_count": 22,
+      "target_event_count": 1225,
       "competing_event_count": 0,
       "raw_overlap_seconds": 43199.954,
       "excluded_break_seconds": 120.101,
       "tradeable_risk_seconds": 43079.853,
-      "target_event_density_percent": 2.845878
+      "primary_risk_seconds": 42885.899,
+      "target_event_density_percent": 2.856417
     },
     {
       "day": "2026-07-24",
-      "source_interval_count": 849,
+      "source_interval_count": 850,
       "terminal_event_count": 849,
       "eligible_terminal_event_count": 836,
       "nonrisk_terminal_event_count": 13,
       "target_event_count": 836,
       "competing_event_count": 0,
-      "raw_overlap_seconds": 85899.0,
+      "raw_overlap_seconds": 86217.758,
       "excluded_break_seconds": 3600.4,
-      "tradeable_risk_seconds": 82298.6,
-      "target_event_density_percent": 1.015813
+      "tradeable_risk_seconds": 82617.358,
+      "primary_risk_seconds": 82617.358,
+      "target_event_density_percent": 1.011894
     }
   ],
   "canonical_common_hours_by_day": [
@@ -69,27 +79,45 @@
       "day": "2026-07-23",
       "source_interval_count": 1248,
       "terminal_event_count": 1247,
-      "eligible_terminal_event_count": 1226,
-      "nonrisk_terminal_event_count": 21,
-      "target_event_count": 1226,
+      "eligible_terminal_event_count": 1225,
+      "nonrisk_terminal_event_count": 22,
+      "target_event_count": 1225,
       "competing_event_count": 0,
       "raw_overlap_seconds": 43199.954,
       "excluded_break_seconds": 120.101,
       "tradeable_risk_seconds": 43079.853,
-      "target_event_density_percent": 2.845878
+      "primary_risk_seconds": 42885.899,
+      "target_event_density_percent": 2.856417
     },
     {
       "day": "2026-07-24",
-      "source_interval_count": 594,
+      "source_interval_count": 595,
       "terminal_event_count": 594,
       "eligible_terminal_event_count": 585,
       "nonrisk_terminal_event_count": 9,
       "target_event_count": 585,
       "competing_event_count": 0,
-      "raw_overlap_seconds": 42699.0,
+      "raw_overlap_seconds": 43017.758,
       "excluded_break_seconds": 0.0,
-      "tradeable_risk_seconds": 42699.0,
-      "target_event_density_percent": 1.370056
+      "tradeable_risk_seconds": 43017.758,
+      "primary_risk_seconds": 43017.758,
+      "target_event_density_percent": 1.359904
+    }
+  ],
+  "canonical_holdout_hours_01_12_by_day": [
+    {
+      "day": "2026-07-24",
+      "source_interval_count": 256,
+      "terminal_event_count": 255,
+      "eligible_terminal_event_count": 251,
+      "nonrisk_terminal_event_count": 4,
+      "target_event_count": 251,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 39600.0,
+      "excluded_break_seconds": 0.4,
+      "tradeable_risk_seconds": 39599.6,
+      "primary_risk_seconds": 39599.6,
+      "target_event_density_percent": 0.633845
     }
   ],
   "canonical_full_coverage_by_day_and_state": [
@@ -98,22 +126,25 @@
       "state": "HEDGED_1X1",
       "source_interval_count": 624,
       "tradeable_segment_count": 624,
+      "primary_risk_segment_count": 623,
       "zero_duration_interval_count": 0,
       "terminal_event_count": 624,
-      "eligible_terminal_event_count": 624,
-      "nonrisk_terminal_event_count": 0,
-      "target_event_count": 624,
+      "eligible_terminal_event_count": 623,
+      "nonrisk_terminal_event_count": 1,
+      "target_event_count": 623,
       "competing_event_count": 0,
       "raw_overlap_seconds": 26552.954,
       "excluded_break_seconds": 0.0,
       "tradeable_risk_seconds": 26552.954,
-      "target_events_per_1000_tradeable_seconds": 23.50021
+      "primary_risk_seconds": 26359.0,
+      "target_events_per_1000_primary_risk_seconds": 23.635191
     },
     {
       "day": "2026-07-23",
       "state": "ONE_BUY",
       "source_interval_count": 313,
       "tradeable_segment_count": 302,
+      "primary_risk_segment_count": 302,
       "zero_duration_interval_count": 11,
       "terminal_event_count": 313,
       "eligible_terminal_event_count": 302,
@@ -123,13 +154,15 @@
       "raw_overlap_seconds": 7275.0,
       "excluded_break_seconds": 0.0,
       "tradeable_risk_seconds": 7275.0,
-      "target_events_per_1000_tradeable_seconds": 41.512027
+      "primary_risk_seconds": 7275.0,
+      "target_events_per_1000_primary_risk_seconds": 41.512027
     },
     {
       "day": "2026-07-23",
       "state": "ONE_SELL",
       "source_interval_count": 311,
       "tradeable_segment_count": 301,
+      "primary_risk_segment_count": 301,
       "zero_duration_interval_count": 10,
       "terminal_event_count": 310,
       "eligible_terminal_event_count": 300,
@@ -139,29 +172,33 @@
       "raw_overlap_seconds": 9372.0,
       "excluded_break_seconds": 120.101,
       "tradeable_risk_seconds": 9251.899,
-      "target_events_per_1000_tradeable_seconds": 32.425776
+      "primary_risk_seconds": 9251.899,
+      "target_events_per_1000_primary_risk_seconds": 32.425776
     },
     {
       "day": "2026-07-24",
       "state": "HEDGED_1X1",
-      "source_interval_count": 424,
-      "tradeable_segment_count": 424,
+      "source_interval_count": 425,
+      "tradeable_segment_count": 425,
+      "primary_risk_segment_count": 425,
       "zero_duration_interval_count": 0,
       "terminal_event_count": 424,
       "eligible_terminal_event_count": 424,
       "nonrisk_terminal_event_count": 0,
       "target_event_count": 424,
       "competing_event_count": 0,
-      "raw_overlap_seconds": 58706.0,
+      "raw_overlap_seconds": 59024.758,
       "excluded_break_seconds": 0.0,
-      "tradeable_risk_seconds": 58706.0,
-      "target_events_per_1000_tradeable_seconds": 7.22243
+      "tradeable_risk_seconds": 59024.758,
+      "primary_risk_seconds": 59024.758,
+      "target_events_per_1000_primary_risk_seconds": 7.183426
     },
     {
       "day": "2026-07-24",
       "state": "ONE_BUY",
       "source_interval_count": 234,
       "tradeable_segment_count": 228,
+      "primary_risk_segment_count": 228,
       "zero_duration_interval_count": 6,
       "terminal_event_count": 234,
       "eligible_terminal_event_count": 228,
@@ -171,13 +208,15 @@
       "raw_overlap_seconds": 14605.0,
       "excluded_break_seconds": 0.0,
       "tradeable_risk_seconds": 14605.0,
-      "target_events_per_1000_tradeable_seconds": 15.611092
+      "primary_risk_seconds": 14605.0,
+      "target_events_per_1000_primary_risk_seconds": 15.611092
     },
     {
       "day": "2026-07-24",
       "state": "ONE_SELL",
       "source_interval_count": 191,
       "tradeable_segment_count": 184,
+      "primary_risk_segment_count": 184,
       "zero_duration_interval_count": 7,
       "terminal_event_count": 191,
       "eligible_terminal_event_count": 184,
@@ -187,7 +226,8 @@
       "raw_overlap_seconds": 12588.0,
       "excluded_break_seconds": 3600.4,
       "tradeable_risk_seconds": 8987.6,
-      "target_events_per_1000_tradeable_seconds": 20.472651
+      "primary_risk_seconds": 8987.6,
+      "target_events_per_1000_primary_risk_seconds": 20.472651
     }
   ],
   "canonical_common_hours_by_day_and_state": [
@@ -196,22 +236,25 @@
       "state": "HEDGED_1X1",
       "source_interval_count": 624,
       "tradeable_segment_count": 624,
+      "primary_risk_segment_count": 623,
       "zero_duration_interval_count": 0,
       "terminal_event_count": 624,
-      "eligible_terminal_event_count": 624,
-      "nonrisk_terminal_event_count": 0,
-      "target_event_count": 624,
+      "eligible_terminal_event_count": 623,
+      "nonrisk_terminal_event_count": 1,
+      "target_event_count": 623,
       "competing_event_count": 0,
       "raw_overlap_seconds": 26552.954,
       "excluded_break_seconds": 0.0,
       "tradeable_risk_seconds": 26552.954,
-      "target_events_per_1000_tradeable_seconds": 23.50021
+      "primary_risk_seconds": 26359.0,
+      "target_events_per_1000_primary_risk_seconds": 23.635191
     },
     {
       "day": "2026-07-23",
       "state": "ONE_BUY",
       "source_interval_count": 313,
       "tradeable_segment_count": 302,
+      "primary_risk_segment_count": 302,
       "zero_duration_interval_count": 11,
       "terminal_event_count": 313,
       "eligible_terminal_event_count": 302,
@@ -221,13 +264,15 @@
       "raw_overlap_seconds": 7275.0,
       "excluded_break_seconds": 0.0,
       "tradeable_risk_seconds": 7275.0,
-      "target_events_per_1000_tradeable_seconds": 41.512027
+      "primary_risk_seconds": 7275.0,
+      "target_events_per_1000_primary_risk_seconds": 41.512027
     },
     {
       "day": "2026-07-23",
       "state": "ONE_SELL",
       "source_interval_count": 311,
       "tradeable_segment_count": 301,
+      "primary_risk_segment_count": 301,
       "zero_duration_interval_count": 10,
       "terminal_event_count": 310,
       "eligible_terminal_event_count": 300,
@@ -237,29 +282,33 @@
       "raw_overlap_seconds": 9372.0,
       "excluded_break_seconds": 120.101,
       "tradeable_risk_seconds": 9251.899,
-      "target_events_per_1000_tradeable_seconds": 32.425776
+      "primary_risk_seconds": 9251.899,
+      "target_events_per_1000_primary_risk_seconds": 32.425776
     },
     {
       "day": "2026-07-24",
       "state": "HEDGED_1X1",
-      "source_interval_count": 297,
-      "tradeable_segment_count": 297,
+      "source_interval_count": 298,
+      "tradeable_segment_count": 298,
+      "primary_risk_segment_count": 298,
       "zero_duration_interval_count": 0,
       "terminal_event_count": 297,
       "eligible_terminal_event_count": 297,
       "nonrisk_terminal_event_count": 0,
       "target_event_count": 297,
       "competing_event_count": 0,
-      "raw_overlap_seconds": 30962.0,
+      "raw_overlap_seconds": 31280.758,
       "excluded_break_seconds": 0.0,
-      "tradeable_risk_seconds": 30962.0,
-      "target_events_per_1000_tradeable_seconds": 9.592404
+      "tradeable_risk_seconds": 31280.758,
+      "primary_risk_seconds": 31280.758,
+      "target_events_per_1000_primary_risk_seconds": 9.494655
     },
     {
       "day": "2026-07-24",
       "state": "ONE_BUY",
       "source_interval_count": 160,
       "tradeable_segment_count": 155,
+      "primary_risk_segment_count": 155,
       "zero_duration_interval_count": 5,
       "terminal_event_count": 160,
       "eligible_terminal_event_count": 155,
@@ -269,13 +318,15 @@
       "raw_overlap_seconds": 6568.0,
       "excluded_break_seconds": 0.0,
       "tradeable_risk_seconds": 6568.0,
-      "target_events_per_1000_tradeable_seconds": 23.599269
+      "primary_risk_seconds": 6568.0,
+      "target_events_per_1000_primary_risk_seconds": 23.599269
     },
     {
       "day": "2026-07-24",
       "state": "ONE_SELL",
       "source_interval_count": 137,
       "tradeable_segment_count": 133,
+      "primary_risk_segment_count": 133,
       "zero_duration_interval_count": 4,
       "terminal_event_count": 137,
       "eligible_terminal_event_count": 133,
@@ -285,30 +336,86 @@
       "raw_overlap_seconds": 5169.0,
       "excluded_break_seconds": 0.0,
       "tradeable_risk_seconds": 5169.0,
-      "target_events_per_1000_tradeable_seconds": 25.730315
+      "primary_risk_seconds": 5169.0,
+      "target_events_per_1000_primary_risk_seconds": 25.730315
     }
   ],
-  "market_breaks": [
+  "cohort_comparability": {
+    "development_day": "2026-07-23",
+    "holdout_day": "2026-07-24",
+    "development_common_hour_density_percent": 2.856417,
+    "holdout_common_hour_density_percent": 1.359904,
+    "development_to_holdout_density_ratio": 2.100455,
+    "holdout_hours_01_12_density_percent": 0.633845,
+    "holdout_12_24_to_01_12_density_ratio": 2.145484,
+    "coverage_support_aligned": true,
+    "base_rate_aligned": false,
+    "development_weekday": "Thursday",
+    "holdout_weekday": "Friday",
+    "external_validation_weekdays": [
+      "Monday",
+      "Tuesday",
+      "Wednesday"
+    ],
+    "day_of_week_perfectly_confounded": true
+  },
+  "inference_protocol": {
+    "primary_occurrence_model": "discrete_time_hazard",
+    "co_primary_timing_comparisons": [
+      "paired_per_interval_log_likelihood_C_minus_A_common_and_C_minus_B",
+      "within_interval_conditional_likelihood_given_one_representable_event"
+    ],
+    "conditional_event_probability": "exp(eta_event_bin) / sum(exp(eta_bin)) within interval",
+    "raw_calibration_role": "descriptive_only",
+    "posthoc_intercept_recalibration": "diagnostic_only_uses_holdout_labels_no_verdict_or_gate",
+    "primary_server_hours": [
+      12,
+      24
+    ],
+    "secondary_external_analysis": "full_session_2026_07_27_to_2026_07_29_non_gating"
+  },
+  "primary_estimand": {
+    "description": "Transition timing among eligible states with at least one complete causal risk bin on merged tick coverage",
+    "primary_bin_width_seconds": 1.0,
+    "zero_duration_target_events_excluded_full_coverage": 34,
+    "zero_duration_target_events_excluded_common_hours": 30,
+    "left_truncated_interval_ids_excluded": [
+      "12074"
+    ],
+    "structural_support_issue": "https://github.com/AnhAnh18/xau-hedge-trigger-lab/issues/3"
+  },
+  "coverage_gaps": [
     {
       "break_id": "gap-001",
       "break_start": "2026-07-23T23:57:59.899000",
       "break_end": "2026-07-24T01:00:00.400000",
       "duration_seconds": 3720.501,
-      "exclusion_reason": "market_break_no_tick_coverage"
+      "gap_classification": "unknown_coverage_gap",
+      "exclusion_reason": "unknown_coverage_gap",
+      "schedule_note": "Consistent with a daily halt under D-007, but remains unknown until repeated across additional sessions."
     }
   ],
+  "coverage_gap_threshold_diagnostic": {
+    "maximum_subthreshold_gap_seconds": 7.379,
+    "gap_count_from_10_to_60_seconds": 0,
+    "scope_note": "Threshold robustness is established only for the current tick window and is not retuned after external data arrive."
+  },
   "boundary_cases": {
     "left_truncated_interval_ids": [
       "12074"
     ],
-    "right_censored_interval_ids": [],
+    "right_censored_interval_ids": [
+      "m5-tail-14170"
+    ],
+    "right_censored_tail_seconds": 318.758,
     "cross_midnight_interval_ids": [
       "13321"
     ],
     "zero_duration_interval_count": 34,
-    "market_break_intersection_interval_ids": [
+    "coverage_gap_intersection_interval_ids": [
       "13321"
-    ]
+    ],
+    "left_truncated_excluded_from_primary": true
   },
   "timezone_decision": {
     "server_timezone": "UTC+03:00",
@@ -323,13 +430,17 @@
       16,
       18
     ],
-    "scope_note": "The inference is valid for this July 2026 dataset window; it does not establish a year-round DST rule."
+    "scope_note": "The inference is propagated to reports from the same account server in the 2026 summer period; it does not establish a year-round DST rule."
   },
   "limitations": [
-    "Development begins at server hour 12; full-day development and holdout are not comparable.",
-    "A/B/C comparisons are restricted to common server hours 12-23.",
+    "Common hours align coverage support but do not align the development and holdout base rates.",
+    "Primary M5 v1 inference is restricted to server hours 12-23 and does not generalize to the Asian session.",
+    "Day of week is perfectly confounded with the current development, holdout, and external-validation split.",
+    "A pre-registered full-session external analysis is secondary and cannot override the primary 12-23 verdict.",
+    "Raw calibration is descriptive; any holdout-label intercept recalibration is post-hoc diagnostic only.",
+    "Paired likelihood increments remain base-rate sensitive; a within-interval conditional statistic is co-primary for timing comparison.",
     "Only one partial-plus-one-near-full tick session is available.",
     "This audit defines support only and does not fit or evaluate a model."
   ],
-  "deterministic_audit_sha256": "c1cc7c9596e68e7d547756ddf89d6f4a00dfdd0d5122295ec4effdb8f0eb6571"
+  "deterministic_audit_sha256": "0b1d4d9ae9ea948c1e3fdba25afb6295b4834b6117819e8207b5375dbe117862"
 }

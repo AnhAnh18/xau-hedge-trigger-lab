@@ -36,6 +36,11 @@ M5 — Trigger Inference (M5-000 complete; modelling not started)
 - Common-hour development/holdout cohort locked to server hours 12–23
 - UTC+3 recorded as a window-scoped high-confidence inference
 - Three external validation sessions pre-registered
+- Synthetic right-censored tail through tick coverage end
+- Explicit zero-duration and left-truncation estimand exclusions
+- Unknown-gap taxonomy with multi-day regression coverage
+- Co-primary within-interval conditional timing statistic pre-registered
+- Secondary full-session external analysis pre-registered
 
 ## Current data
 
@@ -48,7 +53,10 @@ M5 — Trigger Inference (M5-000 complete; modelling not started)
 M5-000 is complete without fitting a model. The earlier 1,248/47,501 and
 848/81,911 figures are retained as legacy start-date accounting; canonical
 exposure clips to tick coverage, splits at midnight, and removes the
-3,720.501-second maintenance gap.
+3,720.501-second unknown coverage gap. The final `HEDGED_1X1` state contributes
+an explicit 318.758-second right-censored tail. Common-hour coverage is aligned,
+but the development target density remains 2.100x holdout and day of week is
+confounded with the split.
 
 ## Next executable task
 
@@ -63,3 +71,6 @@ outside Git.
   formally or globally confirmed
 - MT5 report event time has only second-level resolution
 - The 0–6 second structural control-support gap is tracked in issue #3
+- Thirty-four zero-duration re-hedges are outside the complete-risk-bin
+  estimand and remain linked to issue #3
+- Development/holdout/external dates are perfectly confounded by day of week

@@ -15,19 +15,38 @@ outputs.
 - Tick support is the exact first-to-last timestamp in the registered export.
 - Every M2 interval is clipped to tick support.
 - Intervals are split at calendar midnight before day-level aggregation.
-- Consecutive-tick gaps strictly greater than 60 seconds are market breaks.
+- Consecutive-tick gaps strictly greater than 60 seconds are excluded coverage
+  gaps.
 - The full open interval between the two observed ticks is excluded with
-  `exclusion_reason=market_break_no_tick_coverage`.
-- State age uses a tradeable clock: elapsed wall time minus market-break
+  `exclusion_reason=unknown_coverage_gap` until recurrence across sessions
+  supports a scheduled-market-closure classification.
+- A gap may become `scheduled_market_closed` only after the same server-clock
+  pattern recurs across multiple registered sessions. D-007 alone is not
+  sufficient evidence.
+- State age uses a tradeable clock: elapsed wall time minus excluded-gap
   overlap.
 - Gaps of 60 seconds or less remain ordinary risk time.
 - Zero-duration M2 intervals remain in accounting but cannot create risk bins.
+- Because M2 intervals are event-to-event, M5 appends an explicitly synthetic
+  right-censored interval from the final event's `state_after` to merged tick
+  coverage end. It has no terminal event or competing endpoint.
+- Left truncation is defined against merged tick coverage, not each tick file.
+  A left-truncated interval remains in audit accounting but is excluded from
+  primary inference; its state age is neither reset to zero nor assumed fully
+  tradeable before coverage.
 - Source-interval membership, terminal-event count, and tradeable seconds are
   reported separately.
 
 The current shared boundary fixture is interval `13321`: it crosses midnight
-and contains the only market break longer than 60 seconds. Interval `12074` is
-left-truncated by the beginning of tick coverage.
+and contains the only coverage gap longer than 60 seconds. Interval `12074` is
+left-truncated by the beginning of merged tick coverage. The synthetic
+right-censored tail is `HEDGED_1X1` from 23:51:39 to 23:56:57.758.
+
+Primary M5 v1 estimates transition timing only for
+`HEDGED_1X1`, `ONE_BUY`, and `ONE_SELL` intervals containing at least one
+complete causal bin. The 34 zero-duration re-hedge events, including 30 in
+common hours, are excluded from that estimand and remain explicitly linked to
+issue #3.
 
 ## Cohorts and anchors
 
@@ -40,8 +59,20 @@ left-truncated by the beginning of tick coverage.
 - Full observed coverage is descriptive (`A_all`).
 - All A/B/C headline comparisons use common server hours 12:00–24:00 on
   identical bins (`A_common`).
+- The 12:00–24:00 primary window is fixed for M5 v1, including external
+  validation. It is not re-derived when new data arrive.
+- A full-session analysis on the pre-registered 2026-07-27 through 2026-07-29
+  sessions is pre-registered as secondary. It measures transportability beyond
+  the London/NY-focused primary estimand and cannot override its verdict.
 - Development remains 2026-07-23 and holdout remains 2026-07-24 for the pilot.
   These two dates are not treated as equivalent full sessions.
+- After canonical censoring and left-truncation handling, the development /
+  holdout common-hour target-density ratio is 2.100x. Common hours align
+  coverage support, not base rates.
+- In holdout, the 12:00–24:00 target density is 2.145x the 01:00–12:00
+  density. M5 v1 conclusions therefore do not generalize to the Asian session.
+- Day of week is perfectly confounded with the split: development is Thursday,
+  holdout is Friday, and external validation is Monday through Wednesday.
 
 ## Endpoint structure
 
@@ -81,9 +112,22 @@ The remaining predictors must be selected and registered before M5-003. The
 - Effective replication is counted by `interval_id`, not by risk-bin count.
 - Headline statistics are paired per-interval log-likelihood increments
   `C - A_common` and `C - B`.
+- Paired likelihood increments are still mildly sensitive to base-rate shift.
+  A within-interval conditional statistic, conditioned on an interval having
+  exactly one representable event, is co-primary for the timing comparison
+  because the interval intercept cancels algebraically.
+- For interval `i`, the conditional event-bin probability is
+  `exp(eta_event_bin) / sum(exp(eta_bin))` over its representable bins.
+- The occurrence hazard remains primary for occurrence; the conditional
+  statistic is not an occurrence model and excludes censored/no-event
+  intervals by construction.
 - Bootstrap clusters are `interval_id`.
-- Standalone log loss, calibration, event rank, and top-decile capture are
+- Standalone log loss, raw calibration, event rank, and top-decile capture are
   descriptive diagnostics only.
+- Calibration is first reported without holdout refitting. A post-hoc
+  holdout-intercept recalibration may diagnose intercept-only versus slope
+  failure, but it must be labelled as using holdout labels and cannot affect a
+  verdict, likelihood headline, or merge gate.
 - A model verdict requires adjacent-window/sensitivity coherence and external
   temporal validation.
 
@@ -98,13 +142,16 @@ substitution caused by unavailable/corrupt source data requires a dated
 manifest amendment made before the replacement result is inspected.
 
 M5-002 may run as a pilot if these files are unavailable, but M5 cannot close.
+Primary external evaluation remains fixed to 12:00–24:00. The full-session
+analysis on all three dates is secondary and was registered before acquisition.
 
 ## M5-000 gate
 
 - Roadmap and milestone numbering agree.
 - Timezone status is recorded without overstating certainty.
 - Legacy and canonical risk-time totals reconcile explicitly.
-- Cross-midnight, left-truncation, zero-duration, and market-break behavior has
-  regression coverage.
+- Cross-midnight, left/right-censoring, zero-duration, unknown coverage-gap,
+  eligible-state filtering, and multi-day/weekend behavior has regression
+  coverage.
 - Audit output is deterministic and privacy-safe.
 - No model is fit.
