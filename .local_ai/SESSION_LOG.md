@@ -120,3 +120,11 @@
   only, with no price verdict and no tradeable-edge claim.
 - Left the implementation PR in draft pending independent Claude re-review;
   the 2026-07-27..29 external-validation gate remains open.
+
+## 2026-07-27 — M5-003 CI portability remediation
+
+- GitHub CI exposed that raw text-byte hashes differed between Windows CRLF
+  and Linux LF checkouts even though the preregistration content was identical.
+- Canonicalized preregistration text hashes to UTF-8 with LF newlines while
+  preserving raw-byte hashing for binary data and private tick checksums.
+- Kept Draft PR #8 blocked on the same independent Claude re-review gate.

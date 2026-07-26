@@ -24,6 +24,12 @@ def _payload_hash(payload: dict, hash_field: str) -> str:
     return sha256(encoded.encode("utf-8")).hexdigest()
 
 
+def _canonical_text_sha256(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return sha256(normalized.encode("utf-8")).hexdigest()
+
+
 def test_m5_003_report_is_frozen_external_pending_without_internal_verdict() -> None:
     report = _load(REPORT_PATH)
 
@@ -59,9 +65,9 @@ def test_m5_003_report_and_manifest_hashes_are_self_consistent() -> None:
     assert report["frozen_manifest_sha256"] == manifest[
         "frozen_manifest_sha256"
     ]
-    assert manifest["preregistration_sha256"] == sha256(
-        PREREG_PATH.read_bytes()
-    ).hexdigest()
+    assert manifest["preregistration_sha256"] == _canonical_text_sha256(
+        PREREG_PATH
+    )
     assert report["preregistration_sha256"] == manifest[
         "preregistration_sha256"
     ]

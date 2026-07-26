@@ -92,9 +92,10 @@ m5_003_preregistration:
   registered_on: "2026-07-26"
   status: preregistered_implementation_authorized
   human_readable_plan: .local_ai/M5_003_PREREGISTRATION.md
-  human_readable_sha256: 41e29bbe6121aa36ec5547e24cc21674655854268054e9c86da61b7c634af66d
+  human_readable_sha256: a7187f5c294cd3e9e49201c8b73f71b9d84caf71c09924e1dd6e538829ebdc7e
   machine_readable_plan: data/m5_003_preregistration.json
-  machine_readable_sha256: a9650040f575f88022bf6b94f49f2458c7b38adc5af3edacf153ce10c43bd64b
+  machine_readable_sha256: a5d51e73b012379f58b38bcb0d6e27154d07c77955735e4b08cce9014c334130
+  text_hash_policy: canonical_utf8_lf
   current_task_authorizes_implementation: true
   current_task_authorizes_price_model_fit: true
   canonical_outputs_mutable: false

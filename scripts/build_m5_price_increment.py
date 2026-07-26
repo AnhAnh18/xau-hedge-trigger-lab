@@ -69,6 +69,13 @@ def _file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _canonical_text_sha256(path: Path) -> str:
+    """Hash committed text independent of checkout newline convention."""
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return sha256(normalized.encode("utf-8")).hexdigest()
+
+
 def _json_hash(payload: object) -> str:
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"))
     return sha256(encoded.encode("utf-8")).hexdigest()
@@ -264,7 +271,7 @@ def _load_inputs() -> dict:
         raise AssertionError("Unlock implementation allowlist differs from preregistration")
     return {
         "prereg": prereg,
-        "prereg_sha256": _file_sha256(prereg_path),
+        "prereg_sha256": _canonical_text_sha256(prereg_path),
         "m5_report": m5_report,
         "bins": bins,
         "intervals": intervals,

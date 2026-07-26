@@ -2,7 +2,7 @@
   "schema_version": 1,
   "milestone": "M5-003",
   "status": "frozen_external_pending",
-  "preregistration_sha256": "a9650040f575f88022bf6b94f49f2458c7b38adc5af3edacf153ce10c43bd64b",
+  "preregistration_sha256": "a5d51e73b012379f58b38bcb0d6e27154d07c77955735e4b08cce9014c334130",
   "immutable_inputs": {
     "m5_002_report_sha256": "80a1a8c680e7ddd7eb0a9e8ed8813f5f69c025d3b62b292eba30b05a92401365",
     "m5_002_risk_bin_dataframe_sha256": "62f0f0fa4f961b699461c2c3ba935c460d853b4553142130187c503fb4698520",
@@ -4390,5 +4390,5 @@
   },
   "internal_reuse_loaded_for_fit": false,
   "external_loaded_for_fit_or_evaluation": false,
-  "frozen_manifest_sha256": "1c7b624c67a1dd3db94800a8bfa731d1b9b8825ae812f4f821f1c7a120222468"
+  "frozen_manifest_sha256": "39712f187665971159e2a2f09e940df6d16f8c8edeb83e6df1b89063a00c531a"
 }

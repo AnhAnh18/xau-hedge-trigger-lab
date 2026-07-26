@@ -16,6 +16,12 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _canonical_text_sha256(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return sha256(normalized.encode("utf-8")).hexdigest()
+
+
 def test_m5_003_is_preregistered_with_separate_implementation_authority() -> None:
     plan = _load(PLAN_PATH)
 
@@ -30,12 +36,12 @@ def test_m5_003_is_preregistered_with_separate_implementation_authority() -> Non
     assert plan["scope"]["current_task_authorizes_price_model_fit"] is True
     assert plan["scope"]["canonical_outputs_mutable"] is False
     assert plan["scope"]["tradeable_edge_claim_allowed"] is False
-    assert sha256(PLAN_PATH.read_bytes()).hexdigest() == (
-        "a9650040f575f88022bf6b94f49f2458c7b38adc5af3edacf153ce10c43bd64b"
+    assert _canonical_text_sha256(PLAN_PATH) == (
+        "a5d51e73b012379f58b38bcb0d6e27154d07c77955735e4b08cce9014c334130"
     )
     markdown = ROOT / ".local_ai" / "M5_003_PREREGISTRATION.md"
-    assert sha256(markdown.read_bytes()).hexdigest() == (
-        "41e29bbe6121aa36ec5547e24cc21674655854268054e9c86da61b7c634af66d"
+    assert _canonical_text_sha256(markdown) == (
+        "a7187f5c294cd3e9e49201c8b73f71b9d84caf71c09924e1dd6e538829ebdc7e"
     )
 
 

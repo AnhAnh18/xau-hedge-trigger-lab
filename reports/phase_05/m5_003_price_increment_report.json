@@ -2,8 +2,8 @@
   "schema_version": 1,
   "milestone": "M5-003",
   "status": "pipeline_frozen_external_pending_zero_validated_price_results",
-  "preregistration_sha256": "a9650040f575f88022bf6b94f49f2458c7b38adc5af3edacf153ce10c43bd64b",
-  "frozen_manifest_sha256": "1c7b624c67a1dd3db94800a8bfa731d1b9b8825ae812f4f821f1c7a120222468",
+  "preregistration_sha256": "a5d51e73b012379f58b38bcb0d6e27154d07c77955735e4b08cce9014c334130",
+  "frozen_manifest_sha256": "39712f187665971159e2a2f09e940df6d16f8c8edeb83e6df1b89063a00c531a",
   "m5_002_rebuild_attestation": {
     "schema_version": 1,
     "source_file_sha256": {
@@ -2965,5 +2965,5 @@
     "reports/phase_05/m5_002_state_age_pilot.json": "faacde0db5f8eab00c95463d47cfd01eccdc4f8a0eb6090d4a50bf64c6e2d62f",
     "reports/phase_05/m5_002_state_age_pilot.md": "a286c261c9080d320ff571ffc532ae29a97211c5d943e79ba5df1cadb29b2fdd"
   },
-  "deterministic_report_sha256": "70da69e0288a4ba6caf1bb0b34b39d6cb0d8cbdc0e7927cd2b4b4d94c834be8b"
+  "deterministic_report_sha256": "274c8a1756c246ad3ba739a4037dce12299bd8b2c92b6c2ab1ded85349115178"
 }
