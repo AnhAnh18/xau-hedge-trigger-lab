@@ -17,3 +17,5 @@
 - [x] T-017 Remediate M5-000 censoring, estimand, gap taxonomy, and comparison protocol
 - [ ] T-015 M5-001 Acquire pre-registered 2026-07-27 through 2026-07-29 tick/report sessions
 - [ ] T-016 M5-002 Build state-age-only hazard pilot after acquisition gate review
+- [x] T-018 Build deterministic M5-001 acquisition validator and dry-run gate
+- [x] T-019 Register and validate retrospective supplemental ticks for 2026-07-20 through 2026-07-22
