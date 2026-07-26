@@ -8,7 +8,10 @@ Machine-readable contract:
 ## Scope
 
 M5-003 asks whether causal price information improves endpoint-specific
-occurrence likelihood beyond the frozen M5-002 state-age baseline.
+occurrence likelihood beyond a state-age baseline fit mechanically on the
+registered M5-003 development cohort. The frozen M5-002 baseline remains an
+immutable provenance and transport reference, not the price-increment
+headline baseline.
 
 This document authorizes no feature build or model fit. M2 through M5-002
 canonical outputs are immutable. P/L, entry lineage, black-box boosting,
@@ -41,8 +44,9 @@ M5-002 labels and censoring are inherited unchanged: a terminal competing bin
 is retained with `target_label=0` and risk ends after that bin. M5-003 cannot
 relabel or regenerate endpoint outcomes.
 
-Within each endpoint and split, A, B, and C must use exactly the same bin IDs.
-There is no imputation and no model-specific complete-case cohort.
+Within each endpoint and split, `A_common`, `A_level`, `A_dev`, B, and `C_dev`
+must use exactly the same evaluation bin IDs. There is no imputation and no
+model-specific complete-case cohort.
 
 Future external bins are built into a separately named immutable artifact with
 the same M5-002 bin/support contract. They are never appended to or used to
@@ -59,12 +63,13 @@ state age five seconds:
 state_age_seconds at bin start >= 5
 ```
 
-This excludes 3,115 internal-development bins with zero target events and
-removes the structural timer-floor information from the A-versus-B
+This excludes 3,115 2026-07-23 internal-development bins with zero target
+events and removes the structural timer-floor information from the A-versus-B
 comparison. An unlock interval ending before age five is outside this
 conditional estimand; it is audited as `unlock_before_floor_excluded`, never
 relabeled as a negative or censored observation. Frozen A_common probabilities
-are subsetted without refitting or renormalization.
+are subsetted without refitting or renormalization. `A_dev` is fit separately
+on this same floor-conditioned cohort.
 
 ## Cohort roles and dated development decision
 
@@ -84,8 +89,8 @@ Known development target counts are:
 | unlock_occurrence | 1,448 |
 
 The retrospective sessions increase training coverage but can never validate,
-gate, or promote B/C. Their inclusion in development cannot be reconsidered
-after a price result is seen.
+gate, or promote B/`C_dev`. Their inclusion in development cannot be
+reconsidered after a price result is seen.
 
 The 2026-07-24 session is excluded from preprocessing, feature selection,
 cross-validation, regularization selection, fitting, and calibration. It is a
@@ -95,6 +100,21 @@ inspected its price hypotheses and labels.
 Only the pre-registered 2026-07-27..29 sessions can satisfy the external gate.
 They remain untouched until all M5-003 transformations, coefficients,
 regularization values, feature groups, and decision rules are frozen.
+
+### Dated amendment after baseline review
+
+On 2026-07-26, before any price model was fit, development-only state-age
+rates and shapes were inspected while reviewing this preregistration. That
+review established that the 2026-07-23 `A_common` level differs from pooled
+2026-07-20..23 development and that re-hedge age-hazard shape also varies by
+session. A free level intercept alone cannot prevent price features correlated
+with state age from absorbing this shape mismatch.
+
+The headline baseline is therefore amended from `A_common` to the mechanically
+specified `A_dev` below. This inspection means development and 2026-07-24 may
+produce diagnostics only; neither can produce a confirmatory supported,
+rejected, or absent-price verdict. No price coefficient, price likelihood, or
+external label was inspected to make this amendment.
 
 ## Price anchors and causal windows
 
@@ -178,6 +198,13 @@ retracement fraction is excluded: its holdout finding was inconclusive and its
 normalization becomes undefined when the prior range is zero. This decision is
 made before M5-003 fitting.
 
+`spread_at_anchor` is deliberately retained as a low-variance microstructure
+control; its scale and variance must be published and L2 may shrink it.
+Absolute and signed state-start displacement are also deliberately retained
+together for re-hedge: the signed term represents direction while the absolute
+term permits a V-shaped magnitude contribution. They are not treated as
+duplicate linear predictors.
+
 ## Feature definitions
 
 Let `m_0` and `m_1` be the first and last mid in a rolling window, `s` the
@@ -214,10 +241,11 @@ A feature is invalid when:
 - its state-start reference is unavailable or separated by a gap;
 - its current canonical Bid/Ask snapshot is unavailable.
 
-Any invalid allowlisted feature removes that bin from all A/B/C comparisons for
-that endpoint. The audit must report bin and target counts by cohort, date,
-split, endpoint, reason, and target label. Overlapping reasons are reported
-both in a reason matrix and in a deterministic first-reason waterfall.
+Any invalid allowlisted feature removes that bin from every model comparison
+for that endpoint. The audit must report bin and target counts by cohort,
+date, split, endpoint, reason, and target label. Overlapping reasons are
+reported both in a reason matrix and in a deterministic first-reason
+waterfall.
 
 The known internal generic-window precheck is:
 
@@ -232,20 +260,41 @@ the state-start reference can add exclusions. The implementation must publish
 and reconcile the final count before any fit; it must not hard-code 501 as the
 final cohort attrition.
 
+A full-allowlist pre-fit support audit measured 937 removed bins and 3 removed
+targets across the current internal one-second primary support. These are
+expected audit values, not a substitute for implementation accounting. The
+implementation must recompute them, report endpoint-specific counts, and stop
+if the aggregate values do not reconcile.
+
 ## Models
 
 All models are endpoint-specific discrete-time Bernoulli hazards.
 
-- `A_common`: exact frozen M5-002 state-age probability. It is never refit.
+- `A_common`: exact frozen M5-002 state-age probability. It is never refit and
+  remains the provenance baseline.
+- `A_level`: frozen `logit(A_common)` plus one unpenalized intercept fitted on
+  development. It measures level transport only and is non-inferential.
+- `A_dev`: empirical state-age hazard refit on the exact endpoint-specific,
+  joint-valid M5-003 development bins with the same registered age grid and
+  Jeffreys smoothing `alpha=0.5` as M5-002:
+  `[0,1)`, `[1,2)`, `[2,3)`, `[3,5)`, `[5,10)`, `[10,20)`, `[20,30)`,
+  `[30,60)`, and `[60,+inf)`. Unlock primary inference uses only the five
+  floor-eligible buckets beginning at age five. The grid and smoothing are
+  fixed; there is no bucket or smoothing selection.
 - `B`: unweighted logistic hazard with an unpenalized intercept and exactly the
   endpoint price allowlist. State age is forbidden.
-- `C`: frozen `logit(A_common)` as a unit-coefficient offset plus exactly the
-  endpoint price allowlist. The offset has no free coefficient and C has no
-  free intercept, preventing an intercept-only update from being called price
-  information.
+- `C_dev`: fixed `logit(A_dev)` as a unit-coefficient offset plus exactly the
+  endpoint price allowlist. The offset has no free coefficient and `C_dev` has
+  no free intercept. This prevents either level or age-shape repair from being
+  called price information.
 
 No class weighting, interaction search, nonlinear tree/boosting model, or
 automatic feature selection is allowed.
+
+Every active evaluation bucket must have positive exposure in the
+corresponding training fold. A zero-exposure training bucket stops the run
+before price fitting; adaptive bucket merging, `A_common` fallback, and
+holdout-informed repair are forbidden.
 
 ## Development-only preprocessing and regularization
 
@@ -255,16 +304,19 @@ cross-validation group is identical to the inference/bootstrap cluster.
 
 Within each training fold:
 
+- `A_dev` is fit only from training-fold interval clusters and its validation
+  probabilities use those training-fold bucket parameters;
 - continuous and binary features are centered by the training-fold mean and
   divided by the training-fold standard deviation;
 - a zero standard deviation is replaced by one without dropping the feature;
 - validation-fold values never affect transformations;
 - no imputation is performed.
 
-After selecting regularization, transformations are refit once on all
-development rows and frozen.
+After selecting regularization, `A_dev`, transformations, and price models are
+refit once on all development rows and frozen before 2026-07-24 is loaded for
+evaluation.
 
-B and C use L2 regularization on price coefficients only:
+B and `C_dev` use L2 regularization on price coefficients only:
 
 ```text
 lambda ∈ {0.0001, 0.001, 0.01, 0.1, 1, 10}
@@ -273,8 +325,22 @@ lambda ∈ {0.0001, 0.001, 0.01, 0.1, 1, 10}
 The CV score is mean per-interval Bernoulli log likelihood: bin log
 likelihoods are summed within interval, then averaged across intervals. Select
 the largest lambda within one standard error of the best mean score. Ties
-therefore choose stronger regularization. B and C select lambda separately by
-endpoint. No random search or post-holdout retuning is permitted.
+therefore choose stronger regularization. B and `C_dev` select lambda
+separately by endpoint. No random search or post-holdout retuning is permitted.
+
+The frozen model manifest must hash the development cohort and joint-valid row
+IDs, `A_dev` bucket parameters, every model intercept that exists,
+preprocessing parameters, selected lambdas, price coefficients, allowlists,
+and model contracts. These hashes must be identical whether 2026-07-24 is
+available or absent.
+
+Because four development sessions cannot identify between-session variance,
+the implementation must also run a four-fold leave-one-session-out diagnostic.
+Each fold refits `A_dev`, preprocessing, lambda selection, B, and `C_dev`
+without the held-out session. Lambda selection is nested GroupKFold using only
+the remaining training-session intervals. This diagnostic reports the session
+spread of `C_dev - A_dev`; it cannot select a model, alter the frozen
+full-development fit, or create a verdict.
 
 ## Inference and multiplicity
 
@@ -290,7 +356,7 @@ draws of `interval_id` clusters with seed base 5003.
 The single headline comparison for each endpoint is:
 
 ```text
-C - A_common at the one-second anchor
+C_dev - A_dev at the one-second anchor
 ```
 
 The three endpoint headlines form one family. Family-wise alpha is 0.05 using
@@ -300,42 +366,60 @@ published but cannot create a supported verdict.
 
 Required secondary families are:
 
-- `C - B`, three endpoints, Bonferroni `alpha/3`;
-- four C feature-group ablations per endpoint, 12 comparisons, Bonferroni
+- `C_dev - B`, three endpoints, Bonferroni `alpha/3`;
+- four `C_dev` feature-group ablations per endpoint, 12 comparisons, Bonferroni
   `alpha/12`;
-- 500 ms anchor `C - A_common`, three endpoints, Bonferroni `alpha/3`,
+- 500 ms anchor `C_dev - A_dev`, three endpoints, Bonferroni `alpha/3`,
   non-gating.
 
 Calibration, coefficients, event rank, and individual features are descriptive
 only and receive no inferential verdict.
 
+`A_level - A_common` (level transport) and `A_dev - A_level` (shape transport)
+must also be published, but are descriptive diagnostics outside every
+multiplicity family. Effect magnitudes must not be compared across unlock and
+re-hedge endpoints because their estimands, timer-floor support, and base rates
+differ.
+
+The interval-cluster bootstrap is conditional on the observed sessions and
+does not estimate between-session population variance. Development
+leave-one-session-out and external per-session results must be published
+alongside pooled results.
+
 ## Required ablations
 
-Refit C after removing exactly one registered group:
+Refit `C_dev` after removing exactly one registered group:
 
 - re-hedge: `motion`, `boundary`, `state_path`,
   `volatility_liquidity`;
 - unlock: `magnitude_motion`, `boundary_magnitude`, `state_path`,
   `volatility_liquidity`.
 
-Each reduced model uses the full C model's selected lambda. Hyperparameters are
-not reselected. The paired metric is `full C - ablated C`.
+Each reduced model uses the full `C_dev` model's selected lambda.
+Hyperparameters are not reselected. The paired metric is
+`full C_dev - ablated C_dev`.
 
 ## Decision rules
 
-For an endpoint, internal evidence that price adds information requires:
+Development and 2026-07-24 produce diagnostics only. Before external
+evaluation, report status is:
 
-1. mean `C - A_common > 0`; and
+```text
+pipeline_frozen_external_pending_zero_validated_price_results
+```
+
+Only 2026-07-27..29 may produce an endpoint verdict. External evidence that
+price adds information requires:
+
+1. mean `C_dev - A_dev > 0`; and
 2. its family-wise one-sided lower bound is greater than zero.
 
 If the mean is positive but the family-wise bound is not, the result is
 `weak/inconclusive`. If the entire ordinary 95% interval is non-positive, the
 price increment is `rejected for this design`. None of these labels is a
-tradeable-edge statement.
-
-The future external verdict applies the same frozen one-second comparison and
-family-wise rule to 2026-07-27..29. Internal 24 July and retrospective
-20–22 July cannot satisfy that gate.
+tradeable-edge statement or evidence about broader session populations.
+Retrospective development and internal reuse diagnostics cannot satisfy or
+change this gate.
 
 The observed 2.1x development/holdout base-rate difference is expected to
 attenuate richer-model paired increments by roughly 7% in the existing
@@ -361,9 +445,12 @@ An M5-003 implementation may merge with supported, null, inconclusive, or
 rejected price findings if:
 
 - immutable hashes match and M2–M5-002 outputs are unchanged;
-- A/B/C use identical endpoint-specific bins;
+- `A_common`/`A_level`/`A_dev`/B/`C_dev` use identical endpoint-specific
+  evaluation bins;
 - unlock floor conditioning and all exclusions reconcile;
-- development-only preprocessing, GroupKFold, and frozen A hashes are proven;
+- development-only `A_dev`, preprocessing, GroupKFold, leave-one-session-out
+  diagnostics, and frozen model hashes are proven;
+- parameter hashes are unchanged by the presence or absence of 2026-07-24;
 - every registered comparison, ablation, and multiplicity family is reported;
 - retrospective, internal-reuse, and external roles remain separated;
 - tests, privacy, determinism, and CI pass;

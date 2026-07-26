@@ -1,8 +1,15 @@
 {
-  "schema_version": 1,
-  "plan_id": "m5_003_causal_price_increment_v1",
+  "schema_version": 2,
+  "plan_id": "m5_003_causal_price_increment_v2",
   "registered_on": "2026-07-26",
+  "amended_on": "2026-07-26",
   "status": "preregistered_not_implemented",
+  "amendment": {
+    "reason": "development-only review found both level and rehedge age-hazard shape mismatch between the frozen 2026-07-23 A_common model and pooled 2026-07-20_23 development",
+    "price_models_fitted_before_amendment": false,
+    "external_labels_inspected": false,
+    "confirmatory_internal_verdict_allowed": false
+  },
   "scope": {
     "task": "M5-003",
     "current_task_authorizes_implementation": false,
@@ -42,6 +49,7 @@
       "role": "locked_internal_reuse_diagnostic_non_gating",
       "fit_or_tune_allowed": false,
       "independent_price_confirmation_claim_allowed": false,
+      "supported_rejected_or_absent_price_verdict_allowed": false,
       "reason": "price hypotheses and labels were already inspected in M4"
     },
     "external": {
@@ -72,7 +80,7 @@
     "competing_endpoint_contract": "retain_terminal_competing_bin_with_target_zero_then_censor_exactly_as_M5_002",
     "require_every_endpoint_allowlisted_price_feature_valid": true,
     "imputation_allowed": false,
-    "models_a_b_c_use_identical_bins_within_endpoint_and_split": true,
+    "all_models_use_identical_bins_within_endpoint_and_split": true,
     "external_bins": "separate_immutable_artifact_built_with_the_same_M5_002_contract_never_appended_to_the_M5_002_risk_bin_file",
     "unlock_minimum_state_age_at_bin_start_seconds": 5.0,
     "rehedge_minimum_state_age_at_bin_start_seconds": 0.0
@@ -181,6 +189,10 @@
       ]
     }
   },
+  "feature_design_notes": {
+    "spread_at_anchor": "retained_low_variance_microstructure_control_publish_scale_and_variance_allow_L2_shrinkage",
+    "rehedge_state_start_displacement_pair": "signed_term_encodes_direction_and_absolute_term_encodes_V_shaped_magnitude_not_duplicate_linear_predictors"
+  },
   "validity": {
     "rolling_window_minimum_ticks": 2,
     "h2_prior_and_sequence_minimum_ticks_each": 2,
@@ -209,27 +221,62 @@
       "adding_500ms_total_dropped_bins": 9924,
       "adding_500ms_total_dropped_targets": 48,
       "limitation": "these are generic-window counts, not the final joint-valid count after H2 subwindow and state-start-reference checks"
+    },
+    "known_full_allowlist_support_audit": {
+      "scope": "current_internal_primary_1000ms_support",
+      "expected_dropped_bins": 937,
+      "expected_dropped_targets": 3,
+      "must_be_recomputed_before_fit": true,
+      "endpoint_specific_accounting_required": true
     }
   },
   "models": {
     "A_common": {
       "definition": "frozen M5-002 empirical state-age hazard",
       "refit_allowed": false,
-      "unlock_floor_subset_renormalization_allowed": false
+      "unlock_floor_subset_renormalization_allowed": false,
+      "role": "immutable_provenance_and_transport_reference"
+    },
+    "A_level": {
+      "definition": "frozen logit(A_common) plus one development-only unpenalized intercept",
+      "role": "noninferential_level_transport_diagnostic",
+      "price_features_allowed": false
+    },
+    "A_dev": {
+      "definition": "endpoint-specific empirical state-age hazard fit on exact joint-valid development bins",
+      "age_buckets_seconds": [
+        [0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 5],
+        [5, 10],
+        [10, 20],
+        [20, 30],
+        [30, 60],
+        [60, null]
+      ],
+      "jeffreys_alpha": 0.5,
+      "bucket_or_smoothing_selection_allowed": false,
+      "zero_training_exposure_bucket_contract": "fail_before_price_fit_no_adaptive_merge_A_common_fallback_or_holdout_informed_repair",
+      "unlock_floor_eligible_bucket_count": 5,
+      "fit_scope": "training_fold_only_during_cv_then_full_development_before_any_internal_reuse_or_external_evaluation",
+      "role": "headline_state_age_baseline"
     },
     "B": {
       "definition": "endpoint-specific logistic discrete-time hazard using only the endpoint price allowlist",
       "intercept": "unpenalized",
       "state_age_allowed": false
     },
-    "C": {
-      "definition": "endpoint-specific logistic discrete-time hazard with frozen logit(A_common) as a unit-coefficient offset plus the endpoint price allowlist",
+    "C_dev": {
+      "definition": "endpoint-specific logistic discrete-time hazard with fixed logit(A_dev) as a unit-coefficient offset plus the endpoint price allowlist",
       "free_intercept": false,
-      "offset_refit_allowed": false
+      "offset_refit_allowed": false,
+      "role": "headline_price_increment_model"
     }
   },
   "preprocessing": {
     "fit_scope": "development_training_fold_only_during_cv_then_full_development_after_selection",
+    "a_dev_validation_probabilities_use_training_fold_bucket_parameters_only": true,
     "continuous": "development_mean_center_and_standard_deviation_scale",
     "binary": "development_mean_center_and_standard_deviation_scale",
     "zero_scale_replacement": 1.0,
@@ -255,9 +302,46 @@
     "class_weights": "none",
     "random_feature_or_hyperparameter_search_allowed": false
   },
+  "session_stability": {
+    "method": "leave_one_development_session_out",
+    "folds": 4,
+    "refit_each_fold": [
+      "A_dev",
+      "preprocessing",
+      "lambda_selection",
+      "B",
+      "C_dev"
+    ],
+    "lambda_selection": "nested_GroupKFold_on_remaining_training_session_intervals_only",
+    "metric": "C_dev_minus_A_dev_mean_per_interval_log_likelihood_increment",
+    "can_select_or_tune_model": false,
+    "can_create_verdict": false,
+    "external_per_session_results_required": true,
+    "limitation": "interval_cluster_bootstrap_is_conditional_on_observed_sessions_and_does_not_estimate_between_session_population_variance"
+  },
+  "freeze_manifest": {
+    "must_be_created_before_loading_2026_07_24_for_evaluation": true,
+    "hashed_components": [
+      "development_cohort",
+      "joint_valid_row_ids_by_endpoint",
+      "A_dev_bucket_parameters",
+      "all_existing_model_intercepts",
+      "preprocessing_parameters",
+      "selected_lambdas",
+      "price_coefficients",
+      "feature_allowlists",
+      "model_contracts"
+    ],
+    "parameter_hash_identical_with_or_without_2026_07_24": true
+  },
   "inference": {
-    "headline_by_endpoint": "C_minus_A_common_on_primary_1000ms_anchor",
-    "required_secondary": "C_minus_B_on_primary_1000ms_anchor",
+    "headline_by_endpoint": "C_dev_minus_A_dev_on_primary_1000ms_anchor",
+    "required_secondary": "C_dev_minus_B_on_primary_1000ms_anchor",
+    "noninferential_transport_diagnostics": [
+      "A_level_minus_A_common",
+      "A_dev_minus_A_level"
+    ],
+    "effect_magnitudes_comparable_across_endpoints": false,
     "interval_metric": "sum_bin_bernoulli_log_likelihood_within_interval_then_pair_models",
     "bootstrap_cluster": "interval_id",
     "bootstrap_draws": 5000,
@@ -268,7 +352,7 @@
       "method": "Bonferroni_simultaneous_one_sided_cluster_bootstrap_lower_bounds",
       "per_comparison_alpha": 0.016666666666666666
     },
-    "c_minus_b_family": {
+    "c_dev_minus_b_family": {
       "comparisons": 3,
       "familywise_alpha": 0.05,
       "method": "Bonferroni_simultaneous_one_sided_cluster_bootstrap_lower_bounds",
@@ -289,15 +373,17 @@
     }
   },
   "ablations": {
-    "model": "C",
-    "procedure": "remove_one_registered_feature_group_refit_on_development_with_the_full_model_selected_lambda_and_compare_full_C_minus_ablated_C",
+    "model": "C_dev",
+    "procedure": "remove_one_registered_feature_group refit on development with the full model selected lambda and compare full_C_dev_minus_ablated_C_dev",
     "hyperparameter_reselection_allowed": false
   },
   "decision_rule": {
-    "internal_price_information_supported": "mean_C_minus_A_positive_and_familywise_one_sided_lower_bound_above_zero",
-    "weak_or_inconclusive": "mean_positive_but_familywise_lower_bound_not_above_zero_or_interval_straddles_zero",
-    "rejected_for_this_design": "ordinary_two_sided_95_percent_interval_upper_bound_below_or_equal_zero",
-    "external_gate": "same frozen C_minus_A_rule on the registered 2026-07-27_29 cohort",
+    "pre_external_status": "pipeline_frozen_external_pending_zero_validated_price_results",
+    "development_and_internal_reuse_verdict_allowed": false,
+    "external_price_information_supported": "mean_C_dev_minus_A_dev_positive_and_familywise_one_sided_lower_bound_above_zero",
+    "external_weak_or_inconclusive": "mean_positive_but_familywise_lower_bound_not_above_zero_or_interval_straddles_zero",
+    "external_rejected_for_this_design": "ordinary_two_sided_95_percent_interval_upper_bound_below_or_equal_zero",
+    "external_gate": "frozen C_dev_minus_A_dev rule on the registered 2026-07-27_29 cohort only",
     "null_result_blocks_merge": false,
     "null_result_is_evidence_of_absence": false,
     "tradeable_edge_claim_allowed": false
@@ -334,16 +420,20 @@
     ],
     "committed": [
       "m5_003_price_increment_report.md",
-      "m5_003_price_increment_report.json"
+      "m5_003_price_increment_report.json",
+      "m5_003_frozen_model_manifest.json"
     ]
   },
   "implementation_merge_gate": [
     "immutable input hashes match",
     "canonical M2 through M5-002 outputs unchanged",
-    "A B and C use identical endpoint-specific bins",
+    "A_common A_level A_dev B and C_dev use identical endpoint-specific evaluation bins",
     "all exclusions reconcile with targets by reason",
-    "development-only preprocessing and GroupKFold are proven",
+    "development-only A_dev preprocessing and GroupKFold are proven",
     "A_common hashes remain frozen",
+    "A_dev bucket parameters and all fitted parameters are frozen before internal reuse evaluation",
+    "parameter hashes are unchanged by the presence or absence of 2026-07-24",
+    "leave-one-session-out and per-session diagnostics are reported without creating a verdict",
     "all registered ablations and multiplicity families are reported",
     "internal and external roles remain separated",
     "null price findings are mergeable",
