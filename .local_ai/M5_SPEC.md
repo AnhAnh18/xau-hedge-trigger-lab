@@ -141,6 +141,12 @@ No validation date may be substituted after viewing model results. A
 substitution caused by unavailable/corrupt source data requires a dated
 manifest amendment made before the replacement result is inspected.
 
+The requirement is untouched, pre-registered temporal data, not future data
+as such. Previously uninspected historical full-tick sessions may be registered
+by a dated amendment before their validation/model result is read. They do not
+silently replace the locked 2026-07-27 through 2026-07-29 primary external
+sessions, and no date may be chosen based on a favorable result.
+
 M5-002 may run as a pilot if these files are unavailable, but M5 cannot close.
 Primary external evaluation remains fixed to 12:00–24:00. The full-session
 analysis on all three dates is secondary and was registered before acquisition.
@@ -155,3 +161,18 @@ analysis on all three dates is secondary and was registered before acquisition.
   coverage.
 - Audit output is deterministic and privacy-safe.
 - No model is fit.
+
+## M5-001 acquisition preparation
+
+- `data/m5_acquisition_plan.json` is the executable source of locked dates,
+  session bounds, report requirements, analysis windows, gap policy, and
+  privacy rules.
+- `scripts/validate_m5_acquisition.py --plan-only` validates registration
+  without reading private data.
+- `scripts/validate_m5_acquisition.py --dry-run` validates the complete intake
+  path with generated anonymized inputs.
+- The live validator records SHA-256 checksums and generated aliases, checks
+  per-session tick bounds and report event coverage, preserves duplicate
+  timestamps, and reports gaps without retuning the threshold.
+- M5-002 remains blocked until real registered inputs pass this validator or
+  is explicitly run as a labelled non-closing pilot under this specification.
