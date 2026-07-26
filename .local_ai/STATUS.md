@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M4 — Trigger Dataset (bounded remediation)
+M4 — Trigger Dataset (complete)
 
 ## Completed
 
@@ -26,6 +26,9 @@ M4 — Trigger Dataset (bounded remediation)
 - Separate M4 audit and reviewed model-feature outputs
 - Complete pre-transition state age from M2 lineage
 - Control-supported H1 inference and causal sequence-based H2
+- Development-only winsorization for H2 retracement
+- Reviewed model transforms and pre-registered H2 direction/windows
+- M4 merged to `main` through PR #2
 
 ## Current data
 
@@ -35,16 +38,16 @@ M4 — Trigger Dataset (bounded remediation)
 
 ## Current focus
 
-Validate the remediated M4 artifact and Draft PR #2. H1 is
-confounded/inconclusive on the control-supported population, H2 is
-inconclusive, and H3 is supported but timing-sensitive and smaller than spread.
+M4 is closed with honest verdicts: H1 is confounded/inconclusive on the
+control-supported population, H2 is inconclusive, and H3 is supported but
+timing-sensitive and smaller than spread. M5 has not started.
 
 ## Next executable task
 
-Pass deterministic rebuild, CI, privacy, and code-review gates before deciding
-whether Draft PR #2 is ready to merge.
+Review and lock the M5 Trigger Inference plan before any M5 implementation.
 
 ## Current blockers
 
 - Server timezone not formally confirmed
 - MT5 report event time has only second-level resolution
+- The 0–6 second structural control-support gap is tracked in issue #3
