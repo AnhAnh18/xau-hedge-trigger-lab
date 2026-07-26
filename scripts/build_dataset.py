@@ -7,14 +7,16 @@ from xau_trigger.parsers.mt5_report import parse_report, parse_report_summary
 from xau_trigger.parsers.tick_export import parse_ticks
 from xau_trigger.validation.dataset_checks import inventory_conservation, reconcile_report
 
+CANONICAL_TICK_EXPORT = "XAUUSD_202607231200_202607242356.csv"
+
 def write_table(df, path):
     try: df.to_parquet(path, index=False)
     except ImportError as e: raise RuntimeError("Parquet output requires pyarrow or fastparquet; install project dependencies first") from e
 
 def main():
     raw = ROOT / "data" / "raw"; interim = ROOT / "data" / "interim"; out = ROOT / "reports" / "phase_01"; interim.mkdir(parents=True, exist_ok=True); out.mkdir(parents=True, exist_ok=True)
-    reports = sorted((raw / "trades").glob("*.html")); ticks = sorted((raw / "ticks").glob("*.csv"))
-    if not reports or not ticks: raise SystemExit("Missing raw HTML reports or tick CSV under data/raw")
+    reports = sorted((raw / "trades").glob("*.html")); tick_path = raw / "ticks" / CANONICAL_TICK_EXPORT
+    if not reports or not tick_path.exists(): raise SystemExit("Missing raw HTML reports or the manifest-locked canonical tick CSV under data/raw")
     tables = {k: [] for k in ("positions", "orders", "deals", "open_positions")}; reconciliations = []
     for p in reports:
         parsed = parse_report(p)
@@ -22,7 +24,9 @@ def main():
         summary = parse_report_summary(p)
         reconciliations.append({"report_id": summary["report_id"], "positions": len(parsed["positions"]), "orders": len(parsed["orders"]), "deals": len(parsed["deals"]), **reconcile_report(parsed["positions"], summary["reported_net_profit"])})
     for k, frames in tables.items(): write_table(pd.concat(frames, ignore_index=True), interim / f"{k}.parquet")
-    tick = parse_ticks(ticks[0]); write_table(tick, interim / "ticks.parquet")
+    # This exact export defines the reproducible M2-M4 coverage. Supplemental
+    # M5 exports are parsed by build_m5_state_age_pilot.py into separate tables.
+    tick = parse_ticks(tick_path); write_table(tick, interim / "ticks.parquet")
     positions = pd.concat(tables["positions"], ignore_index=True)
     conservation = inventory_conservation(positions, tick.timestamp.min(), tick.timestamp.max())
     deals = pd.concat(tables["deals"], ignore_index=True); orders = pd.concat(tables["orders"], ignore_index=True)

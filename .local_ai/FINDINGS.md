@@ -101,8 +101,8 @@ issue #3.
 
 ## F-007 — Unlock has an approximate six-second dwell floor
 
-Status: Candidate pre-fit finding
-Confidence: High from M2 durations; M5-002 session report pending
+Status: Confirmed as an approximate floor
+Confidence: High
 
 Evidence:
 
@@ -113,7 +113,38 @@ Evidence:
 - 333 hedged competing additional-position endpoints exist; 154 (46.246%)
   occur below six seconds, so cause-specific censoring is age-dependent.
 
-Candidate finding: Unlock behavior is consistent with an approximately
+Finding: Unlock behavior is consistent with an approximately
 six-second minimum hedged dwell, while re-hedge behavior has no comparable
-floor. M5-002 must verify the pattern by observed tick session and publish the
-single month-wide exception rather than claiming an absolute structural zero.
+floor. The single month-wide exception is retained, so this is not claimed as
+an absolute structural zero.
+
+M5-002 verification: All five July 20–24 calendar sessions contain zero unlock
+events below six seconds in M2. The month-wide one-second exception remains
+published. On the causal bin contract, events occurring at six seconds are
+represented by the `[5,6)` predictor-at-bin-start bucket, so that bucket is
+correctly non-zero; `[0,5)` remains zero-event in internal development.
+
+## F-008 — State age predicts occurrence but not frozen holdout timing
+
+Status: Internal pilot complete; external validation pending
+Confidence: Moderate
+
+Evidence:
+
+- At both 1-second and 500-millisecond widths, frozen development age buckets
+  improve secondary cause-specific occurrence likelihood over the constant
+  baseline for all three endpoints.
+- Conditional timing versus uniform is significantly negative for both
+  re-hedge endpoints at both widths.
+- Unlock conditional timing is indistinguishable from uniform at both widths.
+- Results are stable across smoothing alpha 0.0, 0.5, and 1.0.
+
+Finding: State age captures whether a transition occurs within observed risk
+support, including the approximate unlock timer floor, but the development
+age profile does not transport into better holdout event-bin timing. This
+divergence confirms that occurrence likelihood and conditional timing are
+different estimands and must not be presented as independent confirmation.
+
+Limitation: This is an internal Thursday-to-Friday pilot. It makes no
+tradeable-edge claim and cannot close M5 before the pre-registered
+2026-07-27 through 2026-07-29 external evaluation.

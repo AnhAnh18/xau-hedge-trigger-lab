@@ -1,0 +1,2131 @@
+{
+  "schema_version": 1,
+  "milestone": "M5-002",
+  "status": "pilot_complete_external_pending",
+  "configuration": {
+    "primary_bin_width_ms": 1000,
+    "sensitivity_bin_width_ms": 500,
+    "bin_grid": "wall_clock_complete_cells_inside_tradeable_fragments",
+    "state_age_clock": "elapsed_minus_excluded_gap_overlap_at_bin_start",
+    "primary_server_hours": [
+      12,
+      24
+    ],
+    "bootstrap_cluster": "interval_id",
+    "bootstrap_draws": 5000,
+    "primary_smoothing_alpha": 0.5,
+    "smoothing_sensitivity": [
+      0.0,
+      0.5,
+      1.0
+    ]
+  },
+  "data_isolation": {
+    "internal_cohort": "internal_2026_07_23_24",
+    "supplemental_cohort": "supplemental_2026_07_20_22",
+    "canonical_tick_rows": 984883,
+    "supplemental_tick_rows": 1947404,
+    "canonical_tick_hash_before": "42baf883f837986e8cfb28f6bb1632fad9caead934a5d059f197a81511d898ac",
+    "canonical_tick_hash_after": "42baf883f837986e8cfb28f6bb1632fad9caead934a5d059f197a81511d898ac",
+    "canonical_ticks_unchanged": true,
+    "parameter_hash_with_supplemental": "4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89",
+    "parameter_hash_internal_only": "4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89",
+    "supplemental_fit_isolation_pass": true,
+    "supplemental_role": "per_session_base_hazard_variation_non_gating"
+  },
+  "support_accounting": [
+    {
+      "cohort_id": "internal_2026_07_23_24",
+      "bin_width_ms": 1000,
+      "eligible_fragment_seconds": 125503.257,
+      "representable_bin_count": 125501,
+      "representable_bin_seconds": 125501.0,
+      "dropped_partial_seconds": 2.257,
+      "reconciliation_delta_seconds": 0.0,
+      "cross_split_interval_ids": [
+        "13321"
+      ],
+      "target_bin_count": 2061,
+      "competing_terminal_bin_count": 0
+    },
+    {
+      "cohort_id": "supplemental_2026_07_20_22",
+      "bin_width_ms": 1000,
+      "eligible_fragment_seconds": 247978.582,
+      "representable_bin_count": 247975,
+      "representable_bin_seconds": 247975.0,
+      "dropped_partial_seconds": 3.582,
+      "reconciliation_delta_seconds": 0.0,
+      "cross_split_interval_ids": [],
+      "target_bin_count": 3050,
+      "competing_terminal_bin_count": 0
+    },
+    {
+      "cohort_id": "internal_2026_07_23_24",
+      "bin_width_ms": 500,
+      "eligible_fragment_seconds": 125503.257,
+      "representable_bin_count": 251005,
+      "representable_bin_seconds": 125502.5,
+      "dropped_partial_seconds": 0.757,
+      "reconciliation_delta_seconds": 0.0,
+      "cross_split_interval_ids": [
+        "13321"
+      ],
+      "target_bin_count": 2061,
+      "competing_terminal_bin_count": 0
+    },
+    {
+      "cohort_id": "supplemental_2026_07_20_22",
+      "bin_width_ms": 500,
+      "eligible_fragment_seconds": 247978.582,
+      "representable_bin_count": 495955,
+      "representable_bin_seconds": 247977.5,
+      "dropped_partial_seconds": 1.082,
+      "reconciliation_delta_seconds": 0.0,
+      "cross_split_interval_ids": [],
+      "target_bin_count": 3050,
+      "competing_terminal_bin_count": 0
+    }
+  ],
+  "boundary_accounting": {
+    "internal_2026_07_23_24": {
+      "source_intervals": 2097,
+      "left_truncated_interval_ids": [
+        "12074"
+      ],
+      "right_censored_interval_ids": [
+        "m5-tail-14170"
+      ],
+      "synthetic_right_censored_interval_ids": [
+        "m5-tail-14170"
+      ],
+      "cross_split_interval_ids": [
+        "13321"
+      ],
+      "no_complete_bin_interval_count": 34
+    },
+    "supplemental_2026_07_20_22": {
+      "source_intervals": 3127,
+      "left_truncated_interval_ids": [
+        "8294"
+      ],
+      "right_censored_interval_ids": [
+        "11420"
+      ],
+      "synthetic_right_censored_interval_ids": [],
+      "cross_split_interval_ids": [],
+      "no_complete_bin_interval_count": 75
+    }
+  },
+  "cohort_summaries": {
+    "A_all": [
+      {
+        "cohort_id": "internal_2026_07_23_24",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 18238,
+        "target_events": 484,
+        "events_per_1000_risk_seconds": 26.537997587454765,
+        "role": "A_all_internal_descriptive"
+      },
+      {
+        "cohort_id": "internal_2026_07_23_24",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 21880,
+        "target_events": 530,
+        "events_per_1000_risk_seconds": 24.223034734917732,
+        "role": "A_all_internal_descriptive"
+      },
+      {
+        "cohort_id": "internal_2026_07_23_24",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 85383,
+        "target_events": 1047,
+        "events_per_1000_risk_seconds": 12.262394153402902,
+        "role": "A_all_internal_descriptive"
+      },
+      {
+        "cohort_id": "supplemental_2026_07_20_22",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 41669,
+        "target_events": 700,
+        "events_per_1000_risk_seconds": 16.79905925268185,
+        "role": "supplemental_descriptive_non_gating"
+      },
+      {
+        "cohort_id": "supplemental_2026_07_20_22",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 39967,
+        "target_events": 788,
+        "events_per_1000_risk_seconds": 19.716265919383492,
+        "role": "supplemental_descriptive_non_gating"
+      },
+      {
+        "cohort_id": "supplemental_2026_07_20_22",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 166339,
+        "target_events": 1562,
+        "events_per_1000_risk_seconds": 9.39046164759918,
+        "role": "supplemental_descriptive_non_gating"
+      }
+    ],
+    "A_common": [
+      {
+        "split": "development",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 6779,
+        "target_events": 300,
+        "events_per_1000_risk_seconds": 44.25431479569258,
+        "role": "A_common_primary_internal"
+      },
+      {
+        "split": "development",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 7275,
+        "target_events": 302,
+        "events_per_1000_risk_seconds": 41.512027491408936,
+        "role": "A_common_primary_internal"
+      },
+      {
+        "split": "development",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 26359,
+        "target_events": 623,
+        "events_per_1000_risk_seconds": 23.63519101635115,
+        "role": "A_common_primary_internal"
+      },
+      {
+        "split": "holdout",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 5169,
+        "target_events": 133,
+        "events_per_1000_risk_seconds": 25.730315341458695,
+        "role": "A_common_primary_internal"
+      },
+      {
+        "split": "holdout",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 6568,
+        "target_events": 155,
+        "events_per_1000_risk_seconds": 23.599269183922047,
+        "role": "A_common_primary_internal"
+      },
+      {
+        "split": "holdout",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 31280,
+        "target_events": 297,
+        "events_per_1000_risk_seconds": 9.494884910485933,
+        "role": "A_common_primary_internal"
+      }
+    ]
+  },
+  "primary_parameters": {
+    "schema_version": 1,
+    "fit_cohort": "internal_2026_07_23_24",
+    "fit_split": "development",
+    "alpha": 0.5,
+    "bucket_bounds": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      5.0,
+      6.0,
+      8.0,
+      10.0,
+      20.0,
+      30.0,
+      60.0,
+      "inf"
+    ],
+    "bucket_labels": [
+      "age_0_1",
+      "age_1_2",
+      "age_2_3",
+      "age_3_5",
+      "age_5_6",
+      "age_6_8",
+      "age_8_10",
+      "age_10_20",
+      "age_20_30",
+      "age_30_60",
+      "age_60_inf"
+    ],
+    "endpoints": {
+      "rehedge_buy_occurrence": {
+        "constant": {
+          "exposure_bins": 6779,
+          "target_events": 300,
+          "probability": 0.04432153392330383
+        },
+        "age_buckets": {
+          "age_0_1": {
+            "exposure_bins": 300,
+            "target_events": 21,
+            "probability": 0.07142857142857142,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_1_2": {
+            "exposure_bins": 279,
+            "target_events": 35,
+            "probability": 0.12678571428571428,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_2_3": {
+            "exposure_bins": 244,
+            "target_events": 23,
+            "probability": 0.09591836734693877,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_3_5": {
+            "exposure_bins": 412,
+            "target_events": 50,
+            "probability": 0.12227602905569007,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_5_6": {
+            "exposure_bins": 171,
+            "target_events": 15,
+            "probability": 0.09011627906976744,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_6_8": {
+            "exposure_bins": 300,
+            "target_events": 26,
+            "probability": 0.08803986710963455,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_8_10": {
+            "exposure_bins": 258,
+            "target_events": 11,
+            "probability": 0.0444015444015444,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_10_20": {
+            "exposure_bins": 898,
+            "target_events": 49,
+            "probability": 0.05506117908787542,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_20_30": {
+            "exposure_bins": 542,
+            "target_events": 28,
+            "probability": 0.052486187845303865,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_30_60": {
+            "exposure_bins": 935,
+            "target_events": 22,
+            "probability": 0.02403846153846154,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_60_inf": {
+            "exposure_bins": 2440,
+            "target_events": 20,
+            "probability": 0.008398197460057353,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          }
+        }
+      },
+      "rehedge_sell_occurrence": {
+        "constant": {
+          "exposure_bins": 7275,
+          "target_events": 302,
+          "probability": 0.04157504123144585
+        },
+        "age_buckets": {
+          "age_0_1": {
+            "exposure_bins": 302,
+            "target_events": 28,
+            "probability": 0.09405940594059406,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_1_2": {
+            "exposure_bins": 274,
+            "target_events": 21,
+            "probability": 0.07818181818181819,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_2_3": {
+            "exposure_bins": 253,
+            "target_events": 18,
+            "probability": 0.07283464566929133,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_3_5": {
+            "exposure_bins": 448,
+            "target_events": 39,
+            "probability": 0.08797327394209355,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_5_6": {
+            "exposure_bins": 196,
+            "target_events": 15,
+            "probability": 0.07868020304568528,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_6_8": {
+            "exposure_bins": 347,
+            "target_events": 23,
+            "probability": 0.06752873563218391,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_8_10": {
+            "exposure_bins": 307,
+            "target_events": 23,
+            "probability": 0.0762987012987013,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_10_20": {
+            "exposure_bins": 976,
+            "target_events": 67,
+            "probability": 0.06908904810644831,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_20_30": {
+            "exposure_bins": 574,
+            "target_events": 18,
+            "probability": 0.03217391304347826,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_30_60": {
+            "exposure_bins": 1196,
+            "target_events": 20,
+            "probability": 0.017126148705096073,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_60_inf": {
+            "exposure_bins": 2402,
+            "target_events": 30,
+            "probability": 0.012692467748647523,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          }
+        }
+      },
+      "unlock_occurrence": {
+        "constant": {
+          "exposure_bins": 26359,
+          "target_events": 623,
+          "probability": 0.023653262518968134
+        },
+        "age_buckets": {
+          "age_0_1": {
+            "exposure_bins": 623,
+            "target_events": 0,
+            "probability": 0.0008012820512820513,
+            "has_zero_development_events": true,
+            "has_no_development_exposure": false
+          },
+          "age_1_2": {
+            "exposure_bins": 623,
+            "target_events": 0,
+            "probability": 0.0008012820512820513,
+            "has_zero_development_events": true,
+            "has_no_development_exposure": false
+          },
+          "age_2_3": {
+            "exposure_bins": 623,
+            "target_events": 0,
+            "probability": 0.0008012820512820513,
+            "has_zero_development_events": true,
+            "has_no_development_exposure": false
+          },
+          "age_3_5": {
+            "exposure_bins": 1246,
+            "target_events": 0,
+            "probability": 0.00040096230954290296,
+            "has_zero_development_events": true,
+            "has_no_development_exposure": false
+          },
+          "age_5_6": {
+            "exposure_bins": 623,
+            "target_events": 143,
+            "probability": 0.2299679487179487,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_6_8": {
+            "exposure_bins": 877,
+            "target_events": 113,
+            "probability": 0.12927107061503418,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_8_10": {
+            "exposure_bins": 708,
+            "target_events": 48,
+            "probability": 0.0684062059238364,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_10_20": {
+            "exposure_bins": 2639,
+            "target_events": 105,
+            "probability": 0.03996212121212121,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_20_30": {
+            "exposure_bins": 1910,
+            "target_events": 42,
+            "probability": 0.022239665096807953,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_30_60": {
+            "exposure_bins": 3973,
+            "target_events": 63,
+            "probability": 0.015978862606945143,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          },
+          "age_60_inf": {
+            "exposure_bins": 12514,
+            "target_events": 109,
+            "probability": 0.008749500599280863,
+            "has_zero_development_events": false,
+            "has_no_development_exposure": false
+          }
+        }
+      }
+    },
+    "fitted_parameter_sha256": "4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89"
+  },
+  "parameters_by_width": {
+    "1000": {
+      "schema_version": 1,
+      "fit_cohort": "internal_2026_07_23_24",
+      "fit_split": "development",
+      "alpha": 0.5,
+      "bucket_bounds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        5.0,
+        6.0,
+        8.0,
+        10.0,
+        20.0,
+        30.0,
+        60.0,
+        "inf"
+      ],
+      "bucket_labels": [
+        "age_0_1",
+        "age_1_2",
+        "age_2_3",
+        "age_3_5",
+        "age_5_6",
+        "age_6_8",
+        "age_8_10",
+        "age_10_20",
+        "age_20_30",
+        "age_30_60",
+        "age_60_inf"
+      ],
+      "endpoints": {
+        "rehedge_buy_occurrence": {
+          "constant": {
+            "exposure_bins": 6779,
+            "target_events": 300,
+            "probability": 0.04432153392330383
+          },
+          "age_buckets": {
+            "age_0_1": {
+              "exposure_bins": 300,
+              "target_events": 21,
+              "probability": 0.07142857142857142,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_1_2": {
+              "exposure_bins": 279,
+              "target_events": 35,
+              "probability": 0.12678571428571428,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_2_3": {
+              "exposure_bins": 244,
+              "target_events": 23,
+              "probability": 0.09591836734693877,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_3_5": {
+              "exposure_bins": 412,
+              "target_events": 50,
+              "probability": 0.12227602905569007,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_5_6": {
+              "exposure_bins": 171,
+              "target_events": 15,
+              "probability": 0.09011627906976744,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_6_8": {
+              "exposure_bins": 300,
+              "target_events": 26,
+              "probability": 0.08803986710963455,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_8_10": {
+              "exposure_bins": 258,
+              "target_events": 11,
+              "probability": 0.0444015444015444,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_10_20": {
+              "exposure_bins": 898,
+              "target_events": 49,
+              "probability": 0.05506117908787542,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_20_30": {
+              "exposure_bins": 542,
+              "target_events": 28,
+              "probability": 0.052486187845303865,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_30_60": {
+              "exposure_bins": 935,
+              "target_events": 22,
+              "probability": 0.02403846153846154,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_60_inf": {
+              "exposure_bins": 2440,
+              "target_events": 20,
+              "probability": 0.008398197460057353,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            }
+          }
+        },
+        "rehedge_sell_occurrence": {
+          "constant": {
+            "exposure_bins": 7275,
+            "target_events": 302,
+            "probability": 0.04157504123144585
+          },
+          "age_buckets": {
+            "age_0_1": {
+              "exposure_bins": 302,
+              "target_events": 28,
+              "probability": 0.09405940594059406,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_1_2": {
+              "exposure_bins": 274,
+              "target_events": 21,
+              "probability": 0.07818181818181819,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_2_3": {
+              "exposure_bins": 253,
+              "target_events": 18,
+              "probability": 0.07283464566929133,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_3_5": {
+              "exposure_bins": 448,
+              "target_events": 39,
+              "probability": 0.08797327394209355,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_5_6": {
+              "exposure_bins": 196,
+              "target_events": 15,
+              "probability": 0.07868020304568528,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_6_8": {
+              "exposure_bins": 347,
+              "target_events": 23,
+              "probability": 0.06752873563218391,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_8_10": {
+              "exposure_bins": 307,
+              "target_events": 23,
+              "probability": 0.0762987012987013,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_10_20": {
+              "exposure_bins": 976,
+              "target_events": 67,
+              "probability": 0.06908904810644831,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_20_30": {
+              "exposure_bins": 574,
+              "target_events": 18,
+              "probability": 0.03217391304347826,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_30_60": {
+              "exposure_bins": 1196,
+              "target_events": 20,
+              "probability": 0.017126148705096073,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_60_inf": {
+              "exposure_bins": 2402,
+              "target_events": 30,
+              "probability": 0.012692467748647523,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            }
+          }
+        },
+        "unlock_occurrence": {
+          "constant": {
+            "exposure_bins": 26359,
+            "target_events": 623,
+            "probability": 0.023653262518968134
+          },
+          "age_buckets": {
+            "age_0_1": {
+              "exposure_bins": 623,
+              "target_events": 0,
+              "probability": 0.0008012820512820513,
+              "has_zero_development_events": true,
+              "has_no_development_exposure": false
+            },
+            "age_1_2": {
+              "exposure_bins": 623,
+              "target_events": 0,
+              "probability": 0.0008012820512820513,
+              "has_zero_development_events": true,
+              "has_no_development_exposure": false
+            },
+            "age_2_3": {
+              "exposure_bins": 623,
+              "target_events": 0,
+              "probability": 0.0008012820512820513,
+              "has_zero_development_events": true,
+              "has_no_development_exposure": false
+            },
+            "age_3_5": {
+              "exposure_bins": 1246,
+              "target_events": 0,
+              "probability": 0.00040096230954290296,
+              "has_zero_development_events": true,
+              "has_no_development_exposure": false
+            },
+            "age_5_6": {
+              "exposure_bins": 623,
+              "target_events": 143,
+              "probability": 0.2299679487179487,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_6_8": {
+              "exposure_bins": 877,
+              "target_events": 113,
+              "probability": 0.12927107061503418,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_8_10": {
+              "exposure_bins": 708,
+              "target_events": 48,
+              "probability": 0.0684062059238364,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_10_20": {
+              "exposure_bins": 2639,
+              "target_events": 105,
+              "probability": 0.03996212121212121,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_20_30": {
+              "exposure_bins": 1910,
+              "target_events": 42,
+              "probability": 0.022239665096807953,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_30_60": {
+              "exposure_bins": 3973,
+              "target_events": 63,
+              "probability": 0.015978862606945143,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_60_inf": {
+              "exposure_bins": 12514,
+              "target_events": 109,
+              "probability": 0.008749500599280863,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            }
+          }
+        }
+      },
+      "fitted_parameter_sha256": "4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89"
+    },
+    "500": {
+      "schema_version": 1,
+      "fit_cohort": "internal_2026_07_23_24",
+      "fit_split": "development",
+      "alpha": 0.5,
+      "bucket_bounds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        5.0,
+        6.0,
+        8.0,
+        10.0,
+        20.0,
+        30.0,
+        60.0,
+        "inf"
+      ],
+      "bucket_labels": [
+        "age_0_1",
+        "age_1_2",
+        "age_2_3",
+        "age_3_5",
+        "age_5_6",
+        "age_6_8",
+        "age_8_10",
+        "age_10_20",
+        "age_20_30",
+        "age_30_60",
+        "age_60_inf"
+      ],
+      "endpoints": {
+        "rehedge_buy_occurrence": {
+          "constant": {
+            "exposure_bins": 13558,
+            "target_events": 300,
+            "probability": 0.02216240135703223
+          },
+          "age_buckets": {
+            "age_0_1": {
+              "exposure_bins": 600,
+              "target_events": 21,
+              "probability": 0.03577371048252912,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_1_2": {
+              "exposure_bins": 558,
+              "target_events": 35,
+              "probability": 0.06350626118067978,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_2_3": {
+              "exposure_bins": 488,
+              "target_events": 23,
+              "probability": 0.04805725971370143,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_3_5": {
+              "exposure_bins": 824,
+              "target_events": 50,
+              "probability": 0.06121212121212121,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_5_6": {
+              "exposure_bins": 342,
+              "target_events": 15,
+              "probability": 0.04518950437317784,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_6_8": {
+              "exposure_bins": 600,
+              "target_events": 26,
+              "probability": 0.04409317803660566,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_8_10": {
+              "exposure_bins": 516,
+              "target_events": 11,
+              "probability": 0.022243713733075435,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_10_20": {
+              "exposure_bins": 1796,
+              "target_events": 49,
+              "probability": 0.027545909849749584,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_20_30": {
+              "exposure_bins": 1084,
+              "target_events": 28,
+              "probability": 0.026267281105990782,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_30_60": {
+              "exposure_bins": 1870,
+              "target_events": 22,
+              "probability": 0.012025654730090861,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_60_inf": {
+              "exposure_bins": 4880,
+              "target_events": 20,
+              "probability": 0.004199959024790002,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            }
+          }
+        },
+        "rehedge_sell_occurrence": {
+          "constant": {
+            "exposure_bins": 14550,
+            "target_events": 302,
+            "probability": 0.0207889492131125
+          },
+          "age_buckets": {
+            "age_0_1": {
+              "exposure_bins": 604,
+              "target_events": 28,
+              "probability": 0.047107438016528926,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_1_2": {
+              "exposure_bins": 548,
+              "target_events": 21,
+              "probability": 0.039162112932604735,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_2_3": {
+              "exposure_bins": 506,
+              "target_events": 18,
+              "probability": 0.03648915187376726,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_3_5": {
+              "exposure_bins": 896,
+              "target_events": 39,
+              "probability": 0.04403567447045708,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_5_6": {
+              "exposure_bins": 392,
+              "target_events": 15,
+              "probability": 0.039440203562340966,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_6_8": {
+              "exposure_bins": 694,
+              "target_events": 23,
+              "probability": 0.03381294964028777,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_8_10": {
+              "exposure_bins": 614,
+              "target_events": 23,
+              "probability": 0.038211382113821135,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_10_20": {
+              "exposure_bins": 1952,
+              "target_events": 67,
+              "probability": 0.03456221198156682,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_20_30": {
+              "exposure_bins": 1148,
+              "target_events": 18,
+              "probability": 0.01610095735422106,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_30_60": {
+              "exposure_bins": 2392,
+              "target_events": 20,
+              "probability": 0.00856665273715002,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_60_inf": {
+              "exposure_bins": 4804,
+              "target_events": 30,
+              "probability": 0.0063475546305931324,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            }
+          }
+        },
+        "unlock_occurrence": {
+          "constant": {
+            "exposure_bins": 52718,
+            "target_events": 623,
+            "probability": 0.01182685559286026
+          },
+          "age_buckets": {
+            "age_0_1": {
+              "exposure_bins": 1246,
+              "target_events": 0,
+              "probability": 0.00040096230954290296,
+              "has_zero_development_events": true,
+              "has_no_development_exposure": false
+            },
+            "age_1_2": {
+              "exposure_bins": 1246,
+              "target_events": 0,
+              "probability": 0.00040096230954290296,
+              "has_zero_development_events": true,
+              "has_no_development_exposure": false
+            },
+            "age_2_3": {
+              "exposure_bins": 1246,
+              "target_events": 0,
+              "probability": 0.00040096230954290296,
+              "has_zero_development_events": true,
+              "has_no_development_exposure": false
+            },
+            "age_3_5": {
+              "exposure_bins": 2492,
+              "target_events": 0,
+              "probability": 0.00020056157240272763,
+              "has_zero_development_events": true,
+              "has_no_development_exposure": false
+            },
+            "age_5_6": {
+              "exposure_bins": 1246,
+              "target_events": 143,
+              "probability": 0.11507618283881316,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_6_8": {
+              "exposure_bins": 1754,
+              "target_events": 113,
+              "probability": 0.06467236467236467,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_8_10": {
+              "exposure_bins": 1416,
+              "target_events": 48,
+              "probability": 0.034227240649259,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_10_20": {
+              "exposure_bins": 5278,
+              "target_events": 105,
+              "probability": 0.019984845614699754,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_20_30": {
+              "exposure_bins": 3820,
+              "target_events": 42,
+              "probability": 0.011122742737503272,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_30_60": {
+              "exposure_bins": 7946,
+              "target_events": 63,
+              "probability": 0.007990436642758274,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            },
+            "age_60_inf": {
+              "exposure_bins": 25028,
+              "target_events": 109,
+              "probability": 0.004374925086899197,
+              "has_zero_development_events": false,
+              "has_no_development_exposure": false
+            }
+          }
+        }
+      },
+      "fitted_parameter_sha256": "b04035e4a631276c3ec196eddc32a66cf7f5debd6779f61967d94ffdfc047f73"
+    }
+  },
+  "predictor_allowlist": [
+    "bucket__age_0_1",
+    "bucket__age_1_2",
+    "bucket__age_2_3",
+    "bucket__age_3_5",
+    "bucket__age_5_6",
+    "bucket__age_6_8",
+    "bucket__age_8_10",
+    "bucket__age_10_20",
+    "bucket__age_20_30",
+    "bucket__age_30_60",
+    "bucket__age_60_inf"
+  ],
+  "predictor_allowlist_excludes": [
+    "endpoint",
+    "target_label",
+    "following_event_type",
+    "competing_event_type",
+    "censor_reason",
+    "bin_start",
+    "bin_end",
+    "risk_bin_id",
+    "interval_id",
+    "cohort_id",
+    "split"
+  ],
+  "holdout_inference": {
+    "1000": {
+      "rehedge_buy_occurrence": {
+        "holdout_bins": 5169,
+        "holdout_intervals": 133,
+        "holdout_target_events": 133,
+        "primary_conditional_timing": {
+          "cluster_count": 133,
+          "draws": 5000,
+          "mean": -0.392998472222593,
+          "ci95_low": -0.47151816876427916,
+          "ci95_high": -0.31527032748187495
+        },
+        "secondary_occurrence_likelihood": {
+          "cluster_count": 133,
+          "draws": 5000,
+          "mean": 0.4479875414739844,
+          "ci95_low": 0.03508593430560983,
+          "ci95_high": 0.9828343714693994
+        },
+        "diagnostic_event_rank_mean": 17.037593984962406,
+        "diagnostic_raw_calibration": {
+          "observed_rate": 0.025730315341458695,
+          "mean_p_const": 0.04432153392330384,
+          "mean_p_age": 0.03530923379695923
+        }
+      },
+      "rehedge_sell_occurrence": {
+        "holdout_bins": 6568,
+        "holdout_intervals": 155,
+        "holdout_target_events": 155,
+        "primary_conditional_timing": {
+          "cluster_count": 155,
+          "draws": 5000,
+          "mean": -0.2512924517247847,
+          "ci95_low": -0.31111188802426637,
+          "ci95_high": -0.1972704168085932
+        },
+        "secondary_occurrence_likelihood": {
+          "cluster_count": 155,
+          "draws": 5000,
+          "mean": 0.775088660253137,
+          "ci95_low": 0.3893907450594397,
+          "ci95_high": 1.251454515805674
+        },
+        "diagnostic_event_rank_mean": 14.348387096774193,
+        "diagnostic_raw_calibration": {
+          "observed_rate": 0.023599269183922047,
+          "mean_p_const": 0.041575041231445856,
+          "mean_p_age": 0.029447020397524015
+        }
+      },
+      "unlock_occurrence": {
+        "holdout_bins": 31280,
+        "holdout_intervals": 298,
+        "holdout_target_events": 297,
+        "primary_conditional_timing": {
+          "cluster_count": 297,
+          "draws": 5000,
+          "mean": -0.03268690784469136,
+          "ci95_low": -0.13648864633020635,
+          "ci95_high": 0.07020517043465345
+        },
+        "secondary_occurrence_likelihood": {
+          "cluster_count": 298,
+          "draws": 5000,
+          "mean": 1.2781965502535544,
+          "ci95_low": 0.9258429000887988,
+          "ci95_high": 1.7174640615636552
+        },
+        "diagnostic_event_rank_mean": 20.764309764309765,
+        "diagnostic_raw_calibration": {
+          "observed_rate": 0.009494884910485933,
+          "mean_p_const": 0.023653262518968134,
+          "mean_p_age": 0.015880094138067645
+        }
+      }
+    },
+    "500": {
+      "rehedge_buy_occurrence": {
+        "holdout_bins": 10338,
+        "holdout_intervals": 133,
+        "holdout_target_events": 133,
+        "primary_conditional_timing": {
+          "cluster_count": 133,
+          "draws": 5000,
+          "mean": -0.38020029745688744,
+          "ci95_low": -0.4588321055641245,
+          "ci95_high": -0.30357808629006333
+        },
+        "secondary_occurrence_likelihood": {
+          "cluster_count": 133,
+          "draws": 5000,
+          "mean": 0.44322702631709,
+          "ci95_low": 0.04101265041042451,
+          "ci95_high": 0.9538896881242865
+        },
+        "diagnostic_event_rank_mean": 33.07518796992481,
+        "diagnostic_raw_calibration": {
+          "observed_rate": 0.012865157670729347,
+          "mean_p_const": 0.02216240135703223,
+          "mean_p_age": 0.017675091614523384
+        }
+      },
+      "rehedge_sell_occurrence": {
+        "holdout_bins": 13136,
+        "holdout_intervals": 155,
+        "holdout_target_events": 155,
+        "primary_conditional_timing": {
+          "cluster_count": 155,
+          "draws": 5000,
+          "mean": -0.24454598404342895,
+          "ci95_low": -0.3010539710636136,
+          "ci95_high": -0.1922727559043611
+        },
+        "secondary_occurrence_likelihood": {
+          "cluster_count": 155,
+          "draws": 5000,
+          "mean": 0.762189741371233,
+          "ci95_low": 0.37464814502510035,
+          "ci95_high": 1.230395954206828
+        },
+        "diagnostic_event_rank_mean": 27.696774193548386,
+        "diagnostic_raw_calibration": {
+          "observed_rate": 0.011799634591961023,
+          "mean_p_const": 0.0207889492131125,
+          "mean_p_age": 0.014737105409095804
+        }
+      },
+      "unlock_occurrence": {
+        "holdout_bins": 62561,
+        "holdout_intervals": 298,
+        "holdout_target_events": 297,
+        "primary_conditional_timing": {
+          "cluster_count": 297,
+          "draws": 5000,
+          "mean": 0.0017636153369583144,
+          "ci95_low": -0.10037694148815081,
+          "ci95_high": 0.10277466176475811
+        },
+        "secondary_occurrence_likelihood": {
+          "cluster_count": 298,
+          "draws": 5000,
+          "mean": 1.267057236663437,
+          "ci95_low": 0.9084584826618392,
+          "ci95_high": 1.6959414062914417
+        },
+        "diagnostic_event_rank_mean": 40.52861952861953,
+        "diagnostic_raw_calibration": {
+          "observed_rate": 0.004747366570227458,
+          "mean_p_const": 0.01182685559286026,
+          "mean_p_age": 0.007942294939939492
+        }
+      }
+    }
+  },
+  "smoothing_sensitivity": {
+    "1000": {
+      "0.0": {
+        "fitted_parameter_sha256": "8e1350f259be91bf4fe35da148d4048fb7d38234c761877c02e6b36566c2da30",
+        "holdout_inference": {
+          "rehedge_buy_occurrence": {
+            "holdout_bins": 5169,
+            "holdout_intervals": 133,
+            "holdout_target_events": 133,
+            "primary_conditional_timing": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.3950052439487898,
+              "ci95_low": -0.4773476765836723,
+              "ci95_high": -0.31534403177204023
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.45179704623350087,
+              "ci95_low": 0.036861730306366955,
+              "ci95_high": 1.0052846303800849
+            },
+            "diagnostic_event_rank_mean": 17.037593984962406,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.025730315341458695,
+              "mean_p_const": 0.044254314795692584,
+              "mean_p_age": 0.0347383067884983
+            }
+          },
+          "rehedge_sell_occurrence": {
+            "holdout_bins": 6568,
+            "holdout_intervals": 155,
+            "holdout_target_events": 155,
+            "primary_conditional_timing": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.2512476268659594,
+              "ci95_low": -0.31019991467577557,
+              "ci95_high": -0.1972893216514228
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.7774905412816605,
+              "ci95_low": 0.3790957907451787,
+              "ci95_high": 1.2442854792378866
+            },
+            "diagnostic_event_rank_mean": 14.380645161290323,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.023599269183922047,
+              "mean_p_const": 0.04151202749140894,
+              "mean_p_age": 0.028984692622888216
+            }
+          },
+          "unlock_occurrence": {
+            "holdout_bins": 31280,
+            "holdout_intervals": 298,
+            "holdout_target_events": 297,
+            "primary_conditional_timing": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": -0.029564033410431338,
+              "ci95_low": -0.13300335352241763,
+              "ci95_high": 0.07412896776326924
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 1.2833646754436812,
+              "ci95_low": 0.9162201968524301,
+              "ci95_high": 1.7100213814408662
+            },
+            "diagnostic_event_rank_mean": 20.764309764309765,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.009494884910485933,
+              "mean_p_const": 0.02363519101635115,
+              "mean_p_age": 0.01577258895419271
+            }
+          }
+        }
+      },
+      "0.5": {
+        "fitted_parameter_sha256": "4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89",
+        "holdout_inference": {
+          "rehedge_buy_occurrence": {
+            "holdout_bins": 5169,
+            "holdout_intervals": 133,
+            "holdout_target_events": 133,
+            "primary_conditional_timing": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.392998472222593,
+              "ci95_low": -0.4739845490680235,
+              "ci95_high": -0.3161651419619451
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.4479875414739844,
+              "ci95_low": 0.02310677594802979,
+              "ci95_high": 0.9713559643579415
+            },
+            "diagnostic_event_rank_mean": 17.037593984962406,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.025730315341458695,
+              "mean_p_const": 0.04432153392330384,
+              "mean_p_age": 0.03530923379695923
+            }
+          },
+          "rehedge_sell_occurrence": {
+            "holdout_bins": 6568,
+            "holdout_intervals": 155,
+            "holdout_target_events": 155,
+            "primary_conditional_timing": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.2512924517247847,
+              "ci95_low": -0.3083820857754171,
+              "ci95_high": -0.1967677046697241
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.775088660253137,
+              "ci95_low": 0.3731262105177767,
+              "ci95_high": 1.2481491915394025
+            },
+            "diagnostic_event_rank_mean": 14.348387096774193,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.023599269183922047,
+              "mean_p_const": 0.041575041231445856,
+              "mean_p_age": 0.029447020397524015
+            }
+          },
+          "unlock_occurrence": {
+            "holdout_bins": 31280,
+            "holdout_intervals": 298,
+            "holdout_target_events": 297,
+            "primary_conditional_timing": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": -0.03268690784469136,
+              "ci95_low": -0.13300314132319263,
+              "ci95_high": 0.06922313292488563
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 1.2781965502535544,
+              "ci95_low": 0.9138566895168059,
+              "ci95_high": 1.708593601615293
+            },
+            "diagnostic_event_rank_mean": 20.764309764309765,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.009494884910485933,
+              "mean_p_const": 0.023653262518968134,
+              "mean_p_age": 0.015880094138067645
+            }
+          }
+        }
+      },
+      "1.0": {
+        "fitted_parameter_sha256": "3ccfe9093b21533731a666ddb6d9b5d27064e09a8f6358fe648e241a2edb6af2",
+        "holdout_inference": {
+          "rehedge_buy_occurrence": {
+            "holdout_bins": 5169,
+            "holdout_intervals": 133,
+            "holdout_target_events": 133,
+            "primary_conditional_timing": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.3911116446694327,
+              "ci95_low": -0.47177236560334773,
+              "ci95_high": -0.3141338080772993
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.443817081983937,
+              "ci95_low": 0.03368266937065631,
+              "ci95_high": 0.9789344742213146
+            },
+            "diagnostic_event_rank_mean": 17.037593984962406,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.025730315341458695,
+              "mean_p_const": 0.04438873322518804,
+              "mean_p_age": 0.03587740118901588
+            }
+          },
+          "rehedge_sell_occurrence": {
+            "holdout_bins": 6568,
+            "holdout_intervals": 155,
+            "holdout_target_events": 155,
+            "primary_conditional_timing": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.25136526277929594,
+              "ci95_low": -0.30897632748301684,
+              "ci95_high": -0.19727957839304966
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.7723831297616433,
+              "ci95_low": 0.3938594599022714,
+              "ci95_high": 1.2344461119156962
+            },
+            "diagnostic_event_rank_mean": 14.348387096774193,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.023599269183922047,
+              "mean_p_const": 0.041638037652878934,
+              "mean_p_age": 0.029907453256690808
+            }
+          },
+          "unlock_occurrence": {
+            "holdout_bins": 31280,
+            "holdout_intervals": 298,
+            "holdout_target_events": 297,
+            "primary_conditional_timing": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": -0.035762241626042066,
+              "ci95_low": -0.13611239506690465,
+              "ci95_high": 0.07111207725205043
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 1.2730039917296205,
+              "ci95_low": 0.919684168541872,
+              "ci95_high": 1.715004254712252
+            },
+            "diagnostic_event_rank_mean": 20.764309764309765,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.009494884910485933,
+              "mean_p_const": 0.023671332650506423,
+              "mean_p_age": 0.015987436231128048
+            }
+          }
+        }
+      }
+    },
+    "500": {
+      "0.0": {
+        "fitted_parameter_sha256": "0f9b492fb502cefd3a3bef2899f96549f228076ab69facfdbcf23e767bf0298e",
+        "holdout_inference": {
+          "rehedge_buy_occurrence": {
+            "holdout_bins": 10338,
+            "holdout_intervals": 133,
+            "holdout_target_events": 133,
+            "primary_conditional_timing": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.3819508858582615,
+              "ci95_low": -0.46216447201902033,
+              "ci95_high": -0.3050052002331459
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.4472818807806231,
+              "ci95_low": 0.037594487461845114,
+              "ci95_high": 0.9655142824118894
+            },
+            "diagnostic_event_rank_mean": 33.07518796992481,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.012865157670729347,
+              "mean_p_const": 0.022127157397846292,
+              "mean_p_age": 0.017369153394249146
+            }
+          },
+          "rehedge_sell_occurrence": {
+            "holdout_bins": 13136,
+            "holdout_intervals": 155,
+            "holdout_target_events": 155,
+            "primary_conditional_timing": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.24431100342195963,
+              "ci95_low": -0.3015480286916928,
+              "ci95_high": -0.19040128769579856
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.7646005615089019,
+              "ci95_low": 0.38143432361078333,
+              "ci95_high": 1.2430400160910147
+            },
+            "diagnostic_event_rank_mean": 27.761290322580646,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.011799634591961023,
+              "mean_p_const": 0.02075601374570447,
+              "mean_p_age": 0.014492346311444108
+            }
+          },
+          "unlock_occurrence": {
+            "holdout_bins": 62561,
+            "holdout_intervals": 298,
+            "holdout_target_events": 297,
+            "primary_conditional_timing": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": 0.005523994809323414,
+              "ci95_low": -0.0951705766834392,
+              "ci95_high": 0.11145248001175795
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 1.2723074035814435,
+              "ci95_low": 0.9158349232549301,
+              "ci95_high": 1.6785855764481592
+            },
+            "diagnostic_event_rank_mean": 40.52861952861953,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.004747366570227458,
+              "mean_p_const": 0.011817595508175573,
+              "mean_p_age": 0.007886238033453685
+            }
+          }
+        }
+      },
+      "0.5": {
+        "fitted_parameter_sha256": "b04035e4a631276c3ec196eddc32a66cf7f5debd6779f61967d94ffdfc047f73",
+        "holdout_inference": {
+          "rehedge_buy_occurrence": {
+            "holdout_bins": 10338,
+            "holdout_intervals": 133,
+            "holdout_target_events": 133,
+            "primary_conditional_timing": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.38020029745688744,
+              "ci95_low": -0.460044243965407,
+              "ci95_high": -0.3064243310979723
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.44322702631709,
+              "ci95_low": 0.03817042938975262,
+              "ci95_high": 0.9742305664153
+            },
+            "diagnostic_event_rank_mean": 33.07518796992481,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.012865157670729347,
+              "mean_p_const": 0.02216240135703223,
+              "mean_p_age": 0.017675091614523384
+            }
+          },
+          "rehedge_sell_occurrence": {
+            "holdout_bins": 13136,
+            "holdout_intervals": 155,
+            "holdout_target_events": 155,
+            "primary_conditional_timing": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.24454598404342895,
+              "ci95_low": -0.2990966685804924,
+              "ci95_high": -0.19186081262490468
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.762189741371233,
+              "ci95_low": 0.37756529622807455,
+              "ci95_high": 1.2335914428011794
+            },
+            "diagnostic_event_rank_mean": 27.696774193548386,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.011799634591961023,
+              "mean_p_const": 0.0207889492131125,
+              "mean_p_age": 0.014737105409095804
+            }
+          },
+          "unlock_occurrence": {
+            "holdout_bins": 62561,
+            "holdout_intervals": 298,
+            "holdout_target_events": 297,
+            "primary_conditional_timing": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": 0.0017636153369583144,
+              "ci95_low": -0.09665404173764729,
+              "ci95_high": 0.09962758108686104
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 1.267057236663437,
+              "ci95_low": 0.9084226807466539,
+              "ci95_high": 1.6926490657968936
+            },
+            "diagnostic_event_rank_mean": 40.52861952861953,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.004747366570227458,
+              "mean_p_const": 0.01182685559286026,
+              "mean_p_age": 0.007942294939939492
+            }
+          }
+        }
+      },
+      "1.0": {
+        "fitted_parameter_sha256": "0e6ecdbe9af6f0c29d4de4f96cc9b5f9820cf475919ee93cb26401f7500b1ea9",
+        "holdout_inference": {
+          "rehedge_buy_occurrence": {
+            "holdout_bins": 10338,
+            "holdout_intervals": 133,
+            "holdout_target_events": 133,
+            "primary_conditional_timing": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.37856914072891046,
+              "ci95_low": -0.4578770152758029,
+              "ci95_high": -0.3052432099549679
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.43876671443429105,
+              "ci95_low": 0.02979660000501146,
+              "ci95_high": 0.9695584913231617
+            },
+            "diagnostic_event_rank_mean": 33.07518796992481,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.012865157670729347,
+              "mean_p_const": 0.0221976401179941,
+              "mean_p_age": 0.017980272619360554
+            }
+          },
+          "rehedge_sell_occurrence": {
+            "holdout_bins": 13136,
+            "holdout_intervals": 155,
+            "holdout_target_events": 155,
+            "primary_conditional_timing": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.24480986387375187,
+              "ci95_low": -0.29897746162137046,
+              "ci95_high": -0.1909949807986869
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.7594420399828066,
+              "ci95_low": 0.37559298824837967,
+              "ci95_high": 1.2274388255043869
+            },
+            "diagnostic_event_rank_mean": 27.696774193548386,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.011799634591961023,
+              "mean_p_const": 0.02082188015393072,
+              "mean_p_age": 0.014981350753230673
+            }
+          },
+          "unlock_occurrence": {
+            "holdout_bins": 62561,
+            "holdout_intervals": 298,
+            "holdout_target_events": 297,
+            "primary_conditional_timing": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": -0.001936310899657647,
+              "ci95_low": -0.10172170471398977,
+              "ci95_high": 0.10014204076700406
+            },
+            "secondary_occurrence_likelihood": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 1.2617758022027752,
+              "ci95_low": 0.9060022492184405,
+              "ci95_high": 1.6708636988494134
+            },
+            "diagnostic_event_rank_mean": 40.52861952861953,
+            "diagnostic_raw_calibration": {
+              "observed_rate": 0.004747366570227458,
+              "mean_p_const": 0.011836115326251898,
+              "mean_p_age": 0.007998308329935663
+            }
+          }
+        }
+      }
+    }
+  },
+  "supplemental_named_deliverable": {
+    "name": "per_session_base_hazard_variation_2026_07_20_24",
+    "role": "descriptive_non_gating",
+    "server_hours": [
+      12,
+      24
+    ],
+    "limitation": "one_session_per_weekday_cannot_identify_a_day_of_week_effect",
+    "records": [
+      {
+        "session_date": "2026-07-20",
+        "weekday": "Monday",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 7359,
+        "target_events": 147,
+        "events_per_1000_risk_seconds": 19.975540154912352,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-20",
+        "weekday": "Monday",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 5938,
+        "target_events": 130,
+        "events_per_1000_risk_seconds": 21.892893230043786,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-20",
+        "weekday": "Monday",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 29782,
+        "target_events": 300,
+        "events_per_1000_risk_seconds": 10.073198576321268,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-21",
+        "weekday": "Tuesday",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 8524,
+        "target_events": 111,
+        "events_per_1000_risk_seconds": 13.022055373064289,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-21",
+        "weekday": "Tuesday",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 7621,
+        "target_events": 130,
+        "events_per_1000_risk_seconds": 17.05812885448104,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-21",
+        "weekday": "Tuesday",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 26934,
+        "target_events": 252,
+        "events_per_1000_risk_seconds": 9.356204054355091,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-22",
+        "weekday": "Wednesday",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 10095,
+        "target_events": 141,
+        "events_per_1000_risk_seconds": 13.967310549777118,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-22",
+        "weekday": "Wednesday",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 5536,
+        "target_events": 125,
+        "events_per_1000_risk_seconds": 22.579479768786126,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-22",
+        "weekday": "Wednesday",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 27448,
+        "target_events": 273,
+        "events_per_1000_risk_seconds": 9.946079860099097,
+        "role": "retrospective_supplemental_non_gating",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-23",
+        "weekday": "Thursday",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 9251,
+        "target_events": 300,
+        "events_per_1000_risk_seconds": 32.42892660252946,
+        "role": "internal",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-23",
+        "weekday": "Thursday",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 7275,
+        "target_events": 302,
+        "events_per_1000_risk_seconds": 41.512027491408936,
+        "role": "internal",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-23",
+        "weekday": "Thursday",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 26359,
+        "target_events": 623,
+        "events_per_1000_risk_seconds": 23.63519101635115,
+        "role": "internal",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-24",
+        "weekday": "Friday",
+        "endpoint": "rehedge_buy_occurrence",
+        "risk_bins": 5169,
+        "target_events": 133,
+        "events_per_1000_risk_seconds": 25.730315341458695,
+        "role": "internal",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-24",
+        "weekday": "Friday",
+        "endpoint": "rehedge_sell_occurrence",
+        "risk_bins": 6568,
+        "target_events": 155,
+        "events_per_1000_risk_seconds": 23.599269183922047,
+        "role": "internal",
+        "server_hours": "12:00-24:00"
+      },
+      {
+        "session_date": "2026-07-24",
+        "weekday": "Friday",
+        "endpoint": "unlock_occurrence",
+        "risk_bins": 31280,
+        "target_events": 297,
+        "events_per_1000_risk_seconds": 9.494884910485933,
+        "role": "internal",
+        "server_hours": "12:00-24:00"
+      }
+    ]
+  },
+  "timer_floor_verification": {
+    "finding_id": "F-007",
+    "interpretation": "approximate_six_second_unlock_floor_not_absolute_zero",
+    "month_wide": {
+      "unlock_occurrence": {
+        "events": 6276,
+        "under_six_seconds": 1,
+        "under_six_percent": 0.015933715742511154,
+        "minimum_seconds": 1.0
+      },
+      "rehedge_sell_occurrence": {
+        "events": 3253,
+        "under_six_seconds": 1059,
+        "under_six_percent": 32.554565016907475,
+        "minimum_seconds": 0.0
+      },
+      "rehedge_buy_occurrence": {
+        "events": 3024,
+        "under_six_seconds": 932,
+        "under_six_percent": 30.82010582010582,
+        "minimum_seconds": 0.0
+      }
+    },
+    "per_calendar_session_m2": [
+      {
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "events": 594,
+        "under_six_seconds": 0,
+        "under_six_percent": 0.0
+      },
+      {
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "events": 472,
+        "under_six_seconds": 0,
+        "under_six_percent": 0.0
+      },
+      {
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "events": 497,
+        "under_six_seconds": 0,
+        "under_six_percent": 0.0
+      },
+      {
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "events": 951,
+        "under_six_seconds": 0,
+        "under_six_percent": 0.0
+      },
+      {
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "events": 424,
+        "under_six_seconds": 0,
+        "under_six_percent": 0.0
+      },
+      {
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "events": 303,
+        "under_six_seconds": 110,
+        "under_six_percent": 36.303630363036305
+      },
+      {
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "events": 271,
+        "under_six_seconds": 75,
+        "under_six_percent": 27.67527675276753
+      },
+      {
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "events": 255,
+        "under_six_seconds": 87,
+        "under_six_percent": 34.11764705882353
+      },
+      {
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "events": 473,
+        "under_six_seconds": 161,
+        "under_six_percent": 34.038054968287526
+      },
+      {
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "events": 234,
+        "under_six_seconds": 84,
+        "under_six_percent": 35.8974358974359
+      },
+      {
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "events": 290,
+        "under_six_seconds": 93,
+        "under_six_percent": 32.068965517241374
+      },
+      {
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "events": 202,
+        "under_six_seconds": 52,
+        "under_six_percent": 25.742574257425744
+      },
+      {
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "events": 242,
+        "under_six_seconds": 61,
+        "under_six_percent": 25.206611570247933
+      },
+      {
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "events": 477,
+        "under_six_seconds": 174,
+        "under_six_percent": 36.477987421383645
+      },
+      {
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "events": 191,
+        "under_six_seconds": 50,
+        "under_six_percent": 26.17801047120419
+      }
+    ],
+    "hedged_competing_endpoints": {
+      "events": 333,
+      "under_six_seconds": 154,
+      "under_six_percent": 46.246246246246244,
+      "event_types": {
+        "OPEN_ADDITIONAL_BUY": 332,
+        "OPEN_ADDITIONAL_SELL": 1
+      }
+    }
+  },
+  "pilot_verdict": {
+    "rehedge_buy_occurrence": {
+      "verdict": "internal_timing_rejected_external_pending",
+      "one_second_mean": -0.392998472222593,
+      "five_hundred_ms_mean": -0.38020029745688744,
+      "external_gate_satisfied": false,
+      "tradeable_edge_claimed": false
+    },
+    "rehedge_sell_occurrence": {
+      "verdict": "internal_timing_rejected_external_pending",
+      "one_second_mean": -0.2512924517247847,
+      "five_hundred_ms_mean": -0.24454598404342895,
+      "external_gate_satisfied": false,
+      "tradeable_edge_claimed": false
+    },
+    "unlock_occurrence": {
+      "verdict": "inconclusive_external_pending",
+      "one_second_mean": -0.03268690784469136,
+      "five_hundred_ms_mean": 0.0017636153369583144,
+      "external_gate_satisfied": false,
+      "tradeable_edge_claimed": false
+    }
+  },
+  "validation_gates": {
+    "support_seconds_reconcile": true,
+    "no_nonpositive_bins": true,
+    "no_gap_crossing_bins": true,
+    "no_cross_split_primary_bins": true,
+    "target_only_at_last_representable_bin": true,
+    "competing_bins_are_zero_label": true,
+    "canonical_ticks_unchanged": true,
+    "supplemental_fit_isolation": true,
+    "predictor_allowlist_has_no_forbidden_fields": true,
+    "design_matrix_matches_allowlist": true
+  },
+  "diagnostic_roles": {
+    "raw_calibration": "descriptive_only",
+    "event_rank": "descriptive_only",
+    "paired_occurrence_likelihood": "secondary_base_rate_sensitive",
+    "conditional_timing": "primary_for_M5_002_timing_only"
+  },
+  "explicit_deferrals": {
+    "m4_matched_timestamp_anchor_offset": "deferred_to_price_feature_work",
+    "unlock_direction_given_occurrence": "deferred",
+    "external_temporal_validation": "pending_2026_07_27_29"
+  },
+  "external_gate_satisfied": false,
+  "m5_closed": false,
+  "tradeable_edge_claimed": false,
+  "output_hashes": {
+    "interval_audit": "18effcaa1d169fa7ad0f029eceb61a00c4470ebf2d3c492a004efce9ed286cd2",
+    "risk_bin_audit": "62f0f0fa4f961b699461c2c3ba935c460d853b4553142130187c503fb4698520",
+    "design_matrix": "ae9b8e99f958f05eba3cb179f1ea3eae4d8267e5b611d98b76d0e14dccab2edb",
+    "predictions": "467f871aa5d11eeda2e226cfe6448dcc11eac696bf15a75b5feefc15b1293389"
+  },
+  "deterministic_report_sha256": "03f41d7e3838960a23aca5eb001add0f74a1eb285396f97b8228fdbf446781fb"
+}

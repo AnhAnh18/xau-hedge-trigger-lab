@@ -1,6 +1,6 @@
 # M5 Trigger Inference — Locked v1 Specification
 
-Status: M5-000 implemented; modelling has not started.
+Status: M5-002 state-age pilot implemented; external validation pending.
 
 ## Research question
 
