@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M3 — Event–Tick Alignment
+M4 — Trigger Dataset (bounded remediation)
 
 ## Completed
 
@@ -20,6 +20,12 @@ M3 — Event–Tick Alignment
 - Lifecycle/state reconstruction with exception accounting
 - M2 event accounting and boundary validation
 - M3 deterministic event–tick alignment for the observed tick window
+- M4 v1 causal trigger-dataset implementation
+- Deterministic matched risk-set controls without candidate replacement
+- H1/H2/H3 paired and cluster-bootstrap reports
+- Separate M4 audit and reviewed model-feature outputs
+- Complete pre-transition state age from M2 lineage
+- Control-supported H1 inference and causal sequence-based H2
 
 ## Current data
 
@@ -29,11 +35,14 @@ M3 — Event–Tick Alignment
 
 ## Current focus
 
-Prepare the primary aligned cohort for M4 trigger-dataset construction.
+Validate the remediated M4 artifact and Draft PR #2. H1 is
+confounded/inconclusive on the control-supported population, H2 is
+inconclusive, and H3 is supported but timing-sensitive and smaller than spread.
 
 ## Next executable task
 
-Build leakage-safe positive and negative samples from primary aligned state intervals.
+Pass deterministic rebuild, CI, privacy, and code-review gates before deciding
+whether Draft PR #2 is ready to merge.
 
 ## Current blockers
 

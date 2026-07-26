@@ -1,7 +1,7 @@
 from pathlib import Path
 import pytest
-from src.xau_trigger.parsers.mt5_report import parse_report
-from src.xau_trigger.parsers.tick_export import parse_ticks
+from xau_trigger.parsers.mt5_report import parse_report
+from xau_trigger.parsers.tick_export import parse_ticks
 
 def test_missing_required_section_fails_cleanly(tmp_path):
     path = tmp_path / "bad.html"; path.write_text("<table><tr><th>Positions</th></tr></table>")

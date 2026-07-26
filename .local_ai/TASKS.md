@@ -8,4 +8,8 @@
 - [ ] T-006 Add four trade reports to external data storage
 - [x] T-007 Reconstruct lifecycle and hedge-state timeline
 - [x] T-008 Align lifecycle events with broker ticks
-- [ ] T-009 Build trigger dataset and test rolling-extreme hypothesis
+- [x] T-009 Build trigger dataset and test rolling-extreme hypothesis
+- [ ] T-010 M4-004 Add position lineage and entry-state features ([#1](https://github.com/AnhAnh18/xau-hedge-trigger-lab/issues/1))
+- [x] T-011 Resolve M4 timestamp-sensitivity gate before M5
+- [x] T-012 Complete bounded M4 remediation and pass Draft PR gates
+- [ ] T-013 M4-005 Model the 0–6s structural control-support gap ([#3](https://github.com/AnhAnh18/xau-hedge-trigger-lab/issues/3))

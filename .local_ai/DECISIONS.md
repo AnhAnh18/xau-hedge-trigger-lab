@@ -25,3 +25,67 @@ Decision: Rewrite all published repository history to replace the real MT5 accou
 Reason: The repository is early-stage and public; rewriting now keeps the anonymization policy consistent.
 
 Consequences: Published commit hashes change, existing clones must be discarded or reset carefully, and old branches must not be merged back.
+
+## D-004 — Keep M4 v1 causal and lineage-safe
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Build M4 v1 features only from ticks, state intervals, and aligned
+events at `matched_time`. Keep `matched_time ± 500 ms` in sensitivity reports
+only. Use deterministic matched risk-set controls without replacement, with
+separate validity flags for every feature window.
+
+Reason: Position lineage is not yet strong enough to reproduce entry distance,
+surviving-leg state, floating P/L, or preceding unlock loss without assumptions.
+
+Consequences: Those four feature families are deferred to M4-004. M4 remains
+open because the +500 ms sensitivity reverses H1/H2, even though the causal
+dataset and baseline hypothesis reports are reproducible.
+
+## D-005 — Remediate M4 anchors, support, and causal sensitivity
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Price features remain anchored at `matched_timestamp`.
+Pre-transition state bookkeeping uses the exact M2 interval ending at the
+event, with `reported_time` as the fallback anchor. Audit metadata and reviewed
+model predictors are written to separate outputs.
+
+H1 primary inference is restricted to the control-supported population with
+at least seven seconds of pre-transition state age. H2 uses a disjoint prior
+boundary window followed by a causal touch-and-retracement sequence.
+
+The causal sensitivity gate compares `matched_time - 500 ms` with
+`matched_time`. Positive shifts of +250, +500, and +1000 ms are post-action
+diagnostics only and cannot affect model features, headline verdicts, or merge
+gates.
+
+Reason: The first M4 implementation mixed price and state time bases, allowed
+sampling metadata into the model-ready table, and implemented H2 as the exact
+complement of H1. Positive timestamp shifts measure post-action response rather
+than pre-action causal robustness.
+
+Consequences: This decision supersedes the sensitivity-gate consequence in
+D-004. Inconclusive hypotheses may be reported honestly; they are not promoted
+to supported by descriptive or post-action results.
+
+## D-006 — Bound M4 model transforms before merge
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Keep `sample_id` and raw pre-transition state age in the audit output
+only. The model-ready state-age predictor is clipped to `[0, 60]` seconds.
+
+H2 retracement fractions are upper-tail winsorized at the p99 estimated
+separately for each pre-registered window from development,
+control-supported re-hedge risk-set samples. Those development caps are applied
+unchanged to holdout. The expected H2-touch direction is positive: event
+samples should touch the side-appropriate prior boundary more often than their
+matched controls.
+
+Reason: Arbitrary IDs are not predictors, the raw state-age tail is too sparse
+for an unconstrained numeric effect, and unbounded normalized retracement is
+dominated by a small number of near-zero prior ranges.

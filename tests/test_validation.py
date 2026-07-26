@@ -1,5 +1,5 @@
 import pandas as pd
-from src.xau_trigger.validation.dataset_checks import inventory_conservation, reconcile_report
+from xau_trigger.validation.dataset_checks import inventory_conservation, reconcile_report
 
 def test_report_financial_reconciliation():
     positions = pd.DataFrame({"profit": [6.0], "swap": [0.0], "commission": [0.0]})
