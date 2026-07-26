@@ -92,3 +92,31 @@
   paired interval inference, multiplicity families, and required ablations.
 - Added a machine-readable null-permitting merge contract. No M5-003 feature
   construction or model fitting was performed.
+
+## 2026-07-26 — M5-003 implementation authorization and grid correction
+
+- Merged M5-002 and the M5-003 preregistration in stacked order.
+- Detected that the preregistration listed nine age buckets while the frozen
+  M5-002 source, report, and parameter hash use 11.
+- Received explicit authorization to restore `[5,6)`, `[6,8)`, and `[8,10)`
+  before any M5-003 price fit; unlock now has seven floor-eligible buckets.
+- Added a blocking independent Claude re-review requirement because the
+  implementation is being produced by one developer.
+
+## 2026-07-26 — M5-003 causal price-increment implementation
+
+- Built causal endpoint-specific price features at one-second and
+  500-millisecond anchors with strict gap-aware joint-window validity.
+- Reproduced the pre-registered one-second attrition audit: 937 bins and three
+  targets; reproduced the 3,115-bin, zero-target unlock timer-floor exclusion.
+- Fit A_dev, B, and no-intercept C_dev using development-only interval
+  GroupKFold, deterministic one-standard-error regularization, required
+  ablations, and 5,000-draw interval bootstrap diagnostics.
+- Reconstructed and verified immutable M5-002 in-memory hashes without
+  changing any M2-M5-002 canonical output.
+- Froze the model manifest before evaluating the 2026-07-24 internal-reuse
+  session and reproduced all six generated outputs byte-for-byte on rerun.
+- Published internal reuse and leave-one-session-out results as diagnostics
+  only, with no price verdict and no tradeable-edge claim.
+- Left the implementation PR in draft pending independent Claude re-review;
+  the 2026-07-27..29 external-validation gate remains open.

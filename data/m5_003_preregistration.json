@@ -3,7 +3,8 @@
   "plan_id": "m5_003_causal_price_increment_v2",
   "registered_on": "2026-07-26",
   "amended_on": "2026-07-26",
-  "status": "preregistered_not_implemented",
+  "status": "preregistered_implementation_authorized",
+  "implementation_authorized_on": "2026-07-26",
   "amendment": {
     "reason": "development-only review found both level and rehedge age-hazard shape mismatch between the frozen 2026-07-23 A_common model and pooled 2026-07-20_23 development",
     "price_models_fitted_before_amendment": false,
@@ -12,8 +13,8 @@
   },
   "scope": {
     "task": "M5-003",
-    "current_task_authorizes_implementation": false,
-    "current_task_authorizes_price_model_fit": false,
+    "current_task_authorizes_implementation": true,
+    "current_task_authorizes_price_model_fit": true,
     "canonical_outputs_mutable": false,
     "tradeable_edge_claim_allowed": false
   },
@@ -249,7 +250,9 @@
         [1, 2],
         [2, 3],
         [3, 5],
-        [5, 10],
+        [5, 6],
+        [6, 8],
+        [8, 10],
         [10, 20],
         [20, 30],
         [30, 60],
@@ -258,7 +261,7 @@
       "jeffreys_alpha": 0.5,
       "bucket_or_smoothing_selection_allowed": false,
       "zero_training_exposure_bucket_contract": "fail_before_price_fit_no_adaptive_merge_A_common_fallback_or_holdout_informed_repair",
-      "unlock_floor_eligible_bucket_count": 5,
+      "unlock_floor_eligible_bucket_count": 7,
       "fit_scope": "training_fold_only_during_cv_then_full_development_before_any_internal_reuse_or_external_evaluation",
       "role": "headline_state_age_baseline"
     },
@@ -434,10 +437,25 @@
     "A_dev bucket parameters and all fitted parameters are frozen before internal reuse evaluation",
     "parameter hashes are unchanged by the presence or absence of 2026-07-24",
     "leave-one-session-out and per-session diagnostics are reported without creating a verdict",
+    "independent Claude re-review is recorded after implementation",
     "all registered ablations and multiplicity families are reported",
     "internal and external roles remain separated",
     "null price findings are mergeable",
     "no tradeable-edge conclusion is made",
     "tests privacy determinism and CI pass"
-  ]
+  ],
+  "independent_re_review": {
+    "reviewer": "Claude",
+    "reason": "single-developer implementation plus post-merge 9-versus-11 bucket contract correction",
+    "required_before_merge": true,
+    "status": "independent_re_review_pending",
+    "required_topics": [
+      "M5-002 bucket-grid correction",
+      "joint-valid cohort and exclusion accounting",
+      "development internal-reuse and external leakage isolation",
+      "frozen-model manifest and parameter hashes",
+      "A_dev B and C_dev comparisons",
+      "report verdict language"
+    ]
+  }
 }

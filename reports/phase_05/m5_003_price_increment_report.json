@@ -1,0 +1,2969 @@
+{
+  "schema_version": 1,
+  "milestone": "M5-003",
+  "status": "pipeline_frozen_external_pending_zero_validated_price_results",
+  "preregistration_sha256": "a9650040f575f88022bf6b94f49f2458c7b38adc5af3edacf153ce10c43bd64b",
+  "frozen_manifest_sha256": "1c7b624c67a1dd3db94800a8bfa731d1b9b8825ae812f4f821f1c7a120222468",
+  "m5_002_rebuild_attestation": {
+    "schema_version": 1,
+    "source_file_sha256": {
+      "data/interim/state_intervals.parquet": "2146992995904fa68c0860a999438007424c5cb93349146cbc22b526d652fcd7",
+      "data/interim/lifecycle_events.parquet": "de4c478e642c922a59b7a72029c0f48cb83ba2031d79e03b5d128826afe0b8fd",
+      "data/interim/ticks.parquet": "e42bc5abf82a3c75d65dec12007dd03824bd15139ba5ca46e5c270fab64d0936",
+      "data/interim/m5_002/ticks_supplemental_2026_07_20_22.parquet": "f7bd3fba539bc0eb2be2979df80a751451ff52dab5c33f7c71f61bca8dd6d93c",
+      "data/interim/m5_002/m5_002_risk_bin_audit.parquet": "19660420db133ae4b59b8adfb82690bfbb45d5638b5a30889daff9ac8a93a22c",
+      "data/interim/m5_002/m5_002_interval_audit.parquet": "f0b4160f88136c7cb0fb57129c2df72c44af10996c10a27f16efa8cfcfae6dea"
+    },
+    "pre_parquet_risk_bin_dataframe_sha256": "62f0f0fa4f961b699461c2c3ba935c460d853b4553142130187c503fb4698520",
+    "pre_parquet_interval_audit_dataframe_sha256": "18effcaa1d169fa7ad0f029eceb61a00c4470ebf2d3c492a004efce9ed286cd2",
+    "local_parquet_values_equal_after_null_normalization": true
+  },
+  "feature_accounting": {
+    "registered_internal_full_allowlist_audit": {
+      "expected_dropped_bins": 937,
+      "observed_dropped_bins": 937,
+      "expected_dropped_targets": 3,
+      "observed_dropped_targets": 3,
+      "status": "PASS"
+    },
+    "july23_unlock_floor_audit": {
+      "dropped_bins": 3115,
+      "dropped_targets": 0,
+      "status": "PASS"
+    },
+    "development_targets_before_joint_validity": {
+      "rehedge_buy_occurrence": 699,
+      "rehedge_sell_occurrence": 687,
+      "unlock_occurrence": 1448
+    },
+    "all_feature_invalid_excluding_floor": {
+      "bins": 9509,
+      "targets": 17
+    },
+    "first_reason_records": [
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 242,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 26,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 307,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 26,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 14117,
+        "targets": 147
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 277,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 34,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 362,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 45,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 11159,
+        "targets": 128
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 249,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 10,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 2990,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 290,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 15,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 56010,
+        "targets": 300
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 347,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 42,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_10s_invalid",
+        "bins": 1,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 454,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 53,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 16151,
+        "targets": 109
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 19,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 19,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 15204,
+        "targets": 130
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 400,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 39,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 2530,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 527,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 45,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 50328,
+        "targets": 250
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 103,
+        "targets": 2
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 116,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 19971,
+        "targets": 139
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 8,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 8,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 11056,
+        "targets": 125
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 149,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 14,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 2740,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 174,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 15,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 51805,
+        "targets": 273
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 12,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 14,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 13532,
+        "targets": 300
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 10,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 10,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 14530,
+        "targets": 302
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 69,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 6230,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 71,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 46348,
+        "targets": 622
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 33,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 35,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 10270,
+        "targets": 133
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 91,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 107,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 12938,
+        "targets": 155
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 640,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 40,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 2970,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 750,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 47,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 58114,
+        "targets": 297
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 120,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 13,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 150,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 13,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 7063,
+        "targets": 147
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 136,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 18,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 179,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 25,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 5580,
+        "targets": 129
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 121,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 5,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 1495,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 141,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 7,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 28013,
+        "targets": 299
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 176,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 22,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 232,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 28,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 8066,
+        "targets": 111
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 11,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 11,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 7599,
+        "targets": 130
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 206,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 20,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 1265,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 265,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 24,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 25154,
+        "targets": 250
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 53,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 59,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 9983,
+        "targets": 140
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 4,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 4,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 5528,
+        "targets": 125
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 77,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 8,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 1370,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 90,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 9,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 25894,
+        "targets": 273
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 7,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 8,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 6764,
+        "targets": 300
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 5,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 5,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 7265,
+        "targets": 302
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 35,
+        "targets": 1
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 3115,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 36,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 23173,
+        "targets": 622
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 16,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 17,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 5136,
+        "targets": 133
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 48,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 56,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 6464,
+        "targets": 155
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_2s_invalid",
+        "bins": 305,
+        "targets": 2
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "h2_5s_invalid",
+        "bins": 20,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "unlock_before_floor_excluded",
+        "bins": 1485,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_2s_invalid",
+        "bins": 356,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "window_5s_invalid",
+        "bins": 23,
+        "targets": 0
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "first_exclusion_reason": "joint_valid",
+        "bins": 29091,
+        "targets": 295
+      }
+    ],
+    "joint_valid_records": [
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 14117,
+        "targets": 147,
+        "intervals": 147
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 11159,
+        "targets": 128,
+        "intervals": 131
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "bins": 56010,
+        "targets": 300,
+        "intervals": 300
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 16151,
+        "targets": 109,
+        "intervals": 111
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 15204,
+        "targets": 130,
+        "intervals": 130
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "bins": 50328,
+        "targets": 250,
+        "intervals": 253
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 19971,
+        "targets": 139,
+        "intervals": 141
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 11056,
+        "targets": 125,
+        "intervals": 125
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "bins": 51805,
+        "targets": 273,
+        "intervals": 274
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 13532,
+        "targets": 300,
+        "intervals": 300
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 14530,
+        "targets": 302,
+        "intervals": 302
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "bins": 46348,
+        "targets": 622,
+        "intervals": 623
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 10270,
+        "targets": 133,
+        "intervals": 133
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 12938,
+        "targets": 155,
+        "intervals": 155
+      },
+      {
+        "bin_width_ms": 500,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "bins": 58114,
+        "targets": 297,
+        "intervals": 298
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 7063,
+        "targets": 147,
+        "intervals": 147
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 5580,
+        "targets": 129,
+        "intervals": 131
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-20",
+        "endpoint": "unlock_occurrence",
+        "bins": 28013,
+        "targets": 299,
+        "intervals": 300
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 8066,
+        "targets": 111,
+        "intervals": 111
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 7599,
+        "targets": 130,
+        "intervals": 130
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-21",
+        "endpoint": "unlock_occurrence",
+        "bins": 25154,
+        "targets": 250,
+        "intervals": 253
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 9983,
+        "targets": 140,
+        "intervals": 141
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 5528,
+        "targets": 125,
+        "intervals": 125
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-22",
+        "endpoint": "unlock_occurrence",
+        "bins": 25894,
+        "targets": 273,
+        "intervals": 274
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 6764,
+        "targets": 300,
+        "intervals": 300
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 7265,
+        "targets": 302,
+        "intervals": 302
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "development",
+        "session_date": "2026-07-23",
+        "endpoint": "unlock_occurrence",
+        "bins": 23173,
+        "targets": 622,
+        "intervals": 623
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_buy_occurrence",
+        "bins": 5136,
+        "targets": 133,
+        "intervals": 133
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "rehedge_sell_occurrence",
+        "bins": 6464,
+        "targets": 155,
+        "intervals": 155
+      },
+      {
+        "bin_width_ms": 1000,
+        "analysis_role": "internal_reuse",
+        "session_date": "2026-07-24",
+        "endpoint": "unlock_occurrence",
+        "bins": 29091,
+        "targets": 295,
+        "intervals": 298
+      }
+    ]
+  },
+  "model_diagnostics": {
+    "1000": {
+      "development": {
+        "rehedge_buy_occurrence": {
+          "bins": 31876,
+          "intervals": 699,
+          "targets": 698,
+          "observed_rate": 0.021897352239929727,
+          "mean_predictions": {
+            "A_common": 0.031815337606565366,
+            "A_level": 0.02189735223992973,
+            "A_dev": 0.022052563826892423,
+            "B": 0.021897352241432914,
+            "C_dev": 0.024936908729062724
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.12959695737027413,
+              "ci95_low": 0.10237942887926652,
+              "ci95_high": 0.1563346815531624,
+              "familywise_one_sided_low": 0.09999852078520248
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.03708510350888398,
+              "ci95_low": -0.016027351453673264,
+              "ci95_high": 0.0913930868394475,
+              "familywise_one_sided_low": -0.020812513324106392
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.08415750564541509,
+              "ci95_low": 0.051517974609681924,
+              "ci95_high": 0.1190056445152703,
+              "familywise_one_sided_low": 0.04807269450031435
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.03034718832320202,
+              "ci95_low": 0.011230854086228518,
+              "ci95_high": 0.048790610426058395,
+              "familywise_one_sided_low": 0.009529441935912925
+            }
+          },
+          "ablations": {
+            "motion": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.0005821280851798433,
+              "ci95_low": -0.0014796871167938829,
+              "ci95_high": 0.0028974595606846482,
+              "familywise_one_sided_low": -0.002245808052819202
+            },
+            "boundary": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.0035728689581863054,
+              "ci95_low": 0.0003853472329697528,
+              "ci95_high": 0.006690542400749096,
+              "familywise_one_sided_low": -0.0006348353308911526
+            },
+            "state_path": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.05366411280718648,
+              "ci95_low": 0.03613388693872321,
+              "ci95_high": 0.07176155785731386,
+              "familywise_one_sided_low": 0.02928485700041183
+            },
+            "volatility_liquidity": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.06337901392105239,
+              "ci95_low": 0.043433294582373196,
+              "ci95_high": 0.08439062743216863,
+              "familywise_one_sided_low": 0.037281787890561656
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-20",
+              "intervals": 147,
+              "C_dev_minus_A_dev_mean": 0.08867787831117513,
+              "C_dev_minus_B_mean": 0.04598271510811898
+            },
+            {
+              "session_date": "2026-07-21",
+              "intervals": 111,
+              "C_dev_minus_A_dev_mean": 0.11789654456951738,
+              "C_dev_minus_B_mean": -0.05553421805618782
+            },
+            {
+              "session_date": "2026-07-22",
+              "intervals": 141,
+              "C_dev_minus_A_dev_mean": 0.11927084067336388,
+              "C_dev_minus_B_mean": -0.09959364655762747
+            },
+            {
+              "session_date": "2026-07-23",
+              "intervals": 300,
+              "C_dev_minus_A_dev_mean": 0.15882973369306042,
+              "C_dev_minus_B_mean": 0.13123343533559578
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        },
+        "rehedge_sell_occurrence": {
+          "bins": 25972,
+          "intervals": 688,
+          "targets": 686,
+          "observed_rate": 0.02641306021869706,
+          "mean_predictions": {
+            "A_common": 0.03402785915403557,
+            "A_level": 0.02641306021869706,
+            "A_dev": 0.026602991994382097,
+            "B": 0.0264130602187345,
+            "C_dev": 0.029418453179037424
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.10302827122677702,
+              "ci95_low": 0.07749355529803072,
+              "ci95_high": 0.13073761022851993,
+              "familywise_one_sided_low": 0.07595336907025643
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.05298298437748725,
+              "ci95_low": 0.002015009093255054,
+              "ci95_high": 0.10464472947810409,
+              "familywise_one_sided_low": -0.0027228320955555115
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.03683244928408225,
+              "ci95_low": 0.01189732190076354,
+              "ci95_high": 0.0634884554155829,
+              "familywise_one_sided_low": 0.010128068084588182
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.027303979301406253,
+              "ci95_low": 0.009329572381286207,
+              "ci95_high": 0.04458932952333103,
+              "familywise_one_sided_low": 0.00788071059911901
+            }
+          },
+          "ablations": {
+            "motion": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.0031196589070023716,
+              "ci95_low": -2.2984685566250947e-05,
+              "ci95_high": 0.006179268726489984,
+              "familywise_one_sided_low": -0.0010349867947236989
+            },
+            "boundary": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.0010270141705812019,
+              "ci95_low": -0.0006708789338864862,
+              "ci95_high": 0.0026208076930762923,
+              "familywise_one_sided_low": -0.0012486861957368093
+            },
+            "state_path": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.040820498568547144,
+              "ci95_low": 0.025183492217428344,
+              "ci95_high": 0.0560567328617006,
+              "familywise_one_sided_low": 0.020302075332839207
+            },
+            "volatility_liquidity": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.06121837131142267,
+              "ci95_low": 0.04080762105282946,
+              "ci95_high": 0.08215062623508278,
+              "familywise_one_sided_low": 0.03449336579496662
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-20",
+              "intervals": 131,
+              "C_dev_minus_A_dev_mean": 0.17638767644224101,
+              "C_dev_minus_B_mean": 0.03782588599006449
+            },
+            {
+              "session_date": "2026-07-21",
+              "intervals": 130,
+              "C_dev_minus_A_dev_mean": 0.04632308467006668,
+              "C_dev_minus_B_mean": 0.07706075715558101
+            },
+            {
+              "session_date": "2026-07-22",
+              "intervals": 125,
+              "C_dev_minus_A_dev_mean": 0.10789573400178655,
+              "C_dev_minus_B_mean": -0.1180971545609542
+            },
+            {
+              "session_date": "2026-07-23",
+              "intervals": 302,
+              "C_dev_minus_A_dev_mean": 0.09360164646608284,
+              "C_dev_minus_B_mean": 0.12000446383081631
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        },
+        "unlock_occurrence": {
+          "bins": 102234,
+          "intervals": 1450,
+          "targets": 1444,
+          "observed_rate": 0.014124459573136138,
+          "mean_predictions": {
+            "A_common": 0.020545080520519274,
+            "A_level": 0.014124459573136138,
+            "A_dev": 0.014155573197204847,
+            "B": 0.014124459573136601,
+            "C_dev": 0.01604755750883961
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.10352855159834895,
+              "ci95_low": 0.08368659572301577,
+              "ci95_high": 0.12403647408887072,
+              "familywise_one_sided_low": 0.08194483017433728
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.05446138328218145,
+              "ci95_low": 0.0131563566020584,
+              "ci95_high": 0.09691232226988453,
+              "familywise_one_sided_low": 0.009111790788503054
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.08514307364491551,
+              "ci95_low": 0.05938923531600397,
+              "ci95_high": 0.1118826063131648,
+              "familywise_one_sided_low": 0.05745487006661563
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.017328272737557965,
+              "ci95_low": 0.007551430796364707,
+              "ci95_high": 0.02727433309942425,
+              "familywise_one_sided_low": 0.00687822107470889
+            }
+          },
+          "ablations": {
+            "magnitude_motion": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.006336273821536567,
+              "ci95_low": 0.0019672009173265503,
+              "ci95_high": 0.010622810249331777,
+              "familywise_one_sided_low": 0.0006509103535182017
+            },
+            "boundary_magnitude": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.02082381624357084,
+              "ci95_low": 0.012173086718601624,
+              "ci95_high": 0.029532496211571002,
+              "familywise_one_sided_low": 0.009336136735646053
+            },
+            "state_path": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.012076140076679055,
+              "ci95_low": 0.003749158416221452,
+              "ci95_high": 0.020345564192513516,
+              "familywise_one_sided_low": 0.0005237007488106855
+            },
+            "volatility_liquidity": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.0028456204320318305,
+              "ci95_low": -0.00047097486998229755,
+              "ci95_high": 0.006202021097286336,
+              "familywise_one_sided_low": -0.0015379558518322399
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-20",
+              "intervals": 300,
+              "C_dev_minus_A_dev_mean": 0.10994611438980446,
+              "C_dev_minus_B_mean": -0.08806294551519027
+            },
+            {
+              "session_date": "2026-07-21",
+              "intervals": 253,
+              "C_dev_minus_A_dev_mean": 0.024429703040116168,
+              "C_dev_minus_B_mean": -0.13903152445498465
+            },
+            {
+              "session_date": "2026-07-22",
+              "intervals": 274,
+              "C_dev_minus_A_dev_mean": 0.06447401503086869,
+              "C_dev_minus_B_mean": -0.1524371929254672
+            },
+            {
+              "session_date": "2026-07-23",
+              "intervals": 623,
+              "C_dev_minus_A_dev_mean": 0.14973671029383184,
+              "C_dev_minus_B_mean": 0.29266557939391535
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        }
+      },
+      "internal_reuse": {
+        "rehedge_buy_occurrence": {
+          "bins": 5136,
+          "intervals": 133,
+          "targets": 133,
+          "observed_rate": 0.02589563862928349,
+          "mean_predictions": {
+            "A_common": 0.03546387215650895,
+            "A_level": 0.024443567840019796,
+            "A_dev": 0.02448738734032763,
+            "B": 0.022557344490413397,
+            "C_dev": 0.027396936374020932
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.10165012695374584,
+              "ci95_low": 0.04720750044219753,
+              "ci95_high": 0.15746714575154347,
+              "familywise_one_sided_low": 0.04224345476520039
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.04058132681642557,
+              "ci95_low": -0.07093523774585428,
+              "ci95_high": 0.15760017061312018,
+              "familywise_one_sided_low": -0.0814760215335705
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.05705863030171279,
+              "ci95_low": -0.009878099911430996,
+              "ci95_high": 0.1324479818617655,
+              "familywise_one_sided_low": -0.015296376401487096
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.00971903826154625,
+              "ci95_low": -0.05710570656709579,
+              "ci95_high": 0.036854990272569915,
+              "familywise_one_sided_low": -0.061223303257733945
+            }
+          },
+          "ablations": {
+            "motion": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.0004139260017983582,
+              "ci95_low": -0.0033673647770073502,
+              "ci95_high": 0.00415243853994014,
+              "familywise_one_sided_low": -0.004488783476423224
+            },
+            "boundary": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.005978610924803595,
+              "ci95_low": -0.002177620000926991,
+              "ci95_high": 0.014075466905867098,
+              "familywise_one_sided_low": -0.004811652221428235
+            },
+            "state_path": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.049161712604660644,
+              "ci95_low": 0.010560669904859214,
+              "ci95_high": 0.08734937695804244,
+              "familywise_one_sided_low": -0.0026865451410451355
+            },
+            "volatility_liquidity": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.04056528804714205,
+              "ci95_low": 0.006425397558514904,
+              "ci95_high": 0.07536846813166599,
+              "familywise_one_sided_low": -0.004403010032683215
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-24",
+              "intervals": 133,
+              "C_dev_minus_A_dev_mean": 0.10165012695374584,
+              "C_dev_minus_B_mean": 0.04058132681642557
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        },
+        "rehedge_sell_occurrence": {
+          "bins": 6464,
+          "intervals": 155,
+          "targets": 155,
+          "observed_rate": 0.023978960396039604,
+          "mean_predictions": {
+            "A_common": 0.02971178489455186,
+            "A_level": 0.02304586851729146,
+            "A_dev": 0.02330633138480129,
+            "B": 0.022408512043556202,
+            "C_dev": 0.023791725261361214
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.06762236723151056,
+              "ci95_low": 0.010000333106430438,
+              "ci95_high": 0.12564938603675313,
+              "familywise_one_sided_low": 0.003828503226133342
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.2620400568255846,
+              "ci95_low": 0.14386928085571493,
+              "ci95_high": 0.3869989562415409,
+              "familywise_one_sided_low": 0.1334363045654228
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.025222772045994026,
+              "ci95_low": -0.035482897652584354,
+              "ci95_high": 0.09388562620131809,
+              "familywise_one_sided_low": -0.03907056598308445
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.030140814621150147,
+              "ci95_low": -0.007609450696050257,
+              "ci95_high": 0.06850691143026971,
+              "familywise_one_sided_low": -0.010893102481771558
+            }
+          },
+          "ablations": {
+            "motion": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.0013355250453122426,
+              "ci95_low": -0.005974812973871465,
+              "ci95_high": 0.008726316096905381,
+              "familywise_one_sided_low": -0.00826032461362121
+            },
+            "boundary": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.0009859936847287666,
+              "ci95_low": -0.003846169522138898,
+              "ci95_high": 0.0018880599026771562,
+              "familywise_one_sided_low": -0.004967500219497706
+            },
+            "state_path": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.0009735432694640712,
+              "ci95_low": -0.038402253915614054,
+              "ci95_high": 0.03632138667287945,
+              "familywise_one_sided_low": -0.05267487159558381
+            },
+            "volatility_liquidity": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.030887627607731408,
+              "ci95_low": -0.013938212084082264,
+              "ci95_high": 0.072697886614028,
+              "familywise_one_sided_low": -0.02709354375504718
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-24",
+              "intervals": 155,
+              "C_dev_minus_A_dev_mean": 0.06762236723151056,
+              "C_dev_minus_B_mean": 0.2620400568255846
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        },
+        "unlock_occurrence": {
+          "bins": 29091,
+          "intervals": 298,
+          "targets": 295,
+          "observed_rate": 0.010140593310645905,
+          "mean_predictions": {
+            "A_common": 0.016824065957787942,
+            "A_level": 0.011532638081306062,
+            "A_dev": 0.011585872910902704,
+            "B": 0.010898203624932807,
+            "C_dev": 0.012450559324708559
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.15439331728337866,
+              "ci95_low": 0.11072081358476561,
+              "ci95_high": 0.19926467620049582,
+              "familywise_one_sided_low": 0.10781360209895595
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.17482582997070473,
+              "ci95_low": 0.07978679986271191,
+              "ci95_high": 0.26620846067512727,
+              "familywise_one_sided_low": 0.07377909487411309
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.1513694361200509,
+              "ci95_low": 0.06988533186828225,
+              "ci95_high": 0.24368919621914675,
+              "familywise_one_sided_low": 0.06307482507520226
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": -0.016876800078115674,
+              "ci95_low": -0.036704956642273016,
+              "ci95_high": 0.0026922121521116534,
+              "familywise_one_sided_low": -0.038577767440448246
+            }
+          },
+          "ablations": {
+            "magnitude_motion": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.021025969330431604,
+              "ci95_low": 0.010617989477841192,
+              "ci95_high": 0.031778246142138034,
+              "familywise_one_sided_low": 0.006263157992827561
+            },
+            "boundary_magnitude": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.04368170858788392,
+              "ci95_low": 0.023950246274818583,
+              "ci95_high": 0.06387395710087039,
+              "familywise_one_sided_low": 0.01712132275051422
+            },
+            "state_path": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.0008429595685845246,
+              "ci95_low": -0.02480699034580177,
+              "ci95_high": 0.021671148452608174,
+              "familywise_one_sided_low": -0.03544576538009907
+            },
+            "volatility_liquidity": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.007015514310957411,
+              "ci95_low": -3.812304079234684e-05,
+              "ci95_high": 0.014007542602052439,
+              "familywise_one_sided_low": -0.0024030281296623032
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-24",
+              "intervals": 298,
+              "C_dev_minus_A_dev_mean": 0.15439331728337866,
+              "C_dev_minus_B_mean": 0.17482582997070473
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        }
+      }
+    },
+    "500": {
+      "development": {
+        "rehedge_buy_occurrence": {
+          "bins": 63771,
+          "intervals": 699,
+          "targets": 695,
+          "observed_rate": 0.010898370732778223,
+          "mean_predictions": {
+            "A_common": 0.015921328127466685,
+            "A_level": 0.010898370732778223,
+            "A_dev": 0.010980283642829783,
+            "B": 0.010898370732778865,
+            "C_dev": 0.012778610784260626
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.17212445754868097,
+              "ci95_low": 0.13362551367167189,
+              "ci95_high": 0.20788101061431016,
+              "familywise_one_sided_low": 0.13033882053685844
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.08393316598140649,
+              "ci95_low": 0.029462424392830488,
+              "ci95_high": 0.14129871318962803,
+              "familywise_one_sided_low": 0.024440642215637874
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.08382075232965502,
+              "ci95_low": 0.05056437261837514,
+              "ci95_high": 0.11693776970714928,
+              "familywise_one_sided_low": 0.048079847850544415
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.0281380469843711,
+              "ci95_low": 0.009553480032455134,
+              "ci95_high": 0.04605981026653305,
+              "familywise_one_sided_low": 0.007823668361600467
+            }
+          },
+          "ablations": {
+            "motion": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.0018556140748456024,
+              "ci95_low": -0.0012996416806993671,
+              "ci95_high": 0.005053016064046998,
+              "familywise_one_sided_low": -0.0024369434322832613
+            },
+            "boundary": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.006607816635715685,
+              "ci95_low": 0.0008639235353815412,
+              "ci95_high": 0.012336198943942306,
+              "familywise_one_sided_low": -0.0015904147829206043
+            },
+            "state_path": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.08357508161683035,
+              "ci95_low": 0.05662558043673605,
+              "ci95_high": 0.11138158978046803,
+              "familywise_one_sided_low": 0.04750354023055664
+            },
+            "volatility_liquidity": {
+              "cluster_count": 699,
+              "draws": 5000,
+              "mean": 0.059101826667524796,
+              "ci95_low": 0.03628379125685069,
+              "ci95_high": 0.08290861926639718,
+              "familywise_one_sided_low": 0.027913778305129314
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-20",
+              "intervals": 147,
+              "C_dev_minus_A_dev_mean": 0.12129347220349482,
+              "C_dev_minus_B_mean": 0.043504611828447004
+            },
+            {
+              "session_date": "2026-07-21",
+              "intervals": 111,
+              "C_dev_minus_A_dev_mean": 0.13926263514797832,
+              "C_dev_minus_B_mean": -0.011171449250883087
+            },
+            {
+              "session_date": "2026-07-22",
+              "intervals": 141,
+              "C_dev_minus_A_dev_mean": 0.1752334046420297,
+              "C_dev_minus_B_mean": -0.07740904796563673
+            },
+            {
+              "session_date": "2026-07-23",
+              "intervals": 300,
+              "C_dev_minus_A_dev_mean": 0.2077293095222082,
+              "C_dev_minus_B_mean": 0.21476270570741407
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        },
+        "rehedge_sell_occurrence": {
+          "bins": 51949,
+          "intervals": 688,
+          "targets": 685,
+          "observed_rate": 0.013186009355329265,
+          "mean_predictions": {
+            "A_common": 0.017029147301708646,
+            "A_level": 0.013186009355329265,
+            "A_dev": 0.013286421429431112,
+            "B": 0.013186009355329271,
+            "C_dev": 0.014970616595683928
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.13493112571453206,
+              "ci95_low": 0.10116881006565653,
+              "ci95_high": 0.16918204446614515,
+              "familywise_one_sided_low": 0.09828655757211255
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.09040059388021228,
+              "ci95_low": 0.035495447484091294,
+              "ci95_high": 0.15102876533578227,
+              "familywise_one_sided_low": 0.03141335633933219
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.03649983904247856,
+              "ci95_low": 0.011485132112303308,
+              "ci95_high": 0.06393605161603444,
+              "familywise_one_sided_low": 0.009603711832992932
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.026491341622079542,
+              "ci95_low": 0.009111929511686061,
+              "ci95_high": 0.04360732819345348,
+              "familywise_one_sided_low": 0.0073580188274768275
+            }
+          },
+          "ablations": {
+            "motion": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.004791628581336167,
+              "ci95_low": -0.0010864746834856325,
+              "ci95_high": 0.010601394465960706,
+              "familywise_one_sided_low": -0.002893986863944042
+            },
+            "boundary": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.0054655383722953055,
+              "ci95_low": -0.0010745663892608056,
+              "ci95_high": 0.012328011964053288,
+              "familywise_one_sided_low": -0.003690517879127397
+            },
+            "state_path": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.06400302057515363,
+              "ci95_low": 0.04233386664405101,
+              "ci95_high": 0.08724671659141985,
+              "familywise_one_sided_low": 0.035861586868698905
+            },
+            "volatility_liquidity": {
+              "cluster_count": 688,
+              "draws": 5000,
+              "mean": 0.058828428852167505,
+              "ci95_low": 0.03710474460455786,
+              "ci95_high": 0.08087994606447847,
+              "familywise_one_sided_low": 0.030008867679865443
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-20",
+              "intervals": 131,
+              "C_dev_minus_A_dev_mean": 0.24635941214543192,
+              "C_dev_minus_B_mean": 0.09781649338881902
+            },
+            {
+              "session_date": "2026-07-21",
+              "intervals": 130,
+              "C_dev_minus_A_dev_mean": 0.09995518888995567,
+              "C_dev_minus_B_mean": 0.10429965892435583
+            },
+            {
+              "session_date": "2026-07-22",
+              "intervals": 125,
+              "C_dev_minus_A_dev_mean": 0.10379559749494405,
+              "C_dev_minus_B_mean": -0.09552612630606938
+            },
+            {
+              "session_date": "2026-07-23",
+              "intervals": 302,
+              "C_dev_minus_A_dev_mean": 0.11453942800657034,
+              "C_dev_minus_B_mean": 0.1581571459726595
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        },
+        "unlock_occurrence": {
+          "bins": 204491,
+          "intervals": 1450,
+          "targets": 1445,
+          "observed_rate": 0.007066325657363893,
+          "mean_predictions": {
+            "A_common": 0.010275717365464706,
+            "A_level": 0.007066325657363893,
+            "A_dev": 0.007082660795502872,
+            "B": 0.007066325657363892,
+            "C_dev": 0.00797905485400883
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.1028005053458278,
+              "ci95_low": 0.08459658858641672,
+              "ci95_high": 0.12111660046459115,
+              "familywise_one_sided_low": 0.08302629460457026
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.07855358947996255,
+              "ci95_low": 0.036537323201688086,
+              "ci95_high": 0.12090298235323452,
+              "familywise_one_sided_low": 0.033801325668937524
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.08214492224943958,
+              "ci95_low": 0.05659338330839074,
+              "ci95_high": 0.10804673164551618,
+              "familywise_one_sided_low": 0.05478214022911685
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.014793158860887213,
+              "ci95_low": 0.005653394479363142,
+              "ci95_high": 0.023914223665283667,
+              "familywise_one_sided_low": 0.004750574032714808
+            }
+          },
+          "ablations": {
+            "magnitude_motion": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.0010047381821806055,
+              "ci95_low": -0.000520599670814703,
+              "ci95_high": 0.0025739076045390077,
+              "familywise_one_sided_low": -0.0010918819711936722
+            },
+            "boundary_magnitude": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.012732951230328336,
+              "ci95_low": 0.005504468100561408,
+              "ci95_high": 0.019912745882659913,
+              "familywise_one_sided_low": 0.00283128171584027
+            },
+            "state_path": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.012723788297682014,
+              "ci95_low": 0.0041457318920529555,
+              "ci95_high": 0.020267632523134408,
+              "familywise_one_sided_low": 0.0008790618440106745
+            },
+            "volatility_liquidity": {
+              "cluster_count": 1450,
+              "draws": 5000,
+              "mean": 0.0038257198357247455,
+              "ci95_low": 0.0006063834257365371,
+              "ci95_high": 0.007271763756776942,
+              "familywise_one_sided_low": -0.0005471803358256351
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-20",
+              "intervals": 300,
+              "C_dev_minus_A_dev_mean": 0.10053841226025777,
+              "C_dev_minus_B_mean": -0.04815047426532837
+            },
+            {
+              "session_date": "2026-07-21",
+              "intervals": 253,
+              "C_dev_minus_A_dev_mean": 0.04506311481489702,
+              "C_dev_minus_B_mean": -0.1413887374107785
+            },
+            {
+              "session_date": "2026-07-22",
+              "intervals": 274,
+              "C_dev_minus_A_dev_mean": 0.06154284748289501,
+              "C_dev_minus_B_mean": -0.12667072937440105
+            },
+            {
+              "session_date": "2026-07-23",
+              "intervals": 623,
+              "C_dev_minus_A_dev_mean": 0.1454823448072083,
+              "C_dev_minus_B_mean": 0.3191444260659022
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        }
+      },
+      "internal_reuse": {
+        "rehedge_buy_occurrence": {
+          "bins": 10270,
+          "intervals": 133,
+          "targets": 133,
+          "observed_rate": 0.012950340798442064,
+          "mean_predictions": {
+            "A_common": 0.017755169576318734,
+            "A_level": 0.012162225284205764,
+            "A_dev": 0.012206493644904646,
+            "B": 0.01104372923135351,
+            "C_dev": 0.014116060072093746
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.09465100055236535,
+              "ci95_low": 0.016109884686523322,
+              "ci95_high": 0.17433025221702197,
+              "familywise_one_sided_low": 0.008676317283142854
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.06073068852002502,
+              "ci95_low": -0.05293527092417311,
+              "ci95_high": 0.18339702747465375,
+              "familywise_one_sided_low": -0.06582668506584073
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.0552992209006325,
+              "ci95_low": -0.013369211927078881,
+              "ci95_high": 0.12966031343332157,
+              "familywise_one_sided_low": -0.017301714721389378
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.010280766158802941,
+              "ci95_low": -0.052739975249481735,
+              "ci95_high": 0.03400797097070745,
+              "familywise_one_sided_low": -0.05629459830882441
+            }
+          },
+          "ablations": {
+            "motion": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.0020745957984873507,
+              "ci95_low": -0.008539299450986054,
+              "ci95_high": 0.004482770920869208,
+              "familywise_one_sided_low": -0.010778177037195146
+            },
+            "boundary": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.011517242471823303,
+              "ci95_low": -0.02553786599943651,
+              "ci95_high": 0.0026682336091061686,
+              "familywise_one_sided_low": -0.030287769341316752
+            },
+            "state_path": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.05659195379461061,
+              "ci95_low": -0.004099295392324648,
+              "ci95_high": 0.11838067471259778,
+              "familywise_one_sided_low": -0.024885207196401436
+            },
+            "volatility_liquidity": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": 0.04151862387392519,
+              "ci95_low": 0.0010470552108732827,
+              "ci95_high": 0.08044123530187354,
+              "familywise_one_sided_low": -0.014355110254093096
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-24",
+              "intervals": 133,
+              "C_dev_minus_A_dev_mean": 0.09465100055236535,
+              "C_dev_minus_B_mean": 0.06073068852002502
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        },
+        "rehedge_sell_occurrence": {
+          "bins": 12938,
+          "intervals": 155,
+          "targets": 155,
+          "observed_rate": 0.011980213325088885,
+          "mean_predictions": {
+            "A_common": 0.014862752764516938,
+            "A_level": 0.011504346485051891,
+            "A_dev": 0.011625709554650258,
+            "B": 0.0113179445779123,
+            "C_dev": 0.01216307542175302
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.09038967046053002,
+              "ci95_low": 0.012618484891882843,
+              "ci95_high": 0.1658251997213931,
+              "familywise_one_sided_low": 0.0061127441878080025
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.22251549939793247,
+              "ci95_low": 0.10986036016315094,
+              "ci95_high": 0.35178141155144155,
+              "familywise_one_sided_low": 0.09944382351078317
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.02483089383627293,
+              "ci95_low": -0.03333527236584487,
+              "ci95_high": 0.09135121921273319,
+              "familywise_one_sided_low": -0.03777200469302074
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.031024974673647013,
+              "ci95_low": -0.005923555064572877,
+              "ci95_high": 0.06721537557098135,
+              "familywise_one_sided_low": -0.008579782699842494
+            }
+          },
+          "ablations": {
+            "motion": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.00526065014114815,
+              "ci95_low": -0.006926646725796529,
+              "ci95_high": 0.01784619104411951,
+              "familywise_one_sided_low": -0.012086184093153807
+            },
+            "boundary": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.0031145099578196865,
+              "ci95_low": -0.009026386709207176,
+              "ci95_high": 0.015304785771317123,
+              "familywise_one_sided_low": -0.013143649965431324
+            },
+            "state_path": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.005857082761637898,
+              "ci95_low": -0.06702462451209276,
+              "ci95_high": 0.051018792344493996,
+              "familywise_one_sided_low": -0.09171006304889218
+            },
+            "volatility_liquidity": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": 0.028764648667254512,
+              "ci95_low": -0.02119260916590293,
+              "ci95_high": 0.07476362787512139,
+              "familywise_one_sided_low": -0.03934166082279526
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-24",
+              "intervals": 155,
+              "C_dev_minus_A_dev_mean": 0.09038967046053002,
+              "C_dev_minus_B_mean": 0.22251549939793247
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        },
+        "unlock_occurrence": {
+          "bins": 58114,
+          "intervals": 298,
+          "targets": 297,
+          "observed_rate": 0.005110644595106171,
+          "mean_predictions": {
+            "A_common": 0.008419097014885218,
+            "A_level": 0.00578154796206136,
+            "A_dev": 0.005801835405280191,
+            "B": 0.005552298410690951,
+            "C_dev": 0.00619855120910006
+          },
+          "paired_interval_comparisons": {
+            "C_dev_minus_A_dev": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.14120330647317567,
+              "ci95_low": 0.09997217344072701,
+              "ci95_high": 0.18109805614177868,
+              "familywise_one_sided_low": 0.0956301973491673
+            },
+            "C_dev_minus_B": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.1960153812530045,
+              "ci95_low": 0.10293070780529118,
+              "ci95_high": 0.28907780232971353,
+              "familywise_one_sided_low": 0.09443662073219661
+            },
+            "A_level_minus_A_common": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.14385057530549103,
+              "ci95_low": 0.06583820615675853,
+              "ci95_high": 0.22995870402311389,
+              "familywise_one_sided_low": 0.059544244015120054
+            },
+            "A_dev_minus_A_level": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": -0.0162491903621891,
+              "ci95_low": -0.03348342917234524,
+              "ci95_high": 0.0021406025700547934,
+              "familywise_one_sided_low": -0.03501451703485478
+            }
+          },
+          "ablations": {
+            "magnitude_motion": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.0044813102476854725,
+              "ci95_low": 0.0007994759235460847,
+              "ci95_high": 0.008166499782917823,
+              "familywise_one_sided_low": -0.00021801856197261346
+            },
+            "boundary_magnitude": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.02038195756344835,
+              "ci95_low": 0.007367999893232051,
+              "ci95_high": 0.033534888533864896,
+              "familywise_one_sided_low": 0.002316505690625738
+            },
+            "state_path": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.0006176372889719144,
+              "ci95_low": -0.02308542567738623,
+              "ci95_high": 0.020142864236527648,
+              "familywise_one_sided_low": -0.03166035811236497
+            },
+            "volatility_liquidity": {
+              "cluster_count": 298,
+              "draws": 5000,
+              "mean": 0.009871189258566936,
+              "ci95_low": 0.002923816175376073,
+              "ci95_high": 0.01696703009405528,
+              "familywise_one_sided_low": 0.0007584944807427009
+            }
+          },
+          "per_session": [
+            {
+              "session_date": "2026-07-24",
+              "intervals": 298,
+              "C_dev_minus_A_dev_mean": 0.14120330647317567,
+              "C_dev_minus_B_mean": 0.1960153812530045
+            }
+          ],
+          "role": "diagnostic_only_no_verdict"
+        }
+      }
+    }
+  },
+  "leave_one_session_out": [
+    {
+      "held_out_session": "2026-07-20",
+      "endpoint": "rehedge_buy_occurrence",
+      "training_sessions": [
+        "2026-07-21",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "held_out_bins": 7063,
+      "held_out_targets": 147,
+      "held_out_intervals": 147,
+      "C_dev_minus_A_dev_mean": 0.062151072096800805,
+      "C_dev_minus_B_mean": 0.03823655216941867,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-20",
+      "endpoint": "rehedge_sell_occurrence",
+      "training_sessions": [
+        "2026-07-21",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "held_out_bins": 5580,
+      "held_out_targets": 129,
+      "held_out_intervals": 131,
+      "C_dev_minus_A_dev_mean": 0.16153020209399618,
+      "C_dev_minus_B_mean": 0.04502648076376164,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-20",
+      "endpoint": "unlock_occurrence",
+      "training_sessions": [
+        "2026-07-21",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "held_out_bins": 28013,
+      "held_out_targets": 299,
+      "held_out_intervals": 300,
+      "C_dev_minus_A_dev_mean": 0.0921072278987592,
+      "C_dev_minus_B_mean": -0.07044069849712511,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-21",
+      "endpoint": "rehedge_buy_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "held_out_bins": 8066,
+      "held_out_targets": 111,
+      "held_out_intervals": 111,
+      "C_dev_minus_A_dev_mean": 0.11101884662181356,
+      "C_dev_minus_B_mean": -0.06847518813787658,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-21",
+      "endpoint": "rehedge_sell_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "held_out_bins": 7599,
+      "held_out_targets": 130,
+      "held_out_intervals": 130,
+      "C_dev_minus_A_dev_mean": 0.032602137009478456,
+      "C_dev_minus_B_mean": 0.05797282327175313,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-21",
+      "endpoint": "unlock_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "held_out_bins": 25154,
+      "held_out_targets": 250,
+      "held_out_intervals": 253,
+      "C_dev_minus_A_dev_mean": 0.006748584738202435,
+      "C_dev_minus_B_mean": -0.18204169989479302,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-22",
+      "endpoint": "rehedge_buy_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-23"
+      ],
+      "held_out_bins": 9983,
+      "held_out_targets": 140,
+      "held_out_intervals": 141,
+      "C_dev_minus_A_dev_mean": 0.09128234449907614,
+      "C_dev_minus_B_mean": -0.11422742640272666,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-22",
+      "endpoint": "rehedge_sell_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-23"
+      ],
+      "held_out_bins": 5528,
+      "held_out_targets": 125,
+      "held_out_intervals": 125,
+      "C_dev_minus_A_dev_mean": 0.09018647495588665,
+      "C_dev_minus_B_mean": -0.1585385954021965,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-22",
+      "endpoint": "unlock_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-23"
+      ],
+      "held_out_bins": 25894,
+      "held_out_targets": 273,
+      "held_out_intervals": 274,
+      "C_dev_minus_A_dev_mean": 0.019865727864480133,
+      "C_dev_minus_B_mean": -0.2003002705996259,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.1,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-23",
+      "endpoint": "rehedge_buy_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-22"
+      ],
+      "held_out_bins": 6764,
+      "held_out_targets": 300,
+      "held_out_intervals": 300,
+      "C_dev_minus_A_dev_mean": 0.191053886718034,
+      "C_dev_minus_B_mean": 0.1691617278808118,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-23",
+      "endpoint": "rehedge_sell_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-22"
+      ],
+      "held_out_bins": 7265,
+      "held_out_targets": 302,
+      "held_out_intervals": 302,
+      "C_dev_minus_A_dev_mean": 0.10802824246107211,
+      "C_dev_minus_B_mean": 0.12726013779863318,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.01,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    },
+    {
+      "held_out_session": "2026-07-23",
+      "endpoint": "unlock_occurrence",
+      "training_sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-22"
+      ],
+      "held_out_bins": 23173,
+      "held_out_targets": 622,
+      "held_out_intervals": 623,
+      "C_dev_minus_A_dev_mean": 0.1717908732703489,
+      "C_dev_minus_B_mean": 0.2918964020597141,
+      "B_selected_lambda": 0.01,
+      "C_dev_selected_lambda": 0.1,
+      "role": "session_stability_diagnostic_only_no_selection_no_verdict"
+    }
+  ],
+  "base_rate_attenuation_stress": {
+    "rehedge_buy_occurrence": {
+      "fixed_logit_shift": -0.7419373447293773,
+      "original_mean_increment": 0.12959695737027413,
+      "shifted_mean_increment": 0.2027884536809075,
+      "relative_change": 0.5647624589018433,
+      "role": "development_label_stress_only_non_gating"
+    },
+    "rehedge_sell_occurrence": {
+      "fixed_logit_shift": -0.7419373447293773,
+      "original_mean_increment": 0.10302827122677702,
+      "shifted_mean_increment": 0.1618843824297049,
+      "relative_change": 0.5712617566238576,
+      "role": "development_label_stress_only_non_gating"
+    },
+    "unlock_occurrence": {
+      "fixed_logit_shift": -0.7419373447293773,
+      "original_mean_increment": 0.10352855159834895,
+      "shifted_mean_increment": 0.17982004678478938,
+      "relative_change": 0.7369126101794813,
+      "role": "development_label_stress_only_non_gating"
+    }
+  },
+  "validation_gates": {
+    "canonical_M2_through_M5_002_files_unchanged": true,
+    "all_joint_valid_model_rows_have_finite_allowlisted_features": true,
+    "predictor_allowlists_exclude_identifiers_labels_and_timestamps": true,
+    "A_common_A_level_A_dev_B_C_dev_use_identical_rows": true,
+    "development_contains_only_registered_sessions": true,
+    "internal_reuse_not_in_development_fit_hash": true,
+    "all_C_dev_models_have_no_free_intercept": true,
+    "all_A_dev_models_use_eleven_buckets": true,
+    "full_allowlist_internal_audit_reconciles_937_bins_3_targets": true,
+    "external_sessions_absent_and_not_substituted": true
+  },
+  "uncertainty_limitation": "interval-cluster bootstrap is conditional on observed sessions and does not estimate between-session population variance",
+  "decision": {
+    "development_verdict_allowed": false,
+    "internal_reuse_verdict_allowed": false,
+    "external_verdict_available": false,
+    "price_information_verdict": "not_available_external_pending",
+    "tradeable_edge_claimed": false
+  },
+  "merge_readiness": {
+    "engineering_gates_pass": true,
+    "independent_re_review": "independent_re_review_pending",
+    "ready_to_merge": false
+  },
+  "external_gate": {
+    "registered_sessions": [
+      "2026-07-27",
+      "2026-07-28",
+      "2026-07-29"
+    ],
+    "data_available": false,
+    "satisfied": false,
+    "m5_closed": false
+  },
+  "output_hashes": {
+    "feature_audit": "44183dbf388a9dc86344d3beaea480f0db3242488c66afa937ddef0475ce78b4",
+    "joint_valid_design_matrix": "69deadc6a6d2ed45ff12c15ef7659a73cf09ace74d27b496938dd057569800f2",
+    "predictions": "efa3981a19b962267fb1cff46f92fc8ef19600c8c4181d7ab6fa5512b9228be2"
+  },
+  "canonical_input_file_sha256_before": {
+    "data/interim/state_intervals.parquet": "2146992995904fa68c0860a999438007424c5cb93349146cbc22b526d652fcd7",
+    "data/interim/lifecycle_events.parquet": "de4c478e642c922a59b7a72029c0f48cb83ba2031d79e03b5d128826afe0b8fd",
+    "data/interim/ticks.parquet": "e42bc5abf82a3c75d65dec12007dd03824bd15139ba5ca46e5c270fab64d0936",
+    "data/interim/m5_002/m5_002_interval_audit.parquet": "f0b4160f88136c7cb0fb57129c2df72c44af10996c10a27f16efa8cfcfae6dea",
+    "data/interim/m5_002/m5_002_risk_bin_audit.parquet": "19660420db133ae4b59b8adfb82690bfbb45d5638b5a30889daff9ac8a93a22c",
+    "reports/phase_05/m5_002_state_age_pilot.json": "faacde0db5f8eab00c95463d47cfd01eccdc4f8a0eb6090d4a50bf64c6e2d62f",
+    "reports/phase_05/m5_002_state_age_pilot.md": "a286c261c9080d320ff571ffc532ae29a97211c5d943e79ba5df1cadb29b2fdd"
+  },
+  "canonical_input_file_sha256_after": {
+    "data/interim/state_intervals.parquet": "2146992995904fa68c0860a999438007424c5cb93349146cbc22b526d652fcd7",
+    "data/interim/lifecycle_events.parquet": "de4c478e642c922a59b7a72029c0f48cb83ba2031d79e03b5d128826afe0b8fd",
+    "data/interim/ticks.parquet": "e42bc5abf82a3c75d65dec12007dd03824bd15139ba5ca46e5c270fab64d0936",
+    "data/interim/m5_002/m5_002_interval_audit.parquet": "f0b4160f88136c7cb0fb57129c2df72c44af10996c10a27f16efa8cfcfae6dea",
+    "data/interim/m5_002/m5_002_risk_bin_audit.parquet": "19660420db133ae4b59b8adfb82690bfbb45d5638b5a30889daff9ac8a93a22c",
+    "reports/phase_05/m5_002_state_age_pilot.json": "faacde0db5f8eab00c95463d47cfd01eccdc4f8a0eb6090d4a50bf64c6e2d62f",
+    "reports/phase_05/m5_002_state_age_pilot.md": "a286c261c9080d320ff571ffc532ae29a97211c5d943e79ba5df1cadb29b2fdd"
+  },
+  "deterministic_report_sha256": "70da69e0288a4ba6caf1bb0b34b39d6cb0d8cbdc0e7927cd2b4b4d94c834be8b"
+}

@@ -18,20 +18,30 @@ cause-specific occurrence likelihood for all three endpoints, with the
 approximate six-second unlock timer floor transporting most clearly. External
 validation remains pending and no tradeable-edge claim is made.
 
-The M5-003 causal price-increment design is pre-registered in
-`.local_ai/M5_003_PREREGISTRATION.md` and
-`data/m5_003_preregistration.json`. No price-feature implementation or model
-fit has started.
+The M5-003 causal price-increment pipeline is implemented and frozen under the
+pre-registered contract in `.local_ai/M5_003_PREREGISTRATION.md` and
+`data/m5_003_preregistration.json`. Development and 2026-07-24 internal-reuse
+results are diagnostic only. They create no supported/rejected price verdict
+and no tradeable-edge claim.
 
-The next executable task is to acquire the pre-registered 2026-07-27 through
-2026-07-29 XAUUSD tick sessions and the covering MT5 report. Raw files remain
-in external, access-controlled storage; only manifests, aggregate reports, and
-reproducible processing logic are committed.
+The implementation Draft PR requires an independent Claude re-review before
+merge because it was produced by one developer. The remaining data task is to
+acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick sessions
+and the covering MT5 report. Raw files remain in external, access-controlled
+storage; only manifests, aggregate reports, and reproducible processing logic
+are committed.
 
 Rebuild the local M5-002 pilot outputs and aggregate report with:
 
 ```bash
 python scripts/build_m5_state_age_pilot.py
+```
+
+Rebuild the local M5-003 causal feature/model artifacts and committed aggregate
+reports with:
+
+```bash
+python scripts/build_m5_price_increment.py
 ```
 
 ## Layout

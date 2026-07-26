@@ -149,3 +149,27 @@ Limitation: This is an internal Thursday-to-Friday pilot. It makes no
 tradeable-edge claim, occurrence likelihood remains base-rate-sensitive, and
 M5 cannot close before the pre-registered 2026-07-27 through 2026-07-29
 external evaluation.
+
+## F-009 — Internal price increments are diagnostic, not validation
+
+Status: Pipeline frozen; independent review and external validation pending
+Confidence: Preliminary
+
+Evidence:
+
+- At the one-second anchor, `C_dev - A_dev` is positive in the 2026-07-24
+  internal-reuse diagnostic for all three endpoints.
+- Four-session leave-one-session-out point estimates are also positive, but
+  vary materially by endpoint and session.
+- The 2026-07-24 price hypotheses were already inspected during M4, and the
+  retrospective 2026-07-20..22 sessions were acquired after earlier results
+  were known.
+
+Finding: The implemented causal price features contain incremental internal
+signal worth external evaluation, but no registered session has yet provided
+an untouched price result. The current estimates cannot support or reject the
+price hypothesis and do not establish a tradeable edge.
+
+Limitation: The implementation requires independent Claude re-review before
+merge, and only the frozen evaluation on 2026-07-27..29 may create the M5-003
+endpoint verdicts.

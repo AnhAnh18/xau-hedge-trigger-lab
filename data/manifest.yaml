@@ -90,18 +90,46 @@ m5_002_pilot:
 m5_003_preregistration:
   id: m5_003_causal_price_increment_v1
   registered_on: "2026-07-26"
-  status: preregistered_not_implemented
+  status: preregistered_implementation_authorized
   human_readable_plan: .local_ai/M5_003_PREREGISTRATION.md
-  human_readable_sha256: 01b7193394b6bb2e24bca3c9deb95a19d78398f1a11f8636151eb46f8fcd5a74
+  human_readable_sha256: 41e29bbe6121aa36ec5547e24cc21674655854268054e9c86da61b7c634af66d
   machine_readable_plan: data/m5_003_preregistration.json
-  machine_readable_sha256: 1c0b59a897b4a4b7e4a4e2019e11d05b2aee400a75f2576efa74311c64f83478
-  current_task_authorizes_implementation: false
-  current_task_authorizes_price_model_fit: false
+  machine_readable_sha256: a9650040f575f88022bf6b94f49f2458c7b38adc5af3edacf153ce10c43bd64b
+  current_task_authorizes_implementation: true
+  current_task_authorizes_price_model_fit: true
   canonical_outputs_mutable: false
   external_gate_sessions:
     - "2026-07-27"
     - "2026-07-28"
     - "2026-07-29"
+
+m5_003_pipeline:
+  status: pipeline_frozen_external_pending_zero_validated_price_results
+  implementation_date: "2026-07-26"
+  primary_bin_width_ms: 1000
+  causal_anchor_sensitivity_width_ms: 500
+  development_sessions:
+    - "2026-07-20"
+    - "2026-07-21"
+    - "2026-07-22"
+    - "2026-07-23"
+  internal_reuse_session: "2026-07-24"
+  internal_reuse_role: diagnostic_only_no_verdict
+  external_sessions:
+    - "2026-07-27"
+    - "2026-07-28"
+    - "2026-07-29"
+  local_outputs:
+    - data/interim/m5_003/m5_003_feature_audit.parquet
+    - data/interim/m5_003/m5_003_joint_valid_design_matrix.parquet
+    - data/interim/m5_003/m5_003_predictions.parquet
+  frozen_model_manifest: reports/phase_05/m5_003_frozen_model_manifest.json
+  aggregate_report_json: reports/phase_05/m5_003_price_increment_report.json
+  aggregate_report_markdown: reports/phase_05/m5_003_price_increment_report.md
+  independent_re_review_status: independent_re_review_pending
+  merge_allowed_before_independent_re_review: false
+  external_gate_satisfied: false
+  raw_files_committed_to_git: false
 
 datasets:
   - id: trades_week_2026_06_28_07_04

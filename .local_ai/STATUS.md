@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M5 — Trigger Inference (M5-002 pilot complete; external validation pending)
+M5 — Trigger Inference (M5-003 frozen; independent review and external validation pending)
 
 ## Completed
 
@@ -50,6 +50,11 @@ M5 — Trigger Inference (M5-002 pilot complete; external validation pending)
 - Supplemental parameter-isolation hash and M2-M4 canonical tick protection
 - M5-002 aggregate report and deterministic local-output hashes
 - M5-003 causal price-increment preregistration and machine-readable contract
+- M5-003 causal price-feature construction at 1 second and 500 milliseconds
+- Development-only A_dev, B, and C_dev fitting with interval GroupKFold
+- Joint-valid feature accounting, required ablations, and LOSO diagnostics
+- Frozen M5-003 model manifest and deterministic aggregate report
+- Explicit single-developer Claude re-review gate before merge
 
 ## Current data
 
@@ -72,19 +77,23 @@ calendar sessions. The old within-interval conditional calculation is retained
 only as a degeneracy audit because its risk set ends at the observed outcome;
 it affects no verdict or gate.
 
-M5-003 inputs, endpoint feature allowlists, unlock timer-floor conditioning,
-pooled development scope, GroupKFold protocol, regularization, multiplicity,
-ablations, and null-permitting merge rules are now pre-registered. No M5-003
-feature or model code has been implemented.
+M5-003 now implements the locked endpoint feature allowlists, unlock timer-floor
+conditioning, joint-valid cohort, pooled-development GroupKFold, fixed
+regularization, ablations, and interval-cluster inference. The pipeline and
+parameter manifest are frozen before external evaluation. Internal reuse and
+leave-one-session-out results are published as diagnostics only; they cannot
+create a price verdict or tradeable-edge claim.
 
 ## Next executable task
+
+T-022 — obtain independent Claude re-review of the completed M5-003 Draft PR.
+The review is a merge blocker and must cover the corrected 11-bucket age grid,
+joint-valid accounting, leakage isolation, frozen hashes, model comparisons,
+and verdict language.
 
 M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
 sessions and a trade report covering their lifecycle events. Raw files remain
 outside Git. The intake code is ready; real acquisition remains pending.
-
-M5-003 implementation requires a separate explicit authorization after review
-of `.local_ai/M5_003_PREREGISTRATION.md`.
 
 The registered retrospective supplemental 2026-07-20 through 2026-07-22
 cohort now supplies common-hour per-session descriptive rates only. It is
@@ -93,6 +102,8 @@ non-gating and does not replace the pre-registered external sessions.
 ## Current blockers
 
 - Pre-registered external tick/report sessions are not yet available
+- Independent Claude re-review of the single-developer M5-003 implementation
+  is not yet recorded
 - Server timezone is inferred as UTC+3 for the current window but is not
   formally or globally confirmed
 - MT5 report event time has only second-level resolution

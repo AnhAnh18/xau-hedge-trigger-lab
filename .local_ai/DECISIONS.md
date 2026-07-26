@@ -244,7 +244,8 @@ remediation.
 ## D-013 — Lock M5-003 development scope and price-increment estimand
 
 Date: 2026-07-26
-Status: Accepted before M5-003 feature construction or fitting
+Status: Accepted before M5-003 feature construction or fitting; model-baseline
+clauses superseded by D-014
 
 Decision: Pool retrospective 2026-07-20..22 with internal 2026-07-23 for
 development only. Freeze 2026-07-24 out of preprocessing, CV, fitting,
@@ -266,3 +267,28 @@ inspected in M4 and cannot honestly be called untouched.
 Consequences: Supplemental dates may train B/C but can never validate or gate.
 All fitting choices are locked before price construction. Null price findings
 are mergeable, and no result may be promoted to a tradeable-edge claim.
+
+## D-014 — Correct M5-003 age grid and require independent re-review
+
+Date: 2026-07-26
+Status: Accepted before M5-003 price-feature construction or fitting;
+supersedes D-013 only for the age grid and model-baseline comparison
+
+Decision: Fit `A_dev` on the exact 11-bucket M5-002 grid, including `[5,6)`,
+`[6,8)`, and `[8,10)`. Unlock's age-at-start floor therefore retains seven
+buckets, not five. Keep `A_common` frozen for provenance, use development-fit
+`A_dev` as the headline baseline, and compare `C_dev - A_dev` with no free
+intercept in `C_dev`.
+
+Reason: The merged M5-003 preregistration incorrectly listed nine buckets
+while simultaneously requiring the exact M5-002 grid. Source code, the
+committed M5-002 report, and fitted parameter hash all prove that M5-002 uses
+11 buckets. A nine-bucket `A_dev` would make the registered shape-transport
+diagnostic incompatible with `A_common` and would obscure the already locked
+six-second boundary.
+
+Consequences: This correction was made before any M5-003 price fit and changes
+no M5-002 output. Because one developer is implementing the pipeline, the
+completed Draft PR requires an independent Claude re-review covering this
+correction, cohort accounting, leakage controls, frozen hashes, comparisons,
+and verdict language before merge.

@@ -1,6 +1,7 @@
 # M5-003 Causal Price-Increment Preregistration
 
-Status: Registered on 2026-07-26; implementation and fitting have not started.
+Status: Registered on 2026-07-26; implementation authorized on 2026-07-26.
+No M5-003 price fit preceded the amendments recorded in this document.
 
 Machine-readable contract:
 `data/m5_003_preregistration.json`.
@@ -13,9 +14,10 @@ registered M5-003 development cohort. The frozen M5-002 baseline remains an
 immutable provenance and transport reference, not the price-increment
 headline baseline.
 
-This document authorizes no feature build or model fit. M2 through M5-002
-canonical outputs are immutable. P/L, entry lineage, black-box boosting,
-post-action ticks, and tradeable-edge claims remain out of scope.
+The user separately authorized the registered feature build and model fit on
+2026-07-26. M2 through M5-002 canonical outputs are immutable. P/L, entry
+lineage, black-box boosting, post-action ticks, and tradeable-edge claims
+remain out of scope.
 
 ## Immutable M5-002 input
 
@@ -277,9 +279,9 @@ All models are endpoint-specific discrete-time Bernoulli hazards.
 - `A_dev`: empirical state-age hazard refit on the exact endpoint-specific,
   joint-valid M5-003 development bins with the same registered age grid and
   Jeffreys smoothing `alpha=0.5` as M5-002:
-  `[0,1)`, `[1,2)`, `[2,3)`, `[3,5)`, `[5,10)`, `[10,20)`, `[20,30)`,
-  `[30,60)`, and `[60,+inf)`. Unlock primary inference uses only the five
-  floor-eligible buckets beginning at age five. The grid and smoothing are
+  `[0,1)`, `[1,2)`, `[2,3)`, `[3,5)`, `[5,6)`, `[6,8)`, `[8,10)`,
+  `[10,20)`, `[20,30)`, `[30,60)`, and `[60,+inf)`. Unlock primary inference
+  uses only the seven floor-eligible buckets beginning at age five. The grid and smoothing are
   fixed; there is no bucket or smoothing selection.
 - `B`: unweighted logistic hazard with an unpenalized intercept and exactly the
   endpoint price allowlist. State age is forbidden.
@@ -457,3 +459,15 @@ rejected price findings if:
 - no P/L optimization or tradeable-edge conclusion appears.
 
 Null price findings are valid research results and do not block merge.
+
+## Independent re-review gate
+
+The 9-versus-11-bucket mismatch was discovered only after the preregistration
+PR had merged. This dated correction restores the exact M5-002 grid and does
+not inspect any M5-003 price fit. Because the implementation is being produced
+by one developer, the completed M5-003 branch requires an independent Claude
+re-review before merge. The review must explicitly cover the bucket correction,
+joint-valid cohort accounting, leakage isolation, frozen-manifest hashes,
+model comparisons, and report verdict language. Until that review is recorded,
+the implementation PR remains draft and `independent_re_review_pending` is a
+blocking merge gate.

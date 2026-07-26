@@ -20,3 +20,5 @@
 - [x] T-018 Build deterministic M5-001 acquisition validator and dry-run gate
 - [x] T-019 Register and validate retrospective supplemental ticks for 2026-07-20 through 2026-07-22
 - [x] T-020 Write and lock M5-003 causal price-increment preregistration
+- [x] T-021 Implement M5-003 causal price-increment pipeline
+- [ ] T-022 Obtain independent Claude re-review of M5-003 implementation
