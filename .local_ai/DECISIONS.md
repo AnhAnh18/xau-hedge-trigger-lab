@@ -89,3 +89,98 @@ matched controls.
 Reason: Arbitrary IDs are not predictors, the raw state-age tail is too sparse
 for an unconstrained numeric effect, and unbounded normalized retracement is
 dominated by a small number of near-zero prior ranges.
+
+## D-007 — Treat UTC+3 as a window-scoped timezone inference
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Use `UTC+03:00` as the inferred server timezone for the observed
+July 2026 tick window. Propagate that inference to reports from the same MT5
+account server in the June/July 2026 summer period, while marking it as
+high-confidence but not formally or globally confirmed.
+
+Reason: The only tick gap longer than 60 seconds occurs around server midnight
+to 01:00, and the highest tick-count hours are 16–18 server time. These
+independent observations are consistent with UTC+3 for this window.
+
+Consequences: Session context may use server clock under this recorded
+assumption. No year-round DST rule may be inferred without additional data or
+broker confirmation.
+
+## D-008 — Use canonical tradeable time and common-hour support in M5
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Clip M2 intervals to merged tick coverage, split them at midnight,
+exclude full consecutive-tick gaps longer than 60 seconds, and pause state age
+inside those gaps. Until recurrence is observed across sessions, classify a
+gap as `unknown_coverage_gap`, not as a scheduled market closure.
+
+All A/B/C headline comparisons use identical bins restricted to server hours
+12–23, the coverage support shared by development and holdout. This aligns
+coverage but does not align base rates: the corrected common-hour development
+/ holdout target-density ratio is 2.100x.
+
+Preserve zero-duration intervals for accounting only and exclude them from the
+primary risk-bin estimand. Exclude left-truncated intervals from primary
+inference relative to merged coverage. Append a synthetic right-censored state
+tail from the final M2 event to tick coverage end without modifying M2.
+
+Reason: Start-date duration aggregation assigns after-midnight time to the
+wrong day and counts a 3,720.501-second maintenance break as actionable risk.
+The current development day also lacks server hours 01–11, which prevents a
+full-day comparison with holdout. Aligning hours cannot remove real between-day
+rate variation or the day-of-week confound.
+
+Consequences: Legacy totals remain published for reconciliation, but they are
+not model exposure. Risk-bin generation must use canonical fragments and the
+tradeable state-age clock. M5 v1 primary conclusions apply only to 12:00–24:00
+server time and cannot be generalized to the Asian session.
+
+## D-009 — Pre-register external M5 sessions before modelling
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Register 2026-07-27 through 2026-07-29 as the first external
+validation sessions. Require full XAUUSD ticks plus a trade report covering
+their lifecycle events.
+
+Reason: The current data contains one partial and one near-full tick session.
+Selecting validation dates after seeing model results would create avoidable
+selection bias.
+
+Consequences: M5 may produce a clearly labelled pilot before acquisition, but
+the milestone cannot close. Any replacement date requires a dated manifest
+amendment before replacement results are inspected.
+
+Primary external inference remains fixed to server hours 12:00–24:00. A
+full-session analysis on the same three dates is pre-registered as secondary;
+it cannot override the primary verdict.
+
+## D-010 — Use paired and conditional M5 timing comparisons
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Keep paired per-interval likelihood increments `C - A_common` and
+`C - B` as headline statistics and add a within-interval conditional timing
+statistic as co-primary. The conditional statistic includes intervals with
+exactly one representable event and cancels the interval intercept.
+
+Occurrence hazard remains the occurrence model; the conditional statistic is
+not multiplied back into occurrence and does not include censored intervals.
+
+Raw holdout calibration is descriptive. Post-hoc intercept recalibration may
+only diagnose whether failure is intercept-only or also affects slope. It must
+be labelled as using holdout labels and cannot affect a verdict or gate.
+
+Reason: Common-hour support still has a 2.100x development/holdout base-rate
+difference. Paired likelihood deltas are less sensitive than standalone
+calibration but are not algebraically invariant to an intercept shift.
+
+Consequences: Final M5 inference reports both co-primary timing comparisons and
+waits for pre-registered external sessions. Neither post-hoc recalibration nor
+standalone calibration can promote a result.

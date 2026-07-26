@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M4 — Trigger Dataset (complete)
+M5 — Trigger Inference (M5-000 complete; modelling not started)
 
 ## Completed
 
@@ -29,6 +29,18 @@ M4 — Trigger Dataset (complete)
 - Development-only winsorization for H2 retracement
 - Reviewed model transforms and pre-registered H2 direction/windows
 - M4 merged to `main` through PR #2
+- M4 release marker created at commit `a49daad`
+- M5 roadmap/specification aligned before modelling
+- Canonical tradeable-risk-time accounting
+- Explicit midnight split and maintenance-break exclusion
+- Common-hour development/holdout cohort locked to server hours 12–23
+- UTC+3 recorded as a window-scoped high-confidence inference
+- Three external validation sessions pre-registered
+- Synthetic right-censored tail through tick coverage end
+- Explicit zero-duration and left-truncation estimand exclusions
+- Unknown-gap taxonomy with multi-day regression coverage
+- Co-primary within-interval conditional timing statistic pre-registered
+- Secondary full-session external analysis pre-registered
 
 ## Current data
 
@@ -38,16 +50,27 @@ M4 — Trigger Dataset (complete)
 
 ## Current focus
 
-M4 is closed with honest verdicts: H1 is confounded/inconclusive on the
-control-supported population, H2 is inconclusive, and H3 is supported but
-timing-sensitive and smaller than spread. M5 has not started.
+M5-000 is complete without fitting a model. The earlier 1,248/47,501 and
+848/81,911 figures are retained as legacy start-date accounting; canonical
+exposure clips to tick coverage, splits at midnight, and removes the
+3,720.501-second unknown coverage gap. The final `HEDGED_1X1` state contributes
+an explicit 318.758-second right-censored tail. Common-hour coverage is aligned,
+but the development target density remains 2.100x holdout and day of week is
+confounded with the split.
 
 ## Next executable task
 
-Review and lock the M5 Trigger Inference plan before any M5 implementation.
+M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
+sessions and a trade report covering their lifecycle events. Raw files remain
+outside Git.
 
 ## Current blockers
 
-- Server timezone not formally confirmed
+- Pre-registered external tick/report sessions are not yet available
+- Server timezone is inferred as UTC+3 for the current window but is not
+  formally or globally confirmed
 - MT5 report event time has only second-level resolution
 - The 0–6 second structural control-support gap is tracked in issue #3
+- Thirty-four zero-duration re-hedges are outside the complete-risk-bin
+  estimand and remain linked to issue #3
+- Development/holdout/external dates are perfectly confounded by day of week

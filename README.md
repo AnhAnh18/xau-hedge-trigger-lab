@@ -10,9 +10,16 @@ Project memory and the current execution state live in [`.local_ai/`](.local_ai/
 
 ## Current phase
 
-**M0 — Repository bootstrap**
+**M5 — Trigger Inference**
 
-The next executable task is to parse MT5 reports and the XAUUSD tick CSV into normalized, reproducible tables. Raw files belong in external, access-controlled storage; only dataset names, checksums, and processing logic should be recorded here.
+M0–M4 are complete. M5-000 has locked canonical tradeable-time accounting,
+common-hour cohort support, timezone status, and the external validation
+protocol without fitting a model.
+
+The next executable task is to acquire the pre-registered 2026-07-27 through
+2026-07-29 XAUUSD tick sessions and the covering MT5 report. Raw files remain
+in external, access-controlled storage; only manifests, aggregate reports, and
+reproducible processing logic are committed.
 
 ## Layout
 
