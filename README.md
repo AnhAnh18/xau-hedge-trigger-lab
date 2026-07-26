@@ -13,9 +13,10 @@ Project memory and the current execution state live in [`.local_ai/`](.local_ai/
 **M5 — Trigger Inference**
 
 M0–M4 are complete. M5-002 has implemented a bounded state-age-only hazard
-pilot on locked causal support. Internal conditional timing is rejected for
-the re-hedge endpoints and inconclusive for unlock; external validation remains
-pending and no tradeable-edge claim is made.
+pilot on locked causal support. Frozen age buckets improve internal holdout
+cause-specific occurrence likelihood for all three endpoints, with the
+approximate six-second unlock timer floor transporting most clearly. External
+validation remains pending and no tradeable-edge claim is made.
 
 The next executable task is to acquire the pre-registered 2026-07-27 through
 2026-07-29 XAUUSD tick sessions and the covering MT5 report. Raw files remain

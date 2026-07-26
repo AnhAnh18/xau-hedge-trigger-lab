@@ -124,7 +124,7 @@ published. On the causal bin contract, events occurring at six seconds are
 represented by the `[5,6)` predictor-at-bin-start bucket, so that bucket is
 correctly non-zero; `[0,5)` remains zero-event in internal development.
 
-## F-008 — State age predicts occurrence but not frozen holdout timing
+## F-008 — State age improves internal holdout occurrence likelihood
 
 Status: Internal pilot complete; external validation pending
 Confidence: Moderate
@@ -132,19 +132,20 @@ Confidence: Moderate
 Evidence:
 
 - At both 1-second and 500-millisecond widths, frozen development age buckets
-  improve secondary cause-specific occurrence likelihood over the constant
+  improve primary cause-specific occurrence likelihood over the constant
   baseline for all three endpoints.
-- Conditional timing versus uniform is significantly negative for both
-  re-hedge endpoints at both widths.
-- Unlock conditional timing is indistinguishable from uniform at both widths.
+- A holdout-label oracle for the old conditional calculation remains negative
+  for all endpoints (`-0.320249`, `-0.430092`, and `-0.060804` at one second).
+  It therefore cannot score age-only timing quality.
 - Results are stable across smoothing alpha 0.0, 0.5, and 1.0.
 
-Finding: State age captures whether a transition occurs within observed risk
-support, including the approximate unlock timer floor, but the development
-age profile does not transport into better holdout event-bin timing. This
-divergence confirms that occurrence likelihood and conditional timing are
-different estimands and must not be presented as independent confirmation.
+Finding: State age improves whether-transition-occurs likelihood within
+observed risk support. The strongest interpretable component is transport of
+the approximate unlock timer floor. The former within-interval conditional
+verdicts are withdrawn because each event-to-event interval ends at its
+outcome, making the age-only candidate risk set outcome-truncated.
 
 Limitation: This is an internal Thursday-to-Friday pilot. It makes no
-tradeable-edge claim and cannot close M5 before the pre-registered
-2026-07-27 through 2026-07-29 external evaluation.
+tradeable-edge claim, occurrence likelihood remains base-rate-sensitive, and
+M5 cannot close before the pre-registered 2026-07-27 through 2026-07-29
+external evaluation.

@@ -65,7 +65,9 @@ issue #3.
   therefore `reported_time - 1 second`.
 - The offset from the M4 `matched_timestamp` anchor must be measured and
   published. M4 and M5 effects are not compared as if they shared an anchor.
-- Full observed coverage is descriptive (`A_all`).
+- Known-age eligible observed coverage is descriptive (`A_all`). Left-truncated
+  intervals remain in audit but cannot enter a state-age model because true
+  age is unknown.
 - All A/B/C headline comparisons use common server hours 12:00–24:00 on
   identical bins (`A_common`).
 - The 12:00–24:00 primary window is fixed for M5 v1, including external
@@ -98,7 +100,7 @@ issue #3.
 
 ## Model ladder and predictor budget
 
-- A_all: descriptive full-range state-age baseline.
+- A_all: descriptive known-age eligible state-age baseline.
 - A_common: state-age baseline on common server-hour support.
 - B: pre-registered causal price predictors without state age.
 - C: the union of A_common and B on exactly the same bins.
@@ -122,14 +124,15 @@ The remaining predictors must be selected and registered before M5-003. The
 - Headline statistics are paired per-interval log-likelihood increments
   `C - A_common` and `C - B`.
 - Paired likelihood increments are still mildly sensitive to base-rate shift.
-  A within-interval conditional statistic, conditioned on an interval having
-  exactly one representable event, is co-primary for the timing comparison
-  because the interval intercept cancels algebraically.
-- For interval `i`, the conditional event-bin probability is
-  `exp(eta_event_bin) / sum(exp(eta_bin))` over its representable bins.
-- The occurrence hazard remains primary for occurrence; the conditional
-  statistic is not an occurrence model and excludes censored/no-event
-  intervals by construction.
+- Cause-specific occurrence likelihood is primary for the M5-002 age-only
+  pilot.
+- The previously proposed within-interval conditional statistic is
+  non-inferential for age-only models: each event-to-event interval ends at
+  its observed outcome, so its candidate risk set is outcome-truncated and the
+  target is always the final bin. It cannot produce an M5-002 verdict.
+- Any M5-003 conditional timing comparison requires a separately
+  pre-registered risk-set/control-time design. Adding a price predictor alone
+  does not automatically validate the old statistic.
 - Bootstrap clusters are `interval_id`.
 - Standalone log loss, raw calibration, event rank, and top-decile capture are
   descriptive diagnostics only.
@@ -137,8 +140,9 @@ The remaining predictors must be selected and registered before M5-003. The
   holdout-intercept recalibration may diagnose intercept-only versus slope
   failure, but it must be labelled as using holdout labels and cannot affect a
   verdict, likelihood headline, or merge gate.
-- A model verdict requires adjacent-window/sensitivity coherence and external
-  temporal validation.
+- The 500-millisecond width is a discretization sensitivity on the same risk
+  support, not independent replication. External temporal validation remains
+  required.
 
 ## Additional-data gate
 
@@ -194,9 +198,12 @@ analysis on all three dates is secondary and was registered before acquisition.
 
 ## M5-002 pre-fit amendment — 2026-07-26
 
-This amendment was recorded before fitting any M5-002 hazard model. Its
-evidence source is the already-published M2 event-to-event duration table, not
-tick predictors, holdout model performance, or an M5 fit.
+The support and bucket choices in this amendment were recorded before fitting
+any M5-002 hazard model. Their evidence source is the already-published M2
+event-to-event duration table, not tick predictors, holdout model performance,
+or an M5 fit. The pilot-estimand subsection below incorporates the dated
+post-fit D-012 remediation after the original conditional statistic was shown
+to be non-inferential for an outcome-truncated age-only risk set.
 
 ### Scope and data isolation
 
@@ -244,13 +251,13 @@ zero by assumption.
 
 ### Pilot estimands and deliverables
 
-- The within-interval conditional event-bin log probability versus uniform
-  timing is primary for the M5-002 timing question. It includes intervals with
-  exactly one representable target event and cancels interval intercepts.
-- Cause-specific occurrence likelihood `A_age - A_const` is secondary and
-  remains a distinct estimand because it also represents censored/no-target
-  intervals and is sensitive to base-rate shift. The two statistics must not
-  be presented as independent confirmations of one result.
+- Cause-specific occurrence likelihood `A_age - A_const` is primary. It
+  represents target, censored, and competing-endpoint risk intervals and
+  remains sensitive to base-rate shift.
+- The old within-interval conditional event-bin calculation is retained only
+  as a degeneracy audit. A holdout-label oracle still falls below its uniform
+  null, proving that it does not score age-only model quality. It affects no
+  verdict or merge gate and is deferred to M5-003 risk-set redesign.
 - Fitted parameters use development internal common-hours only. Their
   deterministic hash must be unchanged whether supplemental inputs are
   present or absent.

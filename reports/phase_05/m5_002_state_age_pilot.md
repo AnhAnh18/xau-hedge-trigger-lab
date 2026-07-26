@@ -2,7 +2,7 @@
 
 - Status: `pilot_complete_external_pending`
 - Internal fitted-parameter hash: `4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89`
-- Deterministic report SHA-256: `03f41d7e3838960a23aca5eb001add0f74a1eb285396f97b8228fdbf446781fb`
+- Deterministic report SHA-256: `80a1a8c680e7ddd7eb0a9e8ed8813f5f69c025d3b62b292eba30b05a92401365`
 - External gate satisfied: **no**
 - Price predictors/P&L optimization/tradeable-edge claim: **none**
 
@@ -12,6 +12,7 @@
 - The canonical M2-M4 `ticks.parquet` was not rebuilt or extended.
 - Bins use complete wall-clock grid cells; state age uses the paused tradeable clock at bin start.
 - Supplemental rows do not enter fitting; parameter hashes are equal with and without supplemental input.
+- Supplemental raw tick input is selected by its pre-registered SHA-256 checksum, not by directory glob order.
 
 ## Support reconciliation
 
@@ -21,6 +22,17 @@
 | supplemental_2026_07_20_22 | 1000 ms | 247,978.582 | 247,975.000 | 3.582 | 0.000000 |
 | internal_2026_07_23_24 | 500 ms | 125,503.257 | 125,502.500 | 0.757 | 0.000000 |
 | supplemental_2026_07_20_22 | 500 ms | 247,978.582 | 247,977.500 | 1.082 | 0.000000 |
+
+The internal one-second bridge back to M5-000 is explicit:
+
+```text
+M5-000 tradeable risk             125,697.211
+- left-truncated unknown age      193.954
+= M5-000 primary / M5-002 eligible 125,503.257
+= 125,501.000 representable + 2.257 partial
+```
+
+`A_all` is descriptive known-age eligible support. The left-truncated interval remains in audit but is excluded from all state-age model bins because its true age is unknown.
 
 ## Development-only age buckets (1-second primary)
 
@@ -62,41 +74,56 @@ Zero-event buckets have observed exposure and therefore are not called prior-onl
 | unlock_occurrence | age_30_60 | 3,973 | 63 | 0.01597886 | false |
 | unlock_occurrence | age_60_inf | 12,514 | 109 | 0.00874950 | false |
 
-## Frozen holdout timing inference
+## Frozen holdout occurrence inference
 
 ### 1000 ms bins
 
-- `rehedge_buy_occurrence`: conditional-vs-uniform mean -0.392998 (95% CI -0.471518, -0.315270; 133 intervals); secondary occurrence LL mean 0.447988 (95% CI 0.035086, 0.982834).
-- `rehedge_sell_occurrence`: conditional-vs-uniform mean -0.251292 (95% CI -0.311112, -0.197270; 155 intervals); secondary occurrence LL mean 0.775089 (95% CI 0.389391, 1.251455).
-- `unlock_occurrence`: conditional-vs-uniform mean -0.032687 (95% CI -0.136489, 0.070205; 297 intervals); secondary occurrence LL mean 1.278197 (95% CI 0.925843, 1.717464).
+- `rehedge_buy_occurrence`: primary occurrence LL mean 0.447988 (95% CI 0.035086, 0.982834; 133 intervals); non-inferential age-only conditional diagnostic -0.392998.
+- `rehedge_sell_occurrence`: primary occurrence LL mean 0.775089 (95% CI 0.389391, 1.251455; 155 intervals); non-inferential age-only conditional diagnostic -0.251292.
+- `unlock_occurrence`: primary occurrence LL mean 1.278197 (95% CI 0.925843, 1.717464; 298 intervals); non-inferential age-only conditional diagnostic -0.032687.
 ### 500 ms bins
 
-- `rehedge_buy_occurrence`: conditional-vs-uniform mean -0.380200 (95% CI -0.458832, -0.303578; 133 intervals); secondary occurrence LL mean 0.443227 (95% CI 0.041013, 0.953890).
-- `rehedge_sell_occurrence`: conditional-vs-uniform mean -0.244546 (95% CI -0.301054, -0.192273; 155 intervals); secondary occurrence LL mean 0.762190 (95% CI 0.374648, 1.230396).
-- `unlock_occurrence`: conditional-vs-uniform mean 0.001764 (95% CI -0.100377, 0.102775; 297 intervals); secondary occurrence LL mean 1.267057 (95% CI 0.908458, 1.695941).
+- `rehedge_buy_occurrence`: primary occurrence LL mean 0.443227 (95% CI 0.041013, 0.953890; 133 intervals); non-inferential age-only conditional diagnostic -0.380200.
+- `rehedge_sell_occurrence`: primary occurrence LL mean 0.762190 (95% CI 0.374648, 1.230396; 155 intervals); non-inferential age-only conditional diagnostic -0.244546.
+- `unlock_occurrence`: primary occurrence LL mean 1.267057 (95% CI 0.908458, 1.695941; 298 intervals); non-inferential age-only conditional diagnostic 0.001764.
+
+The conditional diagnostic cannot score the age-only model: each event-to-event interval ends at its observed event, the target is always in the last bin, and the within-interval risk set is therefore outcome-truncated. It affects no verdict or merge gate and is deferred until M5-003 risk-set design.
+
+As an audit, the age buckets were refit on the holdout labels. The resulting oracle conditional means still remain below the uniform null, confirming that this statistic does not score age-only model quality:
+
+| Width | Endpoint | Holdout-oracle conditional mean |
+| ---: | --- | ---: |
+| 1000 ms | rehedge_buy_occurrence | -0.320249 |
+| 1000 ms | rehedge_sell_occurrence | -0.430092 |
+| 1000 ms | unlock_occurrence | -0.060804 |
+| 500 ms | rehedge_buy_occurrence | -0.313973 |
+| 500 ms | rehedge_sell_occurrence | -0.415624 |
+| 500 ms | unlock_occurrence | -0.043702 |
+
+The 500 ms result is a discretization sensitivity on the same risk support, not independent replication.
 
 ## Smoothing sensitivity
 
-| Width | Alpha | Endpoint | Conditional mean |
+| Width | Alpha | Endpoint | Occurrence LL mean |
 | ---: | ---: | --- | ---: |
-| 1000 ms | 0.0 | rehedge_buy_occurrence | -0.395005 |
-| 1000 ms | 0.0 | rehedge_sell_occurrence | -0.251248 |
-| 1000 ms | 0.0 | unlock_occurrence | -0.029564 |
-| 1000 ms | 0.5 | rehedge_buy_occurrence | -0.392998 |
-| 1000 ms | 0.5 | rehedge_sell_occurrence | -0.251292 |
-| 1000 ms | 0.5 | unlock_occurrence | -0.032687 |
-| 1000 ms | 1.0 | rehedge_buy_occurrence | -0.391112 |
-| 1000 ms | 1.0 | rehedge_sell_occurrence | -0.251365 |
-| 1000 ms | 1.0 | unlock_occurrence | -0.035762 |
-| 500 ms | 0.0 | rehedge_buy_occurrence | -0.381951 |
-| 500 ms | 0.0 | rehedge_sell_occurrence | -0.244311 |
-| 500 ms | 0.0 | unlock_occurrence | 0.005524 |
-| 500 ms | 0.5 | rehedge_buy_occurrence | -0.380200 |
-| 500 ms | 0.5 | rehedge_sell_occurrence | -0.244546 |
-| 500 ms | 0.5 | unlock_occurrence | 0.001764 |
-| 500 ms | 1.0 | rehedge_buy_occurrence | -0.378569 |
-| 500 ms | 1.0 | rehedge_sell_occurrence | -0.244810 |
-| 500 ms | 1.0 | unlock_occurrence | -0.001936 |
+| 1000 ms | 0.0 | rehedge_buy_occurrence | 0.451797 |
+| 1000 ms | 0.0 | rehedge_sell_occurrence | 0.777491 |
+| 1000 ms | 0.0 | unlock_occurrence | 1.283365 |
+| 1000 ms | 0.5 | rehedge_buy_occurrence | 0.447988 |
+| 1000 ms | 0.5 | rehedge_sell_occurrence | 0.775089 |
+| 1000 ms | 0.5 | unlock_occurrence | 1.278197 |
+| 1000 ms | 1.0 | rehedge_buy_occurrence | 0.443817 |
+| 1000 ms | 1.0 | rehedge_sell_occurrence | 0.772383 |
+| 1000 ms | 1.0 | unlock_occurrence | 1.273004 |
+| 500 ms | 0.0 | rehedge_buy_occurrence | 0.447282 |
+| 500 ms | 0.0 | rehedge_sell_occurrence | 0.764601 |
+| 500 ms | 0.0 | unlock_occurrence | 1.272307 |
+| 500 ms | 0.5 | rehedge_buy_occurrence | 0.443227 |
+| 500 ms | 0.5 | rehedge_sell_occurrence | 0.762190 |
+| 500 ms | 0.5 | unlock_occurrence | 1.267057 |
+| 500 ms | 1.0 | rehedge_buy_occurrence | 0.438767 |
+| 500 ms | 1.0 | rehedge_sell_occurrence | 0.759442 |
+| 500 ms | 1.0 | unlock_occurrence | 1.261776 |
 
 ## F-007 timer-floor verification
 
@@ -132,11 +159,11 @@ These are descriptive common-hour weekday/session rates. Supplemental days do no
 
 ## Pilot interpretation
 
-- `rehedge_buy_occurrence`: `internal_timing_rejected_external_pending`.
-- `rehedge_sell_occurrence`: `internal_timing_rejected_external_pending`.
-- `unlock_occurrence`: `inconclusive_external_pending`.
+- `rehedge_buy_occurrence`: `internal_occurrence_supported_external_pending`.
+- `rehedge_sell_occurrence`: `internal_occurrence_supported_external_pending`.
+- `unlock_occurrence`: `internal_occurrence_supported_external_pending`.
 
-Conditional timing is primary for M5-002. Cause-specific occurrence likelihood is secondary and answers a different, base-rate-sensitive question. Neither result closes M5.
+Cause-specific occurrence likelihood is primary for this bounded state-age-only pilot. It remains base-rate-sensitive, so the result is internal and external validation is still required. The approximate unlock timer floor transports to holdout; no standalone tradeable edge is claimed.
 
 ## Explicit deferrals
 
@@ -147,6 +174,7 @@ Conditional timing is primary for M5-002. Cause-specific occurrence likelihood i
 ## Validation gates
 
 - `support_seconds_reconcile`: PASS
+- `m5_000_tradeable_to_primary_to_bins_reconcile`: PASS
 - `no_nonpositive_bins`: PASS
 - `no_gap_crossing_bins`: PASS
 - `no_cross_split_primary_bins`: PASS

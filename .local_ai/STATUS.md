@@ -39,14 +39,14 @@ M5 — Trigger Inference (M5-002 pilot complete; external validation pending)
 - Synthetic right-censored tail through tick coverage end
 - Explicit zero-duration and left-truncation estimand exclusions
 - Unknown-gap taxonomy with multi-day regression coverage
-- Co-primary within-interval conditional timing statistic pre-registered
+- Outcome-truncated age-only conditional statistic retired from inference
 - Secondary full-session external analysis pre-registered
 - Machine-readable M5 acquisition plan and privacy-safe intake validator
 - Deterministic synthetic acquisition dry run and recurring-gap audit
 - Retrospective supplemental 2026-07-20 through 2026-07-22 intake validated
 - Separate internal/supplemental causal risk-bin cohorts at 1s and 500ms
 - Development-only constant and state-age bucket hazard baselines
-- 5,000-draw interval-cluster bootstrap for occurrence and conditional timing
+- 5,000-draw interval-cluster bootstrap for primary occurrence likelihood
 - Supplemental parameter-isolation hash and M2-M4 canonical tick protection
 - M5-002 aggregate report and deterministic local-output hashes
 
@@ -64,12 +64,12 @@ and cohort-relative left truncation remains `12074` internally and `8294`
 supplementally. Canonical M2-M4 ticks and fitted parameters are unchanged by
 supplemental data.
 
-Frozen holdout conditional timing is worse than uniform for both re-hedge
-endpoints and inconclusive for unlock. Secondary occurrence likelihood improves
-for all endpoints, demonstrating that occurrence and timing are different
-estimands. The approximate six-second unlock floor is confirmed with one
-month-wide exception and no sub-six-second unlock in the five July 20–24
-calendar sessions.
+Frozen development age buckets improve primary holdout occurrence likelihood
+for all endpoints. The approximate six-second unlock floor is confirmed with
+one month-wide exception and no sub-six-second unlock in the five July 20–24
+calendar sessions. The old within-interval conditional calculation is retained
+only as a degeneracy audit because its risk set ends at the observed outcome;
+it affects no verdict or gate.
 
 ## Next executable task
 

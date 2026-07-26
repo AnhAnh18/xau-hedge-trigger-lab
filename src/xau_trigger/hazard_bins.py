@@ -50,20 +50,59 @@ def _require_columns(frame: pd.DataFrame, required: Iterable[str]) -> None:
         raise ValueError(f"Missing required columns: {missing}")
 
 
+def _file_sha256(path: Path) -> str:
+    digest = sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def load_tick_cohort(
     paths: Iterable[str | Path],
     sessions: Iterable[str],
+    *,
+    expected_sha256: Iterable[str] | None = None,
 ) -> pd.DataFrame:
     """Parse only registered session rows into a separately named cohort.
 
     Duplicate timestamps are preserved.  The caller controls the output path;
     this function never reads or writes the M2-M4 canonical ticks parquet.
+    When checksums are supplied, only the uniquely matching files are parsed.
     """
     registered = {str(pd.Timestamp(day).date()) for day in sessions}
+    candidates = sorted(
+        {
+            Path(item)
+            for item in paths
+            if Path(item).is_file()
+            and Path(item).suffix.lower() in {".csv", ".tsv"}
+        },
+        key=lambda item: item.name,
+    )
+    expected = list(expected_sha256 or [])
+    if expected:
+        if len(expected) != len(set(expected)):
+            raise ValueError("Expected tick checksums must be unique")
+        matches: dict[str, list[Path]] = {digest: [] for digest in expected}
+        for path in candidates:
+            digest = _file_sha256(path)
+            if digest in matches:
+                matches[digest].append(path)
+        unresolved = {
+            digest: len(paths_for_digest)
+            for digest, paths_for_digest in matches.items()
+            if len(paths_for_digest) != 1
+        }
+        if unresolved:
+            raise ValueError(
+                "Pinned tick checksum must resolve to exactly one file: "
+                f"{unresolved}"
+            )
+        candidates = [matches[digest][0] for digest in expected]
+
     frames = []
-    for path in sorted({Path(item) for item in paths}, key=lambda item: item.name):
-        if not path.is_file() or path.suffix.lower() not in {".csv", ".tsv"}:
-            continue
+    for path in candidates:
         ticks = parse_ticks(path)
         dates = ticks["timestamp"].dt.strftime("%Y-%m-%d")
         selected = ticks.loc[dates.isin(registered)].copy()

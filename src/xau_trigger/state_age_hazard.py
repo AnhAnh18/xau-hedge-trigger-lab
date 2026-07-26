@@ -241,7 +241,13 @@ def _logsumexp(values: np.ndarray) -> float:
 
 
 def conditional_timing_deltas(predictions: pd.DataFrame) -> pd.DataFrame:
-    """Conditional event-bin log probability versus uniform timing."""
+    """Non-inferential age-only event-bin diagnostic versus uniform timing.
+
+    M5 intervals end at the observed event, so an age-only predictor and this
+    outcome-truncated within-interval risk set cannot identify timing quality.
+    The diagnostic is retained to document that limitation and must not drive
+    a model verdict or merge gate.
+    """
     _require_columns(
         predictions,
         ["interval_id", "endpoint", "target_label", "p_age"],
@@ -278,6 +284,42 @@ def conditional_timing_deltas(predictions: pd.DataFrame) -> pd.DataFrame:
             }
         )
     return pd.DataFrame(records)
+
+
+def holdout_oracle_conditional_diagnostic(
+    predictions: pd.DataFrame,
+    *,
+    alpha: float = PRIMARY_ALPHA,
+) -> dict[str, float]:
+    """Refit age buckets on holdout to expose the conditional degeneracy.
+
+    This deliberately uses holdout labels and is audit-only.  If even this
+    oracle remains below the uniform timing null, the outcome-truncated
+    conditional statistic cannot be interpreted as model quality.
+    """
+    holdout = predictions[
+        predictions["cohort_id"].eq(FIT_COHORT)
+        & predictions["split"].eq("holdout")
+        & predictions["is_primary_model_eligible"]
+    ].copy()
+    output = {}
+    for endpoint, group in holdout.groupby("endpoint", sort=True):
+        bucket_counts = group.groupby("state_age_bucket", sort=False)[
+            "target_label"
+        ].agg(["sum", "count"])
+        probabilities = {
+            str(bucket): _smoothed_probability(
+                int(values["sum"]),
+                int(values["count"]),
+                alpha,
+            )
+            for bucket, values in bucket_counts.iterrows()
+        }
+        oracle = group.copy()
+        oracle["p_age"] = oracle["state_age_bucket"].map(probabilities)
+        deltas = conditional_timing_deltas(oracle)
+        output[str(endpoint)] = float(deltas["conditional_minus_uniform"].mean())
+    return output
 
 
 def deterministic_cluster_bootstrap(
@@ -333,15 +375,19 @@ def evaluate_holdout(
             "holdout_bins": int(len(group)),
             "holdout_intervals": int(group["interval_id"].nunique()),
             "holdout_target_events": int(group["target_label"].sum()),
-            "primary_conditional_timing": deterministic_cluster_bootstrap(
-                conditional["conditional_minus_uniform"] if not conditional.empty else [],
-                draws=draws,
-                seed=endpoint_seed + 1,
-            ),
-            "secondary_occurrence_likelihood": deterministic_cluster_bootstrap(
+            "primary_occurrence_likelihood": deterministic_cluster_bootstrap(
                 occurrence["age_minus_constant"] if not occurrence.empty else [],
                 draws=draws,
                 seed=endpoint_seed + 2,
+            ),
+            "noninferential_age_only_conditional_diagnostic": (
+                deterministic_cluster_bootstrap(
+                    conditional["conditional_minus_uniform"]
+                    if not conditional.empty
+                    else [],
+                    draws=draws,
+                    seed=endpoint_seed + 1,
+                )
             ),
             "diagnostic_event_rank_mean": (
                 float(conditional["event_rank"].mean())
@@ -403,29 +449,12 @@ def per_session_base_hazard(bins: pd.DataFrame) -> list[dict]:
     return records
 
 
-def coherent_timing_verdict(
-    one_second: dict,
-    five_hundred_ms: dict,
-) -> str:
-    """Classify adjacent-width coherence without overcalling null estimates."""
-    if one_second["ci95_low"] is None or five_hundred_ms["ci95_low"] is None:
-        return "inconclusive"
-    if one_second["ci95_low"] > 0 and five_hundred_ms["ci95_low"] > 0:
-        return "internal_timing_supported_external_pending"
-    if one_second["ci95_high"] < 0 and five_hundred_ms["ci95_high"] < 0:
-        return "internal_timing_rejected_external_pending"
-    one_straddles = one_second["ci95_low"] <= 0 <= one_second["ci95_high"]
-    half_straddles = (
-        five_hundred_ms["ci95_low"] <= 0 <= five_hundred_ms["ci95_high"]
-    )
-    if one_straddles and half_straddles:
+def occurrence_verdict(one_second: dict) -> str:
+    """Classify the primary internal occurrence comparison only."""
+    if one_second["ci95_low"] is None:
         return "inconclusive_external_pending"
-    if (
-        one_second["ci95_low"] > 0
-        and five_hundred_ms["ci95_high"] < 0
-    ) or (
-        one_second["ci95_high"] < 0
-        and five_hundred_ms["ci95_low"] > 0
-    ):
-        return "mixed_across_adjacent_widths"
+    if one_second["ci95_low"] > 0:
+        return "internal_occurrence_supported_external_pending"
+    if one_second["ci95_high"] < 0:
+        return "internal_occurrence_rejected_external_pending"
     return "weak_or_inconclusive_external_pending"

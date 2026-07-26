@@ -31,7 +31,10 @@
     "parameter_hash_with_supplemental": "4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89",
     "parameter_hash_internal_only": "4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89",
     "supplemental_fit_isolation_pass": true,
-    "supplemental_role": "per_session_base_hazard_variation_non_gating"
+    "supplemental_role": "per_session_base_hazard_variation_non_gating",
+    "supplemental_source_sha256_allowlist": [
+      "d0f27a2090ad84db810c8d5ed5b2b1907743ba084684bc3aa1fdd46983ba5fa4"
+    ]
   },
   "support_accounting": [
     {
@@ -87,6 +90,17 @@
       "competing_terminal_bin_count": 0
     }
   ],
+  "m5_000_support_bridge": {
+    "m5_000_tradeable_risk_seconds": 125697.211,
+    "left_truncated_excluded_seconds": 193.954,
+    "m5_000_primary_known_age_seconds": 125503.257,
+    "m5_002_eligible_fragment_seconds": 125503.257,
+    "representable_bin_seconds": 125501.0,
+    "dropped_partial_seconds": 2.257,
+    "reconciliation_delta_seconds": -0.0,
+    "left_truncated_scope": "retained_in_interval_audit_excluded_from_all_age_model_bins",
+    "a_all_scope": "known_age_eligible_support_only"
+  },
   "boundary_accounting": {
     "internal_2026_07_23_24": {
       "source_intervals": 2097,
@@ -125,7 +139,7 @@
         "risk_bins": 18238,
         "target_events": 484,
         "events_per_1000_risk_seconds": 26.537997587454765,
-        "role": "A_all_internal_descriptive"
+        "role": "A_all_known_age_internal_descriptive"
       },
       {
         "cohort_id": "internal_2026_07_23_24",
@@ -133,7 +147,7 @@
         "risk_bins": 21880,
         "target_events": 530,
         "events_per_1000_risk_seconds": 24.223034734917732,
-        "role": "A_all_internal_descriptive"
+        "role": "A_all_known_age_internal_descriptive"
       },
       {
         "cohort_id": "internal_2026_07_23_24",
@@ -141,7 +155,7 @@
         "risk_bins": 85383,
         "target_events": 1047,
         "events_per_1000_risk_seconds": 12.262394153402902,
-        "role": "A_all_internal_descriptive"
+        "role": "A_all_known_age_internal_descriptive"
       },
       {
         "cohort_id": "supplemental_2026_07_20_22",
@@ -1135,19 +1149,19 @@
         "holdout_bins": 5169,
         "holdout_intervals": 133,
         "holdout_target_events": 133,
-        "primary_conditional_timing": {
-          "cluster_count": 133,
-          "draws": 5000,
-          "mean": -0.392998472222593,
-          "ci95_low": -0.47151816876427916,
-          "ci95_high": -0.31527032748187495
-        },
-        "secondary_occurrence_likelihood": {
+        "primary_occurrence_likelihood": {
           "cluster_count": 133,
           "draws": 5000,
           "mean": 0.4479875414739844,
           "ci95_low": 0.03508593430560983,
           "ci95_high": 0.9828343714693994
+        },
+        "noninferential_age_only_conditional_diagnostic": {
+          "cluster_count": 133,
+          "draws": 5000,
+          "mean": -0.392998472222593,
+          "ci95_low": -0.47151816876427916,
+          "ci95_high": -0.31527032748187495
         },
         "diagnostic_event_rank_mean": 17.037593984962406,
         "diagnostic_raw_calibration": {
@@ -1160,19 +1174,19 @@
         "holdout_bins": 6568,
         "holdout_intervals": 155,
         "holdout_target_events": 155,
-        "primary_conditional_timing": {
-          "cluster_count": 155,
-          "draws": 5000,
-          "mean": -0.2512924517247847,
-          "ci95_low": -0.31111188802426637,
-          "ci95_high": -0.1972704168085932
-        },
-        "secondary_occurrence_likelihood": {
+        "primary_occurrence_likelihood": {
           "cluster_count": 155,
           "draws": 5000,
           "mean": 0.775088660253137,
           "ci95_low": 0.3893907450594397,
           "ci95_high": 1.251454515805674
+        },
+        "noninferential_age_only_conditional_diagnostic": {
+          "cluster_count": 155,
+          "draws": 5000,
+          "mean": -0.2512924517247847,
+          "ci95_low": -0.31111188802426637,
+          "ci95_high": -0.1972704168085932
         },
         "diagnostic_event_rank_mean": 14.348387096774193,
         "diagnostic_raw_calibration": {
@@ -1185,19 +1199,19 @@
         "holdout_bins": 31280,
         "holdout_intervals": 298,
         "holdout_target_events": 297,
-        "primary_conditional_timing": {
-          "cluster_count": 297,
-          "draws": 5000,
-          "mean": -0.03268690784469136,
-          "ci95_low": -0.13648864633020635,
-          "ci95_high": 0.07020517043465345
-        },
-        "secondary_occurrence_likelihood": {
+        "primary_occurrence_likelihood": {
           "cluster_count": 298,
           "draws": 5000,
           "mean": 1.2781965502535544,
           "ci95_low": 0.9258429000887988,
           "ci95_high": 1.7174640615636552
+        },
+        "noninferential_age_only_conditional_diagnostic": {
+          "cluster_count": 297,
+          "draws": 5000,
+          "mean": -0.03268690784469136,
+          "ci95_low": -0.13648864633020635,
+          "ci95_high": 0.07020517043465345
         },
         "diagnostic_event_rank_mean": 20.764309764309765,
         "diagnostic_raw_calibration": {
@@ -1212,19 +1226,19 @@
         "holdout_bins": 10338,
         "holdout_intervals": 133,
         "holdout_target_events": 133,
-        "primary_conditional_timing": {
-          "cluster_count": 133,
-          "draws": 5000,
-          "mean": -0.38020029745688744,
-          "ci95_low": -0.4588321055641245,
-          "ci95_high": -0.30357808629006333
-        },
-        "secondary_occurrence_likelihood": {
+        "primary_occurrence_likelihood": {
           "cluster_count": 133,
           "draws": 5000,
           "mean": 0.44322702631709,
           "ci95_low": 0.04101265041042451,
           "ci95_high": 0.9538896881242865
+        },
+        "noninferential_age_only_conditional_diagnostic": {
+          "cluster_count": 133,
+          "draws": 5000,
+          "mean": -0.38020029745688744,
+          "ci95_low": -0.4588321055641245,
+          "ci95_high": -0.30357808629006333
         },
         "diagnostic_event_rank_mean": 33.07518796992481,
         "diagnostic_raw_calibration": {
@@ -1237,19 +1251,19 @@
         "holdout_bins": 13136,
         "holdout_intervals": 155,
         "holdout_target_events": 155,
-        "primary_conditional_timing": {
-          "cluster_count": 155,
-          "draws": 5000,
-          "mean": -0.24454598404342895,
-          "ci95_low": -0.3010539710636136,
-          "ci95_high": -0.1922727559043611
-        },
-        "secondary_occurrence_likelihood": {
+        "primary_occurrence_likelihood": {
           "cluster_count": 155,
           "draws": 5000,
           "mean": 0.762189741371233,
           "ci95_low": 0.37464814502510035,
           "ci95_high": 1.230395954206828
+        },
+        "noninferential_age_only_conditional_diagnostic": {
+          "cluster_count": 155,
+          "draws": 5000,
+          "mean": -0.24454598404342895,
+          "ci95_low": -0.3010539710636136,
+          "ci95_high": -0.1922727559043611
         },
         "diagnostic_event_rank_mean": 27.696774193548386,
         "diagnostic_raw_calibration": {
@@ -1262,19 +1276,19 @@
         "holdout_bins": 62561,
         "holdout_intervals": 298,
         "holdout_target_events": 297,
-        "primary_conditional_timing": {
-          "cluster_count": 297,
-          "draws": 5000,
-          "mean": 0.0017636153369583144,
-          "ci95_low": -0.10037694148815081,
-          "ci95_high": 0.10277466176475811
-        },
-        "secondary_occurrence_likelihood": {
+        "primary_occurrence_likelihood": {
           "cluster_count": 298,
           "draws": 5000,
           "mean": 1.267057236663437,
           "ci95_low": 0.9084584826618392,
           "ci95_high": 1.6959414062914417
+        },
+        "noninferential_age_only_conditional_diagnostic": {
+          "cluster_count": 297,
+          "draws": 5000,
+          "mean": 0.0017636153369583144,
+          "ci95_low": -0.10037694148815081,
+          "ci95_high": 0.10277466176475811
         },
         "diagnostic_event_rank_mean": 40.52861952861953,
         "diagnostic_raw_calibration": {
@@ -1282,6 +1296,24 @@
           "mean_p_const": 0.01182685559286026,
           "mean_p_age": 0.007942294939939492
         }
+      }
+    }
+  },
+  "conditional_degeneracy_audit": {
+    "1000": {
+      "role": "holdout_label_oracle_audit_only_non_gating",
+      "oracle_conditional_mean": {
+        "rehedge_buy_occurrence": -0.3202487368100653,
+        "rehedge_sell_occurrence": -0.43009239582959774,
+        "unlock_occurrence": -0.060804314660359765
+      }
+    },
+    "500": {
+      "role": "holdout_label_oracle_audit_only_non_gating",
+      "oracle_conditional_mean": {
+        "rehedge_buy_occurrence": -0.31397255230908405,
+        "rehedge_sell_occurrence": -0.4156243541655307,
+        "unlock_occurrence": -0.043701719546205255
       }
     }
   },
@@ -1294,19 +1326,19 @@
             "holdout_bins": 5169,
             "holdout_intervals": 133,
             "holdout_target_events": 133,
-            "primary_conditional_timing": {
-              "cluster_count": 133,
-              "draws": 5000,
-              "mean": -0.3950052439487898,
-              "ci95_low": -0.4773476765836723,
-              "ci95_high": -0.31534403177204023
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 133,
               "draws": 5000,
               "mean": 0.45179704623350087,
               "ci95_low": 0.036861730306366955,
               "ci95_high": 1.0052846303800849
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.3950052439487898,
+              "ci95_low": -0.4773476765836723,
+              "ci95_high": -0.31534403177204023
             },
             "diagnostic_event_rank_mean": 17.037593984962406,
             "diagnostic_raw_calibration": {
@@ -1319,19 +1351,19 @@
             "holdout_bins": 6568,
             "holdout_intervals": 155,
             "holdout_target_events": 155,
-            "primary_conditional_timing": {
-              "cluster_count": 155,
-              "draws": 5000,
-              "mean": -0.2512476268659594,
-              "ci95_low": -0.31019991467577557,
-              "ci95_high": -0.1972893216514228
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 155,
               "draws": 5000,
               "mean": 0.7774905412816605,
               "ci95_low": 0.3790957907451787,
               "ci95_high": 1.2442854792378866
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.2512476268659594,
+              "ci95_low": -0.31019991467577557,
+              "ci95_high": -0.1972893216514228
             },
             "diagnostic_event_rank_mean": 14.380645161290323,
             "diagnostic_raw_calibration": {
@@ -1344,19 +1376,19 @@
             "holdout_bins": 31280,
             "holdout_intervals": 298,
             "holdout_target_events": 297,
-            "primary_conditional_timing": {
-              "cluster_count": 297,
-              "draws": 5000,
-              "mean": -0.029564033410431338,
-              "ci95_low": -0.13300335352241763,
-              "ci95_high": 0.07412896776326924
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 298,
               "draws": 5000,
               "mean": 1.2833646754436812,
               "ci95_low": 0.9162201968524301,
               "ci95_high": 1.7100213814408662
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": -0.029564033410431338,
+              "ci95_low": -0.13300335352241763,
+              "ci95_high": 0.07412896776326924
             },
             "diagnostic_event_rank_mean": 20.764309764309765,
             "diagnostic_raw_calibration": {
@@ -1374,19 +1406,19 @@
             "holdout_bins": 5169,
             "holdout_intervals": 133,
             "holdout_target_events": 133,
-            "primary_conditional_timing": {
-              "cluster_count": 133,
-              "draws": 5000,
-              "mean": -0.392998472222593,
-              "ci95_low": -0.4739845490680235,
-              "ci95_high": -0.3161651419619451
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 133,
               "draws": 5000,
               "mean": 0.4479875414739844,
               "ci95_low": 0.02310677594802979,
               "ci95_high": 0.9713559643579415
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.392998472222593,
+              "ci95_low": -0.4739845490680235,
+              "ci95_high": -0.3161651419619451
             },
             "diagnostic_event_rank_mean": 17.037593984962406,
             "diagnostic_raw_calibration": {
@@ -1399,19 +1431,19 @@
             "holdout_bins": 6568,
             "holdout_intervals": 155,
             "holdout_target_events": 155,
-            "primary_conditional_timing": {
-              "cluster_count": 155,
-              "draws": 5000,
-              "mean": -0.2512924517247847,
-              "ci95_low": -0.3083820857754171,
-              "ci95_high": -0.1967677046697241
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 155,
               "draws": 5000,
               "mean": 0.775088660253137,
               "ci95_low": 0.3731262105177767,
               "ci95_high": 1.2481491915394025
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.2512924517247847,
+              "ci95_low": -0.3083820857754171,
+              "ci95_high": -0.1967677046697241
             },
             "diagnostic_event_rank_mean": 14.348387096774193,
             "diagnostic_raw_calibration": {
@@ -1424,19 +1456,19 @@
             "holdout_bins": 31280,
             "holdout_intervals": 298,
             "holdout_target_events": 297,
-            "primary_conditional_timing": {
-              "cluster_count": 297,
-              "draws": 5000,
-              "mean": -0.03268690784469136,
-              "ci95_low": -0.13300314132319263,
-              "ci95_high": 0.06922313292488563
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 298,
               "draws": 5000,
               "mean": 1.2781965502535544,
               "ci95_low": 0.9138566895168059,
               "ci95_high": 1.708593601615293
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": -0.03268690784469136,
+              "ci95_low": -0.13300314132319263,
+              "ci95_high": 0.06922313292488563
             },
             "diagnostic_event_rank_mean": 20.764309764309765,
             "diagnostic_raw_calibration": {
@@ -1454,19 +1486,19 @@
             "holdout_bins": 5169,
             "holdout_intervals": 133,
             "holdout_target_events": 133,
-            "primary_conditional_timing": {
-              "cluster_count": 133,
-              "draws": 5000,
-              "mean": -0.3911116446694327,
-              "ci95_low": -0.47177236560334773,
-              "ci95_high": -0.3141338080772993
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 133,
               "draws": 5000,
               "mean": 0.443817081983937,
               "ci95_low": 0.03368266937065631,
               "ci95_high": 0.9789344742213146
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.3911116446694327,
+              "ci95_low": -0.47177236560334773,
+              "ci95_high": -0.3141338080772993
             },
             "diagnostic_event_rank_mean": 17.037593984962406,
             "diagnostic_raw_calibration": {
@@ -1479,19 +1511,19 @@
             "holdout_bins": 6568,
             "holdout_intervals": 155,
             "holdout_target_events": 155,
-            "primary_conditional_timing": {
-              "cluster_count": 155,
-              "draws": 5000,
-              "mean": -0.25136526277929594,
-              "ci95_low": -0.30897632748301684,
-              "ci95_high": -0.19727957839304966
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 155,
               "draws": 5000,
               "mean": 0.7723831297616433,
               "ci95_low": 0.3938594599022714,
               "ci95_high": 1.2344461119156962
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.25136526277929594,
+              "ci95_low": -0.30897632748301684,
+              "ci95_high": -0.19727957839304966
             },
             "diagnostic_event_rank_mean": 14.348387096774193,
             "diagnostic_raw_calibration": {
@@ -1504,19 +1536,19 @@
             "holdout_bins": 31280,
             "holdout_intervals": 298,
             "holdout_target_events": 297,
-            "primary_conditional_timing": {
-              "cluster_count": 297,
-              "draws": 5000,
-              "mean": -0.035762241626042066,
-              "ci95_low": -0.13611239506690465,
-              "ci95_high": 0.07111207725205043
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 298,
               "draws": 5000,
               "mean": 1.2730039917296205,
               "ci95_low": 0.919684168541872,
               "ci95_high": 1.715004254712252
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": -0.035762241626042066,
+              "ci95_low": -0.13611239506690465,
+              "ci95_high": 0.07111207725205043
             },
             "diagnostic_event_rank_mean": 20.764309764309765,
             "diagnostic_raw_calibration": {
@@ -1536,19 +1568,19 @@
             "holdout_bins": 10338,
             "holdout_intervals": 133,
             "holdout_target_events": 133,
-            "primary_conditional_timing": {
-              "cluster_count": 133,
-              "draws": 5000,
-              "mean": -0.3819508858582615,
-              "ci95_low": -0.46216447201902033,
-              "ci95_high": -0.3050052002331459
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 133,
               "draws": 5000,
               "mean": 0.4472818807806231,
               "ci95_low": 0.037594487461845114,
               "ci95_high": 0.9655142824118894
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.3819508858582615,
+              "ci95_low": -0.46216447201902033,
+              "ci95_high": -0.3050052002331459
             },
             "diagnostic_event_rank_mean": 33.07518796992481,
             "diagnostic_raw_calibration": {
@@ -1561,19 +1593,19 @@
             "holdout_bins": 13136,
             "holdout_intervals": 155,
             "holdout_target_events": 155,
-            "primary_conditional_timing": {
-              "cluster_count": 155,
-              "draws": 5000,
-              "mean": -0.24431100342195963,
-              "ci95_low": -0.3015480286916928,
-              "ci95_high": -0.19040128769579856
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 155,
               "draws": 5000,
               "mean": 0.7646005615089019,
               "ci95_low": 0.38143432361078333,
               "ci95_high": 1.2430400160910147
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.24431100342195963,
+              "ci95_low": -0.3015480286916928,
+              "ci95_high": -0.19040128769579856
             },
             "diagnostic_event_rank_mean": 27.761290322580646,
             "diagnostic_raw_calibration": {
@@ -1586,19 +1618,19 @@
             "holdout_bins": 62561,
             "holdout_intervals": 298,
             "holdout_target_events": 297,
-            "primary_conditional_timing": {
-              "cluster_count": 297,
-              "draws": 5000,
-              "mean": 0.005523994809323414,
-              "ci95_low": -0.0951705766834392,
-              "ci95_high": 0.11145248001175795
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 298,
               "draws": 5000,
               "mean": 1.2723074035814435,
               "ci95_low": 0.9158349232549301,
               "ci95_high": 1.6785855764481592
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": 0.005523994809323414,
+              "ci95_low": -0.0951705766834392,
+              "ci95_high": 0.11145248001175795
             },
             "diagnostic_event_rank_mean": 40.52861952861953,
             "diagnostic_raw_calibration": {
@@ -1616,19 +1648,19 @@
             "holdout_bins": 10338,
             "holdout_intervals": 133,
             "holdout_target_events": 133,
-            "primary_conditional_timing": {
-              "cluster_count": 133,
-              "draws": 5000,
-              "mean": -0.38020029745688744,
-              "ci95_low": -0.460044243965407,
-              "ci95_high": -0.3064243310979723
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 133,
               "draws": 5000,
               "mean": 0.44322702631709,
               "ci95_low": 0.03817042938975262,
               "ci95_high": 0.9742305664153
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.38020029745688744,
+              "ci95_low": -0.460044243965407,
+              "ci95_high": -0.3064243310979723
             },
             "diagnostic_event_rank_mean": 33.07518796992481,
             "diagnostic_raw_calibration": {
@@ -1641,19 +1673,19 @@
             "holdout_bins": 13136,
             "holdout_intervals": 155,
             "holdout_target_events": 155,
-            "primary_conditional_timing": {
-              "cluster_count": 155,
-              "draws": 5000,
-              "mean": -0.24454598404342895,
-              "ci95_low": -0.2990966685804924,
-              "ci95_high": -0.19186081262490468
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 155,
               "draws": 5000,
               "mean": 0.762189741371233,
               "ci95_low": 0.37756529622807455,
               "ci95_high": 1.2335914428011794
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.24454598404342895,
+              "ci95_low": -0.2990966685804924,
+              "ci95_high": -0.19186081262490468
             },
             "diagnostic_event_rank_mean": 27.696774193548386,
             "diagnostic_raw_calibration": {
@@ -1666,19 +1698,19 @@
             "holdout_bins": 62561,
             "holdout_intervals": 298,
             "holdout_target_events": 297,
-            "primary_conditional_timing": {
-              "cluster_count": 297,
-              "draws": 5000,
-              "mean": 0.0017636153369583144,
-              "ci95_low": -0.09665404173764729,
-              "ci95_high": 0.09962758108686104
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 298,
               "draws": 5000,
               "mean": 1.267057236663437,
               "ci95_low": 0.9084226807466539,
               "ci95_high": 1.6926490657968936
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": 0.0017636153369583144,
+              "ci95_low": -0.09665404173764729,
+              "ci95_high": 0.09962758108686104
             },
             "diagnostic_event_rank_mean": 40.52861952861953,
             "diagnostic_raw_calibration": {
@@ -1696,19 +1728,19 @@
             "holdout_bins": 10338,
             "holdout_intervals": 133,
             "holdout_target_events": 133,
-            "primary_conditional_timing": {
-              "cluster_count": 133,
-              "draws": 5000,
-              "mean": -0.37856914072891046,
-              "ci95_low": -0.4578770152758029,
-              "ci95_high": -0.3052432099549679
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 133,
               "draws": 5000,
               "mean": 0.43876671443429105,
               "ci95_low": 0.02979660000501146,
               "ci95_high": 0.9695584913231617
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 133,
+              "draws": 5000,
+              "mean": -0.37856914072891046,
+              "ci95_low": -0.4578770152758029,
+              "ci95_high": -0.3052432099549679
             },
             "diagnostic_event_rank_mean": 33.07518796992481,
             "diagnostic_raw_calibration": {
@@ -1721,19 +1753,19 @@
             "holdout_bins": 13136,
             "holdout_intervals": 155,
             "holdout_target_events": 155,
-            "primary_conditional_timing": {
-              "cluster_count": 155,
-              "draws": 5000,
-              "mean": -0.24480986387375187,
-              "ci95_low": -0.29897746162137046,
-              "ci95_high": -0.1909949807986869
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 155,
               "draws": 5000,
               "mean": 0.7594420399828066,
               "ci95_low": 0.37559298824837967,
               "ci95_high": 1.2274388255043869
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 155,
+              "draws": 5000,
+              "mean": -0.24480986387375187,
+              "ci95_low": -0.29897746162137046,
+              "ci95_high": -0.1909949807986869
             },
             "diagnostic_event_rank_mean": 27.696774193548386,
             "diagnostic_raw_calibration": {
@@ -1746,19 +1778,19 @@
             "holdout_bins": 62561,
             "holdout_intervals": 298,
             "holdout_target_events": 297,
-            "primary_conditional_timing": {
-              "cluster_count": 297,
-              "draws": 5000,
-              "mean": -0.001936310899657647,
-              "ci95_low": -0.10172170471398977,
-              "ci95_high": 0.10014204076700406
-            },
-            "secondary_occurrence_likelihood": {
+            "primary_occurrence_likelihood": {
               "cluster_count": 298,
               "draws": 5000,
               "mean": 1.2617758022027752,
               "ci95_low": 0.9060022492184405,
               "ci95_high": 1.6708636988494134
+            },
+            "noninferential_age_only_conditional_diagnostic": {
+              "cluster_count": 297,
+              "draws": 5000,
+              "mean": -0.001936310899657647,
+              "ci95_low": -0.10172170471398977,
+              "ci95_high": 0.10014204076700406
             },
             "diagnostic_event_rank_mean": 40.52861952861953,
             "diagnostic_raw_calibration": {
@@ -2074,29 +2106,39 @@
   },
   "pilot_verdict": {
     "rehedge_buy_occurrence": {
-      "verdict": "internal_timing_rejected_external_pending",
-      "one_second_mean": -0.392998472222593,
-      "five_hundred_ms_mean": -0.38020029745688744,
+      "verdict": "internal_occurrence_supported_external_pending",
+      "one_second_mean": 0.4479875414739844,
+      "one_second_ci95_low": 0.03508593430560983,
+      "one_second_ci95_high": 0.9828343714693994,
+      "five_hundred_ms_mean": 0.44322702631709,
+      "five_hundred_ms_role": "discretization_sensitivity_non_independent",
       "external_gate_satisfied": false,
       "tradeable_edge_claimed": false
     },
     "rehedge_sell_occurrence": {
-      "verdict": "internal_timing_rejected_external_pending",
-      "one_second_mean": -0.2512924517247847,
-      "five_hundred_ms_mean": -0.24454598404342895,
+      "verdict": "internal_occurrence_supported_external_pending",
+      "one_second_mean": 0.775088660253137,
+      "one_second_ci95_low": 0.3893907450594397,
+      "one_second_ci95_high": 1.251454515805674,
+      "five_hundred_ms_mean": 0.762189741371233,
+      "five_hundred_ms_role": "discretization_sensitivity_non_independent",
       "external_gate_satisfied": false,
       "tradeable_edge_claimed": false
     },
     "unlock_occurrence": {
-      "verdict": "inconclusive_external_pending",
-      "one_second_mean": -0.03268690784469136,
-      "five_hundred_ms_mean": 0.0017636153369583144,
+      "verdict": "internal_occurrence_supported_external_pending",
+      "one_second_mean": 1.2781965502535544,
+      "one_second_ci95_low": 0.9258429000887988,
+      "one_second_ci95_high": 1.7174640615636552,
+      "five_hundred_ms_mean": 1.267057236663437,
+      "five_hundred_ms_role": "discretization_sensitivity_non_independent",
       "external_gate_satisfied": false,
       "tradeable_edge_claimed": false
     }
   },
   "validation_gates": {
     "support_seconds_reconcile": true,
+    "m5_000_tradeable_to_primary_to_bins_reconcile": true,
     "no_nonpositive_bins": true,
     "no_gap_crossing_bins": true,
     "no_cross_split_primary_bins": true,
@@ -2110,12 +2152,14 @@
   "diagnostic_roles": {
     "raw_calibration": "descriptive_only",
     "event_rank": "descriptive_only",
-    "paired_occurrence_likelihood": "secondary_base_rate_sensitive",
-    "conditional_timing": "primary_for_M5_002_timing_only"
+    "paired_occurrence_likelihood": "primary_base_rate_sensitive",
+    "conditional_timing": "noninferential_for_age_only_outcome_truncated_risk_set",
+    "five_hundred_ms": "discretization_sensitivity_not_independent_replication"
   },
   "explicit_deferrals": {
     "m4_matched_timestamp_anchor_offset": "deferred_to_price_feature_work",
     "unlock_direction_given_occurrence": "deferred",
+    "conditional_timing_risk_set_redesign": "deferred_to_M5_003",
     "external_temporal_validation": "pending_2026_07_27_29"
   },
   "external_gate_satisfied": false,
@@ -2127,5 +2171,5 @@
     "design_matrix": "ae9b8e99f958f05eba3cb179f1ea3eae4d8267e5b611d98b76d0e14dccab2edb",
     "predictions": "467f871aa5d11eeda2e226cfe6448dcc11eac696bf15a75b5feefc15b1293389"
   },
-  "deterministic_report_sha256": "03f41d7e3838960a23aca5eb001add0f74a1eb285396f97b8228fdbf446781fb"
+  "deterministic_report_sha256": "80a1a8c680e7ddd7eb0a9e8ed8813f5f69c025d3b62b292eba30b05a92401365"
 }

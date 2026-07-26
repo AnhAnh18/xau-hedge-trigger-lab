@@ -66,3 +66,15 @@
   month-wide exception and avoiding a hard-zero model assumption.
 - Found that state age improves secondary occurrence likelihood but not frozen
   holdout conditional timing; M5 remains open pending external data.
+
+## 2026-07-26 — M5-002 conditional-statistic remediation
+
+- Reproduced the holdout-label oracle result showing that the outcome-truncated
+  within-interval calculation cannot score an age-only model.
+- Promoted paired cause-specific occurrence likelihood to the bounded pilot
+  primary and withdrew the two timing-rejected verdicts.
+- Added the explicit M5-000 tradeable-to-primary-to-bin accounting bridge and
+  documented the known-age scope of `A_all`.
+- Reclassified 500-millisecond results as discretization sensitivity and pinned
+  the supplemental tick input by SHA-256.
+- Kept M5-003 and all M2-M4 canonical outputs out of scope.

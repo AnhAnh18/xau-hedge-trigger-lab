@@ -24,9 +24,10 @@ from xau_trigger.state_age_hazard import (
     PRIMARY_ALPHA,
     SMOOTHING_SENSITIVITY,
     build_design_matrix,
-    coherent_timing_verdict,
     evaluate_holdout,
     fit_state_age_baselines,
+    holdout_oracle_conditional_diagnostic,
+    occurrence_verdict,
     per_session_base_hazard,
     predict_state_age_baselines,
 )
@@ -72,7 +73,7 @@ def _summarize_a_cohorts(bins: pd.DataFrame) -> dict:
                     1000 * group["target_label"].sum() / len(group)
                 ),
                 "role": (
-                    "A_all_internal_descriptive"
+                    "A_all_known_age_internal_descriptive"
                     if cohort_id == INTERNAL_COHORT_ID
                     else "supplemental_descriptive_non_gating"
                 ),
@@ -129,12 +130,61 @@ def _boundary_accounting(interval_audit: pd.DataFrame) -> dict:
     return records
 
 
+def _m5_000_support_bridge(accounting: list[dict]) -> dict:
+    source = json.loads(
+        (
+            ROOT / "reports" / "phase_05" / "m5_000_risk_time_audit.json"
+        ).read_text(encoding="utf-8")
+    )
+    day_rows = source["canonical_full_coverage_by_day"]
+    tradeable = round(
+        sum(row["tradeable_risk_seconds"] for row in day_rows),
+        6,
+    )
+    primary = round(
+        sum(row["primary_risk_seconds"] for row in day_rows),
+        6,
+    )
+    left_truncated = round(tradeable - primary, 6)
+    internal = next(
+        row
+        for row in accounting
+        if row["cohort_id"] == INTERNAL_COHORT_ID
+        and row["bin_width_ms"] == 1000
+    )
+    bridge_delta = round(
+        tradeable
+        - left_truncated
+        - internal["representable_bin_seconds"]
+        - internal["dropped_partial_seconds"],
+        9,
+    )
+    if primary != internal["eligible_fragment_seconds"] or abs(bridge_delta) > 1e-9:
+        raise AssertionError("M5-000 to M5-002 support bridge does not reconcile")
+    return {
+        "m5_000_tradeable_risk_seconds": tradeable,
+        "left_truncated_excluded_seconds": left_truncated,
+        "m5_000_primary_known_age_seconds": primary,
+        "m5_002_eligible_fragment_seconds": internal[
+            "eligible_fragment_seconds"
+        ],
+        "representable_bin_seconds": internal["representable_bin_seconds"],
+        "dropped_partial_seconds": internal["dropped_partial_seconds"],
+        "reconciliation_delta_seconds": bridge_delta,
+        "left_truncated_scope": (
+            "retained_in_interval_audit_excluded_from_all_age_model_bins"
+        ),
+        "a_all_scope": "known_age_eligible_support_only",
+    }
+
+
 def _validation_gates(
     all_bins: pd.DataFrame,
     accounting: list[dict],
     supports: dict,
     design: pd.DataFrame,
     *,
+    m5_000_bridge: dict,
     canonical_ticks_unchanged: bool,
     supplemental_isolation: bool,
 ) -> dict:
@@ -166,6 +216,10 @@ def _validation_gates(
             abs(row["reconciliation_delta_seconds"]) <= 1e-9
             for row in accounting
         ),
+        "m5_000_tradeable_to_primary_to_bins_reconcile": abs(
+            m5_000_bridge["reconciliation_delta_seconds"]
+        )
+        <= 1e-9,
         "no_nonpositive_bins": bool((all_bins["bin_end"] > all_bins["bin_start"]).all()),
         "no_gap_crossing_bins": gap_crossings == 0,
         "no_cross_split_primary_bins": not bool(
@@ -281,13 +335,15 @@ def _pilot_verdict(inference_by_width: dict) -> dict:
     output = {}
     endpoints = sorted(set(primary) & set(sensitivity))
     for endpoint in endpoints:
-        first = primary[endpoint]["primary_conditional_timing"]
-        second = sensitivity[endpoint]["primary_conditional_timing"]
-        verdict = coherent_timing_verdict(first, second)
+        first = primary[endpoint]["primary_occurrence_likelihood"]
+        second = sensitivity[endpoint]["primary_occurrence_likelihood"]
         output[endpoint] = {
-            "verdict": verdict,
+            "verdict": occurrence_verdict(first),
             "one_second_mean": first["mean"],
+            "one_second_ci95_low": first["ci95_low"],
+            "one_second_ci95_high": first["ci95_high"],
             "five_hundred_ms_mean": second["mean"],
+            "five_hundred_ms_role": "discretization_sensitivity_non_independent",
             "external_gate_satisfied": False,
             "tradeable_edge_claimed": False,
         }
@@ -314,6 +370,8 @@ def render_markdown(report: dict) -> str:
         "tradeable clock at bin start.",
         "- Supplemental rows do not enter fitting; parameter hashes are equal "
         "with and without supplemental input.",
+        "- Supplemental raw tick input is selected by its pre-registered "
+        "SHA-256 checksum, not by directory glob order.",
         "",
         "## Support reconciliation",
         "",
@@ -329,6 +387,29 @@ def render_markdown(report: dict) -> str:
             f"{row['dropped_partial_seconds']:,.3f} | "
             f"{row['reconciliation_delta_seconds']:.6f} |"
         )
+
+    bridge = report["m5_000_support_bridge"]
+    lines.extend(
+        [
+            "",
+            "The internal one-second bridge back to M5-000 is explicit:",
+            "",
+            "```text",
+            f"M5-000 tradeable risk             "
+            f"{bridge['m5_000_tradeable_risk_seconds']:,.3f}",
+            f"- left-truncated unknown age      "
+            f"{bridge['left_truncated_excluded_seconds']:,.3f}",
+            f"= M5-000 primary / M5-002 eligible "
+            f"{bridge['m5_000_primary_known_age_seconds']:,.3f}",
+            f"= {bridge['representable_bin_seconds']:,.3f} representable "
+            f"+ {bridge['dropped_partial_seconds']:,.3f} partial",
+            "```",
+            "",
+            "`A_all` is descriptive known-age eligible support. The "
+            "left-truncated interval remains in audit but is excluded from "
+            "all state-age model bins because its true age is unknown.",
+        ]
+    )
 
     lines.extend(
         [
@@ -354,35 +435,61 @@ def render_markdown(report: dict) -> str:
                 f"{str(values['has_zero_development_events']).lower()} |"
             )
 
-    lines.extend(["", "## Frozen holdout timing inference", ""])
+    lines.extend(["", "## Frozen holdout occurrence inference", ""])
     for width, endpoints in report["holdout_inference"].items():
         lines.extend([f"### {width} ms bins", ""])
         for endpoint, metrics in endpoints.items():
-            primary = metrics["primary_conditional_timing"]
-            secondary = metrics["secondary_occurrence_likelihood"]
+            primary = metrics["primary_occurrence_likelihood"]
+            diagnostic = metrics[
+                "noninferential_age_only_conditional_diagnostic"
+            ]
             lines.append(
-                f"- `{endpoint}`: conditional-vs-uniform mean "
+                f"- `{endpoint}`: primary occurrence LL mean "
                 f"{primary['mean']:.6f} "
                 f"(95% CI {primary['ci95_low']:.6f}, {primary['ci95_high']:.6f}; "
-                f"{primary['cluster_count']} intervals); secondary occurrence "
-                f"LL mean {secondary['mean']:.6f} "
-                f"(95% CI {secondary['ci95_low']:.6f}, "
-                f"{secondary['ci95_high']:.6f})."
+                f"{primary['cluster_count']} intervals); non-inferential "
+                f"age-only conditional diagnostic "
+                f"{diagnostic['mean']:.6f}."
             )
 
     lines.extend(
         [
             "",
+            "The conditional diagnostic cannot score the age-only model: "
+            "each event-to-event interval ends at its observed event, the "
+            "target is always in the last bin, and the within-interval risk "
+            "set is therefore outcome-truncated. It affects no verdict or "
+            "merge gate and is deferred until M5-003 risk-set design.",
+            "",
+            "As an audit, the age buckets were refit on the holdout labels. "
+            "The resulting oracle conditional means still remain below the "
+            "uniform null, confirming that this statistic does not score "
+            "age-only model quality:",
+            "",
+            "| Width | Endpoint | Holdout-oracle conditional mean |",
+            "| ---: | --- | ---: |",
+        ]
+    )
+    for width, audit in report["conditional_degeneracy_audit"].items():
+        for endpoint, mean in audit["oracle_conditional_mean"].items():
+            lines.append(f"| {width} ms | {endpoint} | {mean:.6f} |")
+
+    lines.extend(
+        [
+            "",
+            "The 500 ms result is a discretization sensitivity on the same "
+            "risk support, not independent replication.",
+            "",
             "## Smoothing sensitivity",
             "",
-            "| Width | Alpha | Endpoint | Conditional mean |",
+            "| Width | Alpha | Endpoint | Occurrence LL mean |",
             "| ---: | ---: | --- | ---: |",
         ]
     )
     for width, alpha_results in report["smoothing_sensitivity"].items():
         for alpha, result in alpha_results.items():
             for endpoint, metrics in result["holdout_inference"].items():
-                mean = metrics["primary_conditional_timing"]["mean"]
+                mean = metrics["primary_occurrence_likelihood"]["mean"]
                 lines.append(f"| {width} ms | {alpha} | {endpoint} | {mean:.6f} |")
 
     lines.extend(
@@ -437,9 +544,11 @@ def render_markdown(report: dict) -> str:
     lines.extend(
         [
             "",
-            "Conditional timing is primary for M5-002. Cause-specific "
-            "occurrence likelihood is secondary and answers a different, "
-            "base-rate-sensitive question. Neither result closes M5.",
+            "Cause-specific occurrence likelihood is primary for this bounded "
+            "state-age-only pilot. It remains base-rate-sensitive, so the "
+            "result is internal and external validation is still required. "
+            "The approximate unlock timer floor transports to holdout; no "
+            "standalone tradeable edge is claimed.",
             "",
             "## Explicit deferrals",
             "",
@@ -477,6 +586,9 @@ def main() -> None:
     supplemental_ticks = load_tick_cohort(
         raw_tick_paths,
         supplemental_plan["sessions"],
+        expected_sha256=supplemental_plan["tick_export"][
+            "source_sha256_allowlist"
+        ],
     )
     local_output.mkdir(parents=True, exist_ok=True)
     supplemental_tick_path = (
@@ -600,11 +712,13 @@ def main() -> None:
     supplemental_isolation = primary_parameters[
         "fitted_parameter_sha256"
     ] == isolation_parameters["fitted_parameter_sha256"]
+    m5_000_bridge = _m5_000_support_bridge(accounting)
     validation_gates = _validation_gates(
         all_bins,
         accounting,
         supports,
         design,
+        m5_000_bridge=m5_000_bridge,
         canonical_ticks_unchanged=canonical_tick_hash_before
         == canonical_tick_hash_after,
         supplemental_isolation=supplemental_isolation,
@@ -645,8 +759,12 @@ def main() -> None:
             ]
             == isolation_parameters["fitted_parameter_sha256"],
             "supplemental_role": "per_session_base_hazard_variation_non_gating",
+            "supplemental_source_sha256_allowlist": supplemental_plan[
+                "tick_export"
+            ]["source_sha256_allowlist"],
         },
         "support_accounting": accounting,
+        "m5_000_support_bridge": m5_000_bridge,
         "boundary_accounting": _boundary_accounting(all_interval_audit),
         "cohort_summaries": _summarize_a_cohorts(all_bins),
         "primary_parameters": primary_parameters,
@@ -666,6 +784,15 @@ def main() -> None:
             "split",
         ],
         "holdout_inference": inference_by_width,
+        "conditional_degeneracy_audit": {
+            str(width_ms): {
+                "role": "holdout_label_oracle_audit_only_non_gating",
+                "oracle_conditional_mean": (
+                    holdout_oracle_conditional_diagnostic(predictions)
+                ),
+            }
+            for width_ms, predictions in predictions_by_width.items()
+        },
         "smoothing_sensitivity": smoothing_sensitivity,
         "supplemental_named_deliverable": {
             "name": "per_session_base_hazard_variation_2026_07_20_24",
@@ -682,12 +809,18 @@ def main() -> None:
         "diagnostic_roles": {
             "raw_calibration": "descriptive_only",
             "event_rank": "descriptive_only",
-            "paired_occurrence_likelihood": "secondary_base_rate_sensitive",
-            "conditional_timing": "primary_for_M5_002_timing_only",
+            "paired_occurrence_likelihood": "primary_base_rate_sensitive",
+            "conditional_timing": (
+                "noninferential_for_age_only_outcome_truncated_risk_set"
+            ),
+            "five_hundred_ms": (
+                "discretization_sensitivity_not_independent_replication"
+            ),
         },
         "explicit_deferrals": {
             "m4_matched_timestamp_anchor_offset": "deferred_to_price_feature_work",
             "unlock_direction_given_occurrence": "deferred",
+            "conditional_timing_risk_set_redesign": "deferred_to_M5_003",
             "external_temporal_validation": "pending_2026_07_27_29",
         },
         "external_gate_satisfied": False,

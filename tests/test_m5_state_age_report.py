@@ -33,6 +33,11 @@ def test_m5_002_report_reconciles_m5_000_internal_seconds() -> None:
     assert internal["representable_bin_seconds"] == 125501.0
     assert internal["dropped_partial_seconds"] == 2.257
     assert internal["reconciliation_delta_seconds"] == 0.0
+    bridge = m5_002["m5_000_support_bridge"]
+    assert bridge["m5_000_tradeable_risk_seconds"] == 125697.211
+    assert bridge["left_truncated_excluded_seconds"] == 193.954
+    assert bridge["m5_000_primary_known_age_seconds"] == 125503.257
+    assert bridge["reconciliation_delta_seconds"] == 0.0
 
 
 def test_m5_002_report_passes_all_bounded_pilot_gates() -> None:
@@ -57,7 +62,7 @@ def test_m5_002_report_hash_and_predictor_allowlist_are_stable() -> None:
 
     assert sha256(encoded.encode("utf-8")).hexdigest() == expected_hash
     assert expected_hash == (
-        "03f41d7e3838960a23aca5eb001add0f74a1eb285396f97b8228fdbf446781fb"
+        "80a1a8c680e7ddd7eb0a9e8ed8813f5f69c025d3b62b292eba30b05a92401365"
     )
     forbidden = set(report["predictor_allowlist_excludes"])
     assert forbidden.isdisjoint(report["predictor_allowlist"])
@@ -78,21 +83,23 @@ def test_m5_002_timer_floor_keeps_exception_and_correct_terminal_bucket() -> Non
     assert unlock_buckets["age_5_6"]["target_events"] == 143
 
 
-def test_m5_002_timing_and_occurrence_estimands_are_not_conflated() -> None:
+def test_m5_002_occurrence_is_primary_and_conditional_is_noninferential() -> None:
     report = _load(M5_002_PATH)
     one_second = report["holdout_inference"]["1000"]
 
-    assert one_second["rehedge_buy_occurrence"][
-        "primary_conditional_timing"
-    ]["ci95_high"] < 0
-    assert one_second["rehedge_sell_occurrence"][
-        "primary_conditional_timing"
-    ]["ci95_high"] < 0
-    assert one_second["unlock_occurrence"]["primary_conditional_timing"][
-        "ci95_low"
-    ] < 0
-    assert one_second["unlock_occurrence"]["primary_conditional_timing"][
-        "ci95_high"
-    ] > 0
     for endpoint in one_second.values():
-        assert endpoint["secondary_occurrence_likelihood"]["ci95_low"] > 0
+        assert endpoint["primary_occurrence_likelihood"]["ci95_low"] > 0
+        assert "noninferential_age_only_conditional_diagnostic" in endpoint
+    assert report["diagnostic_roles"]["conditional_timing"] == (
+        "noninferential_for_age_only_outcome_truncated_risk_set"
+    )
+    assert all(
+        item["verdict"] == "internal_occurrence_supported_external_pending"
+        for item in report["pilot_verdict"].values()
+    )
+    oracle = report["conditional_degeneracy_audit"]["1000"][
+        "oracle_conditional_mean"
+    ]
+    assert round(oracle["rehedge_buy_occurrence"], 6) == -0.320249
+    assert round(oracle["rehedge_sell_occurrence"], 6) == -0.430092
+    assert round(oracle["unlock_occurrence"], 6) == -0.060804

@@ -79,8 +79,10 @@ Gate:
   predictors.
 - Headline inference reports both `C - A_common` and `C - B`, clustered by
   `interval_id`.
-- A within-interval conditional timing statistic is co-primary for robustness
-  to between-session intercept shifts.
+- M5-002 uses cause-specific occurrence likelihood as primary. Any
+  within-interval conditional timing statistic for M5-003 requires a new
+  pre-registered risk-set design; the outcome-truncated age-only version is
+  non-inferential.
 - Results survive pre-registered additional tick sessions. The current
   partial-plus-one-session dataset may produce a pilot only and cannot close M5.
 

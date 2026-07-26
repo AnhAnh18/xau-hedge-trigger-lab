@@ -216,3 +216,27 @@ gap.
 Consequences: This is a dated pre-fit amendment based only on canonical M2
 durations. It does not use price data, held-out model performance, or M5-002
 fit results. Final M5 external validation remains unchanged.
+
+## D-012 — Retire outcome-truncated conditional inference for M5-002
+
+Date: 2026-07-26
+Status: Accepted post-fit remediation; supersedes D-010/D-011 only for the
+M5-002 age-only verdict
+
+Decision: Use paired cause-specific occurrence likelihood `A_age - A_const` as
+the primary M5-002 statistic. Withdraw the two re-hedge timing-rejected
+verdicts. Retain the old within-interval calculation only as a non-inferential
+degeneracy audit, and defer any conditional timing design to M5-003
+pre-registration.
+
+Reason: M2 intervals end at their observed event and the target is always the
+last representable bin. For an age-only model, the proposed risk set is
+therefore determined by the outcome and the statistic is a function of
+interval duration and the fitted age curve. Even a holdout-label oracle remains
+below the uniform null for all three endpoints.
+
+Consequences: The internal occurrence result supports the approximate unlock
+timer floor and weaker re-hedge age effects, but remains base-rate-sensitive
+and externally unvalidated. The 500-millisecond width is discretization
+sensitivity, not independent replication. M5-003 does not start in this
+remediation.

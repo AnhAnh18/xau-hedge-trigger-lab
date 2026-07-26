@@ -5,10 +5,11 @@ import pandas as pd
 from xau_trigger.state_age_hazard import (
     MODEL_PREDICTOR_ALLOWLIST,
     build_design_matrix,
-    coherent_timing_verdict,
     conditional_timing_deltas,
     deterministic_cluster_bootstrap,
     fit_state_age_baselines,
+    holdout_oracle_conditional_diagnostic,
+    occurrence_verdict,
     per_session_base_hazard,
     predict_state_age_baselines,
 )
@@ -93,7 +94,7 @@ def test_age_bucket_amendment_separates_five_to_six_from_six_to_eight() -> None:
     assert endpoint["age_5_6"]["probability"] > 0
 
 
-def test_conditional_constant_hazard_is_exact_uniform_timing_null() -> None:
+def test_noninferential_conditional_constant_hazard_is_exact_uniform_null() -> None:
     predictions = pd.DataFrame(
         {
             "interval_id": ["x"] * 4,
@@ -128,13 +129,31 @@ def test_cluster_bootstrap_is_deterministic_with_5000_draws() -> None:
     assert first["cluster_count"] == 3
 
 
-def test_adjacent_width_null_results_are_inconclusive_not_mixed() -> None:
-    one_second = {"ci95_low": -0.1, "ci95_high": 0.05, "mean": -0.02}
-    half_second = {"ci95_low": -0.05, "ci95_high": 0.1, "mean": 0.01}
+def test_occurrence_verdict_uses_primary_one_second_ci_only() -> None:
+    supported = {"ci95_low": 0.01, "ci95_high": 0.5, "mean": 0.2}
+    inconclusive = {"ci95_low": -0.01, "ci95_high": 0.5, "mean": 0.2}
 
-    assert coherent_timing_verdict(one_second, half_second) == (
-        "inconclusive_external_pending"
+    assert occurrence_verdict(supported) == (
+        "internal_occurrence_supported_external_pending"
     )
+    assert occurrence_verdict(inconclusive) == (
+        "weak_or_inconclusive_external_pending"
+    )
+
+
+def test_holdout_oracle_conditional_is_explicitly_audit_only() -> None:
+    source = _bins()
+    parameters = fit_state_age_baselines(source)
+    predictions = predict_state_age_baselines(source, parameters)
+
+    audit = holdout_oracle_conditional_diagnostic(predictions)
+
+    assert set(audit) == {
+        "rehedge_buy_occurrence",
+        "rehedge_sell_occurrence",
+        "unlock_occurrence",
+    }
+    assert all(isinstance(value, float) for value in audit.values())
 
 
 def test_supplemental_session_rates_use_common_hours_only() -> None:

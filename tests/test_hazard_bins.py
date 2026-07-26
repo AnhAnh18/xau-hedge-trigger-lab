@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from hashlib import sha256
 from pathlib import Path
 
 import pandas as pd
@@ -7,6 +8,7 @@ import pandas as pd
 from xau_trigger.hazard_bins import (
     build_wall_clock_risk_bins,
     canonicalize_cohort_support,
+    load_tick_cohort,
 )
 
 
@@ -212,3 +214,49 @@ def test_canonical_build_script_locks_original_tick_export() -> None:
 
     assert 'CANONICAL_TICK_EXPORT = "XAUUSD_202607231200_202607242356.csv"' in text
     assert "ticks[0]" not in text
+
+
+def test_supplemental_tick_loader_uses_pinned_checksum(tmp_path: Path) -> None:
+    header = "<DATE>\t<TIME>\t<BID>\t<ASK>\t<LAST>\t<VOLUME>\t<FLAGS>\n"
+    wanted = tmp_path / "wanted.csv"
+    extra = tmp_path / "extra.csv"
+    wanted.write_text(
+        header + "2026.07.20\t12:00:00.000\t1\t2\t1\t1\t4\n",
+        encoding="utf-8",
+    )
+    extra.write_text(
+        header + "2026.07.20\t12:00:01.000\t3\t4\t3\t1\t4\n",
+        encoding="utf-8",
+    )
+    digest = sha256(wanted.read_bytes()).hexdigest()
+
+    ticks = load_tick_cohort(
+        [extra, wanted],
+        ["2026-07-20"],
+        expected_sha256=[digest],
+    )
+
+    assert len(ticks) == 1
+    assert ticks.iloc[0]["bid"] == 1
+
+
+def test_supplemental_tick_loader_fails_when_pinned_checksum_is_missing(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "ticks.csv"
+    path.write_text(
+        "<DATE>\t<TIME>\t<BID>\t<ASK>\t<LAST>\t<VOLUME>\t<FLAGS>\n"
+        "2026.07.20\t12:00:00.000\t1\t2\t1\t1\t4\n",
+        encoding="utf-8",
+    )
+
+    try:
+        load_tick_cohort(
+            [path],
+            ["2026-07-20"],
+            expected_sha256=["0" * 64],
+        )
+    except ValueError as error:
+        assert "exactly one file" in str(error)
+    else:
+        raise AssertionError("Missing pinned checksum should fail cleanly")

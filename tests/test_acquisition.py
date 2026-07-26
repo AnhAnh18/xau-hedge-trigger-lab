@@ -47,6 +47,9 @@ def test_retrospective_support_plan_is_non_gating_and_locked() -> None:
     ]
     assert plan["trade_report"]["required_period_start"] == "2026-07-19"
     assert plan["trade_report"]["required_period_end"] == "2026-07-25"
+    assert plan["tick_export"]["source_sha256_allowlist"] == [
+        "d0f27a2090ad84db810c8d5ed5b2b1907743ba084684bc3aa1fdd46983ba5fa4"
+    ]
 
 
 def test_synthetic_acquisition_passes_and_is_deterministic(tmp_path: Path) -> None:
