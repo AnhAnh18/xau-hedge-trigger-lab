@@ -16,6 +16,9 @@ state age and eligible control risk time. The pooled all-positive result is
 descriptive only. Results must also be reported in the fixed state-age strata
 0–6 s, 7–10 s, 10–30 s, 30–60 s, and >60 s.
 
+The model-ready state-age predictor is clipped to `[0, 60]` seconds. The raw
+lineage-derived value remains available only in the audit output.
+
 Acceptance: At least two adjacent holdout windows must have paired
 positive-event cluster-bootstrap intervals above zero. A pooled result cannot
 override a null result in the control-supported population.
@@ -38,6 +41,12 @@ For each sequence window `w`, calculate the prior boundary only from
 boundary must be touched before `t`, followed by a non-zero retracement or
 bounce before `t`. Report boundary-touch, post-touch retracement, and the joint
 sequence separately.
+
+Direction is pre-registered: positives are expected to have a higher
+side-appropriate boundary-touch rate than matched controls. Retracement
+fractions are upper-tail winsorized at the development control-supported
+risk-set p99 separately for each pre-registered window. The resulting caps are
+applied unchanged to holdout; holdout data never refits a cap.
 
 Acceptance: H2 must not be the arithmetic complement of H1. The joint sequence
 requires coherent evidence in at least two adjacent holdout windows.

@@ -12,3 +12,4 @@
 - [ ] T-010 M4-004 Add position lineage and entry-state features ([#1](https://github.com/AnhAnh18/xau-hedge-trigger-lab/issues/1))
 - [x] T-011 Resolve M4 timestamp-sensitivity gate before M5
 - [x] T-012 Complete bounded M4 remediation and pass Draft PR gates
+- [ ] T-013 M4-005 Model the 0–6s structural control-support gap ([#3](https://github.com/AnhAnh18/xau-hedge-trigger-lab/issues/3))

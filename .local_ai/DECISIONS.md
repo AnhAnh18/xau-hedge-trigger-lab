@@ -70,3 +70,22 @@ than pre-action causal robustness.
 Consequences: This decision supersedes the sensitivity-gate consequence in
 D-004. Inconclusive hypotheses may be reported honestly; they are not promoted
 to supported by descriptive or post-action results.
+
+## D-006 — Bound M4 model transforms before merge
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Keep `sample_id` and raw pre-transition state age in the audit output
+only. The model-ready state-age predictor is clipped to `[0, 60]` seconds.
+
+H2 retracement fractions are upper-tail winsorized at the p99 estimated
+separately for each pre-registered window from development,
+control-supported re-hedge risk-set samples. Those development caps are applied
+unchanged to holdout. The expected H2-touch direction is positive: event
+samples should touch the side-appropriate prior boundary more often than their
+matched controls.
+
+Reason: Arbitrary IDs are not predictors, the raw state-age tail is too sparse
+for an unconstrained numeric effect, and unbounded normalized retracement is
+dominated by a small number of near-zero prior ranges.

@@ -12,6 +12,8 @@ H2_WINDOWS_MS = (1000, 2000, 5000)
 H3_WINDOWS_MS = (500, 1000, 2000)
 BOOTSTRAP_DRAWS = 5000
 CONTROL_SUPPORT_MIN_STATE_AGE_SECONDS = 7.0
+MODEL_STATE_AGE_CLIP_SECONDS = 60.0
+H2_RETRACEMENT_WINSOR_QUANTILE = 0.99
 PRIMARY_BEHAVIORS = {
     "REHEDGE_SELL",
     "REHEDGE_BUY",
@@ -20,7 +22,6 @@ PRIMARY_BEHAVIORS = {
 }
 
 MODEL_ID_COLUMNS = (
-    "sample_id",
     "matched_event_id",
 )
 MODEL_TARGET_COLUMNS = ("sample_type",)
@@ -29,7 +30,9 @@ MODEL_CONTEXT_COLUMNS = (
     "trigger_family",
     "date_split",
 )
-MODEL_BASE_PREDICTOR_COLUMNS = ("state_age_pretransition_seconds",)
+MODEL_BASE_PREDICTOR_COLUMNS = (
+    "state_age_pretransition_seconds_clipped_60s",
+)
 MARKET_FEATURE_SUFFIXES = (
     "valid",
     "range_width",
@@ -54,8 +57,8 @@ H2_FEATURE_SUFFIXES = (
     "low_touch_lead_ms",
     "high_breach_fraction",
     "low_breach_fraction",
-    "retracement_after_high_fraction",
-    "bounce_after_low_fraction",
+    "retracement_after_high_fraction_winsorized",
+    "bounce_after_low_fraction_winsorized",
     "high_sequence_complete",
     "low_sequence_complete",
 )
@@ -655,12 +658,20 @@ def expected_feature(
             frame[prefix + "high_touched_before_event"],
             frame[prefix + "low_touched_before_event"],
         )
-    elif hypothesis == "h2_retracement":
+    elif hypothesis in {"h2_retracement", "h2_retracement_raw"}:
         prefix = f"h2_w{window_ms}ms_"
+        high_column = "retracement_after_high_fraction"
+        low_column = "bounce_after_low_fraction"
+        if hypothesis == "h2_retracement":
+            winsorized_high = high_column + "_winsorized"
+            winsorized_low = low_column + "_winsorized"
+            if prefix + winsorized_high in frame:
+                high_column = winsorized_high
+                low_column = winsorized_low
         values = np.where(
             frame.behavior_type == "REHEDGE_SELL",
-            frame[prefix + "retracement_after_high_fraction"],
-            frame[prefix + "bounce_after_low_fraction"],
+            frame[prefix + high_column],
+            frame[prefix + low_column],
         )
     elif hypothesis == "h2":
         prefix = f"h2_w{window_ms}ms_"
@@ -685,6 +696,49 @@ def hypothesis_valid_column(hypothesis: str, window_ms: int) -> str:
     if hypothesis.startswith("h2"):
         return f"h2_w{window_ms}ms_valid"
     return f"w{window_ms}ms_valid"
+
+
+def fit_h2_retracement_winsor_caps(
+    engineered: pd.DataFrame,
+    quantile: float = H2_RETRACEMENT_WINSOR_QUANTILE,
+) -> dict[int, float]:
+    development = engineered[
+        (engineered.date_split == "development")
+        & (engineered.trigger_family == "rehedge")
+        & engineered.is_control_supported
+    ]
+    caps = {}
+    for window in H2_WINDOWS_MS:
+        valid = development[development[f"h2_w{window}ms_valid"]]
+        raw = expected_feature(valid, window, "h2_retracement_raw").dropna()
+        if raw.empty:
+            raise RuntimeError(
+                f"No development data for H2 retracement winsorization at {window} ms"
+            )
+        caps[window] = float(raw.quantile(quantile))
+    return caps
+
+
+def apply_reviewed_model_transforms(
+    engineered: pd.DataFrame,
+    h2_retracement_caps: dict[int, float],
+) -> pd.DataFrame:
+    output = engineered.copy()
+    output["state_age_pretransition_seconds_clipped_60s"] = (
+        output.state_age_pretransition_seconds.clip(
+            lower=0,
+            upper=MODEL_STATE_AGE_CLIP_SECONDS,
+        )
+    )
+    for window, cap in h2_retracement_caps.items():
+        prefix = f"h2_w{window}ms_"
+        output[prefix + "retracement_after_high_fraction_winsorized"] = output[
+            prefix + "retracement_after_high_fraction"
+        ].clip(lower=0, upper=cap)
+        output[prefix + "bounce_after_low_fraction_winsorized"] = output[
+            prefix + "bounce_after_low_fraction"
+        ].clip(lower=0, upper=cap)
+    return output
 
 
 def paired_summary(
@@ -809,6 +863,8 @@ def build_model_matrix(engineered: pd.DataFrame) -> pd.DataFrame:
         raise RuntimeError(f"Missing reviewed model features: {missing}")
     output = engineered.loc[:, allowlist].copy()
     forbidden = {
+        "sample_id",
+        "state_age_pretransition_seconds",
         "control_sampling_reason",
         "control_distance_seconds",
         "time_since_previous_event_seconds",

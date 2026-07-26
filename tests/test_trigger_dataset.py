@@ -6,7 +6,9 @@ from pandas.testing import assert_frame_equal
 
 from xau_trigger.trigger_dataset import (
     BOOTSTRAP_DRAWS,
+    H2_WINDOWS_MS,
     TickFeatureEngine,
+    apply_reviewed_model_transforms,
     attach_pretransition_state,
     build_control_pool,
     build_model_matrix,
@@ -282,10 +284,44 @@ def test_model_matrix_uses_explicit_allowlist_and_blocks_sampling_leakage() -> N
     result = build_model_matrix(pd.DataFrame(data))
 
     assert list(result.columns) == list(model_output_columns())
+    assert "sample_id" not in result
+    assert "state_age_pretransition_seconds" not in result
+    assert "state_age_pretransition_seconds_clipped_60s" in result
     assert "control_sampling_reason" not in result
     assert "control_distance_seconds" not in result
     assert "time_since_previous_event_seconds" not in result
     assert "feature_at_plus_500ms" not in result
+
+
+def test_reviewed_transforms_clip_state_age_and_h2_retracement() -> None:
+    frame = pd.DataFrame(
+        {
+            "state_age_pretransition_seconds": [10.0, 1000.0],
+            **{
+                f"h2_w{window}ms_retracement_after_high_fraction": [0.2, 20.0]
+                for window in H2_WINDOWS_MS
+            },
+            **{
+                f"h2_w{window}ms_bounce_after_low_fraction": [0.3, 30.0]
+                for window in H2_WINDOWS_MS
+            },
+        }
+    )
+    caps = {window: 1.5 for window in H2_WINDOWS_MS}
+
+    result = apply_reviewed_model_transforms(frame, caps)
+
+    assert result.state_age_pretransition_seconds_clipped_60s.tolist() == [
+        10.0,
+        60.0,
+    ]
+    for window in H2_WINDOWS_MS:
+        assert result[
+            f"h2_w{window}ms_retracement_after_high_fraction_winsorized"
+        ].max() == 1.5
+        assert result[
+            f"h2_w{window}ms_bounce_after_low_fraction_winsorized"
+        ].max() == 1.5
 
 
 def _result(window: int, low: float, high: float) -> dict:

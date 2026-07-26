@@ -51,6 +51,7 @@ The all-positive result is descriptive only. It cannot override a null control-s
 - Joint sequence: **inconclusive**
 - Boundary-touch component: **supported**
 - Post-touch retracement component: **inconclusive**
+- Retracement upper-tail winsorization: development p99; caps {'1000': 7.0000000003534035, '2000': 4.126428571388192, '5000': 2.973416666670874}
 - H2 independence audit passed: True
 
 Prior boundaries are calculated on a disjoint window ending before the sequence window. Touch and retracement are published separately.
@@ -84,6 +85,8 @@ Positive shifts do not enter the model matrix, headline hypothesis verdicts, or 
 - `trigger_samples_audit.parquet`: IDs, anchors, lineage, sampling metadata, alignment diagnostics, and validity flags.
 - `trigger_model_features.parquet`: explicit reviewed allowlist only.
 - Model predictors: 132.
+- Raw state age remains in audit; model state age is clipped at 60 seconds.
+- `sample_id` is audit-only and absent from the model matrix.
 - Sampling metadata and `time_since_previous_event_seconds` are absent from the model-ready matrix.
 
 Development data on 2026-07-23 begins at 12:00. Holdout data on 2026-07-24 is near-full-day; raw daily counts are not compared as equal-coverage event rates.

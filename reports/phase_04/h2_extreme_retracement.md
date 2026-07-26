@@ -233,11 +233,11 @@ Conclusion: **inconclusive**
           "bootstrap_draws": 5000,
           "positive_median": 0.0,
           "control_median": 0.20817169653062062,
-          "paired_mean_difference": 0.45901710922206523,
+          "paired_mean_difference": 0.14394618724777475,
           "matched_separation_rate": 0.2712765957446808,
           "cluster_bootstrap_ci95": [
-            -0.013122495203824787,
-            1.090914734931207
+            -0.04377549961071749,
+            0.35948759691585697
           ]
         }
       },
@@ -249,11 +249,11 @@ Conclusion: **inconclusive**
           "bootstrap_draws": 5000,
           "positive_median": 0.04477611940124267,
           "control_median": 0.17851851851905998,
-          "paired_mean_difference": 0.06932809152256285,
-          "matched_separation_rate": 0.387434554973822,
+          "paired_mean_difference": 0.12634663517555067,
+          "matched_separation_rate": 0.4031413612565445,
           "cluster_bootstrap_ci95": [
-            -0.04263507867057055,
-            0.18286302054158413
+            0.031214626654776964,
+            0.23027257372547943
           ]
         }
       },
@@ -265,11 +265,11 @@ Conclusion: **inconclusive**
           "bootstrap_draws": 5000,
           "positive_median": 0.027777777778479548,
           "control_median": 0.19166666666575086,
-          "paired_mean_difference": -0.0012395731437981011,
-          "matched_separation_rate": 0.32460732984293195,
+          "paired_mean_difference": 0.0231690159436691,
+          "matched_separation_rate": 0.33507853403141363,
           "cluster_bootstrap_ci95": [
-            -0.08397499896123777,
-            0.08859589134543529
+            -0.0533870151594551,
+            0.10821889024910679
           ]
         }
       },
@@ -281,11 +281,11 @@ Conclusion: **inconclusive**
           "bootstrap_draws": 5000,
           "positive_median": 0.0,
           "control_median": 0.18736141906921108,
-          "paired_mean_difference": 0.2257905974327219,
+          "paired_mean_difference": 0.09753189095847199,
           "matched_separation_rate": 0.27860696517412936,
           "cluster_bootstrap_ci95": [
-            -0.14956533342869513,
-            0.7531693778982261
+            -0.0826099218512786,
+            0.2965161152720248
           ]
         }
       },
@@ -297,11 +297,11 @@ Conclusion: **inconclusive**
           "bootstrap_draws": 5000,
           "positive_median": 0.0,
           "control_median": 0.2231452455601195,
-          "paired_mean_difference": 0.0500050801225551,
+          "paired_mean_difference": 0.09976311885740126,
           "matched_separation_rate": 0.3155339805825243,
           "cluster_bootstrap_ci95": [
-            -0.1235460700467101,
-            0.2236999479559886
+            -0.023959169033908375,
+            0.2295825786241466
           ]
         }
       },
@@ -313,15 +313,25 @@ Conclusion: **inconclusive**
           "bootstrap_draws": 5000,
           "positive_median": 0.0,
           "control_median": 0.1867084639504829,
-          "paired_mean_difference": 0.016827678488830974,
+          "paired_mean_difference": 0.07942593295628753,
           "matched_separation_rate": 0.3333333333333333,
           "cluster_bootstrap_ci95": [
-            -0.1255870347515626,
-            0.15129183933034654
+            -0.015595345228302434,
+            0.17788476780596194
           ]
         }
       }
     ]
+  },
+  "retracement_winsorization": {
+    "upper_quantile": 0.99,
+    "fit_population": "development control-supported rehedge risk-set samples",
+    "caps_by_window_ms": {
+      "1000": 7.0000000003534035,
+      "2000": 4.126428571388192,
+      "5000": 2.973416666670874
+    },
+    "holdout_refit": false
   },
   "definition": "For each pre-registered sequence window w, the prior boundary is computed on [t-2w, t-w). The sequence window is [t-w, t]. A valid sequence touches or breaks the side-appropriate prior boundary before t and then retraces/bounces before t."
 }

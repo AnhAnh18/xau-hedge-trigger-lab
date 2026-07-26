@@ -12,10 +12,13 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from xau_trigger.trigger_dataset import (  # noqa: E402
     BOOTSTRAP_DRAWS,
+    H2_RETRACEMENT_WINSOR_QUANTILE,
     H1_WINDOWS_MS,
     H2_WINDOWS_MS,
     H3_WINDOWS_MS,
+    MODEL_STATE_AGE_CLIP_SECONDS,
     WINDOWS_MS,
+    apply_reviewed_model_transforms,
     annotate_control_support,
     attach_actual_control_counts,
     attach_pretransition_state,
@@ -26,6 +29,7 @@ from xau_trigger.trigger_dataset import (  # noqa: E402
     effective_event_times,
     engineer_features,
     expected_feature,
+    fit_h2_retracement_winsor_caps,
     model_output_columns,
     model_predictor_columns,
     paired_summary,
@@ -123,7 +127,10 @@ def h1_analysis(engineered: pd.DataFrame) -> dict:
     }
 
 
-def h2_analysis(engineered: pd.DataFrame) -> dict:
+def h2_analysis(
+    engineered: pd.DataFrame,
+    retracement_winsor_caps: dict[int, float],
+) -> dict:
     rehedge = engineered[
         (engineered.trigger_family == "rehedge")
         & engineered.is_control_supported
@@ -136,6 +143,17 @@ def h2_analysis(engineered: pd.DataFrame) -> dict:
         "joint_sequence": joint,
         "touch_component": touch,
         "retracement_component": retracement,
+        "retracement_winsorization": {
+            "upper_quantile": H2_RETRACEMENT_WINSOR_QUANTILE,
+            "fit_population": (
+                "development control-supported rehedge risk-set samples"
+            ),
+            "caps_by_window_ms": {
+                str(window): cap
+                for window, cap in retracement_winsor_caps.items()
+            },
+            "holdout_refit": False,
+        },
         "definition": (
             "For each pre-registered sequence window w, the prior boundary is "
             "computed on [t-2w, t-w). The sequence window is [t-w, t]. A valid "
@@ -188,10 +206,11 @@ def h3_analysis(
 def hypothesis_bundle(
     engineered: pd.DataFrame,
     ticks: pd.DataFrame,
+    h2_retracement_caps: dict[int, float],
 ) -> dict:
     return {
         "h1": h1_analysis(engineered),
-        "h2": h2_analysis(engineered),
+        "h2": h2_analysis(engineered, h2_retracement_caps),
         "h3": h3_analysis(engineered, ticks),
     }
 
@@ -422,6 +441,8 @@ def markdown_report(report: dict) -> str:
             f"- Boundary-touch component: **{h2['touch_component']['conclusion']}**",
             f"- Post-touch retracement component: "
             f"**{h2['retracement_component']['conclusion']}**",
+            f"- Retracement upper-tail winsorization: development p99; caps "
+            f"{h2['retracement_winsorization']['caps_by_window_ms']}",
             f"- H2 independence audit passed: "
             f"{report['h2_independence_audit']['passed']}",
             "",
@@ -464,6 +485,9 @@ def markdown_report(report: dict) -> str:
             "metadata, alignment diagnostics, and validity flags.",
             "- `trigger_model_features.parquet`: explicit reviewed allowlist only.",
             f"- Model predictors: {report['model_output_contract']['predictor_count']}.",
+            f"- Raw state age remains in audit; model state age is clipped at "
+            f"{report['model_output_contract']['state_age_clip_seconds']:.0f} seconds.",
+            "- `sample_id` is audit-only and absent from the model matrix.",
             "- Sampling metadata and `time_since_previous_event_seconds` are absent "
             "from the model-ready matrix.",
             "",
@@ -516,6 +540,11 @@ def main() -> None:
 
     samples = pd.concat([positives, controls], ignore_index=True, sort=False)
     engineered = engineer_features(samples, ticks, aligned)
+    h2_retracement_caps = fit_h2_retracement_winsor_caps(engineered)
+    engineered = apply_reviewed_model_transforms(
+        engineered,
+        h2_retracement_caps,
+    )
     audit = build_audit_table(engineered)
     model = build_model_matrix(engineered)
     if list(model.columns) != list(model_output_columns()):
@@ -535,7 +564,11 @@ def main() -> None:
     audit.to_parquet(interim / "trigger_samples_audit.parquet", index=False)
     model.to_parquet(interim / "trigger_model_features.parquet", index=False)
 
-    main_hypotheses = hypothesis_bundle(engineered, ticks)
+    main_hypotheses = hypothesis_bundle(
+        engineered,
+        ticks,
+        h2_retracement_caps,
+    )
     control_features = engineered[engineered.sample_type == "control"]
     sensitivity, sensitivity_gate = sensitivity_analysis(
         positives,
@@ -614,6 +647,12 @@ def main() -> None:
             "sampling_metadata_present": False,
             "time_since_previous_event_present": False,
             "post_action_features_present": False,
+            "sample_id_present": False,
+            "state_age_clip_seconds": MODEL_STATE_AGE_CLIP_SECONDS,
+            "state_age_raw_present": False,
+            "h2_retracement_winsor_quantile": (
+                H2_RETRACEMENT_WINSOR_QUANTILE
+            ),
         },
         "feature_lineage_exclusions": [
             "entry_gap",
