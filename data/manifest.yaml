@@ -1,4 +1,34 @@
-schema_version: 1
+schema_version: 2
+
+time_basis:
+  server_timezone: "UTC+03:00"
+  status: inferred_high_confidence_for_2026_07_window
+  globally_confirmed: false
+  evidence:
+    - unique_long_tick_gap_near_server_midnight
+    - tick_activity_peak_at_server_hours_16_to_18
+  limitation: does_not_establish_year_round_dst_rule
+
+validation_plan:
+  id: m5_external_sessions_v1
+  registered_on: "2026-07-26"
+  status: pending_acquisition
+  selection_rule: first_three_contiguous_full_broker_sessions_after_current_tick_export
+  sessions:
+    - date: "2026-07-27"
+      tick_dataset_id: ticks_xauusd_2026_07_27
+      status: planned
+    - date: "2026-07-28"
+      tick_dataset_id: ticks_xauusd_2026_07_28
+      status: planned
+    - date: "2026-07-29"
+      tick_dataset_id: ticks_xauusd_2026_07_29
+      status: planned
+  required_trade_report:
+    dataset_id: trades_week_2026_07_26_08_01
+    status: planned
+  raw_files_committed_to_git: false
+  substitution_policy: amend_manifest_before_inspecting_any_replacement_result
 
 datasets:
   - id: trades_week_2026_06_28_07_04
@@ -6,7 +36,8 @@ datasets:
     local_path: data/raw/trades/2806-0407.html
     date_from: "2026-06-28"
     date_to: "2026-07-04"
-    server_timezone: unknown
+    server_timezone: "UTC+03:00"
+    timezone_status: inferred_not_formally_confirmed
     account_alias: source_account_a
     committed_to_git: false
   - id: trades_week_2026_07_05_07_11
@@ -14,7 +45,8 @@ datasets:
     local_path: data/raw/trades/0507-1107.html
     date_from: "2026-07-05"
     date_to: "2026-07-11"
-    server_timezone: unknown
+    server_timezone: "UTC+03:00"
+    timezone_status: inferred_not_formally_confirmed
     account_alias: source_account_a
     committed_to_git: false
   - id: trades_week_2026_07_12_07_18
@@ -22,7 +54,8 @@ datasets:
     local_path: data/raw/trades/1207-1807.html
     date_from: "2026-07-12"
     date_to: "2026-07-18"
-    server_timezone: unknown
+    server_timezone: "UTC+03:00"
+    timezone_status: inferred_not_formally_confirmed
     account_alias: source_account_a
     committed_to_git: false
   - id: trades_week_2026_07_19_07_25
@@ -30,7 +63,8 @@ datasets:
     local_path: data/raw/trades/1907-2507.html
     date_from: "2026-07-19"
     date_to: "2026-07-25"
-    server_timezone: unknown
+    server_timezone: "UTC+03:00"
+    timezone_status: inferred_not_formally_confirmed
     account_alias: source_account_a
     committed_to_git: false
   - id: ticks_xauusd_2026_07_23_24
@@ -39,5 +73,6 @@ datasets:
     symbol: XAUUSD
     date_from: "2026-07-23 12:00:00"
     date_to: "2026-07-24 23:56:58"
-    server_timezone: unknown
+    server_timezone: "UTC+03:00"
+    timezone_status: inferred_not_formally_confirmed
     committed_to_git: false

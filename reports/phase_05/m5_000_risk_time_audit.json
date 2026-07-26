@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "milestone": "M5-000",
+  "status": "pilot_accounting_only",
+  "configuration": {
+    "coverage_start": "2026-07-23T12:00:00.046000",
+    "coverage_end": "2026-07-24T23:56:57.758000",
+    "market_break_rule": "exclude full consecutive-tick gaps > 60 seconds",
+    "market_break_threshold_seconds": 60.0,
+    "common_server_hours": [
+      12,
+      24
+    ],
+    "state_age_clock": "elapsed time minus detected market-break overlap"
+  },
+  "coverage": {
+    "tick_count": 984883,
+    "source_interval_count": 2096,
+    "positive_duration_interval_count": 2062,
+    "days": [
+      "2026-07-23",
+      "2026-07-24"
+    ]
+  },
+  "legacy_start_date_accounting": [
+    {
+      "day": "2026-07-23",
+      "interval_count": 1248,
+      "unclipped_start_date_assigned_seconds": 47501.0,
+      "event_density_percent": 2.627313
+    },
+    {
+      "day": "2026-07-24",
+      "interval_count": 848,
+      "unclipped_start_date_assigned_seconds": 81911.0,
+      "event_density_percent": 1.03527
+    }
+  ],
+  "canonical_full_coverage_by_day": [
+    {
+      "day": "2026-07-23",
+      "source_interval_count": 1248,
+      "terminal_event_count": 1247,
+      "eligible_terminal_event_count": 1226,
+      "nonrisk_terminal_event_count": 21,
+      "target_event_count": 1226,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 43199.954,
+      "excluded_break_seconds": 120.101,
+      "tradeable_risk_seconds": 43079.853,
+      "target_event_density_percent": 2.845878
+    },
+    {
+      "day": "2026-07-24",
+      "source_interval_count": 849,
+      "terminal_event_count": 849,
+      "eligible_terminal_event_count": 836,
+      "nonrisk_terminal_event_count": 13,
+      "target_event_count": 836,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 85899.0,
+      "excluded_break_seconds": 3600.4,
+      "tradeable_risk_seconds": 82298.6,
+      "target_event_density_percent": 1.015813
+    }
+  ],
+  "canonical_common_hours_by_day": [
+    {
+      "day": "2026-07-23",
+      "source_interval_count": 1248,
+      "terminal_event_count": 1247,
+      "eligible_terminal_event_count": 1226,
+      "nonrisk_terminal_event_count": 21,
+      "target_event_count": 1226,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 43199.954,
+      "excluded_break_seconds": 120.101,
+      "tradeable_risk_seconds": 43079.853,
+      "target_event_density_percent": 2.845878
+    },
+    {
+      "day": "2026-07-24",
+      "source_interval_count": 594,
+      "terminal_event_count": 594,
+      "eligible_terminal_event_count": 585,
+      "nonrisk_terminal_event_count": 9,
+      "target_event_count": 585,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 42699.0,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 42699.0,
+      "target_event_density_percent": 1.370056
+    }
+  ],
+  "canonical_full_coverage_by_day_and_state": [
+    {
+      "day": "2026-07-23",
+      "state": "HEDGED_1X1",
+      "source_interval_count": 624,
+      "tradeable_segment_count": 624,
+      "zero_duration_interval_count": 0,
+      "terminal_event_count": 624,
+      "eligible_terminal_event_count": 624,
+      "nonrisk_terminal_event_count": 0,
+      "target_event_count": 624,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 26552.954,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 26552.954,
+      "target_events_per_1000_tradeable_seconds": 23.50021
+    },
+    {
+      "day": "2026-07-23",
+      "state": "ONE_BUY",
+      "source_interval_count": 313,
+      "tradeable_segment_count": 302,
+      "zero_duration_interval_count": 11,
+      "terminal_event_count": 313,
+      "eligible_terminal_event_count": 302,
+      "nonrisk_terminal_event_count": 11,
+      "target_event_count": 302,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 7275.0,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 7275.0,
+      "target_events_per_1000_tradeable_seconds": 41.512027
+    },
+    {
+      "day": "2026-07-23",
+      "state": "ONE_SELL",
+      "source_interval_count": 311,
+      "tradeable_segment_count": 301,
+      "zero_duration_interval_count": 10,
+      "terminal_event_count": 310,
+      "eligible_terminal_event_count": 300,
+      "nonrisk_terminal_event_count": 10,
+      "target_event_count": 300,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 9372.0,
+      "excluded_break_seconds": 120.101,
+      "tradeable_risk_seconds": 9251.899,
+      "target_events_per_1000_tradeable_seconds": 32.425776
+    },
+    {
+      "day": "2026-07-24",
+      "state": "HEDGED_1X1",
+      "source_interval_count": 424,
+      "tradeable_segment_count": 424,
+      "zero_duration_interval_count": 0,
+      "terminal_event_count": 424,
+      "eligible_terminal_event_count": 424,
+      "nonrisk_terminal_event_count": 0,
+      "target_event_count": 424,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 58706.0,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 58706.0,
+      "target_events_per_1000_tradeable_seconds": 7.22243
+    },
+    {
+      "day": "2026-07-24",
+      "state": "ONE_BUY",
+      "source_interval_count": 234,
+      "tradeable_segment_count": 228,
+      "zero_duration_interval_count": 6,
+      "terminal_event_count": 234,
+      "eligible_terminal_event_count": 228,
+      "nonrisk_terminal_event_count": 6,
+      "target_event_count": 228,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 14605.0,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 14605.0,
+      "target_events_per_1000_tradeable_seconds": 15.611092
+    },
+    {
+      "day": "2026-07-24",
+      "state": "ONE_SELL",
+      "source_interval_count": 191,
+      "tradeable_segment_count": 184,
+      "zero_duration_interval_count": 7,
+      "terminal_event_count": 191,
+      "eligible_terminal_event_count": 184,
+      "nonrisk_terminal_event_count": 7,
+      "target_event_count": 184,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 12588.0,
+      "excluded_break_seconds": 3600.4,
+      "tradeable_risk_seconds": 8987.6,
+      "target_events_per_1000_tradeable_seconds": 20.472651
+    }
+  ],
+  "canonical_common_hours_by_day_and_state": [
+    {
+      "day": "2026-07-23",
+      "state": "HEDGED_1X1",
+      "source_interval_count": 624,
+      "tradeable_segment_count": 624,
+      "zero_duration_interval_count": 0,
+      "terminal_event_count": 624,
+      "eligible_terminal_event_count": 624,
+      "nonrisk_terminal_event_count": 0,
+      "target_event_count": 624,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 26552.954,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 26552.954,
+      "target_events_per_1000_tradeable_seconds": 23.50021
+    },
+    {
+      "day": "2026-07-23",
+      "state": "ONE_BUY",
+      "source_interval_count": 313,
+      "tradeable_segment_count": 302,
+      "zero_duration_interval_count": 11,
+      "terminal_event_count": 313,
+      "eligible_terminal_event_count": 302,
+      "nonrisk_terminal_event_count": 11,
+      "target_event_count": 302,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 7275.0,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 7275.0,
+      "target_events_per_1000_tradeable_seconds": 41.512027
+    },
+    {
+      "day": "2026-07-23",
+      "state": "ONE_SELL",
+      "source_interval_count": 311,
+      "tradeable_segment_count": 301,
+      "zero_duration_interval_count": 10,
+      "terminal_event_count": 310,
+      "eligible_terminal_event_count": 300,
+      "nonrisk_terminal_event_count": 10,
+      "target_event_count": 300,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 9372.0,
+      "excluded_break_seconds": 120.101,
+      "tradeable_risk_seconds": 9251.899,
+      "target_events_per_1000_tradeable_seconds": 32.425776
+    },
+    {
+      "day": "2026-07-24",
+      "state": "HEDGED_1X1",
+      "source_interval_count": 297,
+      "tradeable_segment_count": 297,
+      "zero_duration_interval_count": 0,
+      "terminal_event_count": 297,
+      "eligible_terminal_event_count": 297,
+      "nonrisk_terminal_event_count": 0,
+      "target_event_count": 297,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 30962.0,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 30962.0,
+      "target_events_per_1000_tradeable_seconds": 9.592404
+    },
+    {
+      "day": "2026-07-24",
+      "state": "ONE_BUY",
+      "source_interval_count": 160,
+      "tradeable_segment_count": 155,
+      "zero_duration_interval_count": 5,
+      "terminal_event_count": 160,
+      "eligible_terminal_event_count": 155,
+      "nonrisk_terminal_event_count": 5,
+      "target_event_count": 155,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 6568.0,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 6568.0,
+      "target_events_per_1000_tradeable_seconds": 23.599269
+    },
+    {
+      "day": "2026-07-24",
+      "state": "ONE_SELL",
+      "source_interval_count": 137,
+      "tradeable_segment_count": 133,
+      "zero_duration_interval_count": 4,
+      "terminal_event_count": 137,
+      "eligible_terminal_event_count": 133,
+      "nonrisk_terminal_event_count": 4,
+      "target_event_count": 133,
+      "competing_event_count": 0,
+      "raw_overlap_seconds": 5169.0,
+      "excluded_break_seconds": 0.0,
+      "tradeable_risk_seconds": 5169.0,
+      "target_events_per_1000_tradeable_seconds": 25.730315
+    }
+  ],
+  "market_breaks": [
+    {
+      "break_id": "gap-001",
+      "break_start": "2026-07-23T23:57:59.899000",
+      "break_end": "2026-07-24T01:00:00.400000",
+      "duration_seconds": 3720.501,
+      "exclusion_reason": "market_break_no_tick_coverage"
+    }
+  ],
+  "boundary_cases": {
+    "left_truncated_interval_ids": [
+      "12074"
+    ],
+    "right_censored_interval_ids": [],
+    "cross_midnight_interval_ids": [
+      "13321"
+    ],
+    "zero_duration_interval_count": 34,
+    "market_break_intersection_interval_ids": [
+      "13321"
+    ]
+  },
+  "timezone_decision": {
+    "server_timezone": "UTC+03:00",
+    "status": "inferred_high_confidence_for_2026_07_window",
+    "globally_confirmed": false,
+    "observed_long_gap_server_clock": [
+      "23:57:59.899000",
+      "01:00:00.400000"
+    ],
+    "highest_tick_count_server_hours": [
+      17,
+      16,
+      18
+    ],
+    "scope_note": "The inference is valid for this July 2026 dataset window; it does not establish a year-round DST rule."
+  },
+  "limitations": [
+    "Development begins at server hour 12; full-day development and holdout are not comparable.",
+    "A/B/C comparisons are restricted to common server hours 12-23.",
+    "Only one partial-plus-one-near-full tick session is available.",
+    "This audit defines support only and does not fit or evaluate a model."
+  ],
+  "deterministic_audit_sha256": "c1cc7c9596e68e7d547756ddf89d6f4a00dfdd0d5122295ec4effdb8f0eb6571"
+}

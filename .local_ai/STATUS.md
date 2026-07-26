@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M4 — Trigger Dataset (complete)
+M5 — Trigger Inference (M5-000 complete; modelling not started)
 
 ## Completed
 
@@ -29,6 +29,13 @@ M4 — Trigger Dataset (complete)
 - Development-only winsorization for H2 retracement
 - Reviewed model transforms and pre-registered H2 direction/windows
 - M4 merged to `main` through PR #2
+- M4 release marker created at commit `a49daad`
+- M5 roadmap/specification aligned before modelling
+- Canonical tradeable-risk-time accounting
+- Explicit midnight split and maintenance-break exclusion
+- Common-hour development/holdout cohort locked to server hours 12–23
+- UTC+3 recorded as a window-scoped high-confidence inference
+- Three external validation sessions pre-registered
 
 ## Current data
 
@@ -38,16 +45,21 @@ M4 — Trigger Dataset (complete)
 
 ## Current focus
 
-M4 is closed with honest verdicts: H1 is confounded/inconclusive on the
-control-supported population, H2 is inconclusive, and H3 is supported but
-timing-sensitive and smaller than spread. M5 has not started.
+M5-000 is complete without fitting a model. The earlier 1,248/47,501 and
+848/81,911 figures are retained as legacy start-date accounting; canonical
+exposure clips to tick coverage, splits at midnight, and removes the
+3,720.501-second maintenance gap.
 
 ## Next executable task
 
-Review and lock the M5 Trigger Inference plan before any M5 implementation.
+M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
+sessions and a trade report covering their lifecycle events. Raw files remain
+outside Git.
 
 ## Current blockers
 
-- Server timezone not formally confirmed
+- Pre-registered external tick/report sessions are not yet available
+- Server timezone is inferred as UTC+3 for the current window but is not
+  formally or globally confirmed
 - MT5 report event time has only second-level resolution
 - The 0–6 second structural control-support gap is tracked in issue #3

@@ -89,3 +89,59 @@ matched controls.
 Reason: Arbitrary IDs are not predictors, the raw state-age tail is too sparse
 for an unconstrained numeric effect, and unbounded normalized retracement is
 dominated by a small number of near-zero prior ranges.
+
+## D-007 — Treat UTC+3 as a window-scoped timezone inference
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Use `UTC+03:00` as the inferred server timezone for the July 2026
+dataset window. Mark it as high-confidence but not formally or globally
+confirmed.
+
+Reason: The only tick gap longer than 60 seconds occurs around server midnight
+to 01:00, and the highest tick-count hours are 16–18 server time. These
+independent observations are consistent with UTC+3 for this window.
+
+Consequences: Session context may use server clock under this recorded
+assumption. No year-round DST rule may be inferred without additional data or
+broker confirmation.
+
+## D-008 — Use canonical tradeable time and common-hour support in M5
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Clip M2 intervals to exact tick coverage, split them at midnight,
+exclude full consecutive-tick gaps longer than 60 seconds, and pause state age
+inside those gaps. Preserve zero-duration intervals for accounting only.
+
+All A/B/C headline comparisons use identical bins restricted to server hours
+12–23, the support shared by development and holdout. Full-range results are
+descriptive only.
+
+Reason: Start-date duration aggregation assigns after-midnight time to the
+wrong day and counts a 3,720.501-second maintenance break as actionable risk.
+The current development day also lacks server hours 01–11, which prevents a
+fair full-day comparison with holdout.
+
+Consequences: Legacy totals remain published for reconciliation, but they are
+not model exposure. Risk-bin generation must use the canonical fragments and
+tradeable state-age clock.
+
+## D-009 — Pre-register external M5 sessions before modelling
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Register 2026-07-27 through 2026-07-29 as the first external
+validation sessions. Require full XAUUSD ticks plus a trade report covering
+their lifecycle events.
+
+Reason: The current data contains one partial and one near-full tick session.
+Selecting validation dates after seeing model results would create avoidable
+selection bias.
+
+Consequences: M5 may produce a clearly labelled pilot before acquisition, but
+the milestone cannot close. Any replacement date requires a dated manifest
+amendment before replacement results are inspected.
