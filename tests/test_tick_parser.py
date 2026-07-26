@@ -1,5 +1,5 @@
 from pathlib import Path
-from src.xau_trigger.parsers.tick_export import parse_ticks
+from xau_trigger.parsers.tick_export import parse_ticks
 
 def test_tick_parser():
     df = parse_ticks(Path(__file__).parent / "fixtures" / "ticks_minimal.tsv")

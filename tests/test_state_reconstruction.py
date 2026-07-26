@@ -1,5 +1,5 @@
 import pandas as pd
-from src.xau_trigger.state_reconstruction import merge_lifecycles, reconstruct_states
+from xau_trigger.state_reconstruction import merge_lifecycles, reconstruct_states
 
 def _closed(position_id, side, opened, closed, volume=0.3):
     return {"report_id": "r1", "position_id": position_id, "symbol": "XAUUSD", "side": side, "volume": volume, "open_time": pd.Timestamp(opened), "open_price": 1.0, "close_time": pd.Timestamp(closed), "close_price": 1.0, "profit": 0.0, "swap": 0.0, "commission": 0.0}

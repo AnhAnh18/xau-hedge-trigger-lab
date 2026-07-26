@@ -1,5 +1,5 @@
 from pathlib import Path
-from src.xau_trigger.parsers.mt5_report import parse_report, parse_report_summary
+from xau_trigger.parsers.mt5_report import parse_report, parse_report_summary
 
 def test_mt5_report_parser():
     tables = parse_report(Path(__file__).parent / "fixtures" / "mt5_report_minimal.html")

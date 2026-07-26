@@ -25,3 +25,20 @@ Decision: Rewrite all published repository history to replace the real MT5 accou
 Reason: The repository is early-stage and public; rewriting now keeps the anonymization policy consistent.
 
 Consequences: Published commit hashes change, existing clones must be discarded or reset carefully, and old branches must not be merged back.
+
+## D-004 — Keep M4 v1 causal and lineage-safe
+
+Date: 2026-07-26
+Status: Accepted
+
+Decision: Build M4 v1 features only from ticks, state intervals, and aligned
+events at `matched_time`. Keep `matched_time ± 500 ms` in sensitivity reports
+only. Use deterministic matched risk-set controls without replacement, with
+separate validity flags for every feature window.
+
+Reason: Position lineage is not yet strong enough to reproduce entry distance,
+surviving-leg state, floating P/L, or preceding unlock loss without assumptions.
+
+Consequences: Those four feature families are deferred to M4-004. M4 remains
+open because the +500 ms sensitivity reverses H1/H2, even though the causal
+dataset and baseline hypothesis reports are reproducible.

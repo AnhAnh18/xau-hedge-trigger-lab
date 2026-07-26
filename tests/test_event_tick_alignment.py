@@ -1,5 +1,5 @@
 import pandas as pd
-from src.xau_trigger.event_tick_alignment import align_events, quote_column
+from xau_trigger.event_tick_alignment import align_events, quote_column
 
 def _event(event_id, event_type, side, price, when="2026-07-23 12:00:00"):
     return {"event_id": event_id, "event_time": pd.Timestamp(when), "event_type": event_type, "side": side, "execution_price": price, "volume": 0.3, "ordering_quality": "deterministic", "accounting_category": "classified_standard", "state_before": "ONE_BUY", "state_after": "HEDGED_1X1"}
