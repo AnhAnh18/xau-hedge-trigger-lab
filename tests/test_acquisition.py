@@ -17,6 +17,7 @@ from xau_trigger.acquisition import (
 
 ROOT = Path(__file__).resolve().parents[1]
 PLAN_PATH = ROOT / "data" / "m5_acquisition_plan.json"
+SUPPLEMENTAL_PLAN_PATH = ROOT / "data" / "m5_retrospective_support_plan.json"
 
 
 def test_acquisition_plan_is_locked_before_external_sessions() -> None:
@@ -32,6 +33,20 @@ def test_acquisition_plan_is_locked_before_external_sessions() -> None:
     assert plan["coverage_gap_policy"]["retune_after_results"] is False
     assert plan["analysis_windows"]["primary_server_hours"] == [12, 24]
     assert plan["analysis_windows"]["secondary_can_override_primary"] is False
+
+
+def test_retrospective_support_plan_is_non_gating_and_locked() -> None:
+    plan = load_acquisition_plan(SUPPLEMENTAL_PLAN_PATH)
+
+    assert plan["registered_on"] == "2026-07-26"
+    assert plan["cohort_role"] == "retrospective_supplemental_non_gating"
+    assert plan["sessions"] == [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-22",
+    ]
+    assert plan["trade_report"]["required_period_start"] == "2026-07-19"
+    assert plan["trade_report"]["required_period_end"] == "2026-07-25"
 
 
 def test_synthetic_acquisition_passes_and_is_deterministic(tmp_path: Path) -> None:

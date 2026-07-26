@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "plan_id": "m5_retrospective_support_2026_07_20_22_v1",
+  "registered_on": "2026-07-26",
+  "cohort_role": "retrospective_supplemental_non_gating",
+  "symbol": "XAUUSD",
+  "server_timezone": "UTC+03:00",
+  "sessions": [
+    "2026-07-20",
+    "2026-07-21",
+    "2026-07-22"
+  ],
+  "tick_export": {
+    "allowed_suffixes": [
+      ".csv",
+      ".tsv"
+    ],
+    "delimiter": "\t",
+    "required_columns": [
+      "DATE",
+      "TIME",
+      "BID",
+      "ASK",
+      "LAST",
+      "VOLUME",
+      "FLAGS"
+    ],
+    "first_tick_no_later_than_server_time": "01:05:00",
+    "last_tick_no_earlier_than_server_time": "23:50:00",
+    "preserve_duplicate_milliseconds": true
+  },
+  "trade_report": {
+    "allowed_suffixes": [
+      ".html",
+      ".htm"
+    ],
+    "required_sections": [
+      "positions",
+      "orders",
+      "deals",
+      "open_positions",
+      "summary"
+    ],
+    "required_period_start": "2026-07-19",
+    "required_period_end": "2026-07-25",
+    "require_observed_event_on_each_session": true
+  },
+  "coverage_gap_policy": {
+    "threshold_seconds": 60,
+    "default_classification": "unknown_coverage_gap",
+    "scheduled_classification_min_recurring_sessions": 3,
+    "same_server_clock_tolerance_seconds": 120,
+    "retune_after_results": false
+  },
+  "analysis_windows": {
+    "primary_server_hours": [
+      12,
+      24
+    ],
+    "secondary_full_session": true,
+    "secondary_can_override_primary": false
+  },
+  "privacy": {
+    "raw_files_committed_to_git": false,
+    "output_file_identifiers_are_generated_aliases": true,
+    "record_sha256": true
+  }
+}

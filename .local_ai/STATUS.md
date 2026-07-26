@@ -43,11 +43,12 @@ M5 — Trigger Inference (M5-000 complete; modelling not started)
 - Secondary full-session external analysis pre-registered
 - Machine-readable M5 acquisition plan and privacy-safe intake validator
 - Deterministic synthetic acquisition dry run and recurring-gap audit
+- Retrospective supplemental 2026-07-20 through 2026-07-22 intake validated
 
 ## Current data
 
 - 4 MT5 weekly trade reports
-- 1 XAUUSD tick file covering 2026-07-23 to 2026-07-24
+- 2 local XAUUSD tick exports covering 2026-07-20 to 2026-07-24
 - Approximately one month of trade history
 
 ## Current focus
@@ -65,6 +66,10 @@ confounded with the split.
 M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
 sessions and a trade report covering their lifecycle events. Raw files remain
 outside Git. The intake code is ready; real acquisition remains pending.
+
+The registered retrospective supplemental 2026-07-20 through 2026-07-22 tick
+cohort passed intake validation. It is non-gating and does not replace the
+pre-registered external sessions.
 
 ## Current blockers
 

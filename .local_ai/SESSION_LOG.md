@@ -40,3 +40,12 @@
 - Documented that untouched historical full-tick data is technically valid,
   but changing the locked dates requires a dated amendment before inspection.
 - Stopped before M5-002 model construction.
+
+## 2026-07-26 — retrospective supplemental tick intake
+
+- Registered 2026-07-20 through 2026-07-22 as a non-gating retrospective
+  supplemental cohort before reading its tick export.
+- Validated all three sessions and the existing 2026-07-19 through 2026-07-25
+  report coverage with the privacy-safe intake validator.
+- Kept the result separate from the pre-registered 2026-07-27 through
+  2026-07-29 primary external-validation gate and did not start M5-002.

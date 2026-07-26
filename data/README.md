@@ -34,6 +34,15 @@ python scripts/validate_m5_acquisition.py \
   --output reports/private/m5_acquisition_validation.json
 ```
 
+The registered retrospective supplemental cohort for 2026-07-20 through
+2026-07-22 uses its own non-gating plan:
+
+```bash
+python scripts/validate_m5_acquisition.py \
+  --plan data/m5_retrospective_support_plan.json \
+  --output reports/private/m5_retrospective_20260720_22_validation.json
+```
+
 The output uses generated file aliases rather than raw filenames, emits no
 financial values, records SHA-256 checksums, preserves duplicate millisecond
 ticks, and audits coverage gaps against the pre-registered 60-second rule.

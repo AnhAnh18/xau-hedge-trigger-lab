@@ -54,6 +54,22 @@ validation_plan:
     scheduled_classification_rule: recurring_same_server_clock_pattern_across_sessions
     retune_after_results: false
 
+supplemental_retrospective_plan:
+  id: m5_retrospective_support_2026_07_20_22_v1
+  machine_readable_plan: data/m5_retrospective_support_plan.json
+  registered_on: "2026-07-26"
+  role: retrospective_supplemental_non_gating
+  sessions:
+    - date: "2026-07-20"
+      tick_dataset_id: ticks_xauusd_2026_07_20_22
+    - date: "2026-07-21"
+      tick_dataset_id: ticks_xauusd_2026_07_20_22
+    - date: "2026-07-22"
+      tick_dataset_id: ticks_xauusd_2026_07_20_22
+  report_dataset_id: trades_week_2026_07_19_07_25
+  external_gate_effect: none
+  selection_note: registered_before_reading_supplemental_tick_export
+
 datasets:
   - id: trades_week_2026_06_28_07_04
     kind: mt5_trade_report

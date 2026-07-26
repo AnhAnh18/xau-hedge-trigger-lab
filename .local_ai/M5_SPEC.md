@@ -147,6 +147,12 @@ by a dated amendment before their validation/model result is read. They do not
 silently replace the locked 2026-07-27 through 2026-07-29 primary external
 sessions, and no date may be chosen based on a favorable result.
 
+The 2026-07-20 through 2026-07-22 XAUUSD export is registered as a
+retrospective supplemental cohort before its tick contents are read. It may
+test intake completeness, improve descriptive/support accounting, and support
+clearly labelled pilot diagnostics. It is non-gating and cannot replace or
+promote the primary 2026-07-27 through 2026-07-29 external-validation result.
+
 M5-002 may run as a pilot if these files are unavailable, but M5 cannot close.
 Primary external evaluation remains fixed to 12:00–24:00. The full-session
 analysis on all three dates is secondary and was registered before acquisition.
