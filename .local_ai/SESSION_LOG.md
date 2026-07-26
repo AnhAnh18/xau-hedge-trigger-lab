@@ -156,3 +156,16 @@
   sessions and kept ablation interpretation conditional and non-causal.
 - Required no feature/model refit; deterministic rebuild, hashes, tests,
   privacy, and stacked M5-004 provenance are refreshed before merge.
+
+## 2026-07-27 — M5-004 unlock-cause preregistration
+
+- Started a separate stacked branch without changing Draft PR #8.
+- Defined unlock direction as one event-level conditional cause split rather
+  than an additional occurrence hazard.
+- Locked one-second and 500-millisecond anchors, a 12-feature directional
+  allowlist, state-age cause baseline, development-only GroupKFold, required
+  ablations, and an external-only verdict rule.
+- Recorded known internal event accounting for audit only and prohibited it
+  from creating a verdict.
+- Stopped before cause-feature construction or model fitting; implementation
+  requires review and separate authorization.

@@ -142,6 +142,25 @@ m5_003_pipeline:
   external_gate_satisfied: false
   raw_files_committed_to_git: false
 
+m5_004_preregistration:
+  id: m5_004_unlock_cause_v1
+  registered_on: "2026-07-27"
+  status: preregistered_stacked_on_reviewed_m5_003_no_fit
+  human_readable_plan: .local_ai/M5_004_PREREGISTRATION.md
+  human_readable_sha256: d60c4e12dc84e72ab13da79402111acb00d66a814c02d4718d6cfa5a88059056
+  machine_readable_plan: data/m5_004_preregistration.json
+  machine_readable_sha256: f28a8eb35b236b8196788008e43ff613ad674c8815bf711a861067c453be8fea
+  text_hash_policy: canonical_utf8_lf
+  upstream_draft_pr: 8
+  upstream_head_commit: 7434505e9e6fcff7d8c427a51943ea6b571c3328
+  implementation_authorized: false
+  model_fit_authorized: false
+  canonical_outputs_mutable: false
+  external_gate_sessions:
+    - "2026-07-27"
+    - "2026-07-28"
+    - "2026-07-29"
+
 datasets:
   - id: trades_week_2026_06_28_07_04
     kind: mt5_trade_report

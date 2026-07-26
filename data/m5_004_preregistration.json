@@ -1,0 +1,360 @@
+{
+  "schema_version": 1,
+  "plan_id": "m5_004_unlock_cause_v1",
+  "registered_on": "2026-07-27",
+  "status": "preregistered_stacked_on_reviewed_m5_003_no_fit",
+  "scope": {
+    "task": "M5-004",
+    "implementation_authorized": false,
+    "model_fit_authorized": false,
+    "canonical_outputs_mutable": false,
+    "tradeable_edge_claim_allowed": false
+  },
+  "upstream_dependency": {
+    "draft_pr": 8,
+    "head_commit": "7434505e9e6fcff7d8c427a51943ea6b571c3328",
+    "review_status": "independent_re_review_accepted_followups_applied",
+    "amend_before_fit_if_hash_changes": true,
+    "amended_on": "2026-07-27",
+    "amendment_reason": "M5-003 independent review follow-ups added the external session-consistency gate and interpretation limits without refitting; M5-004 joint-valid support hashes stayed unchanged and no M5-004 fit had begun",
+    "m5_004_design_changed": false,
+    "locked_hashes": {
+      "m5_003_preregistration_sha256": "4da95ca8b787e201a77f03fcfe1bf40145752bb967d4d847325349c528f50616",
+      "m5_003_report_sha256": "9b6cc69feea7fd031c039a7af7f6cf8900c6fcc21cd952f6eb1a4ea5d6824eb1",
+      "m5_003_frozen_manifest_sha256": "da2f9e0c66bdf8e51a349bc77db67fc3bbd1f8dc100d359890ac7ee54b14e747",
+      "m5_003_feature_audit_dataframe_sha256": "44183dbf388a9dc86344d3beaea480f0db3242488c66afa937ddef0475ce78b4",
+      "m5_003_joint_valid_dataframe_sha256": "69deadc6a6d2ed45ff12c15ef7659a73cf09ace74d27b496938dd057569800f2",
+      "m5_002_risk_bin_dataframe_sha256": "62f0f0fa4f961b699461c2c3ba935c460d853b4553142130187c503fb4698520"
+    },
+    "text_hash_policy": "canonical_utf8_lf"
+  },
+  "estimand": {
+    "name": "unlock_cause_conditional_on_unlock_occurrence",
+    "unit": "one_eligible_unlock_event",
+    "target": {
+      "UNLOCK_TO_BUY": 1,
+      "UNLOCK_TO_SELL": 0
+    },
+    "positive_row_contract": "unlock_occurrence_terminal_bin_with_target_label_1",
+    "non_event_risk_bins_as_negatives": false,
+    "censored_or_competing_intervals_as_negatives": false,
+    "occurrence_timing_claim_allowed": false
+  },
+  "event_selection": {
+    "endpoint": "unlock_occurrence",
+    "target_label": 1,
+    "allowed_following_event_types": [
+      "UNLOCK_TO_BUY",
+      "UNLOCK_TO_SELL"
+    ],
+    "minimum_tradeable_state_age_at_bin_start_seconds": 5,
+    "common_hours_only": true,
+    "cross_split_intervals_allowed": false,
+    "one_row_per_keys": [
+      "cohort_id",
+      "interval_id",
+      "bin_width_ms"
+    ],
+    "unexpected_target_cause_policy": "fatal",
+    "missing_feature_policy": "joint_exclusion_no_imputation"
+  },
+  "known_internal_accounting": [
+    {
+      "bin_width_ms": 1000,
+      "role": "development",
+      "UNLOCK_TO_BUY": 714,
+      "UNLOCK_TO_SELL": 730,
+      "total": 1444
+    },
+    {
+      "bin_width_ms": 1000,
+      "role": "internal_reuse",
+      "UNLOCK_TO_BUY": 160,
+      "UNLOCK_TO_SELL": 135,
+      "total": 295
+    },
+    {
+      "bin_width_ms": 500,
+      "role": "development",
+      "UNLOCK_TO_BUY": 715,
+      "UNLOCK_TO_SELL": 730,
+      "total": 1445
+    },
+    {
+      "bin_width_ms": 500,
+      "role": "internal_reuse",
+      "UNLOCK_TO_BUY": 160,
+      "UNLOCK_TO_SELL": 137,
+      "total": 297
+    }
+  ],
+  "cohorts": {
+    "development": {
+      "sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "role": "fit_and_selection_only_no_verdict"
+    },
+    "internal_reuse": {
+      "sessions": [
+        "2026-07-24"
+      ],
+      "role": "diagnostic_only_no_fit_no_verdict",
+      "labels_allowed_for_preprocessing_selection_or_calibration": false
+    },
+    "external": {
+      "sessions": [
+        "2026-07-27",
+        "2026-07-28",
+        "2026-07-29"
+      ],
+      "role": "only_verdict_gate",
+      "load_before_model_freeze_allowed": false
+    }
+  },
+  "anchors": {
+    "primary": {
+      "bin_width_ms": 1000,
+      "anchor": "reported_time_minus_1_second_terminal_bin_start",
+      "role": "headline"
+    },
+    "sensitivity": {
+      "bin_width_ms": 500,
+      "anchor": "reported_time_minus_500_milliseconds_terminal_bin_start",
+      "role": "timing_sensitivity_not_independent_replication"
+    },
+    "matched_timestamp_as_model_anchor_allowed": false,
+    "post_action_ticks_allowed": false,
+    "report_time_resolution_limitation": "primary_anchor_may_be_1_to_2_seconds_before_true_action"
+  },
+  "window_contract": {
+    "rolling_windows_seconds": [
+      2,
+      5,
+      10
+    ],
+    "prior_boundary_windows_seconds": [
+      2,
+      5
+    ],
+    "rolling_interval": "left_half_open_last_tick_at_or_before_anchor",
+    "prior_boundary_interval": "[t-2w,t-w)",
+    "touch_interval": "[t-w,t)",
+    "touch_strictly_before_anchor": true,
+    "gap_crossing_window_valid": false,
+    "price_basis": "mid"
+  },
+  "feature_allowlist": [
+    "mid_change_2s",
+    "mid_change_5s",
+    "tick_imbalance_2s",
+    "tick_imbalance_5s",
+    "range_position_2s",
+    "range_position_5s",
+    "range_position_10s",
+    "prior_upper_boundary_touch_2s",
+    "prior_lower_boundary_touch_2s",
+    "prior_upper_boundary_touch_5s",
+    "prior_lower_boundary_touch_5s",
+    "state_start_displacement"
+  ],
+  "feature_definitions": {
+    "mid_change_2s": "last_mid_at_or_before_anchor_minus_first_mid_in_2s_window",
+    "mid_change_5s": "last_mid_at_or_before_anchor_minus_first_mid_in_5s_window",
+    "tick_imbalance_2s": "upticks_minus_downticks_divided_by_tick_transitions_in_2s",
+    "tick_imbalance_5s": "upticks_minus_downticks_divided_by_tick_transitions_in_5s",
+    "range_position_2s": "anchor_mid_minus_low_divided_by_high_minus_low_flat_equals_0_5",
+    "range_position_5s": "anchor_mid_minus_low_divided_by_high_minus_low_flat_equals_0_5",
+    "range_position_10s": "anchor_mid_minus_low_divided_by_high_minus_low_flat_equals_0_5",
+    "prior_upper_boundary_touch_2s": "upper_boundary_from_prior_2s_window_touched_in_sequence_before_anchor",
+    "prior_lower_boundary_touch_2s": "lower_boundary_from_prior_2s_window_touched_in_sequence_before_anchor",
+    "prior_upper_boundary_touch_5s": "upper_boundary_from_prior_5s_window_touched_in_sequence_before_anchor",
+    "prior_lower_boundary_touch_5s": "lower_boundary_from_prior_5s_window_touched_in_sequence_before_anchor",
+    "state_start_displacement": "anchor_mid_minus_last_observed_mid_at_or_before_state_start"
+  },
+  "feature_groups": {
+    "momentum": [
+      "mid_change_2s",
+      "mid_change_5s",
+      "tick_imbalance_2s",
+      "tick_imbalance_5s"
+    ],
+    "range_location": [
+      "range_position_2s",
+      "range_position_5s",
+      "range_position_10s"
+    ],
+    "boundary_side": [
+      "prior_upper_boundary_touch_2s",
+      "prior_lower_boundary_touch_2s",
+      "prior_upper_boundary_touch_5s",
+      "prior_lower_boundary_touch_5s"
+    ],
+    "state_path": [
+      "state_start_displacement"
+    ]
+  },
+  "forbidden_predictors": [
+    "cause_label",
+    "following_event_type",
+    "target_label",
+    "endpoint",
+    "event_id",
+    "interval_id",
+    "cohort_id",
+    "sample_id",
+    "timestamps",
+    "matched_timestamp",
+    "reported_time",
+    "post_action_data",
+    "P_L",
+    "entry_lineage",
+    "position_side_labels",
+    "volume",
+    "ticket_ids",
+    "M4_controls"
+  ],
+  "output_contract": {
+    "local_audit": "data/interim/m5_004/m5_004_unlock_cause_audit.parquet",
+    "local_predictors": "data/interim/m5_004/m5_004_unlock_cause_predictors.parquet",
+    "local_targets": "data/interim/m5_004/m5_004_unlock_cause_targets.parquet",
+    "local_predictions": "data/interim/m5_004/m5_004_unlock_cause_predictions.parquet",
+    "committed_markdown": "reports/phase_05/m5_004_unlock_cause_report.md",
+    "committed_json": "reports/phase_05/m5_004_unlock_cause_report.json",
+    "sample_key_in_predictor_allowlist": false,
+    "raw_data_committed": false
+  },
+  "models": {
+    "A_const_cause": {
+      "definition": "Jeffreys_smoothed_development_class_prior",
+      "alpha": 0.5
+    },
+    "A_age_cause": {
+      "definition": "Jeffreys_smoothed_unlock_to_buy_probability_by_exact_age_bucket",
+      "alpha": 0.5,
+      "age_buckets_seconds": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          8,
+          10
+        ],
+        [
+          10,
+          20
+        ],
+        [
+          20,
+          30
+        ],
+        [
+          30,
+          60
+        ],
+        [
+          60,
+          "inf"
+        ]
+      ],
+      "zero_training_event_bucket_policy": "fatal_no_adaptive_merge_or_fallback"
+    },
+    "B_price_cause": {
+      "definition": "unpenalized_intercept_plus_exact_price_allowlist",
+      "state_age_allowed": false
+    },
+    "C_age_price_cause": {
+      "definition": "fixed_logit_A_age_cause_unit_offset_plus_exact_price_allowlist",
+      "free_intercept": false,
+      "offset_coefficient": 1
+    }
+  },
+  "preprocessing": {
+    "continuous": "development_training_mean_and_population_standard_deviation",
+    "binary_touch_indicators": "unchanged_0_or_1",
+    "zero_variance_scale": 1,
+    "refit_within_each_cv_fold": true,
+    "holdout_or_external_labels_allowed": false,
+    "imputation_allowed": false
+  },
+  "selection": {
+    "model_family": "unweighted_L2_logistic",
+    "regularization_grid": [
+      0.0001,
+      0.001,
+      0.01,
+      0.1,
+      1,
+      10
+    ],
+    "folds": 5,
+    "group": "cohort_id_colon_interval_id",
+    "score": "mean_validation_Bernoulli_log_likelihood_per_event",
+    "rule": "one_standard_error_strongest_eligible_penalty",
+    "B_and_C_select_independently": true,
+    "class_weighting_allowed": false,
+    "oversampling_allowed": false,
+    "threshold_tuning_allowed": false,
+    "black_box_boosting_allowed": false
+  },
+  "inference": {
+    "headline": "external_1000ms_C_age_price_cause_minus_A_age_cause",
+    "secondary": "external_1000ms_C_age_price_cause_minus_B_price_cause",
+    "pair_unit": "source_interval_unlock_event",
+    "bootstrap_clusters": "cohort_id_colon_interval_id",
+    "bootstrap_draws": 5000,
+    "bootstrap_seed": 5004,
+    "per_external_session_results_required": true,
+    "between_session_population_variance_estimated": false,
+    "descriptive_metrics": [
+      "AUC",
+      "Brier_score",
+      "calibration",
+      "accuracy_at_fixed_0_5",
+      "confusion_matrix_at_fixed_0_5"
+    ]
+  },
+  "ablations": {
+    "groups": [
+      "momentum",
+      "range_location",
+      "boundary_side",
+      "state_path"
+    ],
+    "penalty": "reuse_full_C_selected_lambda",
+    "familywise_alpha": 0.05,
+    "adjustment": "Bonferroni_alpha_divided_by_4"
+  },
+  "decision_rule": {
+    "supported": "headline_mean_positive_and_one_sided_95pct_lower_above_zero_and_at_least_2_of_3_external_session_means_positive",
+    "weak_or_inconclusive": "pooled_mean_positive_but_inferential_or_session_coherence_gate_fails",
+    "mixed_or_inconclusive": "pooled_one_sided_bound_positive_but_fewer_than_2_external_session_means_positive",
+    "rejected_for_this_design": "ordinary_two_sided_95pct_upper_at_or_below_zero",
+    "development_internal_reuse_or_M4_verdict_allowed": false,
+    "occurrence_profitability_or_tradeable_edge_claim_allowed": false
+  },
+  "implementation_gate": {
+    "separate_authorization_required": true,
+    "review_PR8_and_this_contract_first": true,
+    "null_findings_mergeable": true,
+    "required": [
+      "upstream hashes reconcile",
+      "one row per eligible unlock event reconciles",
+      "A B and C use identical joint-valid event rows",
+      "predictor allowlist excludes cause labels metadata and identifiers",
+      "development-only preprocessing GroupKFold and freeze are proven",
+      "internal reuse and external data are absent from fitting and selection",
+      "all ablations per-session results and multiplicity are published",
+      "tests privacy determinism and CI pass",
+      "no occurrence P_L or tradeable-edge claim"
+    ]
+  }
+}

@@ -100,3 +100,34 @@ reported as evidence of absence or as a tradeable-edge conclusion.
 superseded and descriptive only because the price package encoded session
 context missing from `A_dev`. A review-driven `C_shape - A_session` reduced
 model is also descriptive and receives no independent verdict.
+
+Development and 2026-07-24 results are diagnostic only. No H-004 verdict is
+available until the frozen model is evaluated on 2026-07-27..29.
+
+## H-005 — Directional price features classify unlock cause
+
+Status: Pre-registered — implementation not authorized
+
+Prediction:
+
+- Conditional on an eligible unlock occurring, upward pre-anchor motion and
+  higher range location increase `P(UNLOCK_TO_BUY)` relative to
+  `UNLOCK_TO_SELL`.
+- A 12-feature directional price model with a fixed state-age cause offset
+  improves paired event-level log likelihood over the age-only cause model.
+
+The headline is external one-second
+`C_age_price_cause - A_age_cause`. Evidence requires a positive pooled mean,
+a one-sided 95% interval lower bound above zero, and positive point estimates
+in at least two of the three registered external sessions. The 500 ms anchor
+is timing sensitivity only.
+
+The exact event construction, feature allowlist, cohort roles, model ladder,
+regularization, ablations, and null-permitting rule are registered in
+`.local_ai/M5_004_PREREGISTRATION.md` and
+`data/m5_004_preregistration.json`.
+
+M4 H3 and all 2026-07-20..24 labels are prior/internal evidence and cannot
+validate H-005. A supported result would classify cause conditional on an
+unlock; it would not establish unlock timing, profitability, or a tradeable
+edge.

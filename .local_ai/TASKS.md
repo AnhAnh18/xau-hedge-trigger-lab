@@ -22,3 +22,6 @@
 - [x] T-020 Write and lock M5-003 causal price-increment preregistration
 - [x] T-021 Implement M5-003 causal price-increment pipeline
 - [x] T-022 Obtain independent Claude re-review of M5-003 implementation
+- [x] T-023 Draft M5-004 conditional unlock-cause preregistration before fit
+- [ ] T-024 Review and authorize M5-004 implementation
+- [ ] T-025 Implement M5-004 conditional unlock-cause model

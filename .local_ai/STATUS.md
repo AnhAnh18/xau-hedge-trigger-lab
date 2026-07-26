@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M5 — Trigger Inference (M5-003 frozen; independent review and external validation pending)
+M5 — Trigger Inference (M5-003 frozen; M5-004 pre-registered without fit)
 
 ## Completed
 
@@ -56,6 +56,8 @@ M5 — Trigger Inference (M5-003 frozen; independent review and external validat
 - Joint-valid feature accounting, required ablations, and LOSO diagnostics
 - Frozen M5-003 model manifest and deterministic aggregate report
 - Explicit single-developer Claude re-review gate before merge
+- M5-004 conditional unlock-cause human and machine preregistration
+- Event-level cause accounting and 12-feature directional allowlist locked
 
 ## Current data
 
@@ -86,11 +88,23 @@ missing from the baseline. `C_session - A_session` is now the external
 headline; internal reuse and fully refit leave-one-session-out results are
 diagnostic only and cannot create a price verdict or tradeable-edge claim.
 
+M5-004 is pre-registered as an event-level conditional cause split. It uses
+one eligible terminal row per observed unlock, keeps non-event risk bins out of
+the cause labels, and separates a state-age cause baseline from 12 directional
+price features. No M5-004 feature has been built and no cause model has been
+fit. The branch is stacked on Draft PR #8 and must be amended before fitting if
+the independent M5-003 review changes any upstream hash. Its current provenance
+has been amended to the session-remediated PR #8 head; the event support and
+M5-004 design did not change.
+
 ## Next executable task
 
 PR #8 may merge after the accepted-review follow-up commit passes CI. M5-003
 remains externally open after merge; merging the implementation does not create
 an endpoint verdict.
+
+T-024 — review the M5-004 preregistration and grant separate implementation
+authorization only after the M5-003 review is resolved.
 
 M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
 sessions and a trade report covering their lifecycle events. Raw files remain
@@ -103,6 +117,8 @@ non-gating and does not replace the pre-registered external sessions.
 ## Current blockers
 
 - Pre-registered external tick/report sessions are not yet available
+- M5-004 implementation is not authorized and depends on the reviewed M5-003
+  hashes
 - Server timezone is inferred as UTC+3 for the current window but is not
   formally or globally confirmed
 - MT5 report event time has only second-level resolution
