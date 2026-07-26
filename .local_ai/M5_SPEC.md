@@ -1,6 +1,6 @@
 # M5 Trigger Inference — Locked v1 Specification
 
-Status: M5-000 implemented; modelling has not started.
+Status: M5-002 state-age pilot implemented; external validation pending.
 
 ## Research question
 
@@ -12,7 +12,13 @@ outputs.
 
 ## Time support
 
-- Tick support is the exact first-to-last timestamp in the registered export.
+- Tick support is the exact first-to-last timestamp in each named cohort.
+- Tick files may be merged only within the same named cohort. Internal
+  2026-07-23..24, retrospective supplemental 2026-07-20..22, and later
+  external cohorts remain separate support domains.
+- The supplemental export must never be concatenated into the M2-M4 canonical
+  `data/interim/ticks.parquet`; it is parsed into a separately named local
+  M5 table so the M2-M4 coverage contract remains reproducible.
 - Every M2 interval is clipped to tick support.
 - Intervals are split at calendar midnight before day-level aggregation.
 - Consecutive-tick gaps strictly greater than 60 seconds are excluded coverage
@@ -30,16 +36,19 @@ outputs.
 - Because M2 intervals are event-to-event, M5 appends an explicitly synthetic
   right-censored interval from the final event's `state_after` to merged tick
   coverage end. It has no terminal event or competing endpoint.
-- Left truncation is defined against merged tick coverage, not each tick file.
+- Left truncation is defined against cohort-level merged tick coverage, not
+  against each file and not across distinct cohorts.
   A left-truncated interval remains in audit accounting but is excluded from
   primary inference; its state age is neither reset to zero nor assumed fully
   tradeable before coverage.
 - Source-interval membership, terminal-event count, and tradeable seconds are
   reported separately.
 
-The current shared boundary fixture is interval `13321`: it crosses midnight
-and contains the only coverage gap longer than 60 seconds. Interval `12074` is
-left-truncated by the beginning of merged tick coverage. The synthetic
+The current internal-cohort boundary fixture is interval `13321`: it crosses
+midnight and contains the internal coverage gap longer than 60 seconds.
+Interval `12074` is left-truncated by the beginning of the internal cohort.
+Interval `8294` is the corresponding left-truncation fixture for the
+supplemental cohort. The synthetic internal-cohort
 right-censored tail is `HEDGED_1X1` from 23:51:39 to 23:56:57.758.
 
 Primary M5 v1 estimates transition timing only for
@@ -56,7 +65,9 @@ issue #3.
   therefore `reported_time - 1 second`.
 - The offset from the M4 `matched_timestamp` anchor must be measured and
   published. M4 and M5 effects are not compared as if they shared an anchor.
-- Full observed coverage is descriptive (`A_all`).
+- Known-age eligible observed coverage is descriptive (`A_all`). Left-truncated
+  intervals remain in audit but cannot enter a state-age model because true
+  age is unknown.
 - All A/B/C headline comparisons use common server hours 12:00–24:00 on
   identical bins (`A_common`).
 - The 12:00–24:00 primary window is fixed for M5 v1, including external
@@ -89,7 +100,7 @@ issue #3.
 
 ## Model ladder and predictor budget
 
-- A_all: descriptive full-range state-age baseline.
+- A_all: descriptive known-age eligible state-age baseline.
 - A_common: state-age baseline on common server-hour support.
 - B: pre-registered causal price predictors without state age.
 - C: the union of A_common and B on exactly the same bins.
@@ -113,14 +124,15 @@ The remaining predictors must be selected and registered before M5-003. The
 - Headline statistics are paired per-interval log-likelihood increments
   `C - A_common` and `C - B`.
 - Paired likelihood increments are still mildly sensitive to base-rate shift.
-  A within-interval conditional statistic, conditioned on an interval having
-  exactly one representable event, is co-primary for the timing comparison
-  because the interval intercept cancels algebraically.
-- For interval `i`, the conditional event-bin probability is
-  `exp(eta_event_bin) / sum(exp(eta_bin))` over its representable bins.
-- The occurrence hazard remains primary for occurrence; the conditional
-  statistic is not an occurrence model and excludes censored/no-event
-  intervals by construction.
+- Cause-specific occurrence likelihood is primary for the M5-002 age-only
+  pilot.
+- The previously proposed within-interval conditional statistic is
+  non-inferential for age-only models: each event-to-event interval ends at
+  its observed outcome, so its candidate risk set is outcome-truncated and the
+  target is always the final bin. It cannot produce an M5-002 verdict.
+- Any M5-003 conditional timing comparison requires a separately
+  pre-registered risk-set/control-time design. Adding a price predictor alone
+  does not automatically validate the old statistic.
 - Bootstrap clusters are `interval_id`.
 - Standalone log loss, raw calibration, event rank, and top-decile capture are
   descriptive diagnostics only.
@@ -128,8 +140,9 @@ The remaining predictors must be selected and registered before M5-003. The
   holdout-intercept recalibration may diagnose intercept-only versus slope
   failure, but it must be labelled as using holdout labels and cannot affect a
   verdict, likelihood headline, or merge gate.
-- A model verdict requires adjacent-window/sensitivity coherence and external
-  temporal validation.
+- The 500-millisecond width is a discretization sensitivity on the same risk
+  support, not independent replication. External temporal validation remains
+  required.
 
 ## Additional-data gate
 
@@ -182,3 +195,79 @@ analysis on all three dates is secondary and was registered before acquisition.
   timestamps, and reports gaps without retuning the threshold.
 - M5-002 remains blocked until real registered inputs pass this validator or
   is explicitly run as a labelled non-closing pilot under this specification.
+
+## M5-002 pre-fit amendment — 2026-07-26
+
+The support and bucket choices in this amendment were recorded before fitting
+any M5-002 hazard model. Their evidence source is the already-published M2
+event-to-event duration table, not tick predictors, holdout model performance,
+or an M5 fit. The pilot-estimand subsection below incorporates the dated
+post-fit D-012 remediation after the original conditional statistic was shown
+to be non-inferential for an outcome-truncated age-only risk set.
+
+### Scope and data isolation
+
+- M5-002 is a bounded state-age-only pilot. It does not add price predictors,
+  optimize P/L, alter M2-M4 outputs, or make a tradeable-edge claim.
+- Parsing the 2026-07-20..22 raw tick export into a separately named local M5
+  cohort table is in scope. Rebuilding or extending the canonical M2-M4
+  `ticks.parquet` is forbidden.
+- Canonical support, gaps, midnight fragments, left truncation, and synthetic
+  right censoring reuse `risk_time.py`; bin construction and modelling live in
+  separate M5 modules.
+
+### Risk-bin clock and terminal contract
+
+- Primary bins are one second; sensitivity bins are 500 milliseconds.
+- Bins are half-open `[bin_start, bin_end)` wall-clock grid cells laid inside
+  each tradeable fragment. Only complete cells are representable.
+- Tradeable state age is a covariate evaluated at `bin_start`; it subtracts
+  excluded-gap overlap and is not itself the bin grid.
+- A target event belongs to the complete bin whose `bin_end` equals its
+  second-resolution `reported_time`. Predictors are evaluated at bin start.
+- Competing terminal bins are retained with `target_label=0`, an explicit
+  competing event type and censor reason; all later bins are absent.
+- Cross-development/holdout intervals are audit-only and excluded from both
+  primary splits. Left-truncated and zero-duration intervals remain in audit
+  accounting but not model inference.
+
+### Pre-registered state-age buckets
+
+M2 contains 6,276 hedged intervals ending in unlock. Exactly one has duration
+below six seconds; the five available tick sessions each have zero such
+events. This is evidence for an approximate six-second timer floor, not proof
+of an absolute zero-probability law.
+
+The amended bucket grid is:
+
+`[0,1), [1,2), [2,3), [3,5), [5,6), [6,8), [8,10), [10,20),
+[20,30), [30,60), [60,+inf)`.
+
+The primary empirical fit retains Jeffreys smoothing (`alpha=0.5`) so a rare
+exception cannot create infinite held-out loss. Raw unsmoothed rates are
+published, structural-zero candidates are marked explicitly, and smoothing
+sensitivity is reported for `alpha in {0.0, 0.5, 1.0}`. No bucket is forced to
+zero by assumption.
+
+### Pilot estimands and deliverables
+
+- Cause-specific occurrence likelihood `A_age - A_const` is primary. It
+  represents target, censored, and competing-endpoint risk intervals and
+  remains sensitive to base-rate shift.
+- The old within-interval conditional event-bin calculation is retained only
+  as a degeneracy audit. A holdout-label oracle still falls below its uniform
+  null, proving that it does not score age-only model quality. It affects no
+  verdict or merge gate and is deferred to M5-003 risk-set redesign.
+- Fitted parameters use development internal common-hours only. Their
+  deterministic hash must be unchanged whether supplemental inputs are
+  present or absent.
+- The supplemental cohort's named deliverable is descriptive per-session base
+  hazard variation across 2026-07-20..24. It may diagnose weekday variation
+  behind the 2.100x development/holdout ratio but cannot alter the internal
+  fit, pilot verdict, or external gate.
+- M4 `matched_timestamp` anchor-offset measurement is explicitly deferred to
+  price-feature work because M5-002 has no price anchor.
+- Unlock direction `P(cause | occurrence)` is explicitly deferred; M5-002
+  models unlock occurrence only.
+- M5-002 may report `pilot_complete_external_pending`, but M5 remains open
+  until the 2026-07-27..29 external cohort is acquired and evaluated.

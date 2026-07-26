@@ -27,7 +27,10 @@
     ],
     "first_tick_no_later_than_server_time": "01:05:00",
     "last_tick_no_earlier_than_server_time": "23:50:00",
-    "preserve_duplicate_milliseconds": true
+    "preserve_duplicate_milliseconds": true,
+    "source_sha256_allowlist": [
+      "d0f27a2090ad84db810c8d5ed5b2b1907743ba084684bc3aa1fdd46983ba5fa4"
+    ]
   },
   "trade_report": {
     "allowed_suffixes": [

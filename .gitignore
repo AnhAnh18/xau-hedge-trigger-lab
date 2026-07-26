@@ -31,3 +31,5 @@ Thumbs.db
 # Temporary analysis
 /tmp/
 .local_ai/temp/
+/m5_002_review_bundle/
+/m5_002_review_bundle.zip

@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M5 — Trigger Inference (M5-000 complete; modelling not started)
+M5 — Trigger Inference (M5-002 pilot complete; external validation pending)
 
 ## Completed
 
@@ -39,11 +39,16 @@ M5 — Trigger Inference (M5-000 complete; modelling not started)
 - Synthetic right-censored tail through tick coverage end
 - Explicit zero-duration and left-truncation estimand exclusions
 - Unknown-gap taxonomy with multi-day regression coverage
-- Co-primary within-interval conditional timing statistic pre-registered
+- Outcome-truncated age-only conditional statistic retired from inference
 - Secondary full-session external analysis pre-registered
 - Machine-readable M5 acquisition plan and privacy-safe intake validator
 - Deterministic synthetic acquisition dry run and recurring-gap audit
 - Retrospective supplemental 2026-07-20 through 2026-07-22 intake validated
+- Separate internal/supplemental causal risk-bin cohorts at 1s and 500ms
+- Development-only constant and state-age bucket hazard baselines
+- 5,000-draw interval-cluster bootstrap for primary occurrence likelihood
+- Supplemental parameter-isolation hash and M2-M4 canonical tick protection
+- M5-002 aggregate report and deterministic local-output hashes
 
 ## Current data
 
@@ -53,13 +58,18 @@ M5 — Trigger Inference (M5-000 complete; modelling not started)
 
 ## Current focus
 
-M5-000 is complete without fitting a model. The earlier 1,248/47,501 and
-848/81,911 figures are retained as legacy start-date accounting; canonical
-exposure clips to tick coverage, splits at midnight, and removes the
-3,720.501-second unknown coverage gap. The final `HEDGED_1X1` state contributes
-an explicit 318.758-second right-censored tail. Common-hour coverage is aligned,
-but the development target density remains 2.100x holdout and day of week is
-confounded with the split.
+M5-002 is a bounded state-age-only pilot. Internal risk support reconciles
+exactly at both widths; interval `13321` is excluded from both primary splits,
+and cohort-relative left truncation remains `12074` internally and `8294`
+supplementally. Canonical M2-M4 ticks and fitted parameters are unchanged by
+supplemental data.
+
+Frozen development age buckets improve primary holdout occurrence likelihood
+for all endpoints. The approximate six-second unlock floor is confirmed with
+one month-wide exception and no sub-six-second unlock in the five July 20–24
+calendar sessions. The old within-interval conditional calculation is retained
+only as a degeneracy audit because its risk set ends at the observed outcome;
+it affects no verdict or gate.
 
 ## Next executable task
 
@@ -67,9 +77,9 @@ M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
 sessions and a trade report covering their lifecycle events. Raw files remain
 outside Git. The intake code is ready; real acquisition remains pending.
 
-The registered retrospective supplemental 2026-07-20 through 2026-07-22 tick
-cohort passed intake validation. It is non-gating and does not replace the
-pre-registered external sessions.
+The registered retrospective supplemental 2026-07-20 through 2026-07-22
+cohort now supplies common-hour per-session descriptive rates only. It is
+non-gating and does not replace the pre-registered external sessions.
 
 ## Current blockers
 

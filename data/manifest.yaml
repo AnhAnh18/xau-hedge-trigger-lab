@@ -70,6 +70,23 @@ supplemental_retrospective_plan:
   external_gate_effect: none
   selection_note: registered_before_reading_supplemental_tick_export
 
+m5_002_pilot:
+  status: pilot_complete_external_pending
+  internal_cohort: internal_2026_07_23_24
+  supplemental_cohort: supplemental_2026_07_20_22
+  supplemental_role: per_session_common_hour_base_hazard_non_gating
+  primary_bin_width_ms: 1000
+  sensitivity_bin_width_ms: 500
+  primary_server_hours: "12:00-24:00"
+  local_outputs:
+    - data/interim/m5_002/m5_002_interval_audit.parquet
+    - data/interim/m5_002/m5_002_risk_bin_audit.parquet
+    - data/interim/m5_002/m5_002_design_matrix.parquet
+    - data/interim/m5_002/m5_002_predictions.parquet
+  aggregate_report: reports/phase_05/m5_002_state_age_pilot.json
+  raw_files_committed_to_git: false
+  external_gate_satisfied: false
+
 datasets:
   - id: trades_week_2026_06_28_07_04
     kind: mt5_trade_report

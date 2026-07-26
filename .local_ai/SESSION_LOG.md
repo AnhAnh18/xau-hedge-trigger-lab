@@ -49,3 +49,32 @@
   report coverage with the privacy-safe intake validator.
 - Kept the result separate from the pre-registered 2026-07-27 through
   2026-07-29 primary external-validation gate and did not start M5-002.
+
+## 2026-07-26 — M5-002 state-age hazard pilot
+
+- Recorded and pushed the bucket/support amendment before the first fit.
+- Kept internal and supplemental ticks in separate cohort tables and protected
+  the exact M2-M4 canonical tick export in the dataset builder.
+- Built complete wall-clock 1-second and 500-millisecond risk bins with paused
+  tradeable state age, cohort-relative truncation, terminal competing-bin
+  censoring, and cross-split exclusion.
+- Fit endpoint-specific constant and amended state-age bucket baselines on
+  internal development common hours only.
+- Proved supplemental isolation with identical fitted-parameter hashes and
+  reproduced the aggregate report hash on two complete runs.
+- Confirmed the approximate six-second unlock floor while retaining the single
+  month-wide exception and avoiding a hard-zero model assumption.
+- Found that state age improves secondary occurrence likelihood but not frozen
+  holdout conditional timing; M5 remains open pending external data.
+
+## 2026-07-26 — M5-002 conditional-statistic remediation
+
+- Reproduced the holdout-label oracle result showing that the outcome-truncated
+  within-interval calculation cannot score an age-only model.
+- Promoted paired cause-specific occurrence likelihood to the bounded pilot
+  primary and withdrew the two timing-rejected verdicts.
+- Added the explicit M5-000 tradeable-to-primary-to-bin accounting bridge and
+  documented the known-age scope of `A_all`.
+- Reclassified 500-millisecond results as discretization sensitivity and pinned
+  the supplemental tick input by SHA-256.
+- Kept M5-003 and all M2-M4 canonical outputs out of scope.

@@ -77,6 +77,20 @@ def load_acquisition_plan(path: str | Path) -> dict:
         raise ValueError("M5 requires duplicate millisecond ticks to be preserved")
     if tick["delimiter"] != "\t":
         raise ValueError("Canonical MT5 tick intake requires a tab delimiter")
+    source_hashes = tick.get("source_sha256_allowlist")
+    if source_hashes is not None:
+        if (
+            not source_hashes
+            or len(source_hashes) != len(set(source_hashes))
+            or any(
+                len(value) != 64
+                or any(character not in "0123456789abcdef" for character in value)
+                for value in source_hashes
+            )
+        ):
+            raise ValueError(
+                "Tick source SHA-256 allowlist must contain unique lowercase digests"
+            )
     _parse_clock(tick["first_tick_no_later_than_server_time"])
     _parse_clock(tick["last_tick_no_earlier_than_server_time"])
 

@@ -98,3 +98,54 @@ Finding: These events are real but cannot occupy a complete 1-second or
 500-millisecond causal risk bin. They remain in accounting and are excluded
 from primary M5 inference under the structural support limitation tracked in
 issue #3.
+
+## F-007 — Unlock has an approximate six-second dwell floor
+
+Status: Confirmed as an approximate floor
+Confidence: High
+
+Evidence:
+
+- 6,275 of 6,276 M2 `HEDGED_1X1` intervals ending in unlock last at least six
+  seconds; the sole exception lasts one second.
+- `ONE_BUY -> REHEDGE_SELL` has 32.555% of events below six seconds.
+- `ONE_SELL -> REHEDGE_BUY` has 30.820% of events below six seconds.
+- 333 hedged competing additional-position endpoints exist; 154 (46.246%)
+  occur below six seconds, so cause-specific censoring is age-dependent.
+
+Finding: Unlock behavior is consistent with an approximately
+six-second minimum hedged dwell, while re-hedge behavior has no comparable
+floor. The single month-wide exception is retained, so this is not claimed as
+an absolute structural zero.
+
+M5-002 verification: All five July 20–24 calendar sessions contain zero unlock
+events below six seconds in M2. The month-wide one-second exception remains
+published. On the causal bin contract, events occurring at six seconds are
+represented by the `[5,6)` predictor-at-bin-start bucket, so that bucket is
+correctly non-zero; `[0,5)` remains zero-event in internal development.
+
+## F-008 — State age improves internal holdout occurrence likelihood
+
+Status: Internal pilot complete; external validation pending
+Confidence: Moderate
+
+Evidence:
+
+- At both 1-second and 500-millisecond widths, frozen development age buckets
+  improve primary cause-specific occurrence likelihood over the constant
+  baseline for all three endpoints.
+- A holdout-label oracle for the old conditional calculation remains negative
+  for all endpoints (`-0.320249`, `-0.430092`, and `-0.060804` at one second).
+  It therefore cannot score age-only timing quality.
+- Results are stable across smoothing alpha 0.0, 0.5, and 1.0.
+
+Finding: State age improves whether-transition-occurs likelihood within
+observed risk support. The strongest interpretable component is transport of
+the approximate unlock timer floor. The former within-interval conditional
+verdicts are withdrawn because each event-to-event interval ends at its
+outcome, making the age-only candidate risk set outcome-truncated.
+
+Limitation: This is an internal Thursday-to-Friday pilot. It makes no
+tradeable-edge claim, occurrence likelihood remains base-rate-sensitive, and
+M5 cannot close before the pre-registered 2026-07-27 through 2026-07-29
+external evaluation.

@@ -12,14 +12,22 @@ Project memory and the current execution state live in [`.local_ai/`](.local_ai/
 
 **M5 — Trigger Inference**
 
-M0–M4 are complete. M5-000 has locked canonical tradeable-time accounting,
-common-hour cohort support, timezone status, and the external validation
-protocol without fitting a model.
+M0–M4 are complete. M5-002 has implemented a bounded state-age-only hazard
+pilot on locked causal support. Frozen age buckets improve internal holdout
+cause-specific occurrence likelihood for all three endpoints, with the
+approximate six-second unlock timer floor transporting most clearly. External
+validation remains pending and no tradeable-edge claim is made.
 
 The next executable task is to acquire the pre-registered 2026-07-27 through
 2026-07-29 XAUUSD tick sessions and the covering MT5 report. Raw files remain
 in external, access-controlled storage; only manifests, aggregate reports, and
 reproducible processing logic are committed.
+
+Rebuild the local M5-002 pilot outputs and aggregate report with:
+
+```bash
+python scripts/build_m5_state_age_pilot.py
+```
 
 ## Layout
 
