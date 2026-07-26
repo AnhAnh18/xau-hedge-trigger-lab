@@ -78,3 +78,17 @@
 - Reclassified 500-millisecond results as discretization sensitivity and pinned
   the supplemental tick input by SHA-256.
 - Kept M5-003 and all M2-M4 canonical outputs out of scope.
+
+## 2026-07-26 — M5-003 preregistration only
+
+- Locked immutable M5-002 hashes and an exact common joint-valid bin rule.
+- Chose 2026-07-20..23 as pooled development before any price feature fit;
+  retrospective dates remain permanently non-validating and non-gating.
+- Recorded that 2026-07-24 is internal reuse, not untouched price
+  confirmation, because M4 already inspected its price hypotheses.
+- Conditioned unlock occurrence after the five-second timer floor and locked
+  separate sign-normalized re-hedge and magnitude-only unlock allowlists.
+- Fixed GroupKFold by interval, development-only preprocessing, L2 selection,
+  paired interval inference, multiplicity families, and required ablations.
+- Added a machine-readable null-permitting merge contract. No M5-003 feature
+  construction or model fitting was performed.

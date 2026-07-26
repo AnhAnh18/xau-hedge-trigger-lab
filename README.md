@@ -18,6 +18,11 @@ cause-specific occurrence likelihood for all three endpoints, with the
 approximate six-second unlock timer floor transporting most clearly. External
 validation remains pending and no tradeable-edge claim is made.
 
+The M5-003 causal price-increment design is pre-registered in
+`.local_ai/M5_003_PREREGISTRATION.md` and
+`data/m5_003_preregistration.json`. No price-feature implementation or model
+fit has started.
+
 The next executable task is to acquire the pre-registered 2026-07-27 through
 2026-07-29 XAUUSD tick sessions and the covering MT5 report. Raw files remain
 in external, access-controlled storage; only manifests, aggregate reports, and

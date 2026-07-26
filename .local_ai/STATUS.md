@@ -49,6 +49,7 @@ M5 — Trigger Inference (M5-002 pilot complete; external validation pending)
 - 5,000-draw interval-cluster bootstrap for primary occurrence likelihood
 - Supplemental parameter-isolation hash and M2-M4 canonical tick protection
 - M5-002 aggregate report and deterministic local-output hashes
+- M5-003 causal price-increment preregistration and machine-readable contract
 
 ## Current data
 
@@ -71,11 +72,19 @@ calendar sessions. The old within-interval conditional calculation is retained
 only as a degeneracy audit because its risk set ends at the observed outcome;
 it affects no verdict or gate.
 
+M5-003 inputs, endpoint feature allowlists, unlock timer-floor conditioning,
+pooled development scope, GroupKFold protocol, regularization, multiplicity,
+ablations, and null-permitting merge rules are now pre-registered. No M5-003
+feature or model code has been implemented.
+
 ## Next executable task
 
 M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
 sessions and a trade report covering their lifecycle events. Raw files remain
 outside Git. The intake code is ready; real acquisition remains pending.
+
+M5-003 implementation requires a separate explicit authorization after review
+of `.local_ai/M5_003_PREREGISTRATION.md`.
 
 The registered retrospective supplemental 2026-07-20 through 2026-07-22
 cohort now supplies common-hour per-session descriptive rates only. It is

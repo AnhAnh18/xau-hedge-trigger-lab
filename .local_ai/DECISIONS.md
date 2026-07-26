@@ -240,3 +240,29 @@ timer floor and weaker re-hedge age effects, but remains base-rate-sensitive
 and externally unvalidated. The 500-millisecond width is discretization
 sensitivity, not independent replication. M5-003 does not start in this
 remediation.
+
+## D-013 — Lock M5-003 development scope and price-increment estimand
+
+Date: 2026-07-26
+Status: Accepted before M5-003 feature construction or fitting
+
+Decision: Pool retrospective 2026-07-20..22 with internal 2026-07-23 for
+development only. Freeze 2026-07-24 out of preprocessing, CV, fitting,
+selection, and calibration. Treat it as an internal reuse diagnostic, not
+independent price confirmation. Preserve 2026-07-27..29 as the only external
+gate.
+
+Condition unlock occurrence on tradeable state age at bin start being at least
+five seconds. Use endpoint-specific 12-feature allowlists, frozen M5-002
+A_common as C's unit-coefficient offset, and one-second `C - A_common` as the
+single headline comparison per endpoint.
+
+Reason: Pooling the four development dates raises known target counts to 699,
+687, and 1,448 without spending the external gate. Conditioning unlock after
+the timer floor removes 3,115 zero-event internal-development bins so A and B
+receive the same structural information. The 24 July price labels were already
+inspected in M4 and cannot honestly be called untouched.
+
+Consequences: Supplemental dates may train B/C but can never validate or gate.
+All fitting choices are locked before price construction. Null price findings
+are mergeable, and no result may be promoted to a tradeable-edge claim.
