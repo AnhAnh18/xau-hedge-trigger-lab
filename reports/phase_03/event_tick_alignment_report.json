@@ -1,0 +1,250 @@
+{
+  "overlap_events": 2096,
+  "open_events": 1048,
+  "close_events": 1048,
+  "quality": {
+    "HIGH": 1149,
+    "LOW": 436,
+    "UNMATCHED": 354,
+    "MEDIUM": 157
+  },
+  "tier": {
+    "A": 1741,
+    "NaN": 354,
+    "B": 1
+  },
+  "price_error": {
+    "median": 0.0,
+    "p90": 0.25,
+    "p95": 0.34000000000012276,
+    "max": 0.5
+  },
+  "time_error_ms": {
+    "median": 254.5,
+    "p90": 779.0,
+    "p95": 879.9499999999998,
+    "max": 1098.0
+  },
+  "signed_time_error_ms": {
+    "median": 254.5,
+    "p90": 779.0,
+    "p95": 879.9499999999998,
+    "max": 1098.0
+  },
+  "primary_cohort_accounting": {
+    "high_medium": 1306,
+    "primary": 1251,
+    "excluded": 55,
+    "exclusion_reasons": {
+      "m2_ambiguous_ordering": 55
+    }
+  },
+  "unmatched_profile": {
+    "by_operation": [
+      {
+        "event_type": "POSITION_CLOSE",
+        "side": "buy",
+        "count": 91
+      },
+      {
+        "event_type": "POSITION_CLOSE",
+        "side": "sell",
+        "count": 100
+      },
+      {
+        "event_type": "POSITION_OPEN",
+        "side": "buy",
+        "count": 74
+      },
+      {
+        "event_type": "POSITION_OPEN",
+        "side": "sell",
+        "count": 89
+      }
+    ],
+    "by_date": [
+      {
+        "date": "2026-07-23",
+        "count": 282
+      },
+      {
+        "date": "2026-07-24",
+        "count": 72
+      }
+    ],
+    "by_hour": [
+      {
+        "hour": 4,
+        "count": 2
+      },
+      {
+        "hour": 12,
+        "count": 6
+      },
+      {
+        "hour": 14,
+        "count": 1
+      },
+      {
+        "hour": 16,
+        "count": 147
+      },
+      {
+        "hour": 17,
+        "count": 119
+      },
+      {
+        "hour": 18,
+        "count": 77
+      },
+      {
+        "hour": 20,
+        "count": 2
+      }
+    ]
+  },
+  "m2_ambiguity_accounting": {
+    "total_month": 630,
+    "in_tick_coverage": 68,
+    "resolved": 50,
+    "remaining": 18,
+    "outside_tick_coverage": 562
+  },
+  "primary_trigger_samples": 1251,
+  "operation_error_metrics": [
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "buy",
+      "count": 410,
+      "median_time_error_ms": 219.0,
+      "p95_time_error_ms": 833.0,
+      "median_price_error": 0.0,
+      "p95_price_error": 0.370000000000141
+    },
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "sell",
+      "count": 447,
+      "median_time_error_ms": 244.0,
+      "p95_time_error_ms": 836.5999999999999,
+      "median_price_error": 0.0,
+      "p95_price_error": 0.3400000000000091
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "buy",
+      "count": 427,
+      "median_time_error_ms": 264.0,
+      "p95_time_error_ms": 901.0999999999999,
+      "median_price_error": 0.0,
+      "p95_price_error": 0.3169999999997798
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "sell",
+      "count": 458,
+      "median_time_error_ms": 292.0,
+      "p95_time_error_ms": 928.3,
+      "median_price_error": 0.0,
+      "p95_price_error": 0.29149999999999615
+    }
+  ],
+  "by_operation": [
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "buy",
+      "match_quality": "HIGH",
+      "count": 273
+    },
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "buy",
+      "match_quality": "LOW",
+      "count": 103
+    },
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "buy",
+      "match_quality": "MEDIUM",
+      "count": 34
+    },
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "buy",
+      "match_quality": "UNMATCHED",
+      "count": 91
+    },
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "sell",
+      "match_quality": "HIGH",
+      "count": 296
+    },
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "sell",
+      "match_quality": "LOW",
+      "count": 115
+    },
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "sell",
+      "match_quality": "MEDIUM",
+      "count": 36
+    },
+    {
+      "event_type": "POSITION_CLOSE",
+      "side": "sell",
+      "match_quality": "UNMATCHED",
+      "count": 100
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "buy",
+      "match_quality": "HIGH",
+      "count": 282
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "buy",
+      "match_quality": "LOW",
+      "count": 106
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "buy",
+      "match_quality": "MEDIUM",
+      "count": 39
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "buy",
+      "match_quality": "UNMATCHED",
+      "count": 74
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "sell",
+      "match_quality": "HIGH",
+      "count": 298
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "sell",
+      "match_quality": "LOW",
+      "count": 112
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "sell",
+      "match_quality": "MEDIUM",
+      "count": 48
+    },
+    {
+      "event_type": "POSITION_OPEN",
+      "side": "sell",
+      "match_quality": "UNMATCHED",
+      "count": 89
+    }
+  ]
+}

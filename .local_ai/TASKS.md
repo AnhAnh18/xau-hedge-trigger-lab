@@ -7,4 +7,5 @@
 - [x] T-005 Parse MT5 reports and XAUUSD ticks into canonical Parquet tables
 - [ ] T-006 Add four trade reports to external data storage
 - [x] T-007 Reconstruct lifecycle and hedge-state timeline
-- [ ] T-008 Test rolling-extreme hypothesis
+- [x] T-008 Align lifecycle events with broker ticks
+- [ ] T-009 Build trigger dataset and test rolling-extreme hypothesis

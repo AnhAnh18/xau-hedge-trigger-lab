@@ -19,6 +19,7 @@ M3 — Event–Tick Alignment
 - Trade/tick overlap inventory validation
 - Lifecycle/state reconstruction with exception accounting
 - M2 event accounting and boundary validation
+- M3 deterministic event–tick alignment for the observed tick window
 
 ## Current data
 
@@ -28,11 +29,11 @@ M3 — Event–Tick Alignment
 
 ## Current focus
 
-Align reconstructed lifecycle events with millisecond broker Bid/Ask ticks for 2026-07-23 to 2026-07-24.
+Prepare the primary aligned cohort for M4 trigger-dataset construction.
 
 ## Next executable task
 
-Build deterministic candidate tick matching using reported time, execution price, side, and state consistency.
+Build leakage-safe positive and negative samples from primary aligned state intervals.
 
 ## Current blockers
 
