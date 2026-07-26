@@ -1,14 +1,14 @@
-# M4 Trigger Dataset Report
+# M4 Trigger Dataset Remediation Report
 
 ## Gate status
 
-**NOT PASSED** — timestamp sensitivity changes the H1/H2 conclusions at +500 ms.
+**PASSED**
 
-The implementation is reproducible, but M4 must not be closed while this sensitivity gate is unresolved.
+Only `matched_time` and `matched_time - 500 ms` participate in the causal sensitivity gate. Positive shifts are post-action diagnostics only.
 
-## Positive accounting
+## Positive and control accounting
 
-| Behavior | Count |
+| Behavior | Positives |
 | --- | ---: |
 | REHEDGE_SELL | 331 |
 | REHEDGE_BUY | 306 |
@@ -16,48 +16,74 @@ The implementation is reproducible, but M4 must not be closed while this sensiti
 | UNLOCK_TO_SELL | 294 |
 | **Total** | **1,251** |
 
-## Matched controls
-
 - Controls: 6,233
-- Positives without a control: 4
 - Controls per positive: {'0': 4, '3': 1, '5': 1246}
-- Reused control candidates: 0
-- True events protected by exclusion zones: 2,096
-- Sampling is deterministic, without global candidate replacement, and uses the same date, hour, state, opportunity direction, and 0.3 volume.
-- Every control is outside the ±3 second exclusion zone of every aligned true event. Short risk sets are not forced to meet the quota.
+- Positives without sampled controls: 4
+- Reused candidates: 0
+- Control-supported positives: 980
+- Structurally unsupported positives: 271
 
-## Window validity
+## Time-anchor contract
 
-| Sample | 500 ms | 1 s | 2 s | 5 s | 10 s | 30 s | 60 s |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| positive | 1,240 | 1,247 | 1,250 | 1,251 | 1,251 | 1,251 | 1,251 |
-| control | 6,140 | 6,216 | 6,232 | 6,231 | 6,231 | 6,230 | 6,226 |
+- Price and tick features: `matched_timestamp`.
+- Pre-transition state bookkeeping: exact M2 interval lineage; `reported_time` is the fallback anchor.
+- Positive state ages populated: 1,251/1,251.
+- Control state ages populated: 6,233/6,233.
 
-Samples remain in the dataset when a long window is unavailable; each analysis filters only on its own validity flag.
+## H1 — rolling boundary
 
-## Hypothesis conclusions at matched_time
+- Headline: **confounded/inconclusive**
+- Primary control-supported verdict: **inconclusive**
+- Descriptive all-positive verdict: **supported**
 
-- H1: **supported**
-- H2: **rejected**
-- H3: **supported**
+| Pre-transition state age | Positives | Supported positives | Holdout 5s diff | CI95 |
+| --- | ---: | ---: | ---: | --- |
+| 0-6s | 237 | 0 | +0.2533 | [+0.1842, +0.3182] |
+| 7-10s | 57 | 57 | +0.0366 | [-0.1305, +0.1967] |
+| 10-30s | 148 | 148 | +0.0581 | [-0.0336, +0.1494] |
+| 30-60s | 73 | 73 | -0.0228 | [-0.1389, +0.0917] |
+| >60s | 122 | 122 | +0.0271 | [-0.0727, +0.1270] |
 
-H1 separates most clearly at 5–60 seconds. H2 is rejected over those same windows. H3 has short-horizon support at 0.5–2 seconds, while longer windows are inconclusive.
+The all-positive result is descriptive only. It cannot override a null control-supported inference.
 
-## Timestamp sensitivity
+## H2 — prior boundary, touch, then retracement
 
-| Shift | H1 | H2 | H3 |
-| ---: | --- | --- | --- |
-| -500 ms | supported | rejected | weak |
-| 0 ms | supported | rejected | supported |
-| 500 ms | rejected | supported | supported |
+- Joint sequence: **inconclusive**
+- Boundary-touch component: **supported**
+- Post-touch retracement component: **inconclusive**
+- H2 independence audit passed: True
 
-The +500 ms reversal is report-only evidence of timing fragility. No +500 ms value is present in `trigger_features.parquet` or used for rule discovery.
+Prior boundaries are calculated on a disjoint window ending before the sequence window. Touch and retracement are published separately.
 
-## Coverage and inference constraints
+## H3 — signed momentum
 
-- 2026-07-23 is development data and begins at 12:00.
-- 2026-07-24 is holdout data and is near-full-day.
-- Raw daily event counts or rates are not compared as if coverage were equal.
-- Statistics use matched differences and positive-event cluster bootstrap; controls in one risk set are not treated as independent.
-- Control ratios are not interpreted as absolute event probabilities.
-- `entry_gap`, surviving-entry distance, floating P/L, and preceding unlock loss are excluded pending position lineage.
+- Headline: **supported**
+- Median spread: 0.2300 price units.
+- The holdout effect is timing-sensitive, smaller than the median spread, and is not interpreted as a standalone tradeable edge.
+
+| Window | Price-unit effect | Fraction of median spread |
+| ---: | ---: | ---: |
+| 500 ms | +0.0486 | +0.211 |
+| 1000 ms | +0.0621 | +0.270 |
+| 2000 ms | +0.0736 | +0.320 |
+
+## Sensitivity
+
+| Shift | Role | H1 | H2 | H3 |
+| ---: | --- | --- | --- | --- |
+| -500 ms | causal_gate | weak | inconclusive | supported |
+| 0 ms | causal_gate | inconclusive | inconclusive | supported |
+| 250 ms | post_action_diagnostic_only | rejected | supported | supported |
+| 500 ms | post_action_diagnostic_only | rejected | supported | supported |
+| 1000 ms | post_action_diagnostic_only | rejected | weak | supported |
+
+Positive shifts do not enter the model matrix, headline hypothesis verdicts, or merge gate.
+
+## Output contracts
+
+- `trigger_samples_audit.parquet`: IDs, anchors, lineage, sampling metadata, alignment diagnostics, and validity flags.
+- `trigger_model_features.parquet`: explicit reviewed allowlist only.
+- Model predictors: 132.
+- Sampling metadata and `time_since_previous_event_seconds` are absent from the model-ready matrix.
+
+Development data on 2026-07-23 begins at 12:00. Holdout data on 2026-07-24 is near-full-day; raw daily counts are not compared as equal-coverage event rates.

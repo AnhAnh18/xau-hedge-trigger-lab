@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M4 — Trigger Dataset (gate review)
+M4 — Trigger Dataset (bounded remediation)
 
 ## Completed
 
@@ -23,6 +23,9 @@ M4 — Trigger Dataset (gate review)
 - M4 v1 causal trigger-dataset implementation
 - Deterministic matched risk-set controls without candidate replacement
 - H1/H2/H3 paired and cluster-bootstrap reports
+- Separate M4 audit and reviewed model-feature outputs
+- Complete pre-transition state age from M2 lineage
+- Control-supported H1 inference and causal sequence-based H2
 
 ## Current data
 
@@ -32,16 +35,16 @@ M4 — Trigger Dataset (gate review)
 
 ## Current focus
 
-Resolve the timestamp-sensitivity gate. At `matched_time`, H1 is supported,
-H2 is rejected, and H3 is supported; at `matched_time + 500 ms`, H1/H2 reverse.
+Validate the remediated M4 artifact and Draft PR #2. H1 is
+confounded/inconclusive on the control-supported population, H2 is
+inconclusive, and H3 is supported but timing-sensitive and smaller than spread.
 
 ## Next executable task
 
-Determine whether the +500 ms reversal reflects post-action price response or a
-remaining alignment ambiguity before closing M4 and starting M5.
+Pass deterministic rebuild, CI, privacy, and code-review gates before deciding
+whether Draft PR #2 is ready to merge.
 
 ## Current blockers
 
 - Server timezone not formally confirmed
 - MT5 report event time has only second-level resolution
-- M4 sensitivity conclusions are not stable at `matched_time + 500 ms`
