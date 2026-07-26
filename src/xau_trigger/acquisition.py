@@ -628,7 +628,7 @@ def build_synthetic_acquisition_files(
                 f"{timestamp:%Y.%m.%d}\t{timestamp:%H:%M:%S}.000"
                 "\t4000.00\t4000.20\t\t\t6"
             )
-    tick_path.write_text("\n".join(tick_lines) + "\n", encoding="utf-8")
+    tick_path.write_bytes(("\n".join(tick_lines) + "\n").encode("utf-8"))
 
     lines = ["<html><body><table>", '<tr><th colspan="14">Positions</th></tr>']
     lines.append(
@@ -696,5 +696,5 @@ def build_synthetic_acquisition_files(
             "</table></body></html>",
         ]
     )
-    report_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    report_path.write_bytes(("\n".join(lines) + "\n").encode("utf-8"))
     return tick_path, report_path
