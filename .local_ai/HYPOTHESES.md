@@ -66,3 +66,29 @@ Acceptance: At least two adjacent holdout windows must have paired
 positive-event cluster-bootstrap intervals above zero. Report the effect in
 price units relative to the median spread and do not interpret the association
 as a standalone tradeable edge.
+
+## H-004 — Causal price features add occurrence information beyond state age
+
+Status: Pre-registered — not implemented or tested
+
+Prediction:
+
+- For each of `rehedge_buy_occurrence`, `rehedge_sell_occurrence`, and
+  `unlock_occurrence`, model C (frozen A_common offset plus the locked
+  endpoint price allowlist) improves paired per-interval occurrence log
+  likelihood over frozen A_common.
+- Unlock is conditioned on tradeable state age at bin start being at least
+  five seconds. Re-hedge endpoints retain their full eligible risk cohort.
+
+The single headline comparison per endpoint is `C - A_common` at the
+one-second anchor. The three endpoints form one Bonferroni-controlled family
+at family-wise alpha 0.05. Evidence requires a positive mean and a
+family-wise one-sided interval lower bound above zero.
+
+The exact input hashes, features, cohort roles, GroupKFold protocol,
+regularization grid, ablations, and null-permitting merge rule are locked in
+`.local_ai/M5_003_PREREGISTRATION.md` and
+`data/m5_003_preregistration.json`.
+
+Null, inconclusive, or rejected findings remain mergeable and cannot be
+reported as evidence of absence or as a tradeable-edge conclusion.

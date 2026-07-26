@@ -271,3 +271,28 @@ zero by assumption.
   models unlock occurrence only.
 - M5-002 may report `pilot_complete_external_pending`, but M5 remains open
   until the 2026-07-27..29 external cohort is acquired and evaluated.
+
+## M5-003 preregistration — 2026-07-26
+
+M5-003 implementation and price fitting are not yet authorized. The complete
+locked contract is:
+
+- `.local_ai/M5_003_PREREGISTRATION.md`;
+- `data/m5_003_preregistration.json`.
+
+The preregistration locks immutable M5-002 hashes, endpoint-specific causal
+feature allowlists, unlock conditioning at state age five seconds,
+development-only GroupKFold and preprocessing, frozen A_common parameters,
+fixed L2 selection, paired interval inference, required ablations,
+multiplicity families, and a null-permitting merge gate.
+
+Retrospective 2026-07-20..22 joins development but can never validate or gate.
+The 2026-07-24 session remains excluded from fitting and tuning but is an
+internal reuse diagnostic rather than untouched price confirmation because M4
+already inspected its price hypotheses. Only 2026-07-27..29 can satisfy the
+external gate.
+
+For M5-003, the earlier generic allowance for post-hoc holdout-intercept
+recalibration is superseded: holdout labels cannot be used for calibration,
+including diagnostics. Base-rate attenuation is evaluated only with the fixed
+development-label stress test registered in the M5-003 contract.

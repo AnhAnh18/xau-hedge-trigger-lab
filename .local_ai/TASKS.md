@@ -19,3 +19,4 @@
 - [x] T-016 M5-002 Build state-age-only hazard pilot after acquisition gate review
 - [x] T-018 Build deterministic M5-001 acquisition validator and dry-run gate
 - [x] T-019 Register and validate retrospective supplemental ticks for 2026-07-20 through 2026-07-22
+- [x] T-020 Write and lock M5-003 causal price-increment preregistration

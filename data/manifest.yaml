@@ -87,6 +87,22 @@ m5_002_pilot:
   raw_files_committed_to_git: false
   external_gate_satisfied: false
 
+m5_003_preregistration:
+  id: m5_003_causal_price_increment_v1
+  registered_on: "2026-07-26"
+  status: preregistered_not_implemented
+  human_readable_plan: .local_ai/M5_003_PREREGISTRATION.md
+  human_readable_sha256: 01b7193394b6bb2e24bca3c9deb95a19d78398f1a11f8636151eb46f8fcd5a74
+  machine_readable_plan: data/m5_003_preregistration.json
+  machine_readable_sha256: 1c0b59a897b4a4b7e4a4e2019e11d05b2aee400a75f2576efa74311c64f83478
+  current_task_authorizes_implementation: false
+  current_task_authorizes_price_model_fit: false
+  canonical_outputs_mutable: false
+  external_gate_sessions:
+    - "2026-07-27"
+    - "2026-07-28"
+    - "2026-07-29"
+
 datasets:
   - id: trades_week_2026_06_28_07_04
     kind: mt5_trade_report

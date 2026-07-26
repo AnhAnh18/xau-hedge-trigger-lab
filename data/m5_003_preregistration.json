@@ -1,0 +1,443 @@
+{
+  "schema_version": 2,
+  "plan_id": "m5_003_causal_price_increment_v2",
+  "registered_on": "2026-07-26",
+  "amended_on": "2026-07-26",
+  "status": "preregistered_not_implemented",
+  "amendment": {
+    "reason": "development-only review found both level and rehedge age-hazard shape mismatch between the frozen 2026-07-23 A_common model and pooled 2026-07-20_23 development",
+    "price_models_fitted_before_amendment": false,
+    "external_labels_inspected": false,
+    "confirmatory_internal_verdict_allowed": false
+  },
+  "scope": {
+    "task": "M5-003",
+    "current_task_authorizes_implementation": false,
+    "current_task_authorizes_price_model_fit": false,
+    "canonical_outputs_mutable": false,
+    "tradeable_edge_claim_allowed": false
+  },
+  "immutable_inputs": {
+    "m5_002_report_sha256": "80a1a8c680e7ddd7eb0a9e8ed8813f5f69c025d3b62b292eba30b05a92401365",
+    "m5_002_risk_bin_dataframe_sha256": "62f0f0fa4f961b699461c2c3ba935c460d853b4553142130187c503fb4698520",
+    "m5_002_interval_audit_dataframe_sha256": "18effcaa1d169fa7ad0f029eceb61a00c4470ebf2d3c492a004efce9ed286cd2",
+    "m5_002_internal_tick_dataframe_sha256": "42baf883f837986e8cfb28f6bb1632fad9caead934a5d059f197a81511d898ac",
+    "supplemental_tick_source_sha256": "d0f27a2090ad84db810c8d5ed5b2b1907743ba084684bc3aa1fdd46983ba5fa4",
+    "a_common_1000ms_parameter_sha256": "4a84542d6cfb25ac91c9702100f2294585c82e28c37928c0aef2a67b40558d89",
+    "a_common_500ms_parameter_sha256": "b04035e4a631276c3ec196eddc32a66cf7f5debd6779f61967d94ffdfc047f73"
+  },
+  "cohorts": {
+    "development": {
+      "sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "role": "pooled_development_only",
+      "retrospective_sessions_can_validate_or_gate": false,
+      "known_target_counts": {
+        "rehedge_buy_occurrence": 699,
+        "rehedge_sell_occurrence": 687,
+        "unlock_occurrence": 1448
+      }
+    },
+    "internal_holdout": {
+      "sessions": [
+        "2026-07-24"
+      ],
+      "role": "locked_internal_reuse_diagnostic_non_gating",
+      "fit_or_tune_allowed": false,
+      "independent_price_confirmation_claim_allowed": false,
+      "supported_rejected_or_absent_price_verdict_allowed": false,
+      "reason": "price hypotheses and labels were already inspected in M4"
+    },
+    "external": {
+      "sessions": [
+        "2026-07-27",
+        "2026-07-28",
+        "2026-07-29"
+      ],
+      "role": "only_external_validation_gate",
+      "fit_or_tune_allowed": false
+    }
+  },
+  "common_cohort_rule": {
+    "server_hours": [
+      12,
+      24
+    ],
+    "eligible_states": [
+      "HEDGED_1X1",
+      "ONE_BUY",
+      "ONE_SELL"
+    ],
+    "require_complete_m5_002_bin": true,
+    "require_known_state_age": true,
+    "exclude_left_truncated": true,
+    "exclude_cross_split_intervals": true,
+    "exclude_gap_crossing_bins": true,
+    "competing_endpoint_contract": "retain_terminal_competing_bin_with_target_zero_then_censor_exactly_as_M5_002",
+    "require_every_endpoint_allowlisted_price_feature_valid": true,
+    "imputation_allowed": false,
+    "all_models_use_identical_bins_within_endpoint_and_split": true,
+    "external_bins": "separate_immutable_artifact_built_with_the_same_M5_002_contract_never_appended_to_the_M5_002_risk_bin_file",
+    "unlock_minimum_state_age_at_bin_start_seconds": 5.0,
+    "rehedge_minimum_state_age_at_bin_start_seconds": 0.0
+  },
+  "anchors": {
+    "primary": {
+      "bin_width_ms": 1000,
+      "price_anchor": "bin_start_equals_reported_time_minus_1_second_for_target_bins",
+      "limitation": "second-resolution reporting places the anchor approximately 1 to 2 seconds before the true action; sub-second triggers are unobservable"
+    },
+    "secondary": {
+      "bin_width_ms": 500,
+      "price_anchor": "bin_start_equals_reported_time_minus_500_milliseconds_for_target_bins",
+      "role": "separate_anchor_sensitivity_non_gating",
+      "not_discretization_sensitivity": true
+    },
+    "primary_price_lookback_windows_seconds": [
+      2,
+      5,
+      10
+    ],
+    "h2_sequence_windows_seconds": [
+      2,
+      5
+    ],
+    "subsecond_price_windows_in_primary_allowlist": false
+  },
+  "endpoint_signs": {
+    "rehedge_sell_occurrence": 1,
+    "rehedge_buy_occurrence": -1,
+    "unlock_occurrence": null
+  },
+  "feature_allowlists": {
+    "rehedge": [
+      "signed_mid_change_2s",
+      "signed_mid_change_5s",
+      "signed_tick_imbalance_2s",
+      "signed_tick_imbalance_5s",
+      "side_boundary_proximity_2s",
+      "side_boundary_proximity_5s",
+      "side_prior_boundary_touch_2s",
+      "side_prior_boundary_touch_5s",
+      "realized_volatility_10s",
+      "spread_at_anchor",
+      "absolute_state_start_displacement",
+      "signed_state_start_displacement"
+    ],
+    "unlock": [
+      "absolute_mid_change_2s",
+      "absolute_mid_change_5s",
+      "absolute_tick_imbalance_2s",
+      "absolute_tick_imbalance_5s",
+      "range_width_2s",
+      "range_width_5s",
+      "range_width_10s",
+      "either_prior_boundary_touch_2s",
+      "either_prior_boundary_touch_5s",
+      "realized_volatility_10s",
+      "spread_at_anchor",
+      "absolute_state_start_displacement"
+    ]
+  },
+  "feature_groups": {
+    "rehedge": {
+      "motion": [
+        "signed_mid_change_2s",
+        "signed_mid_change_5s",
+        "signed_tick_imbalance_2s",
+        "signed_tick_imbalance_5s"
+      ],
+      "boundary": [
+        "side_boundary_proximity_2s",
+        "side_boundary_proximity_5s",
+        "side_prior_boundary_touch_2s",
+        "side_prior_boundary_touch_5s"
+      ],
+      "state_path": [
+        "absolute_state_start_displacement",
+        "signed_state_start_displacement"
+      ],
+      "volatility_liquidity": [
+        "realized_volatility_10s",
+        "spread_at_anchor"
+      ]
+    },
+    "unlock": {
+      "magnitude_motion": [
+        "absolute_mid_change_2s",
+        "absolute_mid_change_5s",
+        "absolute_tick_imbalance_2s",
+        "absolute_tick_imbalance_5s"
+      ],
+      "boundary_magnitude": [
+        "range_width_2s",
+        "range_width_5s",
+        "range_width_10s",
+        "either_prior_boundary_touch_2s",
+        "either_prior_boundary_touch_5s"
+      ],
+      "state_path": [
+        "absolute_state_start_displacement"
+      ],
+      "volatility_liquidity": [
+        "realized_volatility_10s",
+        "spread_at_anchor"
+      ]
+    }
+  },
+  "feature_design_notes": {
+    "spread_at_anchor": "retained_low_variance_microstructure_control_publish_scale_and_variance_allow_L2_shrinkage",
+    "rehedge_state_start_displacement_pair": "signed_term_encodes_direction_and_absolute_term_encodes_V_shaped_magnitude_not_duplicate_linear_predictors"
+  },
+  "validity": {
+    "rolling_window_minimum_ticks": 2,
+    "h2_prior_and_sequence_minimum_ticks_each": 2,
+    "gap_crossing_invalid": true,
+    "state_start_reference": "last_observed_mid_at_or_before_interval_start_with_no_excluded_gap_between_reference_and_start",
+    "zero_range_position_value": 0.5,
+    "flat_prior_boundary_touch_remains_defined": true,
+    "missing_value_imputation": "forbidden",
+    "accounting_dimensions": [
+      "cohort",
+      "session_date",
+      "split",
+      "endpoint",
+      "exclusion_reason",
+      "target_label"
+    ],
+    "unlock_floor_audit": {
+      "scope": "internal_2026_07_23_development_1000ms",
+      "state_age_below_5s_dropped_bins": 3115,
+      "state_age_below_5s_dropped_targets": 0
+    },
+    "known_generic_window_support_audit": {
+      "scope": "internal_2026_07_23_24_common_hours_1000ms_before_endpoint_floor",
+      "windows_2s_5s_10s_dropped_bins": 501,
+      "windows_2s_5s_10s_dropped_targets": 0,
+      "adding_500ms_total_dropped_bins": 9924,
+      "adding_500ms_total_dropped_targets": 48,
+      "limitation": "these are generic-window counts, not the final joint-valid count after H2 subwindow and state-start-reference checks"
+    },
+    "known_full_allowlist_support_audit": {
+      "scope": "current_internal_primary_1000ms_support",
+      "expected_dropped_bins": 937,
+      "expected_dropped_targets": 3,
+      "must_be_recomputed_before_fit": true,
+      "endpoint_specific_accounting_required": true
+    }
+  },
+  "models": {
+    "A_common": {
+      "definition": "frozen M5-002 empirical state-age hazard",
+      "refit_allowed": false,
+      "unlock_floor_subset_renormalization_allowed": false,
+      "role": "immutable_provenance_and_transport_reference"
+    },
+    "A_level": {
+      "definition": "frozen logit(A_common) plus one development-only unpenalized intercept",
+      "role": "noninferential_level_transport_diagnostic",
+      "price_features_allowed": false
+    },
+    "A_dev": {
+      "definition": "endpoint-specific empirical state-age hazard fit on exact joint-valid development bins",
+      "age_buckets_seconds": [
+        [0, 1],
+        [1, 2],
+        [2, 3],
+        [3, 5],
+        [5, 10],
+        [10, 20],
+        [20, 30],
+        [30, 60],
+        [60, null]
+      ],
+      "jeffreys_alpha": 0.5,
+      "bucket_or_smoothing_selection_allowed": false,
+      "zero_training_exposure_bucket_contract": "fail_before_price_fit_no_adaptive_merge_A_common_fallback_or_holdout_informed_repair",
+      "unlock_floor_eligible_bucket_count": 5,
+      "fit_scope": "training_fold_only_during_cv_then_full_development_before_any_internal_reuse_or_external_evaluation",
+      "role": "headline_state_age_baseline"
+    },
+    "B": {
+      "definition": "endpoint-specific logistic discrete-time hazard using only the endpoint price allowlist",
+      "intercept": "unpenalized",
+      "state_age_allowed": false
+    },
+    "C_dev": {
+      "definition": "endpoint-specific logistic discrete-time hazard with fixed logit(A_dev) as a unit-coefficient offset plus the endpoint price allowlist",
+      "free_intercept": false,
+      "offset_refit_allowed": false,
+      "role": "headline_price_increment_model"
+    }
+  },
+  "preprocessing": {
+    "fit_scope": "development_training_fold_only_during_cv_then_full_development_after_selection",
+    "a_dev_validation_probabilities_use_training_fold_bucket_parameters_only": true,
+    "continuous": "development_mean_center_and_standard_deviation_scale",
+    "binary": "development_mean_center_and_standard_deviation_scale",
+    "zero_scale_replacement": 1.0,
+    "feature_selection_allowed": false,
+    "interactions_allowed": false,
+    "holdout_or_external_labels_allowed": false
+  },
+  "regularization": {
+    "penalty": "L2_on_price_coefficients_only",
+    "lambda_grid": [
+      0.0001,
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "cross_validation": "GroupKFold",
+    "folds": 5,
+    "group": "interval_id",
+    "score": "mean_per_interval_bernoulli_log_likelihood",
+    "selection": "largest_lambda_within_one_standard_error_of_the_best_mean_score",
+    "class_weights": "none",
+    "random_feature_or_hyperparameter_search_allowed": false
+  },
+  "session_stability": {
+    "method": "leave_one_development_session_out",
+    "folds": 4,
+    "refit_each_fold": [
+      "A_dev",
+      "preprocessing",
+      "lambda_selection",
+      "B",
+      "C_dev"
+    ],
+    "lambda_selection": "nested_GroupKFold_on_remaining_training_session_intervals_only",
+    "metric": "C_dev_minus_A_dev_mean_per_interval_log_likelihood_increment",
+    "can_select_or_tune_model": false,
+    "can_create_verdict": false,
+    "external_per_session_results_required": true,
+    "limitation": "interval_cluster_bootstrap_is_conditional_on_observed_sessions_and_does_not_estimate_between_session_population_variance"
+  },
+  "freeze_manifest": {
+    "must_be_created_before_loading_2026_07_24_for_evaluation": true,
+    "hashed_components": [
+      "development_cohort",
+      "joint_valid_row_ids_by_endpoint",
+      "A_dev_bucket_parameters",
+      "all_existing_model_intercepts",
+      "preprocessing_parameters",
+      "selected_lambdas",
+      "price_coefficients",
+      "feature_allowlists",
+      "model_contracts"
+    ],
+    "parameter_hash_identical_with_or_without_2026_07_24": true
+  },
+  "inference": {
+    "headline_by_endpoint": "C_dev_minus_A_dev_on_primary_1000ms_anchor",
+    "required_secondary": "C_dev_minus_B_on_primary_1000ms_anchor",
+    "noninferential_transport_diagnostics": [
+      "A_level_minus_A_common",
+      "A_dev_minus_A_level"
+    ],
+    "effect_magnitudes_comparable_across_endpoints": false,
+    "interval_metric": "sum_bin_bernoulli_log_likelihood_within_interval_then_pair_models",
+    "bootstrap_cluster": "interval_id",
+    "bootstrap_draws": 5000,
+    "bootstrap_seed_base": 5003,
+    "headline_family": {
+      "comparisons": 3,
+      "familywise_alpha": 0.05,
+      "method": "Bonferroni_simultaneous_one_sided_cluster_bootstrap_lower_bounds",
+      "per_comparison_alpha": 0.016666666666666666
+    },
+    "c_dev_minus_b_family": {
+      "comparisons": 3,
+      "familywise_alpha": 0.05,
+      "method": "Bonferroni_simultaneous_one_sided_cluster_bootstrap_lower_bounds",
+      "per_comparison_alpha": 0.016666666666666666
+    },
+    "ablation_family": {
+      "comparisons": 12,
+      "familywise_alpha": 0.05,
+      "method": "Bonferroni_simultaneous_one_sided_cluster_bootstrap_lower_bounds",
+      "per_comparison_alpha": 0.004166666666666667
+    },
+    "secondary_anchor_family": {
+      "comparisons": 3,
+      "familywise_alpha": 0.05,
+      "method": "Bonferroni_simultaneous_one_sided_cluster_bootstrap_lower_bounds",
+      "per_comparison_alpha": 0.016666666666666666,
+      "can_override_primary": false
+    }
+  },
+  "ablations": {
+    "model": "C_dev",
+    "procedure": "remove_one_registered_feature_group refit on development with the full model selected lambda and compare full_C_dev_minus_ablated_C_dev",
+    "hyperparameter_reselection_allowed": false
+  },
+  "decision_rule": {
+    "pre_external_status": "pipeline_frozen_external_pending_zero_validated_price_results",
+    "development_and_internal_reuse_verdict_allowed": false,
+    "external_price_information_supported": "mean_C_dev_minus_A_dev_positive_and_familywise_one_sided_lower_bound_above_zero",
+    "external_weak_or_inconclusive": "mean_positive_but_familywise_lower_bound_not_above_zero_or_interval_straddles_zero",
+    "external_rejected_for_this_design": "ordinary_two_sided_95_percent_interval_upper_bound_below_or_equal_zero",
+    "external_gate": "frozen C_dev_minus_A_dev rule on the registered 2026-07-27_29 cohort only",
+    "null_result_blocks_merge": false,
+    "null_result_is_evidence_of_absence": false,
+    "tradeable_edge_claim_allowed": false
+  },
+  "base_rate_attenuation": {
+    "known_development_holdout_ratio": 2.1,
+    "approximate_relative_attenuation": 0.07,
+    "role": "preexisting_fixed_development_only_intercept_stress_test",
+    "fixed_log_intercept_shift": "-log(2.1)",
+    "holdout_label_recalibration_allowed": false,
+    "not_log_likelihood_units": true,
+    "cannot_change_verdict_or_gate": true,
+    "interpretation": "a null effect of approximately this relative magnitude is not evidence of absence"
+  },
+  "forbidden": [
+    "P/L",
+    "entry_lineage",
+    "entry_gap",
+    "floating_profit",
+    "preceding_unlock_loss",
+    "black_box_boosting",
+    "holdout_preprocessing",
+    "holdout_feature_selection",
+    "holdout_hyperparameter_selection",
+    "holdout_calibration",
+    "post_action_ticks",
+    "directional_unlock_features"
+  ],
+  "future_outputs": {
+    "local_only": [
+      "m5_003_feature_audit.parquet",
+      "m5_003_joint_valid_design_matrix.parquet",
+      "m5_003_predictions.parquet"
+    ],
+    "committed": [
+      "m5_003_price_increment_report.md",
+      "m5_003_price_increment_report.json",
+      "m5_003_frozen_model_manifest.json"
+    ]
+  },
+  "implementation_merge_gate": [
+    "immutable input hashes match",
+    "canonical M2 through M5-002 outputs unchanged",
+    "A_common A_level A_dev B and C_dev use identical endpoint-specific evaluation bins",
+    "all exclusions reconcile with targets by reason",
+    "development-only A_dev preprocessing and GroupKFold are proven",
+    "A_common hashes remain frozen",
+    "A_dev bucket parameters and all fitted parameters are frozen before internal reuse evaluation",
+    "parameter hashes are unchanged by the presence or absence of 2026-07-24",
+    "leave-one-session-out and per-session diagnostics are reported without creating a verdict",
+    "all registered ablations and multiplicity families are reported",
+    "internal and external roles remain separated",
+    "null price findings are mergeable",
+    "no tradeable-edge conclusion is made",
+    "tests privacy determinism and CI pass"
+  ]
+}
