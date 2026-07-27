@@ -2,7 +2,7 @@
   "schema_version": 1,
   "milestone": "M5-003",
   "status": "frozen_external_pending",
-  "preregistration_sha256": "a5d51e73b012379f58b38bcb0d6e27154d07c77955735e4b08cce9014c334130",
+  "preregistration_sha256": "f2fc71b43b8ad372eed47ad6d5b3d31747f76daf0e3a1c2ad8a3fd0df9668d64",
   "immutable_inputs": {
     "m5_002_report_sha256": "80a1a8c680e7ddd7eb0a9e8ed8813f5f69c025d3b62b292eba30b05a92401365",
     "m5_002_risk_bin_dataframe_sha256": "62f0f0fa4f961b699461c2c3ba935c460d853b4553142130187c503fb4698520",
@@ -66,6 +66,64 @@
       "realized_volatility_10s",
       "spread_at_anchor",
       "absolute_state_start_displacement"
+    ]
+  },
+  "session_baseline_contract": {
+    "decision_date": "2026-07-27",
+    "reason": "independent review showed that the registered price package encoded deterministic server-time regime while A_dev had no session baseline",
+    "external_data_inspected": false,
+    "internal_results_are_confirmatory": false,
+    "server_timezone_status": "D-007_inference_UTC_plus_3_not_independently_confirmed",
+    "server_time_blocks": [
+      [
+        12,
+        16
+      ],
+      [
+        16,
+        20
+      ],
+      [
+        20,
+        24
+      ]
+    ],
+    "parameterization": "three_one_hot_block_effects_no_intercept_equivalent_to_intercept_plus_two_contrasts",
+    "block_rationale": [
+      "London_daytime_and_pre_New_York",
+      "New_York_morning_and_partial_London_New_York_overlap",
+      "New_York_afternoon_and_late"
+    ],
+    "limitation": "market_session_labels_are_approximate_and_depend_on_the_unconfirmed_D-007_timezone_inference"
+  },
+  "shape_feature_allowlists": {
+    "rehedge_buy_occurrence": [
+      "signed_mid_change_2s",
+      "signed_mid_change_5s",
+      "signed_tick_imbalance_2s",
+      "signed_tick_imbalance_5s",
+      "side_boundary_proximity_2s",
+      "side_boundary_proximity_5s",
+      "side_prior_boundary_touch_2s",
+      "side_prior_boundary_touch_5s"
+    ],
+    "rehedge_sell_occurrence": [
+      "signed_mid_change_2s",
+      "signed_mid_change_5s",
+      "signed_tick_imbalance_2s",
+      "signed_tick_imbalance_5s",
+      "side_boundary_proximity_2s",
+      "side_boundary_proximity_5s",
+      "side_prior_boundary_touch_2s",
+      "side_prior_boundary_touch_5s"
+    ],
+    "unlock_occurrence": [
+      "absolute_mid_change_2s",
+      "absolute_mid_change_5s",
+      "absolute_tick_imbalance_2s",
+      "absolute_tick_imbalance_5s",
+      "either_prior_boundary_touch_2s",
+      "either_prior_boundary_touch_5s"
     ]
   },
   "widths": {
@@ -283,9 +341,88 @@
                     "standard_error": 0.006903241319372843
                   }
                 ]
+              },
+              "C_session": {
+                "selected_lambda": 0.01,
+                "best_lambda": 0.001,
+                "one_standard_error_threshold": -4.242043706350317,
+                "scores": [
+                  {
+                    "lambda": 0.0001,
+                    "fold_scores": [
+                      -4.22016435840001,
+                      -4.205440009213836,
+                      -4.249192426822615,
+                      -4.222490215501327,
+                      -4.26711178413134
+                    ],
+                    "mean_score": -4.232879758813826,
+                    "standard_error": 0.011091660315164792
+                  },
+                  {
+                    "lambda": 0.001,
+                    "fold_scores": [
+                      -4.220528404767282,
+                      -4.210689756913608,
+                      -4.241191801811426,
+                      -4.216927393918555,
+                      -4.26828638781644
+                    ],
+                    "mean_score": -4.231524749045461,
+                    "standard_error": 0.010518957304855726
+                  },
+                  {
+                    "lambda": 0.01,
+                    "fold_scores": [
+                      -4.232003180433532,
+                      -4.232187100803133,
+                      -4.225821854362233,
+                      -4.223174607377855,
+                      -4.277570963286004
+                    ],
+                    "mean_score": -4.2381515412525514,
+                    "standard_error": 0.010008989587334127
+                  },
+                  {
+                    "lambda": 0.1,
+                    "fold_scores": [
+                      -4.278816939500895,
+                      -4.282850960055501,
+                      -4.254822883686388,
+                      -4.2858641135542594,
+                      -4.320481396203539
+                    ],
+                    "mean_score": -4.284567258600117,
+                    "standard_error": 0.010517240137068382
+                  },
+                  {
+                    "lambda": 1.0,
+                    "fold_scores": [
+                      -4.31803947030919,
+                      -4.328574191258844,
+                      -4.292261288461278,
+                      -4.330312822555356,
+                      -4.357219268338962
+                    ],
+                    "mean_score": -4.325281408184726,
+                    "standard_error": 0.01048560544965742
+                  },
+                  {
+                    "lambda": 10.0,
+                    "fold_scores": [
+                      -4.326323529722236,
+                      -4.338326209905637,
+                      -4.300726093878901,
+                      -4.339384394641131,
+                      -4.36504641018718
+                    ],
+                    "mean_score": -4.3339613276670175,
+                    "standard_error": 0.010434703948948658
+                  }
+                ]
               }
             },
-            "sha256": "5b8b1f9ff3c2bd1bee2e55402d44136ebb07dcf3538905e9b6c2286f9eb19777"
+            "sha256": "aaae2c45adfb393e32d2af72f3e4491feeaf16f0e8e80447b428440a320b35c1"
           },
           "fitted_bundle": {
             "endpoint": "rehedge_buy_occurrence",
@@ -393,6 +530,44 @@
               },
               "fitted_parameter_sha256": "e649b6b1b9009950ef95476d68cd0afba2865da044b2ba415cae4fa618e684cc"
             },
+            "A_session": {
+              "block_labels": [
+                "server_12_16",
+                "server_16_20",
+                "server_20_24"
+              ],
+              "server_hour_bounds": [
+                [
+                  12,
+                  16
+                ],
+                [
+                  16,
+                  20
+                ],
+                [
+                  20,
+                  24
+                ]
+              ],
+              "parameterization": "three_one_hot_block_effects_no_intercept",
+              "regularization": 0.0,
+              "parameters": {
+                "regularization": 0.0,
+                "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+                "fit_intercept": false,
+                "intercept": null,
+                "coefficients": [
+                  -0.0012601288189166464,
+                  0.2831275494052601,
+                  -0.8208447767045639
+                ],
+                "iterations": 6,
+                "converged": true,
+                "sha256": "1234e4a4856b61979162b860c3597b9ec23fb0fb2d4342c12d5748eb7d0ca4ac"
+              },
+              "fitted_parameter_sha256": "43cf0759205fa88720e6d845b88664ab1e5bb66ee9c7241901df9672566f2206"
+            },
             "A_level": {
               "intercept": -0.39533319767975655,
               "iterations": 5,
@@ -489,8 +664,93 @@
               "converged": true,
               "sha256": "5fa46c641f9732ea4c2197eac1f776aecca21e2e850498be2b0f8d7291d8212d"
             },
-            "regularization_selection_sha256": "5b8b1f9ff3c2bd1bee2e55402d44136ebb07dcf3538905e9b6c2286f9eb19777",
-            "fitted_parameter_sha256": "d12bc39018459e8ad6b624e937505c5bf284dc2a8dc2468725ede86bf89fbfe7"
+            "C_session": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                -0.010171623871813447,
+                0.022828150465816002,
+                -0.012471186790275172,
+                -0.00493795416727326,
+                0.02130103674117121,
+                -0.0368148252695307,
+                0.0531041582367052,
+                -0.010696088937494866,
+                0.15542127809850295,
+                0.009326699817684548,
+                0.2307358021729444,
+                0.05463587746600851
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "7a8c9560725acccdd300f00cb17f231a6e55821f600184d6fff877658a342171"
+            },
+            "shape_feature_columns": [
+              "signed_mid_change_2s",
+              "signed_mid_change_5s",
+              "signed_tick_imbalance_2s",
+              "signed_tick_imbalance_5s",
+              "side_boundary_proximity_2s",
+              "side_boundary_proximity_5s",
+              "side_prior_boundary_touch_2s",
+              "side_prior_boundary_touch_5s"
+            ],
+            "shape_scaler": {
+              "feature_columns": [
+                "signed_mid_change_2s",
+                "signed_mid_change_5s",
+                "signed_tick_imbalance_2s",
+                "signed_tick_imbalance_5s",
+                "side_boundary_proximity_2s",
+                "side_boundary_proximity_5s",
+                "side_prior_boundary_touch_2s",
+                "side_prior_boundary_touch_5s"
+              ],
+              "means": [
+                0.03226314468565647,
+                0.0707060170661304,
+                -0.00032748743991683745,
+                -0.0007428384405766983,
+                0.5138469265697175,
+                0.5287927497410623,
+                0.5087526665830091,
+                0.5248776508972267
+              ],
+              "scales": [
+                0.22891827007449034,
+                0.3599698552864598,
+                0.3050147664822381,
+                0.1801497192941703,
+                0.37974501703521096,
+                0.35890710600838094,
+                0.49992338495782207,
+                0.4993807189768501
+              ],
+              "sha256": "aef1ffde626f1ea03e25bdc94be5de5446da5f5969334169bfae13150b5bc71e"
+            },
+            "C_shape": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.023153913285423985,
+                0.09003048912418182,
+                -0.02165408876934844,
+                -0.012229811287858605,
+                0.015805780570740894,
+                -0.029339945847202033,
+                0.054332874076023475,
+                0.006557037214644904
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "5af0fdc5d4e0c5747852c6ba67d7f23d68d3ae56e06d662812dcd72843c38301"
+            },
+            "regularization_selection_sha256": "aaae2c45adfb393e32d2af72f3e4491feeaf16f0e8e80447b428440a320b35c1",
+            "fitted_parameter_sha256": "287ac1a3ac6b7a0c0d1be2c009c2a533397ca9bf2a8d27246c099165f2310dc1"
           },
           "ablations": {
             "motion": {
@@ -543,26 +803,26 @@
                 ],
                 "sha256": "7e22854bc1ca74c0bd781500a20a24f23df4eb8dbc5448da1e84f210a6548d8c"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.016050386597780117,
-                  -0.029181256196113507,
-                  0.057997516912243426,
-                  0.003083629510589157,
-                  0.20045023989250246,
-                  -0.04834733427315794,
-                  0.21883488981475444,
-                  0.05035039283561654
+                  0.013976800052015353,
+                  -0.031371909980309476,
+                  0.053337281330274745,
+                  -0.004618845198309623,
+                  0.15839568881832541,
+                  0.008510758870513842,
+                  0.23194889615789557,
+                  0.05659272383372534
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "180e2cc077f15741b18acabde84d44da8f86ea220d952c423d3bffa2e084f787"
+                "sha256": "4784eaa864dff602181953bacf7c6a0a78f058a2ef7b8f815177803e2bdd6b2e"
               },
-              "sha256": "18b0b0e04c4cd5b59f7052d625d734242876283b2d86f15eb96e21a9503ef1b1"
+              "sha256": "9a52d956807e8f07d526bd6bfd240a5cb9e1e4e21297dd19e62316b9b2d7b14b"
             },
             "boundary": {
               "removed_features": [
@@ -614,26 +874,26 @@
                 ],
                 "sha256": "d2d26b3a5173dcb248b4e8247f4d9fafa059c70394d496f31419ecd094e4ecb7"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.00351358218453526,
-                  0.024157263002515868,
-                  -0.004154684259025016,
-                  -0.003090620292854126,
-                  0.19692917902652554,
-                  -0.04730438685878674,
-                  0.21778067959913877,
-                  0.04827093783029868
+                  -0.0024117696732274714,
+                  0.01941055781367645,
+                  -0.007988047212975451,
+                  -0.0031601178307938786,
+                  0.1545480220072601,
+                  0.009845776660259327,
+                  0.23100359509184237,
+                  0.05377286473632411
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "2912602e230c42052619689fdffa70b5de17e0336b69468b1cf480858122f053"
+                "sha256": "c07a3af8b403577045d8310509d7122d18800e9e2b5c56b3aed0646f0033a753"
               },
-              "sha256": "266741eefdb404f540774645e1c45c00df47a8dc3d14a2b37952c99eb441e592"
+              "sha256": "375b479e7f4e6929a78a8daef8914fbf499b2438f93715621368b496f9fac3d0"
             },
             "state_path": {
               "removed_features": [
@@ -691,28 +951,28 @@
                 ],
                 "sha256": "e468e16b2ebe51a404db6902c5bc472856493d9963bc9a9e5d00ae609f144822"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.004956392274702369,
-                  0.050454876597267155,
-                  -0.007807746666914809,
-                  -0.0010291376129384809,
-                  0.023265632963720327,
-                  -0.03526529745708584,
-                  0.05926488783951588,
-                  0.008860394538349282,
-                  0.1741158124075618,
-                  -0.02541670836202066
+                  -0.0009327859843750613,
+                  0.05020395593240419,
+                  -0.010383935893296151,
+                  0.0023485786242818897,
+                  0.01971476923828074,
+                  -0.037634102436489764,
+                  0.05446358539920801,
+                  0.0021814549721476013,
+                  0.12857232276191144,
+                  0.029634410432037923
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "7f8b959b45a37f44890c90b423bc6f01e9658e4bdbd1812b9891f2a3b8b5d1b7"
+                "sha256": "9a44b2e00d551e6186b77c665b90dc3e6b7653a558dc9b24884189e869b1c6da"
               },
-              "sha256": "4078661897fe926c8aa2c19d1b29f631479df86f37387bf59cd88cff6edadb1b"
+              "sha256": "e29644bb8e111ea92152992909ed5cbc764945924f93387a4d3378a02708e0a8"
             },
             "volatility_liquidity": {
               "removed_features": [
@@ -770,28 +1030,28 @@
                 ],
                 "sha256": "ac5484251787279e373e3267fe4494ea3f85662ad3dde27bf1004fed508f2689"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.02562429782935309,
-                  0.09116569740162515,
-                  -0.025295292855609997,
-                  -0.02886288613233682,
-                  0.017781844570947947,
-                  -0.022529589782942692,
-                  0.05766999670320364,
-                  0.005597786007398085,
-                  0.1822534090139695,
-                  0.0503417702980727
+                  0.019178331004859252,
+                  0.07351728085685161,
+                  -0.025354404862889004,
+                  -0.021490641699807377,
+                  0.016423865933665318,
+                  -0.027261665139374343,
+                  0.05348646183882809,
+                  -0.0031556956252291775,
+                  0.20486299751330342,
+                  0.05735500089674044
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "8cd7bd4ed2ca93edfcd732643fb33bfbb4618ee270d7ebbac6a564d01b85bd4c"
+                "sha256": "2db9e611777863c6c910e338359137681805626789215ed6f2f3d59464ee1579"
               },
-              "sha256": "612c0e0deeaff53f03005fff1dade0d94d98c48c855d3ceffe9f41028c66efc1"
+              "sha256": "0768a4d31b029068e27788d756e5a8670c69c33a0aee8531eff30e80f7619418"
             }
           }
         },
@@ -998,9 +1258,88 @@
                     "standard_error": 0.013661193041891465
                   }
                 ]
+              },
+              "C_session": {
+                "selected_lambda": 0.01,
+                "best_lambda": 0.001,
+                "one_standard_error_threshold": -4.178871191246717,
+                "scores": [
+                  {
+                    "lambda": 0.0001,
+                    "fold_scores": [
+                      -4.081619229776459,
+                      -4.047127714386492,
+                      -4.185817770967215,
+                      -4.220146541572713,
+                      -4.192444841301419
+                    ],
+                    "mean_score": -4.1454312196008605,
+                    "standard_error": 0.03402887206241841
+                  },
+                  {
+                    "lambda": 0.001,
+                    "fold_scores": [
+                      -4.083812433984097,
+                      -4.045001259352591,
+                      -4.188147514877843,
+                      -4.2164444421185285,
+                      -4.1917712941586
+                    ],
+                    "mean_score": -4.145035388898332,
+                    "standard_error": 0.03383580234838494
+                  },
+                  {
+                    "lambda": 0.01,
+                    "fold_scores": [
+                      -4.098448084239436,
+                      -4.056795930417065,
+                      -4.2026527614819225,
+                      -4.209838181231121,
+                      -4.196255016996438
+                    ],
+                    "mean_score": -4.152797994873197,
+                    "standard_error": 0.031462598868270644
+                  },
+                  {
+                    "lambda": 0.1,
+                    "fold_scores": [
+                      -4.1417399979572735,
+                      -4.1083053825844456,
+                      -4.239153546681684,
+                      -4.2371181721352995,
+                      -4.225420598510971
+                    ],
+                    "mean_score": -4.190347539573935,
+                    "standard_error": 0.027288501689077878
+                  },
+                  {
+                    "lambda": 1.0,
+                    "fold_scores": [
+                      -4.176675725557724,
+                      -4.148587131348504,
+                      -4.265115044034977,
+                      -4.266710689922819,
+                      -4.25687321395925
+                    ],
+                    "mean_score": -4.222792360964655,
+                    "standard_error": 0.02501468950959539
+                  },
+                  {
+                    "lambda": 10.0,
+                    "fold_scores": [
+                      -4.183917652858934,
+                      -4.156563335241059,
+                      -4.270351629097393,
+                      -4.272911653219999,
+                      -4.263705881742824
+                    ],
+                    "mean_score": -4.229490030432042,
+                    "standard_error": 0.02461805894165275
+                  }
+                ]
               }
             },
-            "sha256": "c3a930a63d1754b4b84ec308cb55e5d36acb7496bdf49e26b69875750b1dee3d"
+            "sha256": "817e17ef2506b4b56225adc2ed5457e749a24071d8f03ba9b529d05db4e21151"
           },
           "fitted_bundle": {
             "endpoint": "rehedge_sell_occurrence",
@@ -1108,6 +1447,44 @@
               },
               "fitted_parameter_sha256": "4fd92aa74d8cb70369e0fc0e85f64c3ec06888d23f44896e8db1eae4d108a6c7"
             },
+            "A_session": {
+              "block_labels": [
+                "server_12_16",
+                "server_16_20",
+                "server_20_24"
+              ],
+              "server_hour_bounds": [
+                [
+                  12,
+                  16
+                ],
+                [
+                  16,
+                  20
+                ],
+                [
+                  20,
+                  24
+                ]
+              ],
+              "parameterization": "three_one_hot_block_effects_no_intercept",
+              "regularization": 0.0,
+              "parameters": {
+                "regularization": 0.0,
+                "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+                "fit_intercept": false,
+                "intercept": null,
+                "coefficients": [
+                  -0.17887773950866726,
+                  0.2622363576388072,
+                  -0.7059785135104212
+                ],
+                "iterations": 6,
+                "converged": true,
+                "sha256": "d198f522299ca6ce761565bc9d6c0b43682bd2b94b1a0eb6f46dcbf2b48653be"
+              },
+              "fitted_parameter_sha256": "e7af3c6a50e4185092976c65bc208c78afd830e3f5603901cca5daba09e0049d"
+            },
             "A_level": {
               "intercept": -0.26693183922983277,
               "iterations": 5,
@@ -1204,8 +1581,93 @@
               "converged": true,
               "sha256": "8e2787c8a14543e073647530ba644e58e043a91819433f1b87f8a6d8555b7245"
             },
-            "regularization_selection_sha256": "c3a930a63d1754b4b84ec308cb55e5d36acb7496bdf49e26b69875750b1dee3d",
-            "fitted_parameter_sha256": "00ab6a844028d4cb4cd9f939efaa9fd16d76865f13001f11affc0796ddd12949"
+            "C_session": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.0017666413994011584,
+                -0.02380383589526216,
+                -0.0004610602986443619,
+                0.05354541621043534,
+                0.006943332716502767,
+                -0.02814123722178877,
+                0.020764844446529818,
+                -0.015606819668313478,
+                0.17067882107720903,
+                0.007705460418885624,
+                0.2120446462214969,
+                0.04359807475234838
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "d7accb1be34704318ba0ccf40d7879cf6c0643bd709d1fec7a64cab02f6004fd"
+            },
+            "shape_feature_columns": [
+              "signed_mid_change_2s",
+              "signed_mid_change_5s",
+              "signed_tick_imbalance_2s",
+              "signed_tick_imbalance_5s",
+              "side_boundary_proximity_2s",
+              "side_boundary_proximity_5s",
+              "side_prior_boundary_touch_2s",
+              "side_prior_boundary_touch_5s"
+            ],
+            "shape_scaler": {
+              "feature_columns": [
+                "signed_mid_change_2s",
+                "signed_mid_change_5s",
+                "signed_tick_imbalance_2s",
+                "signed_tick_imbalance_5s",
+                "side_boundary_proximity_2s",
+                "side_boundary_proximity_5s",
+                "side_prior_boundary_touch_2s",
+                "side_prior_boundary_touch_5s"
+              ],
+              "means": [
+                0.03927826120437104,
+                0.08631718774064062,
+                0.013927984544628421,
+                0.011460209584197023,
+                0.5241217531681944,
+                0.5408158428515147,
+                0.5221007238564608,
+                0.5448174957646696
+              ],
+              "scales": [
+                0.2414771537248879,
+                0.37856341437329283,
+                0.2896933900709919,
+                0.1730652790374207,
+                0.37665202666838316,
+                0.3551443118202001,
+                0.4995113191960923,
+                0.49798734127825356
+              ],
+              "sha256": "ba63b0b0ef5ea2d46bdfb8ca4d0994fa2d3550c8ef166b39d153d772150cd79b"
+            },
+            "C_shape": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.041252219311695836,
+                0.04750382024413734,
+                -0.00563862950257156,
+                0.05157433428587505,
+                -0.0013962423489051901,
+                -0.02714140694344078,
+                0.014610997160589575,
+                -0.0019145678964563333
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "ba3aa9f67786982b27ccc55114abdf2bec3f53e613a95f9512f0e8440918e9a1"
+            },
+            "regularization_selection_sha256": "817e17ef2506b4b56225adc2ed5457e749a24071d8f03ba9b529d05db4e21151",
+            "fitted_parameter_sha256": "01d52fab824dd2d51cea1fe9a4095ec4e735eef3cb290565f79dcc48006bb33a"
           },
           "ablations": {
             "motion": {
@@ -1258,26 +1720,26 @@
                 ],
                 "sha256": "0baf7414cae12c7959210171bf8488e6ba2350a654d9b69bf8c078b19b8c2b6f"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.014725562792809642,
-                  -0.024283479318090533,
-                  0.030204854108216245,
-                  -0.009309465509861864,
-                  0.20755905906234653,
-                  -0.02687167038013681,
-                  0.20129659135427538,
-                  0.03165949625266661
+                  0.01090581970231081,
+                  -0.0253959013931506,
+                  0.02373129867366605,
+                  -0.015204490487346704,
+                  0.1665591395654454,
+                  0.008242823781935074,
+                  0.21135883291996208,
+                  0.043364795223937005
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "cbd52ef66df5c189af2faada00db132ba1e6488d88cc621a1ea437cae26270f5"
+                "sha256": "15c5905d1136340dcc5324e5a3efdeee101390a6e26a951e0f6b084c08edc280"
               },
-              "sha256": "94532a3f1ffae0e0a91519b20bff66dfe3659724670f39e825e978fb98e3a631"
+              "sha256": "0c0a5d222dca63767cc6472ab9b2be49c8185c5bc7a43d3ba10e958b9eb1f488"
             },
             "boundary": {
               "removed_features": [
@@ -1329,26 +1791,26 @@
                 ],
                 "sha256": "6f8cf10ec03b582f80fc1305770fb1861acf1128e241518591a92250843af62a"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.0017845865644002773,
-                  -0.028494528401070984,
-                  0.0015543664334625718,
-                  0.05924297351102168,
-                  0.21153148566217472,
-                  -0.027236942811531707,
-                  0.20169736740154492,
-                  0.0302662535708772
+                  0.003153507077347022,
+                  -0.03156837204433793,
+                  -0.0010236280415376582,
+                  0.05066844098210923,
+                  0.17019843803431486,
+                  0.007916164212727781,
+                  0.21207780487782832,
+                  0.04202812596014626
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "31d5e853013d454b7962e865d97a89da626d342c8dd6f45244e99abaf26d09e5"
+                "sha256": "fc0a269f544b849a46f8d8af2d57cd2443417991898b00c449cf70cdd0f45fc0"
               },
-              "sha256": "2baede22e615eb29df3897439818bc07351c804a94ac6e1af8f712424bd72d24"
+              "sha256": "fc5f28ca81b63516af83ab60416689117a71248e8c7d0ea4c3a39fa2f1e60427"
             },
             "state_path": {
               "removed_features": [
@@ -1406,28 +1868,28 @@
                 ],
                 "sha256": "48807ea0673d64c8c3787af28aa421d3d3f53b7a1f9f9e14858658e372752a70"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.00768387863579776,
-                  0.007265936934783642,
-                  0.003441220968274785,
-                  0.06661910440956036,
-                  0.011066292106139995,
-                  -0.03190801513326644,
-                  0.02597593875727724,
-                  0.0033209288124692636,
-                  0.1857692312492085,
-                  -0.026809985654582175
+                  0.012118882555090874,
+                  0.008922216478498238,
+                  0.001922843930897798,
+                  0.0591546115430127,
+                  0.006905301024635533,
+                  -0.03056816704661501,
+                  0.020093645709938303,
+                  0.0004099327204306549,
+                  0.1406567259326835,
+                  0.011258247903157197
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "4cde7e2e34977fc1814c125b684e225c32c804e97af2d7e2119d0f9e40ae111b"
+                "sha256": "de63c79d3deb1b0beae989133396bcc7bbc6558202501d9188b28366b3d3bf97"
               },
-              "sha256": "165a824314ca0fffda25fefada05623ffeb848a57e1968aead8490fba28cd48a"
+              "sha256": "8eaa8df655ba526631c3e34c86f54cc92cd14aadf445f7679b3b1ab35e3e7e40"
             },
             "volatility_liquidity": {
               "removed_features": [
@@ -1485,28 +1947,28 @@
                 ],
                 "sha256": "4d9916bf08814f1ba0aed4bea19e50fb86b73dfe6d8386fb070154a42eeceb68"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.04373481074032926,
-                  0.045185053213928246,
-                  -0.009223942574637064,
-                  0.048281506030336194,
-                  -0.0010562652087586926,
-                  -0.02487634862476381,
-                  0.01804020386901664,
-                  -0.011125739287717836,
-                  0.16396677136756352,
-                  0.03260561950759148
+                  0.03766116151538161,
+                  0.027362449621714666,
+                  -0.00904935601316999,
+                  0.045048666891623186,
+                  -0.002317010594546894,
+                  -0.024183874620529063,
+                  0.014345435524485868,
+                  -0.014946168858501281,
+                  0.18172030749528617,
+                  0.043153880280033495
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "bd5ab430d65018469169f23ee4dbb4a54c893ed8a2451bda7ea75a9508dfa421"
+                "sha256": "3474f23670a140a65f4824b3af3d60fe40ae576e7356ba5b682810e50f4ea551"
               },
-              "sha256": "3cb8d7c343a9baee8bf44fb287a0814b8afb646d6743149e751384ef3479fca8"
+              "sha256": "19c06d93d29e2e42d3a80233b7fd6a5e39d6c02eca2a96ed9c7a551f9836c1a0"
             }
           }
         },
@@ -1713,9 +2175,88 @@
                     "standard_error": 0.007865611082946875
                   }
                 ]
+              },
+              "C_session": {
+                "selected_lambda": 0.01,
+                "best_lambda": 0.001,
+                "one_standard_error_threshold": -4.622943029570631,
+                "scores": [
+                  {
+                    "lambda": 0.0001,
+                    "fold_scores": [
+                      -4.620689803417286,
+                      -4.574722991765449,
+                      -4.623689029988009,
+                      -4.61248995080607,
+                      -4.631949556007529
+                    ],
+                    "mean_score": -4.612708266396868,
+                    "standard_error": 0.009993593144249144
+                  },
+                  {
+                    "lambda": 0.001,
+                    "fold_scores": [
+                      -4.61953699833476,
+                      -4.572052905914608,
+                      -4.621911948853895,
+                      -4.615619151531619,
+                      -4.633070973959195
+                    ],
+                    "mean_score": -4.612438395718815,
+                    "standard_error": 0.010504633851815388
+                  },
+                  {
+                    "lambda": 0.01,
+                    "fold_scores": [
+                      -4.619472178334233,
+                      -4.575035291745776,
+                      -4.625762748657638,
+                      -4.630813010246612,
+                      -4.643437344421129
+                    ],
+                    "mean_score": -4.618904114681078,
+                    "standard_error": 0.011652335253365113
+                  },
+                  {
+                    "lambda": 0.1,
+                    "fold_scores": [
+                      -4.635789880407991,
+                      -4.591382583894867,
+                      -4.638114356885488,
+                      -4.653063646014867,
+                      -4.66030339563779
+                    ],
+                    "mean_score": -4.6357307725682,
+                    "standard_error": 0.011993100335147295
+                  },
+                  {
+                    "lambda": 1.0,
+                    "fold_scores": [
+                      -4.672417570734755,
+                      -4.620503631120463,
+                      -4.664522222025025,
+                      -4.689950936209517,
+                      -4.6827404412909015
+                    ],
+                    "mean_score": -4.666026960276132,
+                    "standard_error": 0.012180260072645891
+                  },
+                  {
+                    "lambda": 10.0,
+                    "fold_scores": [
+                      -4.686283788023599,
+                      -4.632662841721164,
+                      -4.675693590515948,
+                      -4.704395994155589,
+                      -4.692641188991985
+                    ],
+                    "mean_score": -4.678335480681657,
+                    "standard_error": 0.012328724134415468
+                  }
+                ]
               }
             },
-            "sha256": "9dd77c666d9507211124f2ee5db55a981d6733bdd9cade0d0ed2d864fd74cdf0"
+            "sha256": "9f91c49ff7dc8ce45e7f44ef25082edfb62b2291826f83d45e9f388be0b1c7eb"
           },
           "fitted_bundle": {
             "endpoint": "unlock_occurrence",
@@ -1823,6 +2364,44 @@
               },
               "fitted_parameter_sha256": "4ed191fd111076191157eb6ad970c30c2c9b0bd42397782b463928dd56df33d9"
             },
+            "A_session": {
+              "block_labels": [
+                "server_12_16",
+                "server_16_20",
+                "server_20_24"
+              ],
+              "server_hour_bounds": [
+                [
+                  12,
+                  16
+                ],
+                [
+                  16,
+                  20
+                ],
+                [
+                  20,
+                  24
+                ]
+              ],
+              "parameterization": "three_one_hot_block_effects_no_intercept",
+              "regularization": 0.0,
+              "parameters": {
+                "regularization": 0.0,
+                "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+                "fit_intercept": false,
+                "intercept": null,
+                "coefficients": [
+                  -0.1489712330962172,
+                  0.32324261934284787,
+                  -0.7750680738649081
+                ],
+                "iterations": 6,
+                "converged": true,
+                "sha256": "dc8d8c1284f7a0a01abe3e30fdd0019d046074bf5e3834f579b3f457142fb94c"
+              },
+              "fitted_parameter_sha256": "bac2e23928b87f9be5a09857de4b882781641a0ee0a1ff2766629f7816927ecc"
+            },
             "A_level": {
               "intercept": -0.39967022684636055,
               "iterations": 5,
@@ -1919,8 +2498,83 @@
               "converged": true,
               "sha256": "6e645fbb73c6b8df35f620448edf0ea76ae30a778c0866793a31c682095d108f"
             },
-            "regularization_selection_sha256": "9dd77c666d9507211124f2ee5db55a981d6733bdd9cade0d0ed2d864fd74cdf0",
-            "fitted_parameter_sha256": "0161686a6e0811782b5920f9102b4fe4d6dec249ade3b9ec223f88cda6cb8c65"
+            "C_session": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                -0.004859383462882429,
+                0.0051035729211227525,
+                -0.014612032857364315,
+                0.00491703993743184,
+                0.09558581645608645,
+                0.03962557199171453,
+                0.005865564373873142,
+                0.01245717903750514,
+                0.025553683858433214,
+                0.03710713134707173,
+                0.015170189011880882,
+                0.1023171915773518
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "166bcdb2f8d1f0ab7376f1b96ce9ce73d240bc978f361ca8596bed9d78aeefad"
+            },
+            "shape_feature_columns": [
+              "absolute_mid_change_2s",
+              "absolute_mid_change_5s",
+              "absolute_tick_imbalance_2s",
+              "absolute_tick_imbalance_5s",
+              "either_prior_boundary_touch_2s",
+              "either_prior_boundary_touch_5s"
+            ],
+            "shape_scaler": {
+              "feature_columns": [
+                "absolute_mid_change_2s",
+                "absolute_mid_change_5s",
+                "absolute_tick_imbalance_2s",
+                "absolute_tick_imbalance_5s",
+                "either_prior_boundary_touch_2s",
+                "either_prior_boundary_touch_5s"
+              ],
+              "means": [
+                0.12301318543732939,
+                0.2141819257781149,
+                0.22340796031058396,
+                0.13706354556732175,
+                0.8379795371402861,
+                0.8353776630083926
+              ],
+              "scales": [
+                0.14156496909217758,
+                0.22617449143257518,
+                0.183553412448439,
+                0.1066842042904243,
+                0.3684695814778176,
+                0.3708393495235223
+              ],
+              "sha256": "11972f3d1c5b28023eb3c4ec978f7f591b681978ee373780fccf5cd0c0e79399"
+            },
+            "C_shape": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.07824209750739261,
+                0.07627848358581903,
+                -0.026387843546477916,
+                -0.010160277103575147,
+                0.015305916532851236,
+                0.0262489699988102
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "857169ca13950df1d369558faa350a4a97993b5d50eec397b41659138441feca"
+            },
+            "regularization_selection_sha256": "9f91c49ff7dc8ce45e7f44ef25082edfb62b2291826f83d45e9f388be0b1c7eb",
+            "fitted_parameter_sha256": "eb03204d5fd18bd6d36da8a8ce8fbf8614cf6d8ca6d336889b9ce96406153116"
           },
           "ablations": {
             "magnitude_motion": {
@@ -1973,32 +2627,29 @@
                 ],
                 "sha256": "0d4a8f10a31bbaf19a47dcf26abfea275c9a64e4e48a33ececb902ee885ed48a"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.14418766408305517,
-                  0.040179872486876496,
-                  -0.051500346329024164,
-                  0.012864663634781502,
-                  0.0340918435879801,
-                  0.114596547578864,
-                  -0.022103258642114116,
-                  0.1581085310719994
+                  0.09140661334430619,
+                  0.042486148196237014,
+                  0.0068534310216657,
+                  0.01255319370948779,
+                  0.025623559044715114,
+                  0.037590144660080566,
+                  0.015069949164807693,
+                  0.10267562220970548
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "3a1679f74e9fd0665d37465dacca7639b08ef2e101cc101c16ec28b2332517e0"
+                "sha256": "bec4a02e264844d1eb182090c1d3ffbd68e64ace16d15400db6ff4b150de7528"
               },
-              "sha256": "9d045b1ffefe02c9fbb2241942c2f9145e53a5865cd7cd8b8f8d5a2b6646b9ae"
+              "sha256": "22d30c96ce00cdea51ed1e6467a6cd83ec7c7d521da8e433953d15a37b3deb15"
             },
-            "boundary_magnitude": {
+            "boundary": {
               "removed_features": [
-                "range_width_2s",
-                "range_width_5s",
-                "range_width_10s",
                 "either_prior_boundary_touch_2s",
                 "either_prior_boundary_touch_5s"
               ],
@@ -2007,6 +2658,9 @@
                 "absolute_mid_change_5s",
                 "absolute_tick_imbalance_2s",
                 "absolute_tick_imbalance_5s",
+                "range_width_2s",
+                "range_width_5s",
+                "range_width_10s",
                 "realized_volatility_10s",
                 "spread_at_anchor",
                 "absolute_state_start_displacement"
@@ -2017,6 +2671,9 @@
                   "absolute_mid_change_5s",
                   "absolute_tick_imbalance_2s",
                   "absolute_tick_imbalance_5s",
+                  "range_width_2s",
+                  "range_width_5s",
+                  "range_width_10s",
                   "realized_volatility_10s",
                   "spread_at_anchor",
                   "absolute_state_start_displacement"
@@ -2026,6 +2683,9 @@
                   0.2141819257781149,
                   0.22340796031058396,
                   0.13706354556732175,
+                  0.18023397304223626,
+                  0.3436543126552821,
+                  0.5464474147543905,
                   0.3313920367578634,
                   0.22612399006201392,
                   1.107903437212657
@@ -2035,31 +2695,37 @@
                   0.22617449143257518,
                   0.183553412448439,
                   0.1066842042904243,
+                  0.1601995432250614,
+                  0.2616170232816361,
+                  0.3844643503198698,
                   0.17985932111261188,
                   0.009029263342799068,
                   1.0198668016746812
                 ],
-                "sha256": "db7315ec6255d730ec4728089445e1e39b4c80bf3cebd007c98a44b20cec047a"
+                "sha256": "3f7e78b4b5930fcdad674f83bb8d091008cc935e3f5b2448e4221c6c512b09a8"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.09427397107512489,
-                  0.025342611023260367,
-                  -0.05978728900236825,
-                  -0.0022909026353461924,
-                  0.12328532811502756,
-                  -0.01865955225830057,
-                  0.15734707866876466
+                  -0.0038837948458558353,
+                  0.006100650438387639,
+                  -0.014709198337652928,
+                  0.005708571456583001,
+                  0.09834468285494576,
+                  0.042097768914582355,
+                  0.004961519230321814,
+                  0.033257785153386774,
+                  0.015034816896628866,
+                  0.10303911233079775
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "f7f64511cd54dd79a10091da89558b041e02412ec79d6faac0482d6ad8cb2030"
+                "sha256": "b1d81ab2bc620c937e11b19b29ea88d8e61507018f207101bd8eae4994cb6db9"
               },
-              "sha256": "5f89de5dabf301de9f91e25a7ee73209f5eb6e6628935c7a6cb4c4f6353e5075"
+              "sha256": "390ba4ad175259e560395d84694f705c1421def47b3fa951eba14a4034d7fece"
             },
             "state_path": {
               "removed_features": [
@@ -2120,43 +2786,43 @@
                 ],
                 "sha256": "a10a84397a866d027c0d3731f965c63ea4de6036b1cad4236b8a07b31be32d2e"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.10631731033310163,
-                  0.011394074904309302,
-                  -0.030463062968845565,
-                  0.007133188110834589,
-                  0.24550449272020186,
-                  0.043883610635981736,
-                  -0.024770323735737967,
-                  0.008837676466600908,
-                  0.03512079596902324,
-                  0.05972727847311454,
-                  -0.020156913684495827
+                  -0.004980934151111975,
+                  0.013412817627468853,
+                  -0.013052740542221063,
+                  0.00642588493367797,
+                  0.09399682136641632,
+                  0.039717420413733606,
+                  0.009898618471681437,
+                  0.01208546165429965,
+                  0.02804429449863239,
+                  0.026099871979462595,
+                  0.016193080463576422
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "bcfa3bde4ad6591e7a85421e64df5b768ba090fed8778b0a94e5334c6f007c9a"
+                "sha256": "79a7db1a93bbcdf77bc224a893a6fa42cb357218e5aac2e3416d151cc4f25cd1"
               },
-              "sha256": "5c864d6389398c694b57574634ccc522ca84344230ddf96907822481e8e35d2a"
+              "sha256": "967f645fdc085e6b65ab54d1ca4fa5fb4b7f06d93af667601e6cbda1c0799283"
             },
             "volatility_liquidity": {
               "removed_features": [
                 "realized_volatility_10s",
-                "spread_at_anchor"
+                "spread_at_anchor",
+                "range_width_2s",
+                "range_width_5s",
+                "range_width_10s"
               ],
               "remaining_features": [
                 "absolute_mid_change_2s",
                 "absolute_mid_change_5s",
                 "absolute_tick_imbalance_2s",
                 "absolute_tick_imbalance_5s",
-                "range_width_2s",
-                "range_width_5s",
-                "range_width_10s",
                 "either_prior_boundary_touch_2s",
                 "either_prior_boundary_touch_5s",
                 "absolute_state_start_displacement"
@@ -2167,9 +2833,6 @@
                   "absolute_mid_change_5s",
                   "absolute_tick_imbalance_2s",
                   "absolute_tick_imbalance_5s",
-                  "range_width_2s",
-                  "range_width_5s",
-                  "range_width_10s",
                   "either_prior_boundary_touch_2s",
                   "either_prior_boundary_touch_5s",
                   "absolute_state_start_displacement"
@@ -2179,9 +2842,6 @@
                   0.2141819257781149,
                   0.22340796031058396,
                   0.13706354556732175,
-                  0.18023397304223626,
-                  0.3436543126552821,
-                  0.5464474147543905,
                   0.8379795371402861,
                   0.8353776630083926,
                   1.107903437212657
@@ -2191,42 +2851,36 @@
                   0.22617449143257518,
                   0.183553412448439,
                   0.1066842042904243,
-                  0.1601995432250614,
-                  0.2616170232816361,
-                  0.3844643503198698,
                   0.3684695814778176,
                   0.3708393495235223,
                   1.0198668016746812
                 ],
-                "sha256": "4a40e82f3414a20e25785be70527de614847278ed06904537c9d4f832e116d3a"
+                "sha256": "e45c28b3ece386c3b7cffc3a849c6a5e71ed31c997f6a071efde55765bb23267"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.11640231940293617,
-                  -0.02591991955145115,
-                  -0.0385060776957067,
-                  -0.0003611549805998206,
-                  0.2663639090485935,
-                  0.07932502517960771,
-                  0.01577137478464773,
-                  0.006938563605302169,
-                  0.015341336067875456,
-                  0.14771707126364747
+                  0.08096442431803119,
+                  0.07174001695886104,
+                  -0.028839302031225825,
+                  -0.012934070518750148,
+                  0.015370931391582635,
+                  0.022915941996939866,
+                  0.08954140258522238
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "d4c16a177051986ed09dcebcfe146236a11c2f0189028d32724160194c35edd2"
+                "sha256": "bc1002f18f823ba7b7718dbab6b4910bf23cb4aa09889e0a59e83b0f79d328f2"
               },
-              "sha256": "21d3171e27df2c034fad90c96c915d0ade251370cc4dbc1a6569fd444e0959a5"
+              "sha256": "730b33f311f967bbdb6d9e289e0a51ef0512e63d517a1c2f99d5ca892f7c8592"
             }
           }
         }
       },
-      "fitted_width_sha256": "c41c26061e489bae3d8c61d87de8552e77ec2f352b257ab9be99fb0936ceb427"
+      "fitted_width_sha256": "1436730d936ec2e47a76fb25938e210e9fe1741fb28819f49c9a5278865d4d2c"
     },
     "500": {
       "bin_width_ms": 500,
@@ -2442,9 +3096,88 @@
                     "standard_error": 0.014228995759563944
                   }
                 ]
+              },
+              "C_session": {
+                "selected_lambda": 0.001,
+                "best_lambda": 0.001,
+                "one_standard_error_threshold": -4.894663765497231,
+                "scores": [
+                  {
+                    "lambda": 0.0001,
+                    "fold_scores": [
+                      -4.876371188122925,
+                      -4.833401240966813,
+                      -4.848804396706446,
+                      -4.928818144521704,
+                      -4.9115782229146445
+                    ],
+                    "mean_score": -4.879794638646507,
+                    "standard_error": 0.018080324685251663
+                  },
+                  {
+                    "lambda": 0.001,
+                    "fold_scores": [
+                      -4.882883670446228,
+                      -4.833109369114077,
+                      -4.857010141803741,
+                      -4.923638595412716,
+                      -4.89796279473685
+                    ],
+                    "mean_score": -4.878920914302722,
+                    "standard_error": 0.015742851194508845
+                  },
+                  {
+                    "lambda": 0.01,
+                    "fold_scores": [
+                      -4.918540415968942,
+                      -4.835595536821703,
+                      -4.889702964348635,
+                      -4.943848756147055,
+                      -4.896182079255511
+                    ],
+                    "mean_score": -4.896773950508369,
+                    "standard_error": 0.018004115921969523
+                  },
+                  {
+                    "lambda": 0.1,
+                    "fold_scores": [
+                      -4.993013316323361,
+                      -4.885659913672884,
+                      -4.953920704259315,
+                      -5.022462599913349,
+                      -4.958665667294375
+                    ],
+                    "mean_score": -4.962744440292657,
+                    "standard_error": 0.02293358061402168
+                  },
+                  {
+                    "lambda": 1.0,
+                    "fold_scores": [
+                      -5.035552818092536,
+                      -4.92569515578157,
+                      -4.9913660246100795,
+                      -5.066826278906424,
+                      -4.996648236335606
+                    ],
+                    "mean_score": -5.003217702745243,
+                    "standard_error": 0.02375392188359351
+                  },
+                  {
+                    "lambda": 10.0,
+                    "fold_scores": [
+                      -5.042884292923588,
+                      -4.932708591935019,
+                      -4.997777410536633,
+                      -5.074211947100994,
+                      -5.003179204232534
+                    ],
+                    "mean_score": -5.010152289345753,
+                    "standard_error": 0.02384775840631563
+                  }
+                ]
               }
             },
-            "sha256": "83be904d20d4160809a38e743b8d217a5dc85ef8165d4b31923a8526ae517265"
+            "sha256": "5ac0080386e0521975ce3032aaa0661723b170d6ad0b276c805ae48043b7e4ea"
           },
           "fitted_bundle": {
             "endpoint": "rehedge_buy_occurrence",
@@ -2552,6 +3285,44 @@
               },
               "fitted_parameter_sha256": "4becfc679bc791016e21697c7b9c888cab9491593f19ffcd03c2842cf4fa48da"
             },
+            "A_session": {
+              "block_labels": [
+                "server_12_16",
+                "server_16_20",
+                "server_20_24"
+              ],
+              "server_hour_bounds": [
+                [
+                  12,
+                  16
+                ],
+                [
+                  16,
+                  20
+                ],
+                [
+                  20,
+                  24
+                ]
+              ],
+              "parameterization": "three_one_hot_block_effects_no_intercept",
+              "regularization": 0.0,
+              "parameters": {
+                "regularization": 0.0,
+                "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+                "fit_intercept": false,
+                "intercept": null,
+                "coefficients": [
+                  0.0025419259011521477,
+                  0.27557490463452916,
+                  -0.842109627524399
+                ],
+                "iterations": 6,
+                "converged": true,
+                "sha256": "19ff73bd932e55201fa8855909dcc44bd1ff07a0b144d3d31fbb09397d250f39"
+              },
+              "fitted_parameter_sha256": "989cc83f855f8e4cc2752f10fe196fc05b75a0344653e7d963ca4005ce478e80"
+            },
             "A_level": {
               "intercept": -0.38971102714762673,
               "iterations": 5,
@@ -2648,8 +3419,93 @@
               "converged": true,
               "sha256": "1373cd54a7b6bcd377dc7b43edb11e986dbef18e2b27a6e922b5dcb7963e69c8"
             },
-            "regularization_selection_sha256": "83be904d20d4160809a38e743b8d217a5dc85ef8165d4b31923a8526ae517265",
-            "fitted_parameter_sha256": "4d3e42fc896388b05f04e505e0ef11fba84cb593a15c2f0689d78935adbd2496"
+            "C_session": {
+              "regularization": 0.001,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                -0.027718195694534972,
+                0.03513501830547,
+                -0.02973043443797795,
+                -0.0033056022410918188,
+                0.06729205192774766,
+                -0.10122458980662735,
+                0.09906313026003177,
+                0.01915678605265373,
+                0.1704307157591964,
+                0.026725320215006433,
+                0.421160685335697,
+                -0.045076626574482095
+              ],
+              "iterations": 6,
+              "converged": true,
+              "sha256": "c5c374b13ab9710a56002a52cd83df9fd61ac416125adef1fce084a082bd3d21"
+            },
+            "shape_feature_columns": [
+              "signed_mid_change_2s",
+              "signed_mid_change_5s",
+              "signed_tick_imbalance_2s",
+              "signed_tick_imbalance_5s",
+              "side_boundary_proximity_2s",
+              "side_boundary_proximity_5s",
+              "side_prior_boundary_touch_2s",
+              "side_prior_boundary_touch_5s"
+            ],
+            "shape_scaler": {
+              "feature_columns": [
+                "signed_mid_change_2s",
+                "signed_mid_change_5s",
+                "signed_tick_imbalance_2s",
+                "signed_tick_imbalance_5s",
+                "side_boundary_proximity_2s",
+                "side_boundary_proximity_5s",
+                "side_prior_boundary_touch_2s",
+                "side_prior_boundary_touch_5s"
+              ],
+              "means": [
+                0.03327515641906251,
+                0.07297525521004866,
+                0.0004522851187831321,
+                -0.0004963675373721521,
+                0.5146927484307747,
+                0.5295307914364836,
+                0.5107180379796459,
+                0.5272145646140095
+              ],
+              "scales": [
+                0.22959061612165832,
+                0.3614376031088423,
+                0.3039524517245567,
+                0.1799394423362136,
+                0.3805663339126154,
+                0.3592325779806322,
+                0.499885110462261,
+                0.499258818122294
+              ],
+              "sha256": "d4fe2a0e86bf52d55593d2b656a7bc9506759816c28c2eeb2c66c47fae6b7082"
+            },
+            "C_shape": {
+              "regularization": 0.001,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.004016189329797053,
+                0.1545344270394347,
+                -0.03583932966651132,
+                -0.02609753296568321,
+                0.057922335974299154,
+                -0.11536513046574742,
+                0.09834330275024779,
+                0.02882430480597346
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "052fa3bf2e1f257571eac12027f9cdde97262e7a5fb9473b2339c8a54cacf1a6"
+            },
+            "regularization_selection_sha256": "5ac0080386e0521975ce3032aaa0661723b170d6ad0b276c805ae48043b7e4ea",
+            "fitted_parameter_sha256": "5a4f81673789891f526667a1617af95d0d2fcf556eb8afe7d255f61867b40cd3"
           },
           "ablations": {
             "motion": {
@@ -2702,26 +3558,26 @@
                 ],
                 "sha256": "e90450edbe1efc53a5a05b6245ba2edcebe333b093a5ba0529fa66dc9d5c99ea"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.001,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.03403625140769825,
-                  -0.08270163420990613,
-                  0.09800264986848665,
-                  0.03935385229325914,
-                  0.21465670798600628,
-                  -0.06333700254636254,
-                  0.4013548685432593,
-                  -0.04338341512823892
+                  0.031382253404794176,
+                  -0.0827243517735801,
+                  0.09266546191850841,
+                  0.029253888098614633,
+                  0.17354344514697786,
+                  0.025133890351067157,
+                  0.4228791698643545,
+                  -0.042685822919987744
                 ],
                 "iterations": 6,
                 "converged": true,
-                "sha256": "e9aba4d24dd170d89316615142474d830eb84d60449c4270d2737c114d31c48b"
+                "sha256": "bfd23917bd9348f53b15550b6e8af59d45c520b019637582a6b33038d9615c94"
               },
-              "sha256": "8c0efedbf8db907a6b95f7a1a7b7a5e612b17affa27ee98fcef8146bdc6c7632"
+              "sha256": "06faa62deaf5aa29093ed3b5326af6f85b125c4fcae40c2b7e942087a86f2571"
             },
             "boundary": {
               "removed_features": [
@@ -2773,26 +3629,26 @@
                 ],
                 "sha256": "22d222a4e055b3f54f07a11cb566f1f16e5e61331382cd2821408a1fd65ed531"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.001,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.01109238378542511,
-                  0.029993378184192006,
-                  -0.010562041289477407,
-                  0.0026815527896147683,
-                  0.2116376742813393,
-                  -0.06315763476585264,
-                  0.4003617883767396,
-                  -0.0422475423130655
+                  -0.00842431977835097,
+                  0.028167153071207717,
+                  -0.017428370911441234,
+                  0.0020697974788545315,
+                  0.16893720585140332,
+                  0.02620583185763949,
+                  0.4223617846274614,
+                  -0.04464779336776228
                 ],
                 "iterations": 6,
                 "converged": true,
-                "sha256": "8088a2ecec04305fa34d9f57cb51e20521e8ef3acece737513264ac2fbe49145"
+                "sha256": "7e8d090d2c9b32fcf12aa5ba9b9167b7384f6e30faa52d138fe469164f10a173"
               },
-              "sha256": "42ac846d6742ef506c3efdfd154c4016879eb25922c3296149264a403f193ef1"
+              "sha256": "1df642801cf25d26ac8c11147b872812d6c50820e683a147b45830705447f446"
             },
             "state_path": {
               "removed_features": [
@@ -2850,28 +3706,28 @@
                 ],
                 "sha256": "4de00e066ce3140f5c8c564c2804bca65c39ad7bc2b304659bdac6177aed5c11"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.001,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.02269694326654845,
-                  0.08169936308651929,
-                  -0.01906840793323662,
-                  0.0015344010005303923,
-                  0.07117353041418525,
-                  -0.11453215150270564,
-                  0.10600490724066258,
-                  0.04239002741409101,
-                  0.17677809244866888,
-                  -0.01841750705675086
+                  -0.016264598308784954,
+                  0.0882213851605116,
+                  -0.02342347663136291,
+                  0.0062633602107910104,
+                  0.06553773976450004,
+                  -0.12037592262678867,
+                  0.09883255668686022,
+                  0.030699442647492546,
+                  0.12865579453389975,
+                  0.06828628725326259
                 ],
                 "iterations": 6,
                 "converged": true,
-                "sha256": "9827bdc04fafdef77fd26c5835322eabcda411a984fa12c8bb4c741281f582a2"
+                "sha256": "b6b7974be56dce8ed9c0e4049cf70c84fd589a7561a57718c3ee3ff023115b2e"
               },
-              "sha256": "5303690abbc4659258f3d348e40a05549b96ead0309d2faff2f613cb18ff7528"
+              "sha256": "79cd569dd96bfc64f5df4ce1980cb5c5f75dbdac09fb109762c22cd5b200b247"
             },
             "volatility_liquidity": {
               "removed_features": [
@@ -2929,28 +3785,28 @@
                 ],
                 "sha256": "f0bbc29ea52df3f2ec8637d928f9d55f6f9f8d0474b7c94e50a8cbb2d8b28ddd"
               },
-              "C_dev": {
+              "C_session": {
                 "regularization": 0.001,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.0015332786451896009,
-                  0.14568767069911928,
-                  -0.04218008411254496,
-                  -0.0580505149297124,
-                  0.05837758343104858,
-                  -0.08781037452227312,
-                  0.1054689415195387,
-                  0.03420798230285,
-                  0.354387902599684,
-                  -0.03470551550372523
+                  -0.0004300803572762105,
+                  0.12327643576765178,
+                  -0.045754433380769136,
+                  -0.045154238816111594,
+                  0.05717408115967294,
+                  -0.0948979378991633,
+                  0.09984977302337436,
+                  0.02159051816690143,
+                  0.39141019269642124,
+                  -0.03554892373153632
                 ],
                 "iterations": 6,
                 "converged": true,
-                "sha256": "3a9e7365f8fa5749b33701b4fad0b1a879ac5ffaf24146975d0be426a7ad557e"
+                "sha256": "bc127b6fbe525b213ec178db344f112ada2d9226e83b5aa8c8d27cee7c73020a"
               },
-              "sha256": "facd4cde502a891c3e309d2fc7f5cc6819465ad9c300f80eb8ff39b7671aa85f"
+              "sha256": "1015c64531e4aa8cbe37c24e387ad4dc68fcf5dcf81094badc1e993d8b95d902"
             }
           }
         },
@@ -3157,9 +4013,88 @@
                     "standard_error": 0.008392698829343797
                   }
                 ]
+              },
+              "C_session": {
+                "selected_lambda": 0.01,
+                "best_lambda": 0.001,
+                "one_standard_error_threshold": -4.846637839344824,
+                "scores": [
+                  {
+                    "lambda": 0.0001,
+                    "fold_scores": [
+                      -4.7943788968045,
+                      -4.767418927186503,
+                      -4.877318307312566,
+                      -4.845644653735233,
+                      -4.840393508792981
+                    ],
+                    "mean_score": -4.8250308587663575,
+                    "standard_error": 0.019562201137403732
+                  },
+                  {
+                    "lambda": 0.001,
+                    "fold_scores": [
+                      -4.793596252161178,
+                      -4.757641770045314,
+                      -4.884033764676824,
+                      -4.843222448132975,
+                      -4.844474683660625
+                    ],
+                    "mean_score": -4.8245937837353825,
+                    "standard_error": 0.022044055609441997
+                  },
+                  {
+                    "lambda": 0.01,
+                    "fold_scores": [
+                      -4.811666643164211,
+                      -4.770408153349012,
+                      -4.908063912281104,
+                      -4.842223663831293,
+                      -4.8641985511527
+                    ],
+                    "mean_score": -4.839312184755665,
+                    "standard_error": 0.023309493231901585
+                  },
+                  {
+                    "lambda": 0.1,
+                    "fold_scores": [
+                      -4.884567477958357,
+                      -4.840320193866981,
+                      -4.944334162910959,
+                      -4.880784110145961,
+                      -4.906728559130894
+                    ],
+                    "mean_score": -4.89134690080263,
+                    "standard_error": 0.017037463572842703
+                  },
+                  {
+                    "lambda": 1.0,
+                    "fold_scores": [
+                      -4.921773710656816,
+                      -4.8758624513190085,
+                      -4.960632283669145,
+                      -4.909796953845575,
+                      -4.9344443189801535
+                    ],
+                    "mean_score": -4.9205019436941395,
+                    "standard_error": 0.013988803546944628
+                  },
+                  {
+                    "lambda": 10.0,
+                    "fold_scores": [
+                      -4.927583948170024,
+                      -4.881384921798211,
+                      -4.963290371453262,
+                      -4.914611554735926,
+                      -4.939144118693021
+                    ],
+                    "mean_score": -4.925202982970089,
+                    "standard_error": 0.013569956261717486
+                  }
+                ]
               }
             },
-            "sha256": "4aff496deb7f2cdaec92e36152f2d957c21c85160d260f588c831684530b296b"
+            "sha256": "ae51e55ce4f66c03ff60468decccfc92543ee29d679ae848c4c63ccae4498cf1"
           },
           "fitted_bundle": {
             "endpoint": "rehedge_sell_occurrence",
@@ -3267,6 +4202,44 @@
               },
               "fitted_parameter_sha256": "c41aa015cee088a135651ad12073bf7155e6e463169dc6a7a929fe393b817eca"
             },
+            "A_session": {
+              "block_labels": [
+                "server_12_16",
+                "server_16_20",
+                "server_20_24"
+              ],
+              "server_hour_bounds": [
+                [
+                  12,
+                  16
+                ],
+                [
+                  16,
+                  20
+                ],
+                [
+                  20,
+                  24
+                ]
+              ],
+              "parameterization": "three_one_hot_block_effects_no_intercept",
+              "regularization": 0.0,
+              "parameters": {
+                "regularization": 0.0,
+                "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+                "fit_intercept": false,
+                "intercept": null,
+                "coefficients": [
+                  -0.1788532518654991,
+                  0.25373187974319916,
+                  -0.6941213002275708
+                ],
+                "iterations": 6,
+                "converged": true,
+                "sha256": "21111e3da51da903d639ee6987b6d182d8716ff390b16c5ba2583172ae5f2976"
+              },
+              "fitted_parameter_sha256": "87d2ed29c16d124277cec547dd634a574d3edc9cb7190a5d57a38580089a855a"
+            },
             "A_level": {
               "intercept": -0.262450252012614,
               "iterations": 5,
@@ -3363,8 +4336,93 @@
               "converged": true,
               "sha256": "f415a673cf02c58c5fc234e4ad6b8791912790a7fdbf46b85c2ae9af664b65d1"
             },
-            "regularization_selection_sha256": "4aff496deb7f2cdaec92e36152f2d957c21c85160d260f588c831684530b296b",
-            "fitted_parameter_sha256": "abc27352dd0ef6d4b3fe15b1c5d6307385315f3d500c73ce2e5b1cb7543489f9"
+            "C_session": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.01416343365317586,
+                0.009079137766670265,
+                0.023495939246592233,
+                0.033029821503713946,
+                -0.03780356499748914,
+                -0.04199721492175326,
+                0.016580559168396732,
+                0.0026237890245986344,
+                0.1366454405199718,
+                0.01525645358199521,
+                0.18207380000127002,
+                0.06106874586709885
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "5917f0f30440a4f41dfac736aea3c430125b5cfae221fbd76147f854c004add3"
+            },
+            "shape_feature_columns": [
+              "signed_mid_change_2s",
+              "signed_mid_change_5s",
+              "signed_tick_imbalance_2s",
+              "signed_tick_imbalance_5s",
+              "side_boundary_proximity_2s",
+              "side_boundary_proximity_5s",
+              "side_prior_boundary_touch_2s",
+              "side_prior_boundary_touch_5s"
+            ],
+            "shape_scaler": {
+              "feature_columns": [
+                "signed_mid_change_2s",
+                "signed_mid_change_5s",
+                "signed_tick_imbalance_2s",
+                "signed_tick_imbalance_5s",
+                "side_boundary_proximity_2s",
+                "side_boundary_proximity_5s",
+                "side_prior_boundary_touch_2s",
+                "side_prior_boundary_touch_5s"
+              ],
+              "means": [
+                0.04010308186875464,
+                0.08848447515832711,
+                0.013836504014976943,
+                0.01178047714699637,
+                0.5242526253349741,
+                0.5417793134178529,
+                0.5227049606344685,
+                0.5463820285279793
+              ],
+              "scales": [
+                0.24240091518075693,
+                0.3793037909316385,
+                0.2894691203272816,
+                0.17301895957907198,
+                0.3771422737389352,
+                0.35531790413697206,
+                0.4994842187322711,
+                0.49784405934954135
+              ],
+              "sha256": "3b8a85d172dcb83b664b05d59d2f8c2b7d7955a9760b7301196482fb1f3f4101"
+            },
+            "C_shape": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.044226220815771745,
+                0.06429926047308529,
+                0.021039268052378823,
+                0.035036397856015714,
+                -0.04165175010017859,
+                -0.03770003215627232,
+                0.016764554296151236,
+                0.015359178348268573
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "5304d2311b92ea7581ae8e3888cd61351e400043ee71af0ea0b8e7a135a36ddd"
+            },
+            "regularization_selection_sha256": "ae51e55ce4f66c03ff60468decccfc92543ee29d679ae848c4c63ccae4498cf1",
+            "fitted_parameter_sha256": "38948c015736fb8e7afbc14a8f8519002d7cf883ed167f4a4632a5d882c0bc10"
           },
           "ablations": {
             "motion": {
@@ -3417,26 +4475,26 @@
                 ],
                 "sha256": "bf3028d99d5c56292d44fc5fb999183b4e33dfb974e4d52b36dce7cafac12f1d"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.016698430887762333,
-                  -0.08070792510062971,
-                  0.06550429996356062,
-                  0.017642015970440593,
-                  0.22955297291219617,
-                  -0.0210713732644706,
-                  0.39535367065172455,
-                  -0.0880701881297263
+                  -0.021918983817259787,
+                  -0.024351741262190682,
+                  0.026905969602660968,
+                  0.01032942389251295,
+                  0.14237515978080856,
+                  0.015014564641399773,
+                  0.1851492191516384,
+                  0.06555580163015436
                 ],
-                "iterations": 6,
+                "iterations": 5,
                 "converged": true,
-                "sha256": "35ca1c3e0c4902317866db87e031f73b2aa935b3f7d31ceb2d3f3393b2ae0cb5"
+                "sha256": "03b98c008f92d6145f84d4d08d34a70807efb6cd713b4de2c8bde1b001e947b4"
               },
-              "sha256": "fc326481eb1178b8ee2d5e4ab53f051165d40c9882fea976721b54baea2208c7"
+              "sha256": "f9c0030685fc5dde7d9161bd0cfcdf0e24fceb0a56a638ef316727f1897a29e7"
             },
             "boundary": {
               "removed_features": [
@@ -3488,26 +4546,26 @@
                 ],
                 "sha256": "e5314cf5871bbb7896cfc3c8754a88ac20576efb0ea0e8605c1b79c72fca4d70"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.010612729368030557,
-                  -0.033972218261038106,
-                  0.012396949194075538,
-                  0.07233310293014837,
-                  0.23313526196937664,
-                  -0.022746219540467138,
-                  0.39992937247846816,
-                  -0.09832211414865621
+                  0.001308322950902442,
+                  0.0013219684702955145,
+                  0.01078834611210898,
+                  0.027503841484431513,
+                  0.13674121047054183,
+                  0.015456135796565575,
+                  0.18272438908411956,
+                  0.0596751479526101
                 ],
-                "iterations": 6,
+                "iterations": 5,
                 "converged": true,
-                "sha256": "7dbfa360209e297889606763d94b04c10d8267a23a931742b8ade24073f073f6"
+                "sha256": "9b30384e8f296fc0202d310be706e62e66a83edef1550ffa042a1d088513ef8a"
               },
-              "sha256": "5aadd708576d700f45717c57c956f6f098bb14c79a9a7252c0ba92fcfc6a5b47"
+              "sha256": "81c40731644928330b8f3d4bd0fc1686fd35c93bff4f9c9cc944b09f53a8ff96"
             },
             "state_path": {
               "removed_features": [
@@ -3565,28 +4623,28 @@
                 ],
                 "sha256": "c9506ffac96957b8bc0abdeaae0f4cb1272ef26b16ce0f308822c6989d419f38"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.020283367537322523,
-                  0.03816660563110644,
-                  0.057655250197982504,
-                  0.0843789191303197,
-                  -0.047517326557061444,
-                  -0.12938913435382252,
-                  0.05079556914997457,
-                  0.02515596094578649,
-                  0.19124650372649996,
-                  -0.019261382065636976
+                  0.023380950518398926,
+                  0.03447870155099985,
+                  0.02554622471143935,
+                  0.039200198671183864,
+                  -0.0371780878716369,
+                  -0.04089945288983879,
+                  0.017885755410306233,
+                  0.014586022751474984,
+                  0.11606533980933889,
+                  0.016906166651316307
                 ],
-                "iterations": 6,
+                "iterations": 5,
                 "converged": true,
-                "sha256": "271796f7a30fa92b056877d54538fc4a2136c3abfdb682b7d887d7524105d8f2"
+                "sha256": "fef87b251c7c26f991403692498ccf73cb1bdaff00fc6058f15e4d3b0d35fac9"
               },
-              "sha256": "26119db82b9ed0fecdafdc33acb5f3fd5c4f2650847984e1d8e25807f8da2d28"
+              "sha256": "5fd7054a95a94c55359e6267283af1fff69bdc587a46242874ec00647a62e98d"
             },
             "volatility_liquidity": {
               "removed_features": [
@@ -3644,28 +4702,28 @@
                 ],
                 "sha256": "ccbf56133391174259e60bc0536c7011021223f1aa310b10c275878bf203fe8e"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.06118159588077963,
-                  0.09051176091399663,
-                  0.04710927449787679,
-                  0.0500695937713102,
-                  -0.08187697390262995,
-                  -0.10980717325092858,
-                  0.04134638954198474,
-                  0.0017383407398783076,
-                  0.3425623802930155,
-                  -0.08037115473060288
+                  0.03940060683374311,
+                  0.0468186656863846,
+                  0.01847623799851086,
+                  0.028640770382731936,
+                  -0.04272749212382031,
+                  -0.038022311905263555,
+                  0.015525530218847422,
+                  0.005506268542777373,
+                  0.16710152601024542,
+                  0.058468025103925424
                 ],
                 "iterations": 5,
                 "converged": true,
-                "sha256": "92d80a8299a3392477b35ead05cb2ec9ea013b01c83dbbcb5f52033b161fc929"
+                "sha256": "70153d8ad71674399cd86c23a56bb26b0b9cfffda42c17ffcf5f6fcf1731cc8f"
               },
-              "sha256": "0f4b3a5cdde9ce03118e7e9e9904af4ea79a1c6dc5ff2b41c472a22416060da7"
+              "sha256": "09ba569ed44766a1d453405e8639eb338ab7fa379992183e0ca21fbef16c3173"
             }
           }
         },
@@ -3872,9 +4930,88 @@
                     "standard_error": 0.00936841879484254
                   }
                 ]
+              },
+              "C_session": {
+                "selected_lambda": 0.01,
+                "best_lambda": 0.001,
+                "one_standard_error_threshold": -5.333442640621279,
+                "scores": [
+                  {
+                    "lambda": 0.0001,
+                    "fold_scores": [
+                      -5.372989119625361,
+                      -5.2699416585246315,
+                      -5.287793490684747,
+                      -5.3078711533519645,
+                      -5.338763952237784
+                    ],
+                    "mean_score": -5.3154718748848975,
+                    "standard_error": 0.018367932425169917
+                  },
+                  {
+                    "lambda": 0.001,
+                    "fold_scores": [
+                      -5.3712442111948215,
+                      -5.268520244335642,
+                      -5.289284636458952,
+                      -5.308309337703401,
+                      -5.338990753675715
+                    ],
+                    "mean_score": -5.315269836673707,
+                    "standard_error": 0.018172803947572248
+                  },
+                  {
+                    "lambda": 0.01,
+                    "fold_scores": [
+                      -5.378784111791136,
+                      -5.2755169031573415,
+                      -5.3002934541105695,
+                      -5.314350769791689,
+                      -5.348923989806417
+                    ],
+                    "mean_score": -5.323573845731429,
+                    "standard_error": 0.01820345403541074
+                  },
+                  {
+                    "lambda": 0.1,
+                    "fold_scores": [
+                      -5.403676525016498,
+                      -5.295745888481597,
+                      -5.3154056662896,
+                      -5.331186498956684,
+                      -5.375680737209473
+                    ],
+                    "mean_score": -5.344339063190771,
+                    "standard_error": 0.0198427101686022
+                  },
+                  {
+                    "lambda": 1.0,
+                    "fold_scores": [
+                      -5.434651976567122,
+                      -5.332285823336095,
+                      -5.341123557333395,
+                      -5.360925882036357,
+                      -5.414823138370161
+                    ],
+                    "mean_score": -5.376762075528626,
+                    "standard_error": 0.020370212516618632
+                  },
+                  {
+                    "lambda": 10.0,
+                    "fold_scores": [
+                      -5.442145765636926,
+                      -5.341484682597102,
+                      -5.348082665624672,
+                      -5.368602364369739,
+                      -5.42442150621445
+                    ],
+                    "mean_score": -5.384947396888578,
+                    "standard_error": 0.02042674071814606
+                  }
+                ]
               }
             },
-            "sha256": "d1ab3755070848e766d032db209a51e28d7de40d4bf21d4052f34f59cf67e70a"
+            "sha256": "a7985f2f0fbc09037eec637dab8ae34eca58f50f6aef2a4e5ce2e35cd2afb78e"
           },
           "fitted_bundle": {
             "endpoint": "unlock_occurrence",
@@ -3982,6 +5119,44 @@
               },
               "fitted_parameter_sha256": "4ff58ceb88f2d9ccb887bafb03a01ade71aee5a1b85219ce81cb62dabcfc078a"
             },
+            "A_session": {
+              "block_labels": [
+                "server_12_16",
+                "server_16_20",
+                "server_20_24"
+              ],
+              "server_hour_bounds": [
+                [
+                  12,
+                  16
+                ],
+                [
+                  16,
+                  20
+                ],
+                [
+                  20,
+                  24
+                ]
+              ],
+              "parameterization": "three_one_hot_block_effects_no_intercept",
+              "regularization": 0.0,
+              "parameters": {
+                "regularization": 0.0,
+                "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+                "fit_intercept": false,
+                "intercept": null,
+                "coefficients": [
+                  -0.14697511565276847,
+                  0.31479201180033867,
+                  -0.7700755870272447
+                ],
+                "iterations": 6,
+                "converged": true,
+                "sha256": "235ca7a2d8b7b21c8a44006e885a1fff6ebdefb9d2b505284f08bd2d9c9857f2"
+              },
+              "fitted_parameter_sha256": "fcc31acfbe609b3bb641d0f2b2cafb16f29c92f49ae2713e86835aef70d4fee0"
+            },
             "A_level": {
               "intercept": -0.38632700857644026,
               "iterations": 5,
@@ -4078,8 +5253,83 @@
               "converged": true,
               "sha256": "8b23f90340792eb050522e0a1a30db71a9f192e919e7e24d942034a77525607e"
             },
-            "regularization_selection_sha256": "d1ab3755070848e766d032db209a51e28d7de40d4bf21d4052f34f59cf67e70a",
-            "fitted_parameter_sha256": "0dd13157695fa63fb33f454fd40b126ae636a7c944d996734d3f8b17c1650469"
+            "C_session": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.03407530475724208,
+                0.010505323262911273,
+                -0.004964361976782584,
+                0.005569935948253405,
+                0.06903581374021948,
+                0.020013698422072724,
+                0.012045475835412,
+                0.005774398338309203,
+                0.024943057363220496,
+                0.026071113643135687,
+                0.011508298961860177,
+                0.0723635376693596
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "206b4c5d3584e88e055c24163250641d192e9a6bd20b9ed7b420e523f5ff3319"
+            },
+            "shape_feature_columns": [
+              "absolute_mid_change_2s",
+              "absolute_mid_change_5s",
+              "absolute_tick_imbalance_2s",
+              "absolute_tick_imbalance_5s",
+              "either_prior_boundary_touch_2s",
+              "either_prior_boundary_touch_5s"
+            ],
+            "shape_scaler": {
+              "feature_columns": [
+                "absolute_mid_change_2s",
+                "absolute_mid_change_5s",
+                "absolute_tick_imbalance_2s",
+                "absolute_tick_imbalance_5s",
+                "either_prior_boundary_touch_2s",
+                "either_prior_boundary_touch_5s"
+              ],
+              "means": [
+                0.12300353071773276,
+                0.21324627978737348,
+                0.2234293395948311,
+                0.1370572878819232,
+                0.8384036461262354,
+                0.835092986977422
+              ],
+              "scales": [
+                0.14166330805928729,
+                0.2236750732965034,
+                0.1832168088058208,
+                0.10666344391313051,
+                0.36808011667090856,
+                0.3710966047790646
+              ],
+              "sha256": "065ef2f142de865d8e7f0367128721c1ff6a893b541bed59046a51efb57d6ca0"
+            },
+            "C_shape": {
+              "regularization": 0.01,
+              "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
+              "fit_intercept": false,
+              "intercept": null,
+              "coefficients": [
+                0.08894511250327104,
+                0.057656610501481874,
+                -0.010625852002480307,
+                -0.001998915736656228,
+                0.007886310861409073,
+                0.025465951981436318
+              ],
+              "iterations": 5,
+              "converged": true,
+              "sha256": "487b5a4e5487b9ab1a6b5ce1b154d41e02b3999e30fee43894526016d0046cb1"
+            },
+            "regularization_selection_sha256": "a7985f2f0fbc09037eec637dab8ae34eca58f50f6aef2a4e5ce2e35cd2afb78e",
+            "fitted_parameter_sha256": "632cac9fd3c6eb05da3a3e889d37e82195d97dd075ed987e1d60d75fe18236e9"
           },
           "ablations": {
             "magnitude_motion": {
@@ -4132,32 +5382,29 @@
                 ],
                 "sha256": "a92923f03b34dc1ae858dc76244772d4386ce051710dd334f419c93c3191c141"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.1586167511257873,
-                  0.007518308969881232,
-                  -0.030790529094379713,
-                  0.0029424315034492646,
-                  0.04565454217814516,
-                  0.09174897032992797,
-                  -0.02052088400553881,
-                  0.15066354628026066
+                  0.08716280657429534,
+                  0.030143115771193548,
+                  0.015390877584918285,
+                  0.00784838537236358,
+                  0.026243572378705782,
+                  0.026110485453240222,
+                  0.011833923489228418,
+                  0.07369583549645393
                 ],
-                "iterations": 6,
+                "iterations": 5,
                 "converged": true,
-                "sha256": "8b685fc0b4c4d46d740e4cc04395eeae05ff444668306de84f1f9a0f64e13bbf"
+                "sha256": "ae44d35ca01c9cbbb545d09cffabf67339406be38a7634f8047d3d2c7c76a18a"
               },
-              "sha256": "a09f94baeb3c52bdfef114060d3df3e371718dc9124632797892c86d8caaf9d9"
+              "sha256": "d56bafb701d1e27389194bc1e2c11491079b3a64ea36365ac028bfecf733f26a"
             },
-            "boundary_magnitude": {
+            "boundary": {
               "removed_features": [
-                "range_width_2s",
-                "range_width_5s",
-                "range_width_10s",
                 "either_prior_boundary_touch_2s",
                 "either_prior_boundary_touch_5s"
               ],
@@ -4166,6 +5413,9 @@
                 "absolute_mid_change_5s",
                 "absolute_tick_imbalance_2s",
                 "absolute_tick_imbalance_5s",
+                "range_width_2s",
+                "range_width_5s",
+                "range_width_10s",
                 "realized_volatility_10s",
                 "spread_at_anchor",
                 "absolute_state_start_displacement"
@@ -4176,6 +5426,9 @@
                   "absolute_mid_change_5s",
                   "absolute_tick_imbalance_2s",
                   "absolute_tick_imbalance_5s",
+                  "range_width_2s",
+                  "range_width_5s",
+                  "range_width_10s",
                   "realized_volatility_10s",
                   "spread_at_anchor",
                   "absolute_state_start_displacement"
@@ -4185,6 +5438,9 @@
                   0.21324627978737348,
                   0.2234293395948311,
                   0.1370572878819232,
+                  0.18007768068032334,
+                  0.34237599698764404,
+                  0.5452843645930666,
                   0.33074153483081087,
                   0.22611400990752603,
                   1.1093169626046993
@@ -4194,31 +5450,37 @@
                   0.2236750732965034,
                   0.1832168088058208,
                   0.10666344391313051,
+                  0.1598614060814905,
+                  0.25827864631948677,
+                  0.3830372748156644,
                   0.1789958313152028,
                   0.00899851298015271,
                   1.020456512744143
                 ],
-                "sha256": "60103a87dddabaf34178700953543c45d7951169c5ccc8e78b723fb6bd34a1c8"
+                "sha256": "6b2b840b65b7355905cf47f30799293bbd47ce1ee05ca5c65cb0432128271701"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  0.12193367264222227,
-                  0.011241271722591819,
-                  -0.04747613070830735,
-                  0.003319437778118551,
-                  0.09861549208825955,
-                  -0.01877491397187402,
-                  0.1492815978866363
+                  0.0347892722373495,
+                  0.01135333123719588,
+                  -0.004904186099784509,
+                  0.006024085643362501,
+                  0.07042228648469875,
+                  0.02180582217769375,
+                  0.011310383688472387,
+                  0.023588244334672097,
+                  0.011467327150813146,
+                  0.07300194988879011
                 ],
-                "iterations": 6,
+                "iterations": 5,
                 "converged": true,
-                "sha256": "208099a9f1ee9443a8b42603d0722f47016e711fe902ba9f751a931f7e3a4d4f"
+                "sha256": "f3d90117bca1e7e884179e101829313858602e256003fbd8f7a74da67358a7e4"
               },
-              "sha256": "77f3c3fc514b235fc7a650484cd4fc7308d15ee1babc45523bcbdfb700631d8d"
+              "sha256": "e1a4701e4095058911e2aac7c1acd7deec4e258000c18b540f66f3881ea67b6b"
             },
             "state_path": {
               "removed_features": [
@@ -4279,43 +5541,43 @@
                 ],
                 "sha256": "847cdd66cbad65fc344aafa47d3164e1e6fa4aa84e3c9b42d693bb4cc4962903"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.013223646899559592,
-                  0.019866190004967633,
-                  -0.028997336018805255,
-                  0.008264801497869446,
-                  0.1720748781631046,
-                  0.0027220314255398006,
-                  -0.010652758668382422,
-                  0.0005401690432371366,
-                  0.04900728983224772,
-                  0.059443403742363926,
-                  -0.018295986630237914
+                  0.03388109136686887,
+                  0.01555285851950733,
+                  -0.004063832531708015,
+                  0.0065500780856695105,
+                  0.06802102788082245,
+                  0.021065697640853927,
+                  0.014258594493772756,
+                  0.005615522061943618,
+                  0.026527917318043253,
+                  0.02020211820048561,
+                  0.012435008347642709
                 ],
-                "iterations": 6,
+                "iterations": 5,
                 "converged": true,
-                "sha256": "f2902f232805fc53c1d1bdbaa1ccb9dcdefd0fc5a8eff138cf7c266dd01f643e"
+                "sha256": "47fee8e1563068d1512ac14b3fa0294d5965ec1b9bd6d8f9d8d4a6fc239c72d5"
               },
-              "sha256": "baffd37b08042e9875676a0e67e37fd438327ffdd80afabb8ed29dd6037d9667"
+              "sha256": "75efa7b7272f4f7e272925b577a0a3f85ede7a18bb5561d895517a67f2574e86"
             },
             "volatility_liquidity": {
               "removed_features": [
                 "realized_volatility_10s",
-                "spread_at_anchor"
+                "spread_at_anchor",
+                "range_width_2s",
+                "range_width_5s",
+                "range_width_10s"
               ],
               "remaining_features": [
                 "absolute_mid_change_2s",
                 "absolute_mid_change_5s",
                 "absolute_tick_imbalance_2s",
                 "absolute_tick_imbalance_5s",
-                "range_width_2s",
-                "range_width_5s",
-                "range_width_10s",
                 "either_prior_boundary_touch_2s",
                 "either_prior_boundary_touch_5s",
                 "absolute_state_start_displacement"
@@ -4326,9 +5588,6 @@
                   "absolute_mid_change_5s",
                   "absolute_tick_imbalance_2s",
                   "absolute_tick_imbalance_5s",
-                  "range_width_2s",
-                  "range_width_5s",
-                  "range_width_10s",
                   "either_prior_boundary_touch_2s",
                   "either_prior_boundary_touch_5s",
                   "absolute_state_start_displacement"
@@ -4338,9 +5597,6 @@
                   0.21324627978737348,
                   0.2234293395948311,
                   0.1370572878819232,
-                  0.18007768068032334,
-                  0.34237599698764404,
-                  0.5452843645930666,
                   0.8384036461262354,
                   0.835092986977422,
                   1.1093169626046993
@@ -4350,45 +5606,39 @@
                   0.2236750732965034,
                   0.1832168088058208,
                   0.10666344391313051,
-                  0.1598614060814905,
-                  0.25827864631948677,
-                  0.3830372748156644,
                   0.36808011667090856,
                   0.3710966047790646,
                   1.020456512744143
                 ],
-                "sha256": "4daedc12ba0ceb8c121096d78a765e7c9df60b80d14327c8e5bb747596192c21"
+                "sha256": "68619b8452e54b07b726b45da5c24c1624efe8cb003dd39f2ecd40cebb9237f3"
               },
-              "C_dev": {
-                "regularization": 0.001,
+              "C_session": {
+                "regularization": 0.01,
                 "objective_scale": "mean_negative_log_likelihood_plus_half_lambda_l2",
                 "fit_intercept": false,
                 "intercept": null,
                 "coefficients": [
-                  -0.0209290229061216,
-                  -0.013096494696131564,
-                  -0.03774487340673439,
-                  0.0018408865948940376,
-                  0.19402983727719866,
-                  0.028474341496198697,
-                  0.026859349332741,
-                  -0.0019290312528630978,
-                  0.031115790149200108,
-                  0.13659049776755655
+                  0.09025290168414794,
+                  0.05387589477099671,
+                  -0.011812366191674908,
+                  -0.003422950375828553,
+                  0.007967472759313579,
+                  0.023541141109699456,
+                  0.0669070013606513
                 ],
-                "iterations": 6,
+                "iterations": 5,
                 "converged": true,
-                "sha256": "449c16aa6f1b75e82e9f7eafb1e81bd318ccc97be3a2ac166e97ac8f7be75963"
+                "sha256": "f263f60535fdacc218449aa59850f74cae1b37744a75fd0ad6f37c00ac533970"
               },
-              "sha256": "802162cfaf98a522ed6ebb74f2e85657f83a5cfb9d555c46a33c6eb03afbc039"
+              "sha256": "2a68c6627a684722fa420876d651b53a72b09f84b0452ddb949a90e2da46e616"
             }
           }
         }
       },
-      "fitted_width_sha256": "988225806835a5f022f9706588a16f456f0e9006993c600dbbe0427b444da934"
+      "fitted_width_sha256": "4855c1750652bb261067fa8cf279d5b87a8c76c94835e5f3dbe08d14ba5a6ed6"
     }
   },
   "internal_reuse_loaded_for_fit": false,
   "external_loaded_for_fit_or_evaluation": false,
-  "frozen_manifest_sha256": "39712f187665971159e2a2f09e940df6d16f8c8edeb83e6df1b89063a00c531a"
+  "frozen_manifest_sha256": "d1f1fa58264b159fdc22eb0413dc6dbdbd184dc2fc7eec15a1f304ebf2b7cf04"
 }

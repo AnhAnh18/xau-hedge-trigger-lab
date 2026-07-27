@@ -92,9 +92,9 @@ m5_003_preregistration:
   registered_on: "2026-07-26"
   status: preregistered_implementation_authorized
   human_readable_plan: .local_ai/M5_003_PREREGISTRATION.md
-  human_readable_sha256: a7187f5c294cd3e9e49201c8b73f71b9d84caf71c09924e1dd6e538829ebdc7e
+  human_readable_sha256: c5c5e54417709175c5ab2b40d4865fea312f36b6cc38eae3523ac302bbe8adba
   machine_readable_plan: data/m5_003_preregistration.json
-  machine_readable_sha256: a5d51e73b012379f58b38bcb0d6e27154d07c77955735e4b08cce9014c334130
+  machine_readable_sha256: f2fc71b43b8ad372eed47ad6d5b3d31747f76daf0e3a1c2ad8a3fd0df9668d64
   text_hash_policy: canonical_utf8_lf
   current_task_authorizes_implementation: true
   current_task_authorizes_price_model_fit: true
@@ -107,6 +107,15 @@ m5_003_preregistration:
 m5_003_pipeline:
   status: pipeline_frozen_external_pending_zero_validated_price_results
   implementation_date: "2026-07-26"
+  session_remediation_date: "2026-07-27"
+  headline_comparison: C_session_minus_A_session
+  superseded_diagnostic: C_dev_minus_A_dev
+  session_blocks_server_time:
+    - [12, 16]
+    - [16, 20]
+    - [20, 24]
+  session_parameterization: three_one_hot_block_effects_no_intercept
+  shape_diagnostic_role: descriptive_no_independent_verdict
   primary_bin_width_ms: 1000
   causal_anchor_sensitivity_width_ms: 500
   development_sessions:

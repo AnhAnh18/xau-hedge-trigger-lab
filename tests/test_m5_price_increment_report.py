@@ -4,6 +4,8 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT_PATH = ROOT / "reports" / "phase_05" / "m5_003_price_increment_report.json"
@@ -128,12 +130,29 @@ def test_m5_003_manifest_locks_development_only_models_and_eleven_buckets() -> N
                 "age_8_10",
             ]
             assert bundle["C_dev"]["fit_intercept"] is False
+            assert bundle["C_session"]["fit_intercept"] is False
+            assert bundle["C_shape"]["fit_intercept"] is False
+            assert bundle["A_session"]["parameterization"] == (
+                "three_one_hot_block_effects_no_intercept"
+            )
+            assert bundle["A_session"]["server_hour_bounds"] == [
+                [12, 16],
+                [16, 20],
+                [20, 24],
+            ]
+            assert len(bundle["A_session"]["parameters"]["coefficients"]) == 3
             assert endpoint["regularization_selection"]["models"]["B"][
                 "selected_lambda"
             ] in allowed_lambdas
             assert endpoint["regularization_selection"]["models"]["C_dev"][
                 "selected_lambda"
             ] in allowed_lambdas
+            assert endpoint["regularization_selection"]["models"]["C_session"][
+                "selected_lambda"
+            ] in allowed_lambdas
+            assert bundle["C_shape"]["regularization"] == bundle["C_session"][
+                "regularization"
+            ]
             assert all(
                 fold["group_overlap"] == 0
                 for fold in endpoint["regularization_selection"]["folds"]
@@ -160,8 +179,51 @@ def test_m5_003_loso_and_internal_results_are_diagnostic_only() -> None:
             for endpoint in report["model_diagnostics"][width][role].values():
                 assert endpoint["role"] == "diagnostic_only_no_verdict"
                 assert endpoint["paired_interval_comparisons"][
-                    "C_dev_minus_A_dev"
+                    "C_session_minus_A_session"
                 ]["draws"] == 5000
+
+
+def test_m5_003_session_remediation_is_explicit_and_internal_results_are_non_gating() -> None:
+    report = _load(REPORT_PATH)
+    prereg = _load(PREREG_PATH)
+    internal = report["model_diagnostics"]["1000"]["internal_reuse"]
+
+    assert prereg["review_driven_session_amendment"]["server_time_blocks"] == [
+        [12, 16],
+        [16, 20],
+        [20, 24],
+    ]
+    assert prereg["secondary_shape_diagnostic"]["external_multiplicity"] == (
+        "descriptive_only_no_supported_or_rejected_label"
+    )
+    expected = {
+        "rehedge_buy_occurrence": (0.065349, 0.081396, 0.009696),
+        "rehedge_sell_occurrence": (0.132032, 0.039308, 0.030655),
+        "unlock_occurrence": (0.148346, 0.080685, 0.036852),
+    }
+    for endpoint, values in expected.items():
+        metrics = internal[endpoint]["paired_interval_comparisons"]
+        observed = (
+            metrics["A_session_minus_A_dev"]["mean"],
+            metrics["C_session_minus_A_session"]["mean"],
+            metrics["C_shape_minus_A_session"]["mean"],
+        )
+        assert observed == pytest.approx(values, abs=1e-5)
+        assert internal[endpoint]["role"] == "diagnostic_only_no_verdict"
+
+
+def test_m5_003_markdown_publishes_registered_comparison_families() -> None:
+    markdown = REPORT_PATH.with_suffix(".md").read_text(encoding="utf-8")
+
+    for required in [
+        "C_session−A_session",
+        "C_session−B",
+        "Registered one-second ablations",
+        "500 ms causal-anchor sensitivity",
+        "Multiplicity registry",
+        "independent_re_review_pending",
+    ]:
+        assert required in markdown
 
 
 def test_m5_003_committed_outputs_do_not_contain_row_identifiers() -> None:

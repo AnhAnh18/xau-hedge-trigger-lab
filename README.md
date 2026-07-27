@@ -24,8 +24,14 @@ pre-registered contract in `.local_ai/M5_003_PREREGISTRATION.md` and
 results are diagnostic only. They create no supported/rejected price verdict
 and no tradeable-edge claim.
 
-The implementation Draft PR requires an independent Claude re-review before
-merge because it was produced by one developer. The remaining data task is to
+Independent review prompted a bounded session-baseline remediation before any
+external data was loaded. The frozen headline is now
+`C_session - A_session`; the old `C_dev - A_dev` result is retained only for
+audit. Fixed server-time blocks, fully refit LOSO diagnostics, and the reduced
+shape diagnostic are documented in the M5-003 report.
+
+The remediated implementation Draft PR requires a fresh independent Claude
+re-review before merge because it was produced by one developer. The remaining data task is to
 acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick sessions
 and the covering MT5 report. Raw files remain in external, access-controlled
 storage; only manifests, aggregate reports, and reproducible processing logic

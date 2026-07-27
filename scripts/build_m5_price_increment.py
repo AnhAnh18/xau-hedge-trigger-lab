@@ -36,6 +36,7 @@ from xau_trigger.price_inference import (
     predict_age_baseline,
     predict_endpoint_bundle,
     predict_logistic,
+    predict_session_baseline,
     select_regularization,
     transform_features,
 )
@@ -417,18 +418,21 @@ def _fit_ablation(
     scaler = fit_scaler(dev, reduced)
     x_dev = transform_features(dev, scaler)
     p_dev_age = predict_age_baseline(dev, full_bundle["A_dev"])
+    p_dev_session = predict_session_baseline(
+        dev, p_dev_age, full_bundle["A_session"]
+    )
     parameters = fit_logistic_l2(
         x_dev,
         dev["target_label"].to_numpy(),
-        regularization=full_bundle["C_dev"]["regularization"],
-        offset=_logit(p_dev_age),
+        regularization=full_bundle["C_session"]["regularization"],
+        offset=_logit(p_dev_session),
         fit_intercept=False,
     )
     payload = {
         "removed_features": removed_features,
         "remaining_features": reduced,
         "scaler": scaler,
-        "C_dev": parameters,
+        "C_session": parameters,
     }
     payload["sha256"] = _json_hash(payload)
     return payload
@@ -444,10 +448,13 @@ def _predict_ablation(
     target = evaluation[evaluation["endpoint"].eq(endpoint)].reset_index(drop=True)
     x_target = transform_features(target, ablation["scaler"])
     p_target_age = predict_age_baseline(target, full_bundle["A_dev"])
+    p_target_session = predict_session_baseline(
+        target, p_target_age, full_bundle["A_session"]
+    )
     return predict_logistic(
         x_target,
-        ablation["C_dev"],
-        offset=_logit(p_target_age),
+        ablation["C_session"],
+        offset=_logit(p_target_session),
     )
 
 
@@ -477,6 +484,9 @@ def _fit_width(
             endpoint=endpoint,
             common_parameters=common,
             regularization_selection=selection,
+            shape_feature_columns=prereg["secondary_shape_diagnostic"][
+                "feature_columns"
+            ][endpoint],
         )
         ablations = {}
         family = "unlock" if endpoint == "unlock_occurrence" else "rehedge"
@@ -533,7 +543,9 @@ def _predict_width(
         ]
         endpoint_prediction = predict_endpoint_bundle(width_frame, bundle, common)
         for group_name, ablation in endpoint_manifest["ablations"].items():
-            endpoint_prediction[f"p_C_dev_without_{group_name}"] = _predict_ablation(
+            endpoint_prediction[
+                f"p_C_session_without_{group_name}"
+            ] = _predict_ablation(
                 width_frame,
                 endpoint=endpoint,
                 full_bundle=bundle,
@@ -547,10 +559,10 @@ def _predict_width(
 
 
 def _ablation_interval_deltas(predictions: pd.DataFrame, group_name: str) -> pd.DataFrame:
-    probability = f"p_C_dev_without_{group_name}"
+    probability = f"p_C_session_without_{group_name}"
     source = predictions.copy()
     source["full_ll"] = bernoulli_log_likelihood(
-        source["target_label"].to_numpy(), source["p_C_dev"].to_numpy()
+        source["target_label"].to_numpy(), source["p_C_session"].to_numpy()
     )
     source["ablated_ll"] = bernoulli_log_likelihood(
         source["target_label"].to_numpy(), source[probability].to_numpy()
@@ -583,6 +595,10 @@ def _summarize_predictions(predictions: pd.DataFrame, prereg: dict) -> dict:
                 ]
                 metrics = {}
                 for comparison in [
+                    "C_session_minus_A_session",
+                    "C_session_minus_B",
+                    "A_session_minus_A_dev",
+                    "C_shape_minus_A_session",
                     "C_dev_minus_A_dev",
                     "C_dev_minus_B",
                     "A_level_minus_A_common",
@@ -615,6 +631,15 @@ def _summarize_predictions(predictions: pd.DataFrame, prereg: dict) -> dict:
                             "C_dev_minus_A_dev_mean": float(
                                 group["C_dev_minus_A_dev"].mean()
                             ),
+                            "A_session_minus_A_dev_mean": float(
+                                group["A_session_minus_A_dev"].mean()
+                            ),
+                            "C_session_minus_A_session_mean": float(
+                                group["C_session_minus_A_session"].mean()
+                            ),
+                            "C_shape_minus_A_session_mean": float(
+                                group["C_shape_minus_A_session"].mean()
+                            ),
                             "C_dev_minus_B_mean": float(
                                 group["C_dev_minus_B"].mean()
                             ),
@@ -627,7 +652,16 @@ def _summarize_predictions(predictions: pd.DataFrame, prereg: dict) -> dict:
                     "observed_rate": float(bins["target_label"].mean()),
                     "mean_predictions": {
                         model: float(bins[f"p_{model}"].mean())
-                        for model in ["A_common", "A_level", "A_dev", "B", "C_dev"]
+                        for model in [
+                            "A_common",
+                            "A_level",
+                            "A_dev",
+                            "A_session",
+                            "B",
+                            "C_dev",
+                            "C_session",
+                            "C_shape",
+                        ]
                     },
                     "paired_interval_comparisons": metrics,
                     "ablations": ablations,
@@ -645,8 +679,12 @@ def _base_rate_stress(predictions: pd.DataFrame) -> dict:
         & predictions["analysis_role"].eq("development")
     ]
     for endpoint, group in source.groupby("endpoint", sort=True):
-        p_age_shift = 1 / (1 + np.exp(-(_logit(group["p_A_dev"].to_numpy()) + shift)))
-        p_c_shift = 1 / (1 + np.exp(-(_logit(group["p_C_dev"].to_numpy()) + shift)))
+        p_age_shift = 1 / (
+            1 + np.exp(-(_logit(group["p_A_session"].to_numpy()) + shift))
+        )
+        p_c_shift = 1 / (
+            1 + np.exp(-(_logit(group["p_C_session"].to_numpy()) + shift))
+        )
         shifted = group.copy()
         shifted["age_ll"] = bernoulli_log_likelihood(
             shifted["target_label"].to_numpy(), p_age_shift
@@ -659,7 +697,9 @@ def _base_rate_stress(predictions: pd.DataFrame) -> dict:
         ].sum()
         shifted_mean = float((shifted_interval["c_ll"] - shifted_interval["age_ll"]).mean())
         original_interval = interval_model_deltas(group)
-        original_mean = float(original_interval["C_dev_minus_A_dev"].mean())
+        original_mean = float(
+            original_interval["C_session_minus_A_session"].mean()
+        )
         records[str(endpoint)] = {
             "fixed_logit_shift": shift,
             "original_mean_increment": original_mean,
@@ -702,6 +742,9 @@ def _leave_one_session_out(
                 endpoint=endpoint,
                 common_parameters=common,
                 regularization_selection=selection,
+                shape_feature_columns=prereg["secondary_shape_diagnostic"][
+                    "feature_columns"
+                ][endpoint],
             )
             prediction = predict_endpoint_bundle(held, bundle, common)
             deltas = interval_model_deltas(prediction)
@@ -718,6 +761,15 @@ def _leave_one_session_out(
                     "C_dev_minus_A_dev_mean": float(
                         deltas["C_dev_minus_A_dev"].mean()
                     ),
+                    "A_session_minus_A_dev_mean": float(
+                        deltas["A_session_minus_A_dev"].mean()
+                    ),
+                    "C_session_minus_A_session_mean": float(
+                        deltas["C_session_minus_A_session"].mean()
+                    ),
+                    "C_shape_minus_A_session_mean": float(
+                        deltas["C_shape_minus_A_session"].mean()
+                    ),
                     "C_dev_minus_B_mean": float(deltas["C_dev_minus_B"].mean()),
                     "B_selected_lambda": selection["models"]["B"][
                         "selected_lambda"
@@ -725,6 +777,9 @@ def _leave_one_session_out(
                     "C_dev_selected_lambda": selection["models"]["C_dev"][
                         "selected_lambda"
                     ],
+                    "C_session_selected_lambda": selection["models"][
+                        "C_session"
+                    ]["selected_lambda"],
                     "role": "session_stability_diagnostic_only_no_selection_no_verdict",
                 }
             )
@@ -774,7 +829,7 @@ def _validation_gates(
         "predictor_allowlists_exclude_identifiers_labels_and_timestamps": forbidden.isdisjoint(
             feature_columns
         ),
-        "A_common_A_level_A_dev_B_C_dev_use_identical_rows": model_rows_match,
+        "all_baselines_and_price_models_use_identical_rows": model_rows_match,
         "development_contains_only_registered_sessions": set(
             development["session_date"].unique()
         )
@@ -789,6 +844,26 @@ def _validation_gates(
         ),
         "all_C_dev_models_have_no_free_intercept": all(
             not endpoint["fitted_bundle"]["C_dev"]["fit_intercept"]
+            for width in manifest["widths"].values()
+            for endpoint in width["endpoints"].values()
+        ),
+        "all_C_session_and_C_shape_models_have_no_free_intercept": all(
+            not endpoint["fitted_bundle"][model]["fit_intercept"]
+            for width in manifest["widths"].values()
+            for endpoint in width["endpoints"].values()
+            for model in ["C_session", "C_shape"]
+        ),
+        "all_A_session_models_use_three_explicit_blocks": all(
+            endpoint["fitted_bundle"]["A_session"]["parameterization"]
+            == "three_one_hot_block_effects_no_intercept"
+            and endpoint["fitted_bundle"]["A_session"]["server_hour_bounds"]
+            == [[12, 16], [16, 20], [20, 24]]
+            and len(
+                endpoint["fitted_bundle"]["A_session"]["parameters"][
+                    "coefficients"
+                ]
+            )
+            == 3
             for width in manifest["widths"].values()
             for endpoint in width["endpoints"].values()
         ),
@@ -924,6 +999,240 @@ def render_markdown(report: dict) -> str:
     return "\n".join(lines)
 
 
+def render_session_remediation_markdown(report: dict) -> str:
+    """Render the review-remediated report with every registered family visible."""
+    lines = [
+        "# M5-003 causal price-increment implementation",
+        "",
+        f"Status: `{report['status']}`",
+        "",
+        "This is a frozen engineering result, not a validated trading edge.",
+        "Development and 2026-07-24 are diagnostic only. The registered",
+        "2026-07-27..29 external sessions remain unseen and pending.",
+        "",
+        "## Review-driven session remediation",
+        "",
+        "- `A_session = A_dev + server-time block effect` on fixed blocks",
+        "  `[12,16)`, `[16,20)`, and `[20,24)`.",
+        "- All three block effects are explicit one-hot columns with no intercept;",
+        "  no reference block is silently fixed at zero.",
+        "- `C_session` uses fixed `logit(A_session)` plus the full price allowlist,",
+        "  has no free intercept, and reselects lambda using development-only",
+        "  interval GroupKFold.",
+        "- `C_dev - A_dev` is retained as a superseded audit diagnostic.",
+        "- `C_shape` is review-driven, external-secondary, and cannot create an",
+        "  independent verdict.",
+        "- D-007 server UTC+3 remains an inference; market-session labels are",
+        "  approximate and July-DST dependent.",
+        "- A fresh independent Claude re-review is required after this code change.",
+        "",
+        "## Feature accounting",
+        "",
+    ]
+    registered = report["feature_accounting"][
+        "registered_internal_full_allowlist_audit"
+    ]
+    floor = report["feature_accounting"]["july23_unlock_floor_audit"]
+    lines.extend(
+        [
+            f"- Full allowlist audit: {registered['observed_dropped_bins']:,} bins / "
+            f"{registered['observed_dropped_targets']:,} targets removed — PASS.",
+            f"- July-23 unlock floor: {floor['dropped_bins']:,} bins / "
+            f"{floor['dropped_targets']:,} targets removed — PASS.",
+            "",
+            "### Joint-valid one-second cohorts",
+            "",
+            "| Role | Date | Endpoint | Bins | Targets | Intervals |",
+            "| --- | --- | --- | ---: | ---: | ---: |",
+        ]
+    )
+    for row in report["feature_accounting"]["joint_valid_records"]:
+        if row["bin_width_ms"] == 1000:
+            lines.append(
+                f"| {row['analysis_role']} | {row['session_date']} | "
+                f"{row['endpoint']} | {row['bins']:,} | {row['targets']:,} | "
+                f"{row['intervals']:,} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## One-second paired comparisons — diagnostics only",
+            "",
+            "| Role | Endpoint | C_session−A_session | 95% CI | "
+            "A_session−A_dev | C_shape−A_session | old C_dev−A_dev |",
+            "| --- | --- | ---: | --- | ---: | ---: | ---: |",
+        ]
+    )
+    for role in ["development", "internal_reuse"]:
+        for endpoint in ENDPOINTS:
+            metrics = report["model_diagnostics"]["1000"][role][endpoint][
+                "paired_interval_comparisons"
+            ]
+            headline = metrics["C_session_minus_A_session"]
+            lines.append(
+                f"| {role} | {endpoint} | {headline['mean']:.6f} | "
+                f"[{headline['ci95_low']:.6f}, {headline['ci95_high']:.6f}] | "
+                f"{metrics['A_session_minus_A_dev']['mean']:.6f} | "
+                f"{metrics['C_shape_minus_A_session']['mean']:.6f} | "
+                f"{metrics['C_dev_minus_A_dev']['mean']:.6f} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "### Required secondary comparison",
+            "",
+            "| Role | Endpoint | C_session−B | 95% CI | Familywise one-sided low |",
+            "| --- | --- | ---: | --- | ---: |",
+        ]
+    )
+    for role in ["development", "internal_reuse"]:
+        for endpoint in ENDPOINTS:
+            metric = report["model_diagnostics"]["1000"][role][endpoint][
+                "paired_interval_comparisons"
+            ]["C_session_minus_B"]
+            lines.append(
+                f"| {role} | {endpoint} | {metric['mean']:.6f} | "
+                f"[{metric['ci95_low']:.6f}, {metric['ci95_high']:.6f}] | "
+                f"{metric['familywise_one_sided_low']:.6f} |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "### Registered one-second ablations",
+            "",
+            "Positive values mean the full `C_session` scored above the model",
+            "with that group removed. Correlated-group ablations are not additive",
+            "or causal decompositions.",
+            "",
+            "| Role | Endpoint | Removed group | Full−ablated | 95% CI | "
+            "Familywise one-sided low |",
+            "| --- | --- | --- | ---: | --- | ---: |",
+        ]
+    )
+    for role in ["development", "internal_reuse"]:
+        for endpoint in ENDPOINTS:
+            ablations = report["model_diagnostics"]["1000"][role][endpoint][
+                "ablations"
+            ]
+            for group_name, metric in ablations.items():
+                lines.append(
+                    f"| {role} | {endpoint} | {group_name} | "
+                    f"{metric['mean']:.6f} | "
+                    f"[{metric['ci95_low']:.6f}, {metric['ci95_high']:.6f}] | "
+                    f"{metric['familywise_one_sided_low']:.6f} |"
+                )
+
+    lines.extend(
+        [
+            "",
+            "### 500 ms causal-anchor sensitivity",
+            "",
+            "This moves the anchor to `T−500 ms`; it is not an independent",
+            "discretization robustness sample and cannot override one second.",
+            "",
+            "| Role | Endpoint | C_session−A_session | 95% CI |",
+            "| --- | --- | ---: | --- |",
+        ]
+    )
+    for role in ["development", "internal_reuse"]:
+        for endpoint in ENDPOINTS:
+            metric = report["model_diagnostics"]["500"][role][endpoint][
+                "paired_interval_comparisons"
+            ]["C_session_minus_A_session"]
+            lines.append(
+                f"| {role} | {endpoint} | {metric['mean']:.6f} | "
+                f"[{metric['ci95_low']:.6f}, {metric['ci95_high']:.6f}] |"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## Multiplicity registry",
+            "",
+            "| Family | Comparisons | Per-comparison alpha | Gate role |",
+            "| --- | ---: | ---: | --- |",
+            "| C_session−A_session at 1 s | 3 | 0.0166667 | external headline |",
+            "| C_session−B at 1 s | 3 | 0.0166667 | required secondary |",
+            "| C_session leave-one-group-out | 12 | 0.0041667 | required ablation |",
+            "| C_session−A_session at 500 ms | 3 | 0.0166667 | non-gating sensitivity |",
+            "| C_shape−A_session | 3 | n/a | descriptive, no verdict |",
+            "",
+            "## Fixed base-rate shift stress",
+            "",
+            "The preregistered `-log(2.1)` development-label stress is",
+            "non-gating and does not recalibrate internal or external labels.",
+            "Its observed direction and magnitude are reported rather than",
+            "replaced by the earlier approximate 7% expectation.",
+            "",
+            "| Endpoint | Original increment | Shifted increment | Relative change |",
+            "| --- | ---: | ---: | ---: |",
+        ]
+    )
+    for endpoint in ENDPOINTS:
+        stress = report["base_rate_attenuation_stress"][endpoint]
+        lines.append(
+            f"| {endpoint} | {stress['original_mean_increment']:.6f} | "
+            f"{stress['shifted_mean_increment']:.6f} | "
+            f"{stress['relative_change']:.3%} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Leave-one-development-session-out",
+            "",
+            "Every fold refits `A_dev`, all three `A_session` effects,",
+            "preprocessing, nested lambda selection, and all price models.",
+            "The spread is diagnostic and does not estimate a session-population",
+            "variance from only four development sessions.",
+            "",
+            "| Held session | Endpoint | Bins | Targets | "
+            "A_session−A_dev | C_session−A_session | C_shape−A_session |",
+            "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+        ]
+    )
+    for row in report["leave_one_session_out"]:
+        lines.append(
+            f"| {row['held_out_session']} | {row['endpoint']} | "
+            f"{row['held_out_bins']:,} | {row['held_out_targets']:,} | "
+            f"{row['A_session_minus_A_dev_mean']:.6f} | "
+            f"{row['C_session_minus_A_session_mean']:.6f} | "
+            f"{row['C_shape_minus_A_session_mean']:.6f} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Interpretation boundary",
+            "",
+            "On the single 2026-07-24 internal-reuse session, the session-block",
+            "increment exceeded the residual full-price increment for two of three",
+            "endpoints. Rehedge-sell had the smallest residual price increment and",
+            "its ordinary 95% interval crossed zero. These are internal diagnostics,",
+            "not endpoint verdicts or causal decompositions. Time-of-day may proxy",
+            "market regime, operating schedule, or execution behavior.",
+            "",
+            "## Validation and remaining gates",
+            "",
+        ]
+    )
+    for name, passed in report["validation_gates"].items():
+        lines.append(f"- `{name}`: {'PASS' if passed else 'FAIL'}")
+    lines.extend(
+        [
+            "- `independent_re_review_pending`: blocking merge after remediation.",
+            "- `external_2026_07_27_29_pending`: M5 remains open.",
+            "- No supported/rejected result is issued from development or internal reuse.",
+            "- No P/L optimization or tradeable-edge claim was made.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
 def main() -> None:
     loaded = _load_inputs()
     prereg = loaded["prereg"]
@@ -958,6 +1267,10 @@ def main() -> None:
         "feature_allowlists": {
             endpoint: list(columns) for endpoint, columns in FEATURE_ALLOWLISTS.items()
         },
+        "session_baseline_contract": prereg["review_driven_session_amendment"],
+        "shape_feature_allowlists": prereg["secondary_shape_diagnostic"][
+            "feature_columns"
+        ],
         "widths": widths,
         "internal_reuse_loaded_for_fit": False,
         "external_loaded_for_fit_or_evaluation": False,
@@ -1021,6 +1334,22 @@ def main() -> None:
         "model_diagnostics": diagnostics,
         "leave_one_session_out": loso,
         "base_rate_attenuation_stress": _base_rate_stress(all_predictions),
+        "review_driven_session_amendment": prereg[
+            "review_driven_session_amendment"
+        ],
+        "multiplicity_registry": {
+            "headline_family": prereg["inference"]["headline_family"],
+            "c_session_minus_b_family": prereg["inference"][
+                "c_session_minus_b_family"
+            ],
+            "ablation_family": prereg["inference"]["ablation_family"],
+            "secondary_anchor_family": prereg["inference"][
+                "secondary_anchor_family"
+            ],
+            "shape_diagnostic": prereg["secondary_shape_diagnostic"][
+                "external_multiplicity"
+            ],
+        },
         "validation_gates": validation_gates,
         "uncertainty_limitation": (
             "interval-cluster bootstrap is conditional on observed sessions and "
@@ -1063,7 +1392,9 @@ def main() -> None:
         json.dumps(report, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    markdown_path.write_text(render_markdown(report), encoding="utf-8")
+    markdown_path.write_text(
+        render_session_remediation_markdown(report), encoding="utf-8"
+    )
     print(
         "M5-003 price-increment pipeline frozen: "
         f"{report['deterministic_report_sha256']}"

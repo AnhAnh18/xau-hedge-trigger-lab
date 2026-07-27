@@ -128,3 +128,21 @@
 - Canonicalized preregistration text hashes to UTF-8 with LF newlines while
   preserving raw-byte hashing for binary data and private tick checksums.
 - Kept Draft PR #8 blocked on the same independent Claude re-review gate.
+
+## 2026-07-27 — M5-003 session-baseline remediation
+
+- Independently reproduced the review concern that the price package encoded
+  deterministic time-of-day context absent from `A_dev`.
+- Identified that the reviewer prototype used two dummies without an
+  intercept, silently fixing `[12,16)` to zero; locked three explicit block
+  effects instead.
+- Added development-only `A_session`, no-intercept `C_session`, fold-local
+  session fitting, nested lambda reselection, and full LOSO refits.
+- Repartitioned unlock range widths into volatility/liquidity and added the
+  review-driven `C_shape` diagnostic without an independent verdict.
+- Published all registered comparison, ablation, multiplicity, anchor, and
+  base-rate-stress tables in Markdown and JSON.
+- Preserved all M2–M5-002 canonical outputs and kept external 2026-07-27..29
+  data absent.
+- Kept Draft PR #8 blocked pending a fresh independent Claude re-review of
+  this single-developer remediation.

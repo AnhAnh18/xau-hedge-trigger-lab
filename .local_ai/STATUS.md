@@ -51,7 +51,8 @@ M5 — Trigger Inference (M5-003 frozen; independent review and external validat
 - M5-002 aggregate report and deterministic local-output hashes
 - M5-003 causal price-increment preregistration and machine-readable contract
 - M5-003 causal price-feature construction at 1 second and 500 milliseconds
-- Development-only A_dev, B, and C_dev fitting with interval GroupKFold
+- Development-only A_dev, A_session, B, C_dev, C_session, and C_shape fitting
+  with interval GroupKFold
 - Joint-valid feature accounting, required ablations, and LOSO diagnostics
 - Frozen M5-003 model manifest and deterministic aggregate report
 - Explicit single-developer Claude re-review gate before merge
@@ -78,18 +79,20 @@ only as a degeneracy audit because its risk set ends at the observed outcome;
 it affects no verdict or gate.
 
 M5-003 now implements the locked endpoint feature allowlists, unlock timer-floor
-conditioning, joint-valid cohort, pooled-development GroupKFold, fixed
-regularization, ablations, and interval-cluster inference. The pipeline and
-parameter manifest are frozen before external evaluation. Internal reuse and
-leave-one-session-out results are published as diagnostics only; they cannot
-create a price verdict or tradeable-edge claim.
+conditioning, joint-valid cohort, pooled-development GroupKFold, session-
+adjusted baseline, ablations, and interval-cluster inference. The old
+`C_dev - A_dev` comparison is superseded for inference because time-of-day was
+missing from the baseline. `C_session - A_session` is now the external
+headline; internal reuse and fully refit leave-one-session-out results are
+diagnostic only and cannot create a price verdict or tradeable-edge claim.
 
 ## Next executable task
 
-T-022 — obtain independent Claude re-review of the completed M5-003 Draft PR.
-The review is a merge blocker and must cover the corrected 11-bucket age grid,
-joint-valid accounting, leakage isolation, frozen hashes, model comparisons,
-and verdict language.
+T-022 — obtain a fresh independent Claude re-review of the remediated M5-003
+Draft PR. The review is a merge blocker and must cover the corrected 11-bucket
+age grid, exact three-block A_session parameterization, fold-local session
+effects, unlock group repartition, joint-valid accounting, leakage isolation,
+frozen hashes, model comparisons, and verdict language.
 
 M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
 sessions and a trade report covering their lifecycle events. Raw files remain

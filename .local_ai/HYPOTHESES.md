@@ -69,18 +69,18 @@ as a standalone tradeable edge.
 
 ## H-004 — Causal price features add occurrence information beyond state age
 
-Status: Pre-registered — not implemented or tested
+Status: Implemented internal diagnostics; external test pending
 
 Prediction:
 
 - For each of `rehedge_buy_occurrence`, `rehedge_sell_occurrence`, and
-  `unlock_occurrence`, model C (frozen A_common offset plus the locked
+  `unlock_occurrence`, `C_session` (fixed `A_session` offset plus the locked
   endpoint price allowlist) improves paired per-interval occurrence log
-  likelihood over frozen A_common.
+  likelihood over `A_session`.
 - Unlock is conditioned on tradeable state age at bin start being at least
   five seconds. Re-hedge endpoints retain their full eligible risk cohort.
 
-The single headline comparison per endpoint is `C - A_common` at the
+The single headline comparison per endpoint is `C_session - A_session` at the
 one-second anchor. The three endpoints form one Bonferroni-controlled family
 at family-wise alpha 0.05. Evidence requires a positive mean and a
 family-wise one-sided interval lower bound above zero.
@@ -92,3 +92,9 @@ regularization grid, ablations, and null-permitting merge rule are locked in
 
 Null, inconclusive, or rejected findings remain mergeable and cannot be
 reported as evidence of absence or as a tradeable-edge conclusion.
+
+`A_session` adds three fixed server-time block effects to `A_dev` on
+`[12,16)`, `[16,20)`, and `[20,24)`. The earlier `C_dev - A_dev` comparison is
+superseded and descriptive only because the price package encoded session
+context missing from `A_dev`. A review-driven `C_shape - A_session` reduced
+model is also descriptive and receives no independent verdict.

@@ -18,6 +18,11 @@ from xau_trigger.state_age_hazard import (
 
 
 LAMBDA_GRID = (0.0001, 0.001, 0.01, 0.1, 1.0, 10.0)
+SESSION_BLOCKS = (
+    ("server_12_16", 12, 16),
+    ("server_16_20", 16, 20),
+    ("server_20_24", 20, 24),
+)
 
 
 def _require_columns(frame: pd.DataFrame, required: Iterable[str]) -> None:
@@ -288,6 +293,66 @@ def predict_offset_intercept(
     return _expit(_logit(offset_probabilities) + float(parameters["intercept"]))
 
 
+def session_block_design(frame: pd.DataFrame) -> np.ndarray:
+    """Return the locked three-column server-time block design.
+
+    All three block effects are represented explicitly.  With no free
+    intercept this is equivalent to an intercept plus two treatment
+    contrasts, and avoids accidentally fixing the first block effect at zero.
+    """
+    _require_columns(frame, ["bin_start"])
+    timestamps = pd.to_datetime(frame["bin_start"], errors="raise")
+    hours = timestamps.dt.hour.to_numpy(dtype=int)
+    design = np.column_stack(
+        [(hours >= start) & (hours < end) for _, start, end in SESSION_BLOCKS]
+    ).astype(float)
+    if len(design) and not np.all(design.sum(axis=1) == 1):
+        invalid = sorted(set(int(value) for value in hours[design.sum(axis=1) != 1]))
+        raise ValueError(
+            "Session baseline is defined only on common server hours 12:00-24:00; "
+            f"observed invalid hours: {invalid}"
+        )
+    return design
+
+
+def fit_session_baseline(
+    frame: pd.DataFrame,
+    age_probabilities: np.ndarray,
+) -> dict:
+    """Fit unpenalized development-only block effects over A_dev."""
+    _require_columns(frame, ["target_label", "bin_start"])
+    parameters = fit_logistic_l2(
+        session_block_design(frame),
+        frame["target_label"].to_numpy(),
+        regularization=0.0,
+        offset=_logit(age_probabilities),
+        fit_intercept=False,
+    )
+    payload = {
+        "block_labels": [label for label, _, _ in SESSION_BLOCKS],
+        "server_hour_bounds": [[start, end] for _, start, end in SESSION_BLOCKS],
+        "parameterization": "three_one_hot_block_effects_no_intercept",
+        "regularization": 0.0,
+        "parameters": parameters,
+    }
+    payload["fitted_parameter_sha256"] = _canonical_hash(payload)
+    return payload
+
+
+def predict_session_baseline(
+    frame: pd.DataFrame,
+    age_probabilities: np.ndarray,
+    parameters: dict,
+) -> np.ndarray:
+    if parameters["parameterization"] != "three_one_hot_block_effects_no_intercept":
+        raise ValueError("Unsupported A_session parameterization")
+    return predict_logistic(
+        session_block_design(frame),
+        parameters["parameters"],
+        offset=_logit(age_probabilities),
+    )
+
+
 def deterministic_group_kfold(
     groups: Iterable[object],
     *,
@@ -338,7 +403,7 @@ def select_regularization(
     lambdas: Iterable[float] = LAMBDA_GRID,
     n_splits: int = 5,
 ) -> dict:
-    """Select B and C_dev penalties with interval GroupKFold only."""
+    """Select B, C_dev, and C_session penalties with interval GroupKFold."""
     source = development[development["endpoint"].eq(endpoint)].reset_index(drop=True)
     columns = list(feature_columns)
     splits = deterministic_group_kfold(source["interval_id"], n_splits=n_splits)
@@ -355,6 +420,11 @@ def select_regularization(
         age = fit_age_baseline(train, endpoint=endpoint)
         train_age = predict_age_baseline(train, age)
         validation_age = predict_age_baseline(validation, age)
+        session = fit_session_baseline(train, train_age)
+        train_session = predict_session_baseline(train, train_age, session)
+        validation_session = predict_session_baseline(
+            validation, validation_age, session
+        )
         prepared.append(
             {
                 "train": train,
@@ -363,6 +433,8 @@ def select_regularization(
                 "x_validation": transform_features(validation, scaler),
                 "train_age": train_age,
                 "validation_age": validation_age,
+                "train_session": train_session,
+                "validation_session": validation_session,
             }
         )
         fold_proof.append(
@@ -377,7 +449,7 @@ def select_regularization(
         )
 
     model_results = {}
-    for model in ["B", "C_dev"]:
+    for model in ["B", "C_dev", "C_session"]:
         rows = []
         for regularization in lambdas:
             fold_scores = []
@@ -388,7 +460,11 @@ def select_regularization(
                     labels,
                     regularization=float(regularization),
                     offset=(
-                        _logit(item["train_age"]) if model == "C_dev" else None
+                        _logit(item["train_age"])
+                        if model == "C_dev"
+                        else _logit(item["train_session"])
+                        if model == "C_session"
+                        else None
                     ),
                     fit_intercept=model == "B",
                 )
@@ -398,6 +474,8 @@ def select_regularization(
                     offset=(
                         _logit(item["validation_age"])
                         if model == "C_dev"
+                        else _logit(item["validation_session"])
+                        if model == "C_session"
                         else None
                     ),
                 )
@@ -441,6 +519,7 @@ def fit_endpoint_bundle(
     endpoint: str,
     common_parameters: dict,
     regularization_selection: dict,
+    shape_feature_columns: Iterable[str] | None = None,
 ) -> dict:
     source = development[development["endpoint"].eq(endpoint)].reset_index(drop=True)
     columns = list(feature_columns)
@@ -448,6 +527,8 @@ def fit_endpoint_bundle(
     x = transform_features(source, scaler)
     age = fit_age_baseline(source, endpoint=endpoint)
     p_dev = predict_age_baseline(source, age)
+    session = fit_session_baseline(source, p_dev)
+    p_session = predict_session_baseline(source, p_dev, session)
     p_common = predict_common_baseline(source, common_parameters)
     level = fit_offset_intercept(source["target_label"].to_numpy(), p_common)
     b = fit_logistic_l2(
@@ -463,14 +544,39 @@ def fit_endpoint_bundle(
         offset=_logit(p_dev),
         fit_intercept=False,
     )
+    c_session = fit_logistic_l2(
+        x,
+        source["target_label"].to_numpy(),
+        regularization=regularization_selection["models"]["C_session"][
+            "selected_lambda"
+        ],
+        offset=_logit(p_session),
+        fit_intercept=False,
+    )
+    shape_columns = list(shape_feature_columns or columns)
+    shape_scaler = fit_scaler(source, shape_columns)
+    c_shape = fit_logistic_l2(
+        transform_features(source, shape_scaler),
+        source["target_label"].to_numpy(),
+        regularization=regularization_selection["models"]["C_session"][
+            "selected_lambda"
+        ],
+        offset=_logit(p_session),
+        fit_intercept=False,
+    )
     payload = {
         "endpoint": endpoint,
         "feature_columns": columns,
         "A_dev": age,
+        "A_session": session,
         "A_level": level,
         "scaler": scaler,
         "B": b,
         "C_dev": c_dev,
+        "C_session": c_session,
+        "shape_feature_columns": shape_columns,
+        "shape_scaler": shape_scaler,
+        "C_shape": c_shape,
         "regularization_selection_sha256": regularization_selection["sha256"],
     }
     payload["fitted_parameter_sha256"] = _canonical_hash(payload)
@@ -487,6 +593,7 @@ def predict_endpoint_bundle(
     x = transform_features(source, bundle["scaler"])
     p_common = predict_common_baseline(source, common_parameters)
     p_dev = predict_age_baseline(source, bundle["A_dev"])
+    p_session = predict_session_baseline(source, p_dev, bundle["A_session"])
     output = source[
         [
             "risk_bin_id",
@@ -504,11 +611,22 @@ def predict_endpoint_bundle(
     output["p_A_common"] = p_common
     output["p_A_level"] = predict_offset_intercept(p_common, bundle["A_level"])
     output["p_A_dev"] = p_dev
+    output["p_A_session"] = p_session
     output["p_B"] = predict_logistic(x, bundle["B"])
     output["p_C_dev"] = predict_logistic(
         x,
         bundle["C_dev"],
         offset=_logit(p_dev),
+    )
+    output["p_C_session"] = predict_logistic(
+        x,
+        bundle["C_session"],
+        offset=_logit(p_session),
+    )
+    output["p_C_shape"] = predict_logistic(
+        transform_features(source, bundle["shape_scaler"]),
+        bundle["C_shape"],
+        offset=_logit(p_session),
     )
     return output
 
@@ -523,12 +641,24 @@ def interval_model_deltas(predictions: pd.DataFrame) -> pd.DataFrame:
         "p_A_common",
         "p_A_level",
         "p_A_dev",
+        "p_A_session",
         "p_B",
         "p_C_dev",
+        "p_C_session",
+        "p_C_shape",
     ]
     _require_columns(predictions, required)
     source = predictions.copy()
-    model_columns = ["A_common", "A_level", "A_dev", "B", "C_dev"]
+    model_columns = [
+        "A_common",
+        "A_level",
+        "A_dev",
+        "A_session",
+        "B",
+        "C_dev",
+        "C_session",
+        "C_shape",
+    ]
     for model in model_columns:
         source[f"ll_{model}"] = bernoulli_log_likelihood(
             source["target_label"].to_numpy(), source[f"p_{model}"].to_numpy()
@@ -544,6 +674,16 @@ def interval_model_deltas(predictions: pd.DataFrame) -> pd.DataFrame:
     )
     grouped["C_dev_minus_A_dev"] = grouped["ll_C_dev"] - grouped["ll_A_dev"]
     grouped["C_dev_minus_B"] = grouped["ll_C_dev"] - grouped["ll_B"]
+    grouped["A_session_minus_A_dev"] = (
+        grouped["ll_A_session"] - grouped["ll_A_dev"]
+    )
+    grouped["C_session_minus_A_session"] = (
+        grouped["ll_C_session"] - grouped["ll_A_session"]
+    )
+    grouped["C_session_minus_B"] = grouped["ll_C_session"] - grouped["ll_B"]
+    grouped["C_shape_minus_A_session"] = (
+        grouped["ll_C_shape"] - grouped["ll_A_session"]
+    )
     grouped["A_level_minus_A_common"] = (
         grouped["ll_A_level"] - grouped["ll_A_common"]
     )

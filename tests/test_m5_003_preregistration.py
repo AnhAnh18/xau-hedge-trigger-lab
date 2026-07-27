@@ -37,11 +37,11 @@ def test_m5_003_is_preregistered_with_separate_implementation_authority() -> Non
     assert plan["scope"]["canonical_outputs_mutable"] is False
     assert plan["scope"]["tradeable_edge_claim_allowed"] is False
     assert _canonical_text_sha256(PLAN_PATH) == (
-        "a5d51e73b012379f58b38bcb0d6e27154d07c77955735e4b08cce9014c334130"
+        "f2fc71b43b8ad372eed47ad6d5b3d31747f76daf0e3a1c2ad8a3fd0df9668d64"
     )
     markdown = ROOT / ".local_ai" / "M5_003_PREREGISTRATION.md"
     assert _canonical_text_sha256(markdown) == (
-        "a7187f5c294cd3e9e49201c8b73f71b9d84caf71c09924e1dd6e538829ebdc7e"
+        "c5c5e54417709175c5ab2b40d4865fea312f36b6cc38eae3523ac302bbe8adba"
     )
 
 
@@ -168,6 +168,17 @@ def test_m5_003_development_age_baseline_is_fixed_without_price_credit() -> None
     assert models["A_dev"]["unlock_floor_eligible_bucket_count"] == 7
     assert models["C_dev"]["free_intercept"] is False
     assert "logit(A_dev)" in models["C_dev"]["definition"]
+    assert models["C_dev"]["role"] == "superseded_diagnostic_preserved_for_audit"
+    assert models["A_session"]["server_time_blocks"] == [
+        [12, 16],
+        [16, 20],
+        [20, 24],
+    ]
+    assert models["A_session"]["parameterization"] == (
+        "three_one_hot_block_effects_no_intercept"
+    )
+    assert models["C_session"]["free_intercept"] is False
+    assert "logit(A_session)" in models["C_session"]["definition"]
     assert plan["preprocessing"][
         "a_dev_validation_probabilities_use_training_fold_bucket_parameters_only"
     ]
@@ -183,14 +194,16 @@ def test_m5_003_selection_inference_and_session_diagnostics_are_locked() -> None
     assert inference["bootstrap_cluster"] == "interval_id"
     assert inference["bootstrap_draws"] == 5000
     assert inference["headline_by_endpoint"] == (
-        "C_dev_minus_A_dev_on_primary_1000ms_anchor"
+        "C_session_minus_A_session_on_primary_1000ms_anchor"
     )
     assert inference["required_secondary"] == (
-        "C_dev_minus_B_on_primary_1000ms_anchor"
+        "C_session_minus_B_on_primary_1000ms_anchor"
     )
     assert inference["noninferential_transport_diagnostics"] == [
         "A_level_minus_A_common",
         "A_dev_minus_A_level",
+        "A_session_minus_A_dev",
+        "C_dev_minus_A_dev_superseded",
     ]
     assert inference["effect_magnitudes_comparable_across_endpoints"] is False
     assert inference["headline_family"]["comparisons"] == 3
@@ -205,10 +218,13 @@ def test_m5_003_selection_inference_and_session_diagnostics_are_locked() -> None
     )
     assert set(stability["refit_each_fold"]) == {
         "A_dev",
+        "A_session",
         "preprocessing",
         "lambda_selection",
         "B",
         "C_dev",
+        "C_session",
+        "C_shape",
     }
     assert plan["freeze_manifest"][
         "must_be_created_before_loading_2026_07_24_for_evaluation"
@@ -283,6 +299,7 @@ def test_m5_003_requires_independent_re_review_before_merge() -> None:
         "joint-valid cohort and exclusion accounting",
         "development internal-reuse and external leakage isolation",
         "frozen-model manifest and parameter hashes",
-        "A_dev B and C_dev comparisons",
+        "A_session C_session and C_shape parameterization",
+        "A_dev B and superseded C_dev diagnostics",
         "report verdict language",
     } == set(review["required_topics"])

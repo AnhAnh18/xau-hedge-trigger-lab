@@ -292,3 +292,35 @@ no M5-002 output. Because one developer is implementing the pipeline, the
 completed Draft PR requires an independent Claude re-review covering this
 correction, cohort accounting, leakage controls, frozen hashes, comparisons,
 and verdict language before merge.
+
+## D-015 — Add a session-adjusted M5-003 baseline after independent review
+
+Date: 2026-07-27
+Status: Accepted review-driven remediation before external evaluation;
+supersedes D-014 only for the M5-003 headline baseline and price comparison
+
+Decision: Preserve `A_dev` and the old `C_dev - A_dev` result for audit, but
+replace it as headline with `C_session - A_session`. Define `A_session` as the
+fixed `A_dev` logit plus three unpenalized one-hot/no-intercept server-time
+effects on `[12,16)`, `[16,20)`, and `[20,24)`. Define `C_session` as the fixed
+`A_session` offset plus the full price allowlist with no free intercept. Select
+its lambda anew using the existing development-only GroupKFold protocol.
+
+Move unlock range-width features from `boundary` to
+`volatility_liquidity`. Add a reduced `C_shape` model using motion and true
+boundary features only; it reuses the selected `C_session` lambda and is an
+external secondary diagnostic without an independent verdict. LOSO must refit
+`A_dev`, all session effects, preprocessing, selection, and price models.
+
+Reason: Independent review showed that deterministic time-of-day context was
+available to the price package but absent from the age baseline. Comparing the
+old price model against a newly fitted session baseline without refitting the
+price model was invalid. A two-dummy/no-intercept prototype also accidentally
+fixed the first block effect at zero, so the exact three-effect
+parameterization is part of the contract.
+
+Consequences: Development and 2026-07-24 remain diagnostic and cannot create
+a verdict. The server UTC+3 mapping is still an unconfirmed D-007 inference.
+Only unseen 2026-07-27..29 data may gate the amended headline. A fresh
+independent Claude re-review is required because this remediation was
+implemented by the same developer after the prior review.

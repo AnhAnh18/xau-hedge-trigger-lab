@@ -304,3 +304,21 @@ price verdict. Because this is a single-developer implementation and the
 preregistration required a post-merge nine-versus-11 bucket correction, an
 independent Claude re-review is a blocking merge gate. Only 2026-07-27..29 can
 satisfy the external validation gate; no tradeable-edge claim is permitted.
+
+## M5-003 session-baseline remediation — 2026-07-27
+
+Independent review found that the full price package encoded deterministic
+server-time context absent from `A_dev`. Before any registered external data
+was loaded, the headline was amended to `C_session - A_session` using fixed
+server blocks `[12,16)`, `[16,20)`, and `[20,24)`. `A_session` represents all
+three unpenalized block effects explicitly; `C_session` has no free intercept
+and reselects regularization with the unchanged development-only GroupKFold
+protocol. The old `C_dev - A_dev` result remains a superseded diagnostic.
+
+Unlock range-width features are classified as volatility/liquidity rather
+than boundary shape. A reduced `C_shape` model is review-driven and
+descriptive only; it cannot create an independent verdict or override the
+full-package headline. LOSO refits the age baseline, all session effects,
+preprocessing, regularization, and price models. The D-007 UTC+3 server mapping
+remains inferred, all internal results remain non-gating, and a fresh
+independent Claude re-review is required after this remediation.

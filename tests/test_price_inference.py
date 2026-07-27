@@ -10,10 +10,13 @@ from xau_trigger.price_inference import (
     fit_logistic_l2,
     fit_offset_intercept,
     fit_scaler,
+    fit_session_baseline,
     interval_model_deltas,
     predict_age_baseline,
     predict_logistic,
     predict_offset_intercept,
+    predict_session_baseline,
+    session_block_design,
     transform_features,
 )
 
@@ -133,6 +136,50 @@ def test_scaler_uses_only_supplied_training_rows() -> None:
     assert transformed[0, 0] == 99.0
 
 
+def test_session_baseline_uses_three_explicit_blocks_without_reference_omission() -> None:
+    frame = pd.DataFrame(
+        {
+            "bin_start": pd.to_datetime(
+                [
+                    "2026-07-23 12:30:00",
+                    "2026-07-23 12:31:00",
+                    "2026-07-23 16:30:00",
+                    "2026-07-23 16:31:00",
+                    "2026-07-23 20:30:00",
+                    "2026-07-23 20:31:00",
+                ]
+            ),
+            "target_label": [0, 1, 0, 1, 0, 1],
+        }
+    )
+    design = session_block_design(frame)
+    parameters = fit_session_baseline(frame, np.full(6, 0.2))
+    probabilities = predict_session_baseline(
+        frame, np.full(6, 0.2), parameters
+    )
+
+    assert np.array_equal(design, np.repeat(np.eye(3), 2, axis=0))
+    assert parameters["parameterization"] == (
+        "three_one_hot_block_effects_no_intercept"
+    )
+    assert parameters["server_hour_bounds"] == [[12, 16], [16, 20], [20, 24]]
+    assert parameters["parameters"]["fit_intercept"] is False
+    assert len(parameters["parameters"]["coefficients"]) == 3
+    assert np.isfinite(probabilities).all()
+
+
+def test_session_baseline_rejects_rows_outside_common_hours() -> None:
+    frame = pd.DataFrame(
+        {
+            "bin_start": pd.to_datetime(["2026-07-23 11:59:59"]),
+            "target_label": [0],
+        }
+    )
+
+    with pytest.raises(ValueError, match="common server hours"):
+        session_block_design(frame)
+
+
 def test_interval_deltas_pair_models_on_identical_rows() -> None:
     predictions = pd.DataFrame(
         {
@@ -145,8 +192,11 @@ def test_interval_deltas_pair_models_on_identical_rows() -> None:
             "p_A_common": [0.1, 0.1, 0.1],
             "p_A_level": [0.1, 0.1, 0.1],
             "p_A_dev": [0.2, 0.2, 0.2],
+            "p_A_session": [0.18, 0.18, 0.18],
             "p_B": [0.15, 0.25, 0.15],
             "p_C_dev": [0.1, 0.4, 0.1],
+            "p_C_session": [0.1, 0.45, 0.1],
+            "p_C_shape": [0.12, 0.35, 0.12],
         }
     )
 
@@ -155,3 +205,4 @@ def test_interval_deltas_pair_models_on_identical_rows() -> None:
     assert len(result) == 2
     event_interval = result[result["interval_id"].eq("i1")].iloc[0]
     assert event_interval["C_dev_minus_A_dev"] > 0
+    assert event_interval["C_session_minus_A_session"] > 0
