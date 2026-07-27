@@ -92,3 +92,67 @@
   paired interval inference, multiplicity families, and required ablations.
 - Added a machine-readable null-permitting merge contract. No M5-003 feature
   construction or model fitting was performed.
+
+## 2026-07-26 — M5-003 implementation authorization and grid correction
+
+- Merged M5-002 and the M5-003 preregistration in stacked order.
+- Detected that the preregistration listed nine age buckets while the frozen
+  M5-002 source, report, and parameter hash use 11.
+- Received explicit authorization to restore `[5,6)`, `[6,8)`, and `[8,10)`
+  before any M5-003 price fit; unlock now has seven floor-eligible buckets.
+- Added a blocking independent Claude re-review requirement because the
+  implementation is being produced by one developer.
+
+## 2026-07-26 — M5-003 causal price-increment implementation
+
+- Built causal endpoint-specific price features at one-second and
+  500-millisecond anchors with strict gap-aware joint-window validity.
+- Reproduced the pre-registered one-second attrition audit: 937 bins and three
+  targets; reproduced the 3,115-bin, zero-target unlock timer-floor exclusion.
+- Fit A_dev, B, and no-intercept C_dev using development-only interval
+  GroupKFold, deterministic one-standard-error regularization, required
+  ablations, and 5,000-draw interval bootstrap diagnostics.
+- Reconstructed and verified immutable M5-002 in-memory hashes without
+  changing any M2-M5-002 canonical output.
+- Froze the model manifest before evaluating the 2026-07-24 internal-reuse
+  session and reproduced all six generated outputs byte-for-byte on rerun.
+- Published internal reuse and leave-one-session-out results as diagnostics
+  only, with no price verdict and no tradeable-edge claim.
+- Left the implementation PR in draft pending independent Claude re-review;
+  the 2026-07-27..29 external-validation gate remains open.
+
+## 2026-07-27 — M5-003 CI portability remediation
+
+- GitHub CI exposed that raw text-byte hashes differed between Windows CRLF
+  and Linux LF checkouts even though the preregistration content was identical.
+- Canonicalized preregistration text hashes to UTF-8 with LF newlines while
+  preserving raw-byte hashing for binary data and private tick checksums.
+- Kept Draft PR #8 blocked on the same independent Claude re-review gate.
+
+## 2026-07-27 — M5-003 session-baseline remediation
+
+- Independently reproduced the review concern that the price package encoded
+  deterministic time-of-day context absent from `A_dev`.
+- Identified that the reviewer prototype used two dummies without an
+  intercept, silently fixing `[12,16)` to zero; locked three explicit block
+  effects instead.
+- Added development-only `A_session`, no-intercept `C_session`, fold-local
+  session fitting, nested lambda reselection, and full LOSO refits.
+- Repartitioned unlock range widths into volatility/liquidity and added the
+  review-driven `C_shape` diagnostic without an independent verdict.
+- Published all registered comparison, ablation, multiplicity, anchor, and
+  base-rate-stress tables in Markdown and JSON.
+- Preserved all M2–M5-002 canonical outputs and kept external 2026-07-27..29
+  data absent.
+- Kept Draft PR #8 blocked pending a fresh independent Claude re-review of
+  this single-developer remediation.
+
+## 2026-07-27 — M5-003 independent review accepted
+
+- Claude independently reproduced all three `A_session - A_dev` and
+  `C_session - A_session` values and accepted the remediation engineering.
+- Added the requested two-of-three positive external-session consistency gate.
+- Recorded that likelihood increments are not scale-free across endpoints or
+  sessions and kept ablation interpretation conditional and non-causal.
+- Required no feature/model refit; deterministic rebuild, hashes, tests,
+  privacy, and stacked M5-004 provenance are refreshed before merge.

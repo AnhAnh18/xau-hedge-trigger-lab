@@ -2,7 +2,7 @@
 
 ## Current phase
 
-M5 — Trigger Inference (M5-002 pilot complete; external validation pending)
+M5 — Trigger Inference (M5-003 frozen; independent review and external validation pending)
 
 ## Completed
 
@@ -50,6 +50,12 @@ M5 — Trigger Inference (M5-002 pilot complete; external validation pending)
 - Supplemental parameter-isolation hash and M2-M4 canonical tick protection
 - M5-002 aggregate report and deterministic local-output hashes
 - M5-003 causal price-increment preregistration and machine-readable contract
+- M5-003 causal price-feature construction at 1 second and 500 milliseconds
+- Development-only A_dev, A_session, B, C_dev, C_session, and C_shape fitting
+  with interval GroupKFold
+- Joint-valid feature accounting, required ablations, and LOSO diagnostics
+- Frozen M5-003 model manifest and deterministic aggregate report
+- Explicit single-developer Claude re-review gate before merge
 
 ## Current data
 
@@ -72,19 +78,23 @@ calendar sessions. The old within-interval conditional calculation is retained
 only as a degeneracy audit because its risk set ends at the observed outcome;
 it affects no verdict or gate.
 
-M5-003 inputs, endpoint feature allowlists, unlock timer-floor conditioning,
-pooled development scope, GroupKFold protocol, regularization, multiplicity,
-ablations, and null-permitting merge rules are now pre-registered. No M5-003
-feature or model code has been implemented.
+M5-003 now implements the locked endpoint feature allowlists, unlock timer-floor
+conditioning, joint-valid cohort, pooled-development GroupKFold, session-
+adjusted baseline, ablations, and interval-cluster inference. The old
+`C_dev - A_dev` comparison is superseded for inference because time-of-day was
+missing from the baseline. `C_session - A_session` is now the external
+headline; internal reuse and fully refit leave-one-session-out results are
+diagnostic only and cannot create a price verdict or tradeable-edge claim.
 
 ## Next executable task
+
+PR #8 may merge after the accepted-review follow-up commit passes CI. M5-003
+remains externally open after merge; merging the implementation does not create
+an endpoint verdict.
 
 M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
 sessions and a trade report covering their lifecycle events. Raw files remain
 outside Git. The intake code is ready; real acquisition remains pending.
-
-M5-003 implementation requires a separate explicit authorization after review
-of `.local_ai/M5_003_PREREGISTRATION.md`.
 
 The registered retrospective supplemental 2026-07-20 through 2026-07-22
 cohort now supplies common-hour per-session descriptive rates only. It is

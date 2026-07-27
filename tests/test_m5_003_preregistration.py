@@ -16,25 +16,32 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def test_m5_003_is_preregistered_without_implementation_authority() -> None:
+def _canonical_text_sha256(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return sha256(normalized.encode("utf-8")).hexdigest()
+
+
+def test_m5_003_is_preregistered_with_separate_implementation_authority() -> None:
     plan = _load(PLAN_PATH)
 
     assert plan["schema_version"] == 2
     assert plan["plan_id"] == "m5_003_causal_price_increment_v2"
-    assert plan["status"] == "preregistered_not_implemented"
+    assert plan["status"] == "preregistered_implementation_authorized"
+    assert plan["implementation_authorized_on"] == "2026-07-26"
     assert plan["amendment"]["price_models_fitted_before_amendment"] is False
     assert plan["amendment"]["external_labels_inspected"] is False
     assert plan["amendment"]["confirmatory_internal_verdict_allowed"] is False
-    assert plan["scope"]["current_task_authorizes_implementation"] is False
-    assert plan["scope"]["current_task_authorizes_price_model_fit"] is False
+    assert plan["scope"]["current_task_authorizes_implementation"] is True
+    assert plan["scope"]["current_task_authorizes_price_model_fit"] is True
     assert plan["scope"]["canonical_outputs_mutable"] is False
     assert plan["scope"]["tradeable_edge_claim_allowed"] is False
-    assert sha256(PLAN_PATH.read_bytes()).hexdigest() == (
-        "39543f09a9652dc7046dbbde69ec98d5ca657604d2184cfee0aa472ee473f386"
+    assert _canonical_text_sha256(PLAN_PATH) == (
+        "4da95ca8b787e201a77f03fcfe1bf40145752bb967d4d847325349c528f50616"
     )
     markdown = ROOT / ".local_ai" / "M5_003_PREREGISTRATION.md"
-    assert sha256(markdown.read_bytes()).hexdigest() == (
-        "fed5b0a7cdf6846e73bd9033cc51cabc787ea990d0ab09617fe3241b99aa0e41"
+    assert _canonical_text_sha256(markdown) == (
+        "f2de4323a0b0ee1e8e945c1a2b5a16b32afdc261bbbe709e35f83668eb831f7b"
     )
 
 
@@ -143,7 +150,9 @@ def test_m5_003_development_age_baseline_is_fixed_without_price_credit() -> None
         [1, 2],
         [2, 3],
         [3, 5],
-        [5, 10],
+        [5, 6],
+        [6, 8],
+        [8, 10],
         [10, 20],
         [20, 30],
         [30, 60],
@@ -155,9 +164,21 @@ def test_m5_003_development_age_baseline_is_fixed_without_price_credit() -> None
         "fail_before_price_fit_no_adaptive_merge_A_common_fallback_or_"
         "holdout_informed_repair"
     )
-    assert models["A_dev"]["unlock_floor_eligible_bucket_count"] == 5
+    assert len(models["A_dev"]["age_buckets_seconds"]) == 11
+    assert models["A_dev"]["unlock_floor_eligible_bucket_count"] == 7
     assert models["C_dev"]["free_intercept"] is False
     assert "logit(A_dev)" in models["C_dev"]["definition"]
+    assert models["C_dev"]["role"] == "superseded_diagnostic_preserved_for_audit"
+    assert models["A_session"]["server_time_blocks"] == [
+        [12, 16],
+        [16, 20],
+        [20, 24],
+    ]
+    assert models["A_session"]["parameterization"] == (
+        "three_one_hot_block_effects_no_intercept"
+    )
+    assert models["C_session"]["free_intercept"] is False
+    assert "logit(A_session)" in models["C_session"]["definition"]
     assert plan["preprocessing"][
         "a_dev_validation_probabilities_use_training_fold_bucket_parameters_only"
     ]
@@ -173,14 +194,16 @@ def test_m5_003_selection_inference_and_session_diagnostics_are_locked() -> None
     assert inference["bootstrap_cluster"] == "interval_id"
     assert inference["bootstrap_draws"] == 5000
     assert inference["headline_by_endpoint"] == (
-        "C_dev_minus_A_dev_on_primary_1000ms_anchor"
+        "C_session_minus_A_session_on_primary_1000ms_anchor"
     )
     assert inference["required_secondary"] == (
-        "C_dev_minus_B_on_primary_1000ms_anchor"
+        "C_session_minus_B_on_primary_1000ms_anchor"
     )
     assert inference["noninferential_transport_diagnostics"] == [
         "A_level_minus_A_common",
         "A_dev_minus_A_level",
+        "A_session_minus_A_dev",
+        "C_dev_minus_A_dev_superseded",
     ]
     assert inference["effect_magnitudes_comparable_across_endpoints"] is False
     assert inference["headline_family"]["comparisons"] == 3
@@ -195,10 +218,13 @@ def test_m5_003_selection_inference_and_session_diagnostics_are_locked() -> None
     )
     assert set(stability["refit_each_fold"]) == {
         "A_dev",
+        "A_session",
         "preprocessing",
         "lambda_selection",
         "B",
         "C_dev",
+        "C_session",
+        "C_shape",
     }
     assert plan["freeze_manifest"][
         "must_be_created_before_loading_2026_07_24_for_evaluation"
@@ -259,3 +285,24 @@ def test_m5_003_forbids_holdout_leakage_and_black_box_inputs() -> None:
         "directional_unlock_features",
     } <= forbidden
     assert plan["preprocessing"]["holdout_or_external_labels_allowed"] is False
+
+
+def test_m5_003_requires_independent_re_review_before_merge() -> None:
+    plan = _load(PLAN_PATH)
+    review = plan["independent_re_review"]
+
+    assert review["reviewer"] == "Claude"
+    assert review["required_before_merge"] is True
+    assert review["status"] == (
+        "independent_re_review_accepted_followups_applied"
+    )
+    assert review["accepted_on"] == "2026-07-27"
+    assert {
+        "M5-002 bucket-grid correction",
+        "joint-valid cohort and exclusion accounting",
+        "development internal-reuse and external leakage isolation",
+        "frozen-model manifest and parameter hashes",
+        "A_session C_session and C_shape parameterization",
+        "A_dev B and superseded C_dev diagnostics",
+        "report verdict language",
+    } == set(review["required_topics"])

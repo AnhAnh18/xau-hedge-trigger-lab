@@ -244,7 +244,8 @@ remediation.
 ## D-013 — Lock M5-003 development scope and price-increment estimand
 
 Date: 2026-07-26
-Status: Accepted before M5-003 feature construction or fitting
+Status: Accepted before M5-003 feature construction or fitting; model-baseline
+clauses superseded by D-014
 
 Decision: Pool retrospective 2026-07-20..22 with internal 2026-07-23 for
 development only. Freeze 2026-07-24 out of preprocessing, CV, fitting,
@@ -266,3 +267,68 @@ inspected in M4 and cannot honestly be called untouched.
 Consequences: Supplemental dates may train B/C but can never validate or gate.
 All fitting choices are locked before price construction. Null price findings
 are mergeable, and no result may be promoted to a tradeable-edge claim.
+
+## D-014 — Correct M5-003 age grid and require independent re-review
+
+Date: 2026-07-26
+Status: Accepted before M5-003 price-feature construction or fitting;
+supersedes D-013 only for the age grid and model-baseline comparison
+
+Decision: Fit `A_dev` on the exact 11-bucket M5-002 grid, including `[5,6)`,
+`[6,8)`, and `[8,10)`. Unlock's age-at-start floor therefore retains seven
+buckets, not five. Keep `A_common` frozen for provenance, use development-fit
+`A_dev` as the headline baseline, and compare `C_dev - A_dev` with no free
+intercept in `C_dev`.
+
+Reason: The merged M5-003 preregistration incorrectly listed nine buckets
+while simultaneously requiring the exact M5-002 grid. Source code, the
+committed M5-002 report, and fitted parameter hash all prove that M5-002 uses
+11 buckets. A nine-bucket `A_dev` would make the registered shape-transport
+diagnostic incompatible with `A_common` and would obscure the already locked
+six-second boundary.
+
+Consequences: This correction was made before any M5-003 price fit and changes
+no M5-002 output. Because one developer is implementing the pipeline, the
+completed Draft PR requires an independent Claude re-review covering this
+correction, cohort accounting, leakage controls, frozen hashes, comparisons,
+and verdict language before merge.
+
+## D-015 — Add a session-adjusted M5-003 baseline after independent review
+
+Date: 2026-07-27
+Status: Accepted review-driven remediation before external evaluation;
+supersedes D-014 only for the M5-003 headline baseline and price comparison
+
+Decision: Preserve `A_dev` and the old `C_dev - A_dev` result for audit, but
+replace it as headline with `C_session - A_session`. Define `A_session` as the
+fixed `A_dev` logit plus three unpenalized one-hot/no-intercept server-time
+effects on `[12,16)`, `[16,20)`, and `[20,24)`. Define `C_session` as the fixed
+`A_session` offset plus the full price allowlist with no free intercept. Select
+its lambda anew using the existing development-only GroupKFold protocol.
+
+Move unlock range-width features from `boundary` to
+`volatility_liquidity`. Add a reduced `C_shape` model using motion and true
+boundary features only; it reuses the selected `C_session` lambda and is an
+external secondary diagnostic without an independent verdict. LOSO must refit
+`A_dev`, all session effects, preprocessing, selection, and price models.
+
+Reason: Independent review showed that deterministic time-of-day context was
+available to the price package but absent from the age baseline. Comparing the
+old price model against a newly fitted session baseline without refitting the
+price model was invalid. A two-dummy/no-intercept prototype also accidentally
+fixed the first block effect at zero, so the exact three-effect
+parameterization is part of the contract.
+
+Consequences: Development and 2026-07-24 remain diagnostic and cannot create
+a verdict. The server UTC+3 mapping is still an unconfirmed D-007 inference.
+Only unseen 2026-07-27..29 data may gate the amended headline. A fresh
+independent Claude re-review is required because this remediation was
+implemented by the same developer after the prior review.
+
+Final review follow-up: External M5-003 support additionally requires positive
+point estimates in at least two of the three registered external sessions. A
+pooled positive familywise bound without that consistency is
+`mixed/inconclusive`. Paired likelihood magnitudes are not compared across
+endpoints or sessions because the base-rate stress proves they are not
+scale-free. Claude independently reproduced the remediation and accepted it
+after these bounded follow-ups; no additional model refit was requested.

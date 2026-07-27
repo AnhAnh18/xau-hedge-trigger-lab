@@ -149,3 +149,41 @@ Limitation: This is an internal Thursday-to-Friday pilot. It makes no
 tradeable-edge claim, occurrence likelihood remains base-rate-sensitive, and
 M5 cannot close before the pre-registered 2026-07-27 through 2026-07-29
 external evaluation.
+
+## F-009 — Session context explains part, but not all, of the internal package increment
+
+Status: Review-remediated and independently accepted; external validation
+pending
+Confidence: Preliminary
+
+Evidence at the one-second 2026-07-24 internal-reuse diagnostic:
+
+| Endpoint | A_session−A_dev | C_session−A_session | C_shape−A_session |
+| --- | ---: | ---: | ---: |
+| rehedge_buy_occurrence | 0.065349 | 0.081396 | 0.009696 |
+| rehedge_sell_occurrence | 0.132032 | 0.039308 | 0.030655 |
+| unlock_occurrence | 0.148346 | 0.080685 | 0.036852 |
+
+The ordinary 95% interval for the rehedge-sell residual full-price increment
+crosses zero (`-0.011776` to `0.091948`). The two other full-package intervals
+are positive internally. Required ablations remain correlated-group
+diagnostics and are not additive or causal decompositions.
+Across development and internal reuse, motion/boundary groups have small
+unique conditional ablation drops, while state-path and
+volatility/liquidity drops are larger. This does not identify a causal source
+or prove that price-shape information is absent.
+
+Finding: Under the amended model ladder, session-block transport exceeds the
+residual full-price increment for two of three endpoints on the single
+internal-reuse session. The residual price package does not disappear, but it
+cannot be interpreted as pure price action: it may still encode market regime,
+operating schedule, volatility, liquidity, and state path. The reduced shape
+diagnostic is materially smaller than the full package for buy and unlock.
+
+Limitation: These values motivated and were produced by a review-driven
+internal remediation. They cannot support, reject, or validate an endpoint.
+The server timezone is inferred rather than confirmed. Claude's fresh
+independent review accepted the remediation, and only the frozen
+2026-07-27..29 evaluation may create the M5-003 headline verdicts. Likelihood
+increments are not scale-free across endpoints or sessions. No result
+establishes a tradeable edge.

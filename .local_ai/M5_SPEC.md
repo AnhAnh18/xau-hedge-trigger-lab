@@ -272,10 +272,10 @@ zero by assumption.
 - M5-002 may report `pilot_complete_external_pending`, but M5 remains open
   until the 2026-07-27..29 external cohort is acquired and evaluated.
 
-## M5-003 preregistration — 2026-07-26
+## M5-003 preregistration and implementation amendment — 2026-07-26
 
-M5-003 implementation and price fitting are not yet authorized. The complete
-locked contract is:
+M5-003 implementation and price fitting were explicitly authorized after the
+preregistration review. The complete locked contract is:
 
 - `.local_ai/M5_003_PREREGISTRATION.md`;
 - `data/m5_003_preregistration.json`.
@@ -283,8 +283,8 @@ locked contract is:
 The preregistration locks immutable M5-002 hashes, endpoint-specific causal
 feature allowlists, unlock conditioning at state age five seconds,
 development-only GroupKFold and preprocessing, frozen A_common parameters,
-fixed L2 selection, paired interval inference, required ablations,
-multiplicity families, and a null-permitting merge gate.
+the exact 11-bucket A_dev grid, fixed L2 selection, paired interval inference,
+required ablations, multiplicity families, and a null-permitting merge gate.
 
 Retrospective 2026-07-20..22 joins development but can never validate or gate.
 The 2026-07-24 session remains excluded from fitting and tuning but is an
@@ -296,3 +296,37 @@ For M5-003, the earlier generic allowance for post-hoc holdout-intercept
 recalibration is superseded: holdout labels cannot be used for calibration,
 including diagnostics. Base-rate attenuation is evaluated only with the fixed
 development-label stress test registered in the M5-003 contract.
+
+The implementation is frozen with status
+`pipeline_frozen_external_pending_zero_validated_price_results`. Development
+and 2026-07-24 internal-reuse outputs are diagnostics only and cannot create a
+price verdict. Because this is a single-developer implementation and the
+preregistration required a post-merge nine-versus-11 bucket correction, an
+independent Claude re-review is a blocking merge gate. Only 2026-07-27..29 can
+satisfy the external validation gate; no tradeable-edge claim is permitted.
+
+## M5-003 session-baseline remediation — 2026-07-27
+
+Independent review found that the full price package encoded deterministic
+server-time context absent from `A_dev`. Before any registered external data
+was loaded, the headline was amended to `C_session - A_session` using fixed
+server blocks `[12,16)`, `[16,20)`, and `[20,24)`. `A_session` represents all
+three unpenalized block effects explicitly; `C_session` has no free intercept
+and reselects regularization with the unchanged development-only GroupKFold
+protocol. The old `C_dev - A_dev` result remains a superseded diagnostic.
+
+Unlock range-width features are classified as volatility/liquidity rather
+than boundary shape. A reduced `C_shape` model is review-driven and
+descriptive only; it cannot create an independent verdict or override the
+full-package headline. LOSO refits the age baseline, all session effects,
+preprocessing, regularization, and price models. The D-007 UTC+3 server mapping
+remains inferred, all internal results remain non-gating, and a fresh
+independent Claude re-review is required after this remediation.
+
+That review independently reproduced the session model and accepted the
+engineering result. Its final bounded follow-up adds a two-of-three positive
+external-session consistency gate to the pooled familywise rule. Likelihood
+increment magnitudes are explicitly non-comparable across sessions and
+endpoints. Internal ablations may describe small unique conditional value for
+motion/boundary versus larger state-path and volatility/liquidity drops, but
+cannot establish a causal source or absence of price-shape information.

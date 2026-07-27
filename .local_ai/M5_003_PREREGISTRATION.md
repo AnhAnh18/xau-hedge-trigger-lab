@@ -1,6 +1,7 @@
 # M5-003 Causal Price-Increment Preregistration
 
-Status: Registered on 2026-07-26; implementation and fitting have not started.
+Status: Registered on 2026-07-26; implementation authorized on 2026-07-26.
+No M5-003 price fit preceded the amendments recorded in this document.
 
 Machine-readable contract:
 `data/m5_003_preregistration.json`.
@@ -13,9 +14,10 @@ registered M5-003 development cohort. The frozen M5-002 baseline remains an
 immutable provenance and transport reference, not the price-increment
 headline baseline.
 
-This document authorizes no feature build or model fit. M2 through M5-002
-canonical outputs are immutable. P/L, entry lineage, black-box boosting,
-post-action ticks, and tradeable-edge claims remain out of scope.
+The user separately authorized the registered feature build and model fit on
+2026-07-26. M2 through M5-002 canonical outputs are immutable. P/L, entry
+lineage, black-box boosting, post-action ticks, and tradeable-edge claims
+remain out of scope.
 
 ## Immutable M5-002 input
 
@@ -115,6 +117,40 @@ specified `A_dev` below. This inspection means development and 2026-07-24 may
 produce diagnostics only; neither can produce a confirmatory supported,
 rejected, or absent-price verdict. No price coefficient, price likelihood, or
 external label was inspected to make this amendment.
+
+### Dated amendment after independent session-confounding review
+
+On 2026-07-27, after internal diagnostics but before loading any registered
+external 2026-07-27..29 data, independent review showed that deterministic
+server-time regime was encoded by the price package while absent from
+`A_dev`. This makes `C_dev - A_dev` a valid package increment but not a clean
+price-specific estimand. The result is retained as a superseded diagnostic and
+cannot produce a verdict.
+
+The primary baseline is amended to:
+
+```text
+logit(A_session) = logit(A_dev(age)) + gamma[server-time block]
+```
+
+The three fixed server-time blocks are `[12,16)`, `[16,20)`, and `[20,24)`.
+All three unpenalized block effects are represented by one-hot columns with no
+intercept. This is algebraically equivalent to an intercept plus two treatment
+contrasts; a two-dummy/no-intercept model that silently fixes the first block
+effect to zero is forbidden.
+
+Under the unconfirmed D-007 inference that server time is UTC+3, the blocks
+roughly represent London daytime/pre-New-York, New-York morning with partial
+London overlap, and New-York afternoon/late. These labels are design
+motivation only, depend on the timezone inference and July DST, and are not
+verified exchange-session classifications.
+
+The amended headline model is `C_session`: fixed `logit(A_session)` as a
+unit-coefficient offset plus the full endpoint price allowlist, with no free
+intercept. Its lambda is selected anew by the unchanged development-only
+GroupKFold/one-standard-error protocol. Neither internal results nor this
+amendment may create a verdict; only the still-unseen registered external
+sessions may do so.
 
 ## Price anchors and causal windows
 
@@ -277,16 +313,25 @@ All models are endpoint-specific discrete-time Bernoulli hazards.
 - `A_dev`: empirical state-age hazard refit on the exact endpoint-specific,
   joint-valid M5-003 development bins with the same registered age grid and
   Jeffreys smoothing `alpha=0.5` as M5-002:
-  `[0,1)`, `[1,2)`, `[2,3)`, `[3,5)`, `[5,10)`, `[10,20)`, `[20,30)`,
-  `[30,60)`, and `[60,+inf)`. Unlock primary inference uses only the five
-  floor-eligible buckets beginning at age five. The grid and smoothing are
+  `[0,1)`, `[1,2)`, `[2,3)`, `[3,5)`, `[5,6)`, `[6,8)`, `[8,10)`,
+  `[10,20)`, `[20,30)`, `[30,60)`, and `[60,+inf)`. Unlock primary inference
+  uses only the seven floor-eligible buckets beginning at age five. The grid and smoothing are
   fixed; there is no bucket or smoothing selection.
+- `A_session`: fixed `logit(A_dev)` plus three unpenalized development-only
+  server-time block effects using the exact one-hot/no-intercept contract
+  above. It is the amended headline baseline.
 - `B`: unweighted logistic hazard with an unpenalized intercept and exactly the
   endpoint price allowlist. State age is forbidden.
 - `C_dev`: fixed `logit(A_dev)` as a unit-coefficient offset plus exactly the
   endpoint price allowlist. The offset has no free coefficient and `C_dev` has
-  no free intercept. This prevents either level or age-shape repair from being
-  called price information.
+  no free intercept. It is retained only as a superseded audit diagnostic.
+- `C_session`: fixed `logit(A_session)` as a unit-coefficient offset plus
+  exactly the endpoint price allowlist, with no free intercept. This is the
+  amended headline model.
+- `C_shape`: fixed `logit(A_session)` plus the review-driven reduced
+  price-shape allowlist below, with no free intercept. It reuses the selected
+  `C_session` lambda and is an external secondary diagnostic without an
+  independent supported/rejected verdict.
 
 No class weighting, interaction search, nonlinear tree/boosting model, or
 automatic feature selection is allowed.
@@ -306,17 +351,19 @@ Within each training fold:
 
 - `A_dev` is fit only from training-fold interval clusters and its validation
   probabilities use those training-fold bucket parameters;
+- `A_session` block effects are fit only on training-fold rows and applied
+  unchanged to validation rows;
 - continuous and binary features are centered by the training-fold mean and
   divided by the training-fold standard deviation;
 - a zero standard deviation is replaced by one without dropping the feature;
 - validation-fold values never affect transformations;
 - no imputation is performed.
 
-After selecting regularization, `A_dev`, transformations, and price models are
-refit once on all development rows and frozen before 2026-07-24 is loaded for
-evaluation.
+After selecting regularization, `A_dev`, `A_session`, transformations, and
+price models are refit once on all development rows and frozen before any
+external evaluation. The 2026-07-24 reuse data cannot enter fitting.
 
-B and `C_dev` use L2 regularization on price coefficients only:
+B, `C_dev`, and `C_session` use L2 regularization on price coefficients only:
 
 ```text
 lambda ∈ {0.0001, 0.001, 0.01, 0.1, 1, 10}
@@ -325,8 +372,9 @@ lambda ∈ {0.0001, 0.001, 0.01, 0.1, 1, 10}
 The CV score is mean per-interval Bernoulli log likelihood: bin log
 likelihoods are summed within interval, then averaged across intervals. Select
 the largest lambda within one standard error of the best mean score. Ties
-therefore choose stronger regularization. B and `C_dev` select lambda
-separately by endpoint. No random search or post-holdout retuning is permitted.
+therefore choose stronger regularization. B, `C_dev`, and `C_session` select
+lambda separately by endpoint. `C_shape` reuses the selected `C_session`
+lambda. No random search or post-holdout retuning is permitted.
 
 The frozen model manifest must hash the development cohort and joint-valid row
 IDs, `A_dev` bucket parameters, every model intercept that exists,
@@ -336,10 +384,11 @@ available or absent.
 
 Because four development sessions cannot identify between-session variance,
 the implementation must also run a four-fold leave-one-session-out diagnostic.
-Each fold refits `A_dev`, preprocessing, lambda selection, B, and `C_dev`
-without the held-out session. Lambda selection is nested GroupKFold using only
-the remaining training-session intervals. This diagnostic reports the session
-spread of `C_dev - A_dev`; it cannot select a model, alter the frozen
+Each fold refits `A_dev`, all three `A_session` block effects, preprocessing,
+lambda selection, B, `C_dev`, `C_session`, and `C_shape` without the held-out
+session. Lambda selection is nested GroupKFold using only the remaining
+training-session intervals. This diagnostic reports the session spread of
+`C_session - A_session`; it cannot select a model, alter the frozen
 full-development fit, or create a verdict.
 
 ## Inference and multiplicity
@@ -356,7 +405,7 @@ draws of `interval_id` clusters with seed base 5003.
 The single headline comparison for each endpoint is:
 
 ```text
-C_dev - A_dev at the one-second anchor
+C_session - A_session at the one-second anchor
 ```
 
 The three endpoint headlines form one family. Family-wise alpha is 0.05 using
@@ -366,20 +415,26 @@ published but cannot create a supported verdict.
 
 Required secondary families are:
 
-- `C_dev - B`, three endpoints, Bonferroni `alpha/3`;
-- four `C_dev` feature-group ablations per endpoint, 12 comparisons, Bonferroni
+- `C_session - B`, three endpoints, Bonferroni `alpha/3`;
+- four `C_session` feature-group ablations per endpoint, 12 comparisons, Bonferroni
   `alpha/12`;
-- 500 ms anchor `C_dev - A_dev`, three endpoints, Bonferroni `alpha/3`,
+- 500 ms anchor `C_session - A_session`, three endpoints, Bonferroni `alpha/3`,
   non-gating.
+
+The review-driven `C_shape - A_session` comparison is published for all three
+endpoints as an external secondary diagnostic. It receives no independent
+supported/rejected label and cannot override the full-package headline. Its
+internal and 2026-07-24 values are explicitly post-review diagnostics only.
 
 Calibration, coefficients, event rank, and individual features are descriptive
 only and receive no inferential verdict.
 
-`A_level - A_common` (level transport) and `A_dev - A_level` (shape transport)
-must also be published, but are descriptive diagnostics outside every
-multiplicity family. Effect magnitudes must not be compared across unlock and
-re-hedge endpoints because their estimands, timer-floor support, and base rates
-differ.
+`A_level - A_common` (level transport), `A_dev - A_level` (age-shape
+transport), and `A_session - A_dev` (session transport) must also be
+published, but are descriptive diagnostics outside every multiplicity family.
+The superseded `C_dev - A_dev` is retained for audit only. Effect magnitudes
+must not be compared across unlock and re-hedge endpoints because their
+estimands, timer-floor support, and base rates differ.
 
 The interval-cluster bootstrap is conditional on the observed sessions and
 does not estimate between-session population variance. Development
@@ -388,16 +443,24 @@ alongside pooled results.
 
 ## Required ablations
 
-Refit `C_dev` after removing exactly one registered group:
+Refit `C_session` after removing exactly one registered group:
 
 - re-hedge: `motion`, `boundary`, `state_path`,
   `volatility_liquidity`;
-- unlock: `magnitude_motion`, `boundary_magnitude`, `state_path`,
+- unlock: `magnitude_motion`, `boundary`, `state_path`,
   `volatility_liquidity`.
 
-Each reduced model uses the full `C_dev` model's selected lambda.
+For unlock, `boundary` contains only the two prior-boundary touch indicators.
+`range_width_2s`, `range_width_5s`, and `range_width_10s` move to
+`volatility_liquidity`; they measure range scale rather than boundary shape.
+
+The `C_shape` allowlist is `motion + boundary` for re-hedge and
+`magnitude_motion + boundary` for unlock after that repartition. This is a new
+reduced model, not an algebraic reading of leave-one-group-out ablations.
+
+Each reduced model uses the full `C_session` model's selected lambda.
 Hyperparameters are not reselected. The paired metric is
-`full C_dev - ablated C_dev`.
+`full C_session - ablated C_session`.
 
 ## Decision rules
 
@@ -411,8 +474,10 @@ pipeline_frozen_external_pending_zero_validated_price_results
 Only 2026-07-27..29 may produce an endpoint verdict. External evidence that
 price adds information requires:
 
-1. mean `C_dev - A_dev > 0`; and
-2. its family-wise one-sided lower bound is greater than zero.
+1. mean `C_session - A_session > 0`; and
+2. its family-wise one-sided lower bound is greater than zero; and
+3. at least two of the three registered external-session point estimates are
+   positive.
 
 If the mean is positive but the family-wise bound is not, the result is
 `weak/inconclusive`. If the entire ordinary 95% interval is non-positive, the
@@ -420,6 +485,11 @@ price increment is `rejected for this design`. None of these labels is a
 tradeable-edge statement or evidence about broader session populations.
 Retrospective development and internal reuse diagnostics cannot satisfy or
 change this gate.
+
+A positive pooled family-wise bound with fewer than two positive external
+session means is `mixed/inconclusive`, not supported. All three registered
+external sessions must be present for the consistency gate; a missing session
+cannot be replaced by a development, internal-reuse, or retrospective session.
 
 The observed 2.1x development/holdout base-rate difference is expected to
 attenuate richer-model paired increments by roughly 7% in the existing
@@ -429,6 +499,13 @@ and estimate must be published. M5-003 may reproduce it only as a
 development-label stress test using the fixed intercept shift `-log(2.1)`;
 holdout-label recalibration is forbidden even as a diagnostic. A null of
 approximately that relative magnitude is not evidence of absence.
+For the session-remediated ladder, the realized fixed-shift result must be
+published even when its direction or magnitude differs from the earlier 7%
+expectation; the expectation is not a target, correction, or decision margin.
+The paired likelihood increment is not scale-free. Its magnitude must not be
+compared across endpoints or sessions, and base-rate changes can alter it
+mechanically. The sign remains an evaluation-distribution-specific predictive
+comparison, not a transportable effect size.
 
 ## Future outputs and merge gate
 
@@ -445,11 +522,11 @@ An M5-003 implementation may merge with supported, null, inconclusive, or
 rejected price findings if:
 
 - immutable hashes match and M2–M5-002 outputs are unchanged;
-- `A_common`/`A_level`/`A_dev`/B/`C_dev` use identical endpoint-specific
-  evaluation bins;
+- `A_common`/`A_level`/`A_dev`/`A_session`/B/`C_dev`/`C_session`/`C_shape`
+  use identical endpoint-specific evaluation bins;
 - unlock floor conditioning and all exclusions reconcile;
-- development-only `A_dev`, preprocessing, GroupKFold, leave-one-session-out
-  diagnostics, and frozen model hashes are proven;
+- development-only `A_dev`, `A_session`, preprocessing, GroupKFold,
+  leave-one-session-out diagnostics, and frozen model hashes are proven;
 - parameter hashes are unchanged by the presence or absence of 2026-07-24;
 - every registered comparison, ablation, and multiplicity family is reported;
 - retrospective, internal-reuse, and external roles remain separated;
@@ -457,3 +534,26 @@ rejected price findings if:
 - no P/L optimization or tradeable-edge conclusion appears.
 
 Null price findings are valid research results and do not block merge.
+
+## Independent re-review gate
+
+The 9-versus-11-bucket mismatch was discovered only after the preregistration
+PR had merged. This dated correction restores the exact M5-002 grid and does
+not inspect any M5-003 price fit. Because the implementation is being produced
+by one developer, the completed M5-003 branch requires an independent Claude
+re-review after this remediation before merge. The earlier review discovered
+the session-confounding problem but cannot approve code written afterward.
+The new review must explicitly cover the bucket correction, three-block
+`A_session` parameterization, fold-local block effects, joint-valid cohort
+accounting, leakage isolation, frozen-manifest hashes, unlock group
+repartition, model comparisons, and report verdict language. Until that review
+was recorded, the implementation PR remained draft and
+`independent_re_review_pending` was a blocking merge gate.
+
+Claude independently re-reviewed the session remediation on 2026-07-27,
+reproduced the three explicit block effects and all headline values, and
+accepted the engineering implementation subject to the bounded decision-rule
+and interpretation follow-ups above. Those follow-ups require no feature or
+model redesign. After their tests, deterministic rebuild, privacy scan, and
+hash refresh pass, the review status is
+`independent_re_review_accepted_followups_applied` and no longer blocks merge.
