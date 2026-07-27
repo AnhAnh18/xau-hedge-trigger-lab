@@ -330,3 +330,22 @@ increment magnitudes are explicitly non-comparable across sessions and
 endpoints. Internal ablations may describe small unique conditional value for
 motion/boundary versus larger state-path and volatility/liquidity drops, but
 cannot establish a causal source or absence of price-shape information.
+
+## M5-004 conditional unlock-cause preregistration — 2026-07-27
+
+M5-004 is registered before any cause-feature implementation or fit. Its exact
+contract is:
+
+- `.local_ai/M5_004_PREREGISTRATION.md`;
+- `data/m5_004_preregistration.json`.
+
+The estimand is event-level `P(UNLOCK_TO_BUY | eligible unlock occurred)`, not
+another occurrence hazard. Non-event risk bins, censored intervals, and
+competing endpoints cannot be cause negatives. The one-second headline uses a
+fixed state-age cause offset plus exactly 12 directional price features; the
+500-millisecond anchor is timing sensitivity.
+
+The contract is stacked on Draft PR #8. Any upstream review change requires a
+dated pre-fit hash amendment. Development and internal reuse cannot create a
+verdict; only the frozen 2026-07-27..29 evaluation can. Implementation and
+fitting require separate authorization after review.

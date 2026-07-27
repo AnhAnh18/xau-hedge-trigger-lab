@@ -332,3 +332,25 @@ pooled positive familywise bound without that consistency is
 endpoints or sessions because the base-rate stress proves they are not
 scale-free. Claude independently reproduced the remediation and accepted it
 after these bounded follow-ups; no additional model refit was requested.
+
+## D-016 — Treat unlock direction as a conditional event-level cause split
+
+Date: 2026-07-27
+Status: Pre-registered before M5-004 feature construction or fitting; stacked
+on the independently reviewed M5-003 implementation
+
+Decision: Model `P(UNLOCK_TO_BUY | eligible unlock occurred)` on one terminal
+event row per unlock. Use `UNLOCK_TO_BUY=1`, `UNLOCK_TO_SELL=0`, a fixed
+state-age cause baseline, and a 12-feature directional mid-price allowlist.
+Non-event risk bins, censoring, and competing endpoints are not cause
+negatives.
+
+Reason: The M5 roadmap defines unlock direction as a conditional cause, while
+M5-003 deliberately used only sign-agnostic unlock-occurrence features. Mixing
+occurrence risk bins into the cause task would answer a different question and
+inflate the apparent sample size.
+
+Consequences: Development 2026-07-20..23 and internal reuse 2026-07-24 cannot
+validate the cause model because their direction labels were already inspected.
+Only 2026-07-27..29 may create a verdict. M5-004 implementation still requires
+separate authorization after review of this preregistration.

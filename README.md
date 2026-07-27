@@ -38,6 +38,10 @@ remaining data task is to acquire the pre-registered 2026-07-27 through
 in external, access-controlled storage; only manifests, aggregate reports, and
 reproducible processing logic are committed.
 
+M5-004's conditional unlock-cause design is now pre-registered on a separate
+stacked branch. It contains no feature implementation or model fit and requires
+separate authorization after the M5-003 review.
+
 Rebuild the local M5-002 pilot outputs and aggregate report with:
 
 ```bash
