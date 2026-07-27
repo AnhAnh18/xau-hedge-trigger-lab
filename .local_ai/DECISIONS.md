@@ -324,3 +324,11 @@ a verdict. The server UTC+3 mapping is still an unconfirmed D-007 inference.
 Only unseen 2026-07-27..29 data may gate the amended headline. A fresh
 independent Claude re-review is required because this remediation was
 implemented by the same developer after the prior review.
+
+Final review follow-up: External M5-003 support additionally requires positive
+point estimates in at least two of the three registered external sessions. A
+pooled positive familywise bound without that consistency is
+`mixed/inconclusive`. Paired likelihood magnitudes are not compared across
+endpoints or sessions because the base-rate stress proves they are not
+scale-free. Claude independently reproduced the remediation and accepted it
+after these bounded follow-ups; no additional model refit was requested.

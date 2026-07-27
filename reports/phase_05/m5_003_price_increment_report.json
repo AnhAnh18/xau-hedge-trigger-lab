@@ -2,8 +2,8 @@
   "schema_version": 1,
   "milestone": "M5-003",
   "status": "pipeline_frozen_external_pending_zero_validated_price_results",
-  "preregistration_sha256": "f2fc71b43b8ad372eed47ad6d5b3d31747f76daf0e3a1c2ad8a3fd0df9668d64",
-  "frozen_manifest_sha256": "d1f1fa58264b159fdc22eb0413dc6dbdbd184dc2fc7eec15a1f304ebf2b7cf04",
+  "preregistration_sha256": "4da95ca8b787e201a77f03fcfe1bf40145752bb967d4d847325349c528f50616",
+  "frozen_manifest_sha256": "da2f9e0c66bdf8e51a349bc77db67fc3bbd1f8dc100d359890ac7ee54b14e747",
   "m5_002_rebuild_attestation": {
     "schema_version": 1,
     "source_file_sha256": {
@@ -3540,13 +3540,16 @@
     "development_verdict_allowed": false,
     "internal_reuse_verdict_allowed": false,
     "external_verdict_available": false,
+    "external_support_requires_positive_sessions": 2,
+    "registered_external_session_count": 3,
+    "missing_external_session_substitution_allowed": false,
     "price_information_verdict": "not_available_external_pending",
     "tradeable_edge_claimed": false
   },
   "merge_readiness": {
     "engineering_gates_pass": true,
-    "independent_re_review": "independent_re_review_pending",
-    "ready_to_merge": false
+    "independent_re_review": "independent_re_review_accepted_followups_applied",
+    "ready_to_merge": true
   },
   "external_gate": {
     "registered_sessions": [
@@ -3581,5 +3584,5 @@
     "reports/phase_05/m5_002_state_age_pilot.json": "faacde0db5f8eab00c95463d47cfd01eccdc4f8a0eb6090d4a50bf64c6e2d62f",
     "reports/phase_05/m5_002_state_age_pilot.md": "a286c261c9080d320ff571ffc532ae29a97211c5d943e79ba5df1cadb29b2fdd"
   },
-  "deterministic_report_sha256": "8107fc25df5817e0a878241e838269f7b9a01bc70234596277c79342112b40ac"
+  "deterministic_report_sha256": "9b6cc69feea7fd031c039a7af7f6cf8900c6fcc21cd952f6eb1a4ea5d6824eb1"
 }

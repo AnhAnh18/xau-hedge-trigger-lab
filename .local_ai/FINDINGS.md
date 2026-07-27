@@ -152,8 +152,8 @@ external evaluation.
 
 ## F-009 — Session context explains part, but not all, of the internal package increment
 
-Status: Review-remediated internal diagnostic; independent re-review and
-external validation pending
+Status: Review-remediated and independently accepted; external validation
+pending
 Confidence: Preliminary
 
 Evidence at the one-second 2026-07-24 internal-reuse diagnostic:
@@ -168,6 +168,10 @@ The ordinary 95% interval for the rehedge-sell residual full-price increment
 crosses zero (`-0.011776` to `0.091948`). The two other full-package intervals
 are positive internally. Required ablations remain correlated-group
 diagnostics and are not additive or causal decompositions.
+Across development and internal reuse, motion/boundary groups have small
+unique conditional ablation drops, while state-path and
+volatility/liquidity drops are larger. This does not identify a causal source
+or prove that price-shape information is absent.
 
 Finding: Under the amended model ladder, session-block transport exceeds the
 residual full-price increment for two of three endpoints on the single
@@ -178,6 +182,8 @@ diagnostic is materially smaller than the full package for buy and unlock.
 
 Limitation: These values motivated and were produced by a review-driven
 internal remediation. They cannot support, reject, or validate an endpoint.
-The server timezone is inferred rather than confirmed, a fresh Claude review
-is required before merge, and only the frozen 2026-07-27..29 evaluation may
-create the M5-003 headline verdicts. No result establishes a tradeable edge.
+The server timezone is inferred rather than confirmed. Claude's fresh
+independent review accepted the remediation, and only the frozen
+2026-07-27..29 evaluation may create the M5-003 headline verdicts. Likelihood
+increments are not scale-free across endpoints or sessions. No result
+establishes a tradeable edge.

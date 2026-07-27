@@ -30,12 +30,13 @@ external data was loaded. The frozen headline is now
 audit. Fixed server-time blocks, fully refit LOSO diagnostics, and the reduced
 shape diagnostic are documented in the M5-003 report.
 
-The remediated implementation Draft PR requires a fresh independent Claude
-re-review before merge because it was produced by one developer. The remaining data task is to
-acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick sessions
-and the covering MT5 report. Raw files remain in external, access-controlled
-storage; only manifests, aggregate reports, and reproducible processing logic
-are committed.
+Claude independently reproduced and accepted the remediated implementation.
+The bounded review follow-ups add an external two-of-three positive-session
+gate and stricter interpretation limits without changing the fitted model. The
+remaining data task is to acquire the pre-registered 2026-07-27 through
+2026-07-29 XAUUSD tick sessions and the covering MT5 report. Raw files remain
+in external, access-controlled storage; only manifests, aggregate reports, and
+reproducible processing logic are committed.
 
 Rebuild the local M5-002 pilot outputs and aggregate report with:
 

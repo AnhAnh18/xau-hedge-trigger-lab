@@ -322,3 +322,11 @@ full-package headline. LOSO refits the age baseline, all session effects,
 preprocessing, regularization, and price models. The D-007 UTC+3 server mapping
 remains inferred, all internal results remain non-gating, and a fresh
 independent Claude re-review is required after this remediation.
+
+That review independently reproduced the session model and accepted the
+engineering result. Its final bounded follow-up adds a two-of-three positive
+external-session consistency gate to the pooled familywise rule. Likelihood
+increment magnitudes are explicitly non-comparable across sessions and
+endpoints. Internal ablations may describe small unique conditional value for
+motion/boundary versus larger state-path and volatility/liquidity drops, but
+cannot establish a causal source or absence of price-shape information.

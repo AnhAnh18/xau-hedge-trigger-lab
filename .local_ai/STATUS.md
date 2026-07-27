@@ -88,11 +88,9 @@ diagnostic only and cannot create a price verdict or tradeable-edge claim.
 
 ## Next executable task
 
-T-022 — obtain a fresh independent Claude re-review of the remediated M5-003
-Draft PR. The review is a merge blocker and must cover the corrected 11-bucket
-age grid, exact three-block A_session parameterization, fold-local session
-effects, unlock group repartition, joint-valid accounting, leakage isolation,
-frozen hashes, model comparisons, and verdict language.
+PR #8 may merge after the accepted-review follow-up commit passes CI. M5-003
+remains externally open after merge; merging the implementation does not create
+an endpoint verdict.
 
 M5-001 — acquire the pre-registered 2026-07-27 through 2026-07-29 XAUUSD tick
 sessions and a trade report covering their lifecycle events. Raw files remain
@@ -105,8 +103,6 @@ non-gating and does not replace the pre-registered external sessions.
 ## Current blockers
 
 - Pre-registered external tick/report sessions are not yet available
-- Independent Claude re-review of the single-developer M5-003 implementation
-  is not yet recorded
 - Server timezone is inferred as UTC+3 for the current window but is not
   formally or globally confirmed
 - MT5 report event time has only second-level resolution

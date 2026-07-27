@@ -20,7 +20,8 @@ Development and 2026-07-24 are diagnostic only. The registered
   independent verdict.
 - D-007 server UTC+3 remains an inference; market-session labels are
   approximate and July-DST dependent.
-- A fresh independent Claude re-review is required after this code change.
+- Independent Claude re-review reproduced the remediation and accepted
+  it subject to the bounded follow-ups now applied.
 
 ## Feature accounting
 
@@ -132,6 +133,9 @@ The preregistered `-log(2.1)` development-label stress is
 non-gating and does not recalibrate internal or external labels.
 Its observed direction and magnitude are reported rather than
 replaced by the earlier approximate 7% expectation.
+Likelihood increments are not scale-free and must not be compared
+across endpoints or sessions; their sign is interpreted only for
+the observed evaluation distribution.
 
 | Endpoint | Original increment | Shifted increment | Relative change |
 | --- | ---: | ---: | ---: |
@@ -169,6 +173,18 @@ endpoints. Rehedge-sell had the smallest residual price increment and
 its ordinary 95% interval crossed zero. These are internal diagnostics,
 not endpoint verdicts or causal decompositions. Time-of-day may proxy
 market regime, operating schedule, or execution behavior.
+Across both internal roles, motion and boundary groups have little
+unique incremental value conditional on correlated features, while
+state-path and volatility/liquidity ablations are larger. This does
+not prove a causal source or establish that price-shape information
+is absent; external validation remains required.
+
+## External decision rule
+
+An endpoint is supported only if the pooled mean is positive, its
+Bonferroni familywise one-sided lower bound is above zero, and at least two of the three registered external-session means are positive.
+A positive pooled bound with fewer than two positive sessions is
+`mixed/inconclusive`. All three external sessions must be present.
 
 ## Validation and remaining gates
 
@@ -184,7 +200,7 @@ market regime, operating schedule, or execution behavior.
 - `all_A_dev_models_use_eleven_buckets`: PASS
 - `full_allowlist_internal_audit_reconciles_937_bins_3_targets`: PASS
 - `external_sessions_absent_and_not_substituted`: PASS
-- `independent_re_review_pending`: blocking merge after remediation.
+- `independent_re_review_accepted_followups_applied`: PASS.
 - `external_2026_07_27_29_pending`: M5 remains open.
 - No supported/rejected result is issued from development or internal reuse.
 - No P/L optimization or tradeable-edge claim was made.

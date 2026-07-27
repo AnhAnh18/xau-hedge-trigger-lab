@@ -465,7 +465,9 @@
   "decision_rule": {
     "pre_external_status": "pipeline_frozen_external_pending_zero_validated_price_results",
     "development_and_internal_reuse_verdict_allowed": false,
-    "external_price_information_supported": "mean_C_session_minus_A_session_positive_and_familywise_one_sided_lower_bound_above_zero",
+    "external_price_information_supported": "mean_C_session_minus_A_session_positive_and_familywise_one_sided_lower_bound_above_zero_and_at_least_two_of_three_external_session_means_positive",
+    "external_session_consistency_gate": "at_least_two_of_three_registered_external_session_means_positive",
+    "external_mixed_or_inconclusive": "pooled_familywise_lower_bound_above_zero_but_fewer_than_two_external_session_means_positive",
     "external_weak_or_inconclusive": "mean_positive_but_familywise_lower_bound_not_above_zero_or_interval_straddles_zero",
     "external_rejected_for_this_design": "ordinary_two_sided_95_percent_interval_upper_bound_below_or_equal_zero",
     "external_gate": "frozen C_session_minus_A_session rule on the registered 2026-07-27_29 cohort only",
@@ -482,7 +484,8 @@
     "not_log_likelihood_units": true,
     "cannot_change_verdict_or_gate": true,
     "session_remediation_contract": "publish_realized_fixed_shift_stress_even_if_direction_or_magnitude_differs_from_the_earlier_7_percent_expectation",
-    "interpretation": "a null effect of approximately this relative magnitude is not evidence of absence"
+    "interpretation": "a null effect of approximately this relative magnitude is not evidence of absence",
+    "magnitude_transport_warning": "paired_likelihood_increment_is_not_scale_free_and_must_not_be_compared_across_endpoints_or_sessions; sign_is_interpreted_only_for_the_observed_evaluation_distribution"
   },
   "forbidden": [
     "P/L",
@@ -531,7 +534,9 @@
     "reviewer": "Claude",
     "reason": "single-developer implementation plus post-merge 9-versus-11 bucket contract correction",
     "required_before_merge": true,
-    "status": "independent_re_review_pending",
+    "status": "independent_re_review_accepted_followups_applied",
+    "accepted_on": "2026-07-27",
+    "accepted_scope": "session_remediation_parameterization_refit_loso_reports_and_gates",
     "required_topics": [
       "M5-002 bucket-grid correction",
       "joint-valid cohort and exclusion accounting",

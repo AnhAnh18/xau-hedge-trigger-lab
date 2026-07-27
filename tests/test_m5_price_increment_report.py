@@ -42,15 +42,18 @@ def test_m5_003_report_is_frozen_external_pending_without_internal_verdict() -> 
         "development_verdict_allowed": False,
         "internal_reuse_verdict_allowed": False,
         "external_verdict_available": False,
+        "external_support_requires_positive_sessions": 2,
+        "registered_external_session_count": 3,
+        "missing_external_session_substitution_allowed": False,
         "price_information_verdict": "not_available_external_pending",
         "tradeable_edge_claimed": False,
     }
     assert report["external_gate"]["data_available"] is False
     assert report["external_gate"]["satisfied"] is False
     assert report["external_gate"]["m5_closed"] is False
-    assert report["merge_readiness"]["ready_to_merge"] is False
+    assert report["merge_readiness"]["ready_to_merge"] is True
     assert report["merge_readiness"]["independent_re_review"] == (
-        "independent_re_review_pending"
+        "independent_re_review_accepted_followups_applied"
     )
 
 
@@ -221,7 +224,8 @@ def test_m5_003_markdown_publishes_registered_comparison_families() -> None:
         "Registered one-second ablations",
         "500 ms causal-anchor sensitivity",
         "Multiplicity registry",
-        "independent_re_review_pending",
+        "independent_re_review_accepted_followups_applied",
+        "at least two of the three registered external-session means are positive",
     ]:
         assert required in markdown
 

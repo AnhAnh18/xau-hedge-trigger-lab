@@ -146,3 +146,13 @@
   data absent.
 - Kept Draft PR #8 blocked pending a fresh independent Claude re-review of
   this single-developer remediation.
+
+## 2026-07-27 — M5-003 independent review accepted
+
+- Claude independently reproduced all three `A_session - A_dev` and
+  `C_session - A_session` values and accepted the remediation engineering.
+- Added the requested two-of-three positive external-session consistency gate.
+- Recorded that likelihood increments are not scale-free across endpoints or
+  sessions and kept ablation interpretation conditional and non-causal.
+- Required no feature/model refit; deterministic rebuild, hashes, tests,
+  privacy, and stacked M5-004 provenance are refreshed before merge.

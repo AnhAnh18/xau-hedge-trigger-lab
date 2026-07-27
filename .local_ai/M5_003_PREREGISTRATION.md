@@ -475,7 +475,9 @@ Only 2026-07-27..29 may produce an endpoint verdict. External evidence that
 price adds information requires:
 
 1. mean `C_session - A_session > 0`; and
-2. its family-wise one-sided lower bound is greater than zero.
+2. its family-wise one-sided lower bound is greater than zero; and
+3. at least two of the three registered external-session point estimates are
+   positive.
 
 If the mean is positive but the family-wise bound is not, the result is
 `weak/inconclusive`. If the entire ordinary 95% interval is non-positive, the
@@ -483,6 +485,11 @@ price increment is `rejected for this design`. None of these labels is a
 tradeable-edge statement or evidence about broader session populations.
 Retrospective development and internal reuse diagnostics cannot satisfy or
 change this gate.
+
+A positive pooled family-wise bound with fewer than two positive external
+session means is `mixed/inconclusive`, not supported. All three registered
+external sessions must be present for the consistency gate; a missing session
+cannot be replaced by a development, internal-reuse, or retrospective session.
 
 The observed 2.1x development/holdout base-rate difference is expected to
 attenuate richer-model paired increments by roughly 7% in the existing
@@ -495,6 +502,10 @@ approximately that relative magnitude is not evidence of absence.
 For the session-remediated ladder, the realized fixed-shift result must be
 published even when its direction or magnitude differs from the earlier 7%
 expectation; the expectation is not a target, correction, or decision margin.
+The paired likelihood increment is not scale-free. Its magnitude must not be
+compared across endpoints or sessions, and base-rate changes can alter it
+mechanically. The sign remains an evaluation-distribution-specific predictive
+comparison, not a transportable effect size.
 
 ## Future outputs and merge gate
 
@@ -536,5 +547,13 @@ The new review must explicitly cover the bucket correction, three-block
 `A_session` parameterization, fold-local block effects, joint-valid cohort
 accounting, leakage isolation, frozen-manifest hashes, unlock group
 repartition, model comparisons, and report verdict language. Until that review
-is recorded, the implementation PR remains draft and
-`independent_re_review_pending` is a blocking merge gate.
+was recorded, the implementation PR remained draft and
+`independent_re_review_pending` was a blocking merge gate.
+
+Claude independently re-reviewed the session remediation on 2026-07-27,
+reproduced the three explicit block effects and all headline values, and
+accepted the engineering implementation subject to the bounded decision-rule
+and interpretation follow-ups above. Those follow-ups require no feature or
+model redesign. After their tests, deterministic rebuild, privacy scan, and
+hash refresh pass, the review status is
+`independent_re_review_accepted_followups_applied` and no longer blocks merge.

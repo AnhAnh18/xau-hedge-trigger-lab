@@ -37,11 +37,11 @@ def test_m5_003_is_preregistered_with_separate_implementation_authority() -> Non
     assert plan["scope"]["canonical_outputs_mutable"] is False
     assert plan["scope"]["tradeable_edge_claim_allowed"] is False
     assert _canonical_text_sha256(PLAN_PATH) == (
-        "f2fc71b43b8ad372eed47ad6d5b3d31747f76daf0e3a1c2ad8a3fd0df9668d64"
+        "4da95ca8b787e201a77f03fcfe1bf40145752bb967d4d847325349c528f50616"
     )
     markdown = ROOT / ".local_ai" / "M5_003_PREREGISTRATION.md"
     assert _canonical_text_sha256(markdown) == (
-        "c5c5e54417709175c5ab2b40d4865fea312f36b6cc38eae3523ac302bbe8adba"
+        "f2de4323a0b0ee1e8e945c1a2b5a16b32afdc261bbbe709e35f83668eb831f7b"
     )
 
 
@@ -293,7 +293,10 @@ def test_m5_003_requires_independent_re_review_before_merge() -> None:
 
     assert review["reviewer"] == "Claude"
     assert review["required_before_merge"] is True
-    assert review["status"] == "independent_re_review_pending"
+    assert review["status"] == (
+        "independent_re_review_accepted_followups_applied"
+    )
+    assert review["accepted_on"] == "2026-07-27"
     assert {
         "M5-002 bucket-grid correction",
         "joint-valid cohort and exclusion accounting",

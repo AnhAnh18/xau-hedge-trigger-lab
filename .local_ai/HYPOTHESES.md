@@ -83,7 +83,9 @@ Prediction:
 The single headline comparison per endpoint is `C_session - A_session` at the
 one-second anchor. The three endpoints form one Bonferroni-controlled family
 at family-wise alpha 0.05. Evidence requires a positive mean and a
-family-wise one-sided interval lower bound above zero.
+family-wise one-sided interval lower bound above zero, plus positive point
+estimates in at least two of the three registered external sessions. A pooled
+positive bound with fewer than two positive sessions is mixed/inconclusive.
 
 The exact input hashes, features, cohort roles, GroupKFold protocol,
 regularization grid, ablations, and null-permitting merge rule are locked in
