@@ -354,3 +354,28 @@ Consequences: Development 2026-07-20..23 and internal reuse 2026-07-24 cannot
 validate the cause model because their direction labels were already inspected.
 Only 2026-07-27..29 may create a verdict. M5-004 implementation still requires
 separate authorization after review of this preregistration.
+
+## D-017 — Disclose external qualitative exposure and exclude replicated quote gap
+
+Date: 2026-07-30
+Status: Accepted after raw acquisition inspection but before external feature
+construction or prediction
+
+Decision: Keep every M5-003 model and verdict rule frozen. Disclose that
+selected 2026-07-27 and 2026-07-28 operational screenshots were discussed
+before batch evaluation, so the external run is prospective but not
+analyst-blinded. Classify the independently replicated 2026-07-27
+18:08:35.303–18:10:21.660 interval as a source quote gap. Never interpolate
+it; exclude its risk time and every price window crossing it while retaining
+report events for lifecycle accounting.
+
+Reason: Two independent exports reproduce the same 106.357-second absence and
+boundary ticks, while the report records events inside the interval. Treating
+it as ordinary market support or fabricating prices would violate the causal
+feature contract. Claiming that all external labels remained unseen would
+also be inaccurate after the qualitative screenshot discussions.
+
+Consequences: The pooled and two-of-three session gates remain unchanged.
+External findings receive a disclosed qualitative-exposure limitation. No
+model refit, feature change, session substitution, or tradeable-edge claim is
+permitted.

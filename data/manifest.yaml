@@ -142,6 +142,20 @@ m5_003_pipeline:
   external_gate_satisfied: false
   raw_files_committed_to_git: false
 
+m5_003_external_amendment:
+  id: m5_003_external_intake_amendment_2026_07_30
+  recorded_on: "2026-07-30"
+  status: frozen_before_external_feature_construction_and_prediction
+  human_readable_plan: .local_ai/M5_003_EXTERNAL_AMENDMENT.md
+  human_readable_sha256: b8f793ae8d3a5cb0a6bd71b93892c9b294a970262e64a1db2b9a9e0e5c5ae313
+  machine_readable_plan: data/m5_003_external_amendment.json
+  machine_readable_sha256: 83ef117aee4fcb79967ba1aa398d9ee4a4dada30dbd8b6d21cb6ed4198be706c
+  text_hash_policy: canonical_utf8_lf
+  analyst_blinded: false
+  external_features_or_predictions_computed_before_amendment: false
+  replicated_source_quote_gap_seconds: 106.357
+  model_or_gate_changed: false
+
 m5_004_preregistration:
   id: m5_004_unlock_cause_v1
   registered_on: "2026-07-27"
