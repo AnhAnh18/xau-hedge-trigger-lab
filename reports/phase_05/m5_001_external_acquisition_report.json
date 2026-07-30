@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "milestone": "M5-001",
+  "status": "PASS_WITH_REPLICATED_SOURCE_QUOTE_GAP",
+  "amendment_id": "m5_003_external_intake_amendment_2026_07_30",
+  "sessions": [
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29"
+  ],
+  "ticks": {
+    "status": "PASS_WITH_REPLICATED_SOURCE_QUOTE_GAP",
+    "files": [
+      {
+        "file_alias": "tick-001",
+        "suffix": ".csv",
+        "bytes": 27542194,
+        "sha256": "ded63bcbb771fd5e18970674672961573416f556188623726aac04b119efa101",
+        "status": "PASS",
+        "rows": 642462,
+        "first_timestamp": "2026-07-27T01:00:00.757000",
+        "last_timestamp": "2026-07-27T23:57:58.013000",
+        "duplicate_millisecond_rows": 0,
+        "missing_quote_updates": {
+          "bid": 97788,
+          "ask": 97733
+        }
+      },
+      {
+        "file_alias": "tick-002",
+        "suffix": ".csv",
+        "bytes": 29291941,
+        "sha256": "955874623e6d84be62a8382dda4a8ffd55e49dc0f888d9dc63a98e9b5c48cf7f",
+        "status": "PASS",
+        "rows": 683869,
+        "first_timestamp": "2026-07-28T01:00:00.488000",
+        "last_timestamp": "2026-07-28T23:57:58.759000",
+        "duplicate_millisecond_rows": 0,
+        "missing_quote_updates": {
+          "bid": 105538,
+          "ask": 106207
+        }
+      },
+      {
+        "file_alias": "tick-003",
+        "suffix": ".csv",
+        "bytes": 30836075,
+        "sha256": "f4fd7b51f55db58a7e1d669095fbd54c2992f631310593a76ff0a7016ffaca63",
+        "status": "PASS",
+        "rows": 716152,
+        "first_timestamp": "2026-07-29T01:00:00.648000",
+        "last_timestamp": "2026-07-29T23:57:59.992000",
+        "duplicate_millisecond_rows": 0,
+        "missing_quote_updates": {
+          "bid": 99683,
+          "ask": 99005
+        }
+      }
+    ],
+    "sessions": [
+      {
+        "date": "2026-07-27",
+        "status": "PASS_WITH_REPLICATED_SOURCE_QUOTE_GAP",
+        "rows": 642462,
+        "first_timestamp": "2026-07-27T01:00:00.757000",
+        "last_timestamp": "2026-07-27T23:57:58.013000",
+        "starts_by_registered_limit": true,
+        "ends_by_registered_limit": true,
+        "has_no_intraday_coverage_gap": false,
+        "duplicate_millisecond_rows": 0,
+        "coverage_gap_count": 1,
+        "coverage_gaps": [
+          {
+            "start": "2026-07-27T18:08:35.303000",
+            "end": "2026-07-27T18:10:21.660000",
+            "duration_seconds": 106.357,
+            "classification": "replicated_source_quote_gap",
+            "recurring_clock_matches": 1,
+            "replicated_by_independent_export": true
+          }
+        ]
+      },
+      {
+        "date": "2026-07-28",
+        "status": "PASS",
+        "rows": 683869,
+        "first_timestamp": "2026-07-28T01:00:00.488000",
+        "last_timestamp": "2026-07-28T23:57:58.759000",
+        "starts_by_registered_limit": true,
+        "ends_by_registered_limit": true,
+        "has_no_intraday_coverage_gap": true,
+        "duplicate_millisecond_rows": 0,
+        "coverage_gap_count": 0,
+        "coverage_gaps": []
+      },
+      {
+        "date": "2026-07-29",
+        "status": "PASS",
+        "rows": 716152,
+        "first_timestamp": "2026-07-29T01:00:00.648000",
+        "last_timestamp": "2026-07-29T23:57:59.992000",
+        "starts_by_registered_limit": true,
+        "ends_by_registered_limit": true,
+        "has_no_intraday_coverage_gap": true,
+        "duplicate_millisecond_rows": 0,
+        "coverage_gap_count": 0,
+        "coverage_gaps": []
+      }
+    ],
+    "registered_sessions": [
+      "2026-07-27",
+      "2026-07-28",
+      "2026-07-29"
+    ],
+    "unexpected_dates_ignored": [],
+    "all_coverage_gaps": [
+      {
+        "start": "2026-07-27T18:08:35.303000",
+        "end": "2026-07-27T18:10:21.660000",
+        "duration_seconds": 106.357,
+        "classification": "unknown_coverage_gap",
+        "recurring_clock_matches": 1
+      },
+      {
+        "start": "2026-07-27T23:57:58.013000",
+        "end": "2026-07-28T01:00:00.488000",
+        "duration_seconds": 3722.475,
+        "classification": "unknown_coverage_gap",
+        "recurring_clock_matches": 2
+      },
+      {
+        "start": "2026-07-28T23:57:58.759000",
+        "end": "2026-07-29T01:00:00.648000",
+        "duration_seconds": 3721.889,
+        "classification": "unknown_coverage_gap",
+        "recurring_clock_matches": 2
+      }
+    ],
+    "cross_file_duplicate_timestamp_count": 0,
+    "duplicate_policy": "preserve_and_report_never_deduplicate"
+  },
+  "trade_reports": {
+    "status": "PASS",
+    "files": [
+      {
+        "file_alias": "report-001",
+        "suffix": ".html",
+        "bytes": 8117928,
+        "sha256": "57e58a6286777d4ee1ec74886b8ea2eb8bfd0eaacaad4250390e4d81861db45d",
+        "status": "PASS",
+        "sections": [
+          "deals",
+          "open_positions",
+          "orders",
+          "positions",
+          "summary"
+        ],
+        "missing_sections": [],
+        "positions": 2155,
+        "orders": 4311,
+        "deals": 4311,
+        "open_positions": 2,
+        "observed_event_dates": {
+          "2026-07-23": 1,
+          "2026-07-24": 3396,
+          "2026-07-27": 5252,
+          "2026-07-28": 1992,
+          "2026-07-29": 6396,
+          "2026-07-30": 208
+        }
+      }
+    ],
+    "sessions": [
+      {
+        "date": "2026-07-27",
+        "observed_event_count": 5252,
+        "status": "PASS"
+      },
+      {
+        "date": "2026-07-28",
+        "observed_event_count": 1992,
+        "status": "PASS"
+      },
+      {
+        "date": "2026-07-29",
+        "observed_event_count": 6396,
+        "status": "PASS"
+      }
+    ],
+    "required_period_start": "2026-07-26",
+    "required_period_end": "2026-08-01"
+  },
+  "privacy": {
+    "raw_files_committed_to_git": false,
+    "file_identifiers_are_generated_aliases": true,
+    "financial_values_emitted": false
+  },
+  "source_raw_validation_sha256": "044a2bb1151a964dbac3962e00a4d38225ff8955a71a6af78da8f93f5408e0a0",
+  "source_amended_validation_sha256": "4cce6079b1d4749ecaf8da1ca2e94aa37db6c488df009f17ab80dda314774739",
+  "deterministic_report_sha256": "2c1f944d933e712948b134e9b019647fcd355a9bac9c53dfebcf55fbc9220222"
+}

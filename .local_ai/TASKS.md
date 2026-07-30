@@ -15,7 +15,7 @@
 - [ ] T-013 M4-005 Model the 0–6s structural control-support gap ([#3](https://github.com/AnhAnh18/xau-hedge-trigger-lab/issues/3))
 - [x] T-014 M5-000 Lock timezone, roadmap, causal time support, and validation protocol
 - [x] T-017 Remediate M5-000 censoring, estimand, gap taxonomy, and comparison protocol
-- [ ] T-015 M5-001 Acquire pre-registered 2026-07-27 through 2026-07-29 tick/report sessions
+- [x] T-015 M5-001 Acquire pre-registered 2026-07-27 through 2026-07-29 tick/report sessions
 - [x] T-016 M5-002 Build state-age-only hazard pilot after acquisition gate review
 - [x] T-018 Build deterministic M5-001 acquisition validator and dry-run gate
 - [x] T-019 Register and validate retrospective supplemental ticks for 2026-07-20 through 2026-07-22
@@ -25,3 +25,6 @@
 - [x] T-023 Draft M5-004 conditional unlock-cause preregistration before fit
 - [ ] T-024 Review and authorize M5-004 implementation
 - [ ] T-025 Implement M5-004 conditional unlock-cause model
+- [x] T-026 Evaluate the frozen M5-003 models on registered external sessions
+- [ ] T-027 Obtain independent review of M5-003 external validation
+- [ ] T-028 Amend M5-004 provenance before any fit on already observed sessions

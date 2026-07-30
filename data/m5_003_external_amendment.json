@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "amendment_id": "m5_003_external_intake_amendment_2026_07_30",
+  "recorded_on": "2026-07-30",
+  "recorded_before_external_feature_construction": true,
+  "recorded_before_external_prediction": true,
+  "scope": {
+    "model_refit_allowed": false,
+    "preprocessing_refit_allowed": false,
+    "feature_selection_allowed": false,
+    "decision_rule_change_allowed": false,
+    "canonical_m2_through_m5_003_outputs_mutable": false
+  },
+  "qualitative_exposure": {
+    "external_sessions_are_analyst_blinded": false,
+    "selected_operational_screenshots_seen": true,
+    "sessions_partially_seen": [
+      "2026-07-27",
+      "2026-07-28"
+    ],
+    "raw_acquisition_metadata_inspected_before_amendment": true,
+    "external_features_or_predictions_computed_before_amendment": false,
+    "interpretation": "prospective frozen-model evaluation with disclosed qualitative exposure, not analyst-blinded validation"
+  },
+  "canonical_external_inputs": {
+    "tick_files": [
+      {
+        "alias": "external-tick-2026-07-27",
+        "sha256": "ded63bcbb771fd5e18970674672961573416f556188623726aac04b119efa101",
+        "first_timestamp": "2026-07-27T01:00:00.757000",
+        "last_timestamp": "2026-07-27T23:57:58.013000",
+        "rows": 642462
+      },
+      {
+        "alias": "external-tick-2026-07-28",
+        "sha256": "955874623e6d84be62a8382dda4a8ffd55e49dc0f888d9dc63a98e9b5c48cf7f",
+        "first_timestamp": "2026-07-28T01:00:00.488000",
+        "last_timestamp": "2026-07-28T23:57:58.759000",
+        "rows": 683869
+      },
+      {
+        "alias": "external-tick-2026-07-29",
+        "sha256": "f4fd7b51f55db58a7e1d669095fbd54c2992f631310593a76ff0a7016ffaca63",
+        "first_timestamp": "2026-07-29T01:00:00.648000",
+        "last_timestamp": "2026-07-29T23:57:59.992000",
+        "rows": 716152
+      }
+    ],
+    "trade_report": {
+      "alias": "external-report-2026-07-24-through-2026-07-30",
+      "sha256": "57e58a6286777d4ee1ec74886b8ea2eb8bfd0eaacaad4250390e4d81861db45d",
+      "clip_to_registered_sessions": [
+        "2026-07-27",
+        "2026-07-28",
+        "2026-07-29"
+      ]
+    },
+    "pre_weekend_context_tick_sha256": "572eecca1ef23b501d8c1023eb25da47b93afb7d03feb4af721b1ff6dc336f45"
+  },
+  "replicated_source_quote_gap": {
+    "session": "2026-07-27",
+    "start": "2026-07-27T18:08:35.303000",
+    "end": "2026-07-27T18:10:21.660000",
+    "duration_seconds": 106.357,
+    "classification": "replicated_source_quote_gap",
+    "canonical_export_sha256": "ded63bcbb771fd5e18970674672961573416f556188623726aac04b119efa101",
+    "replication_export_sha256": "32632fb9405dd0ae25d16fb5bb8444e4fe4aedfa31e2f32297284d2c46b3500f",
+    "same_boundary_ticks_in_both_exports": true,
+    "reported_events_inside_gap": true,
+    "interpolation_allowed": false,
+    "risk_support_policy": "exclude_gap_time_and_any_price_window_crossing_the_gap",
+    "event_policy": "retain_in_lifecycle_and_accounting_but_do_not_force_tick_alignment_or_price_features"
+  },
+  "external_decision_contract": {
+    "registered_sessions": [
+      "2026-07-27",
+      "2026-07-28",
+      "2026-07-29"
+    ],
+    "headline": "C_session_minus_A_session_at_1000ms",
+    "frozen_model_manifest_required": true,
+    "pooled_familywise_gate_unchanged": true,
+    "two_of_three_positive_session_gate_unchanged": true,
+    "null_findings_allowed": true,
+    "tradeable_edge_claim_allowed": false
+  }
+}

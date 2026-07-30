@@ -419,6 +419,8 @@ def attach_first_exclusion_reason(audit: pd.DataFrame) -> pd.DataFrame:
 def prepare_candidate_bins(
     risk_bins: pd.DataFrame,
     interval_audit: pd.DataFrame,
+    *,
+    role_by_date: dict[str, str] | None = None,
 ) -> pd.DataFrame:
     """Select registered common-hour M5-003 support and attach interval starts."""
     _require_columns(
@@ -449,7 +451,7 @@ def prepare_candidate_bins(
     source["session_date"] = pd.to_datetime(source["bin_start"]).dt.strftime(
         "%Y-%m-%d"
     )
-    roles = {
+    roles = role_by_date or {
         "2026-07-20": "development",
         "2026-07-21": "development",
         "2026-07-22": "development",
