@@ -1,0 +1,2946 @@
+{
+  "canonical_input_file_sha256_after": {
+    "data/interim/lifecycle_events.parquet": "de4c478e642c922a59b7a72029c0f48cb83ba2031d79e03b5d128826afe0b8fd",
+    "data/interim/m5_002/m5_002_risk_bin_audit.parquet": "19660420db133ae4b59b8adfb82690bfbb45d5638b5a30889daff9ac8a93a22c",
+    "data/interim/m5_003/m5_003_feature_audit.parquet": "3fb2bb6c63a35b41aff62c07a84a7f771c7afe8aa59a2f09dbcd037dbea47f66",
+    "data/interim/m5_003/m5_003_joint_valid_design_matrix.parquet": "7b12fc750aef95506331270f8b1c237de84cff3c57bb0ef65a8b089970313159",
+    "data/interim/state_intervals.parquet": "2146992995904fa68c0860a999438007424c5cb93349146cbc22b526d652fcd7",
+    "data/interim/ticks.parquet": "e42bc5abf82a3c75d65dec12007dd03824bd15139ba5ca46e5c270fab64d0936",
+    "reports/phase_05/m5_003_frozen_model_manifest.json": "699c576fbe720b80b0b022e8ff1eda423f019af8de8af90b8b81030cc86a6481",
+    "reports/phase_05/m5_003_price_increment_report.json": "948bee2649ef627ebbad60b402d667d83e5c0d171907e2db8358bd37c70d32d3"
+  },
+  "canonical_input_file_sha256_before": {
+    "data/interim/lifecycle_events.parquet": "de4c478e642c922a59b7a72029c0f48cb83ba2031d79e03b5d128826afe0b8fd",
+    "data/interim/m5_002/m5_002_risk_bin_audit.parquet": "19660420db133ae4b59b8adfb82690bfbb45d5638b5a30889daff9ac8a93a22c",
+    "data/interim/m5_003/m5_003_feature_audit.parquet": "3fb2bb6c63a35b41aff62c07a84a7f771c7afe8aa59a2f09dbcd037dbea47f66",
+    "data/interim/m5_003/m5_003_joint_valid_design_matrix.parquet": "7b12fc750aef95506331270f8b1c237de84cff3c57bb0ef65a8b089970313159",
+    "data/interim/state_intervals.parquet": "2146992995904fa68c0860a999438007424c5cb93349146cbc22b526d652fcd7",
+    "data/interim/ticks.parquet": "e42bc5abf82a3c75d65dec12007dd03824bd15139ba5ca46e5c270fab64d0936",
+    "reports/phase_05/m5_003_frozen_model_manifest.json": "699c576fbe720b80b0b022e8ff1eda423f019af8de8af90b8b81030cc86a6481",
+    "reports/phase_05/m5_003_price_increment_report.json": "948bee2649ef627ebbad60b402d667d83e5c0d171907e2db8358bd37c70d32d3"
+  },
+  "decision": {
+    "reason": "No M5-004 verdict is permitted before blind evaluation on the accepted 2026-08-03 through 2026-08-07 block.",
+    "seen_external_reuse_role": "descriptive_diagnostic_only",
+    "verdict": null
+  },
+  "deterministic_report_sha256": "ae517c43ef0884e2e98c6579cc32a34ba3c7f247fb6148e12e1a4d0da9a8a9ca",
+  "diagnostics": {
+    "1000": {
+      "development": {
+        "ablations": {
+          "boundary_side": {
+            "ci95_high": 2.6447399894980776e-05,
+            "ci95_low": -7.6848203786256e-06,
+            "cluster_count": 1444,
+            "draws": 5000,
+            "familywise_one_sided_low": -9.867619049148586e-06,
+            "mean": 9.065858387764152e-06
+          },
+          "momentum": {
+            "ci95_high": 0.0001217094606696352,
+            "ci95_low": 1.2816381768068171e-05,
+            "cluster_count": 1444,
+            "draws": 5000,
+            "familywise_one_sided_low": 5.7647158320382316e-06,
+            "mean": 6.685109410827669e-05
+          },
+          "range_location": {
+            "ci95_high": 0.00019992453280181434,
+            "ci95_low": -2.3167178455470213e-05,
+            "cluster_count": 1444,
+            "draws": 5000,
+            "familywise_one_sided_low": -3.7438800964423885e-05,
+            "mean": 9.014739471360101e-05
+          },
+          "state_path": {
+            "ci95_high": 8.673356618119203e-05,
+            "ci95_low": -9.518004522456604e-06,
+            "cluster_count": 1444,
+            "draws": 5000,
+            "familywise_one_sided_low": -1.671535565355368e-05,
+            "mean": 3.790496741450934e-05
+          }
+        },
+        "classification": {
+          "A_age_cause": {
+            "accuracy_at_fixed_0_5": 0.5297783933518005,
+            "auc": 0.5409836537354668,
+            "brier_score": 0.24835079115064107,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 641,
+                "mean_prediction": 0.4605280274703051,
+                "observed_fraction": 0.46021840873634945
+              },
+              {
+                "bin": 5,
+                "count": 803,
+                "mean_prediction": 0.5217010719252115,
+                "observed_fraction": 0.5217932752179327
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 295,
+              "false_positive": 384,
+              "true_negative": 346,
+              "true_positive": 419
+            },
+            "events": 1444,
+            "unlock_to_buy": 714,
+            "unlock_to_sell": 730
+          },
+          "A_const_cause": {
+            "accuracy_at_fixed_0_5": 0.5055401662049861,
+            "auc": 0.5,
+            "brier_score": 0.24996930657312086,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 1444,
+                "mean_prediction": 0.4944636678200692,
+                "observed_fraction": 0.49445983379501385
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 714,
+              "false_positive": 0,
+              "true_negative": 730,
+              "true_positive": 0
+            },
+            "events": 1444,
+            "unlock_to_buy": 714,
+            "unlock_to_sell": 730
+          },
+          "B_price_cause": {
+            "accuracy_at_fixed_0_5": 0.5069252077562327,
+            "auc": 0.5385403476459076,
+            "brier_score": 0.24987137095178824,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 1442,
+                "mean_prediction": 0.4944494093608583,
+                "observed_fraction": 0.49375866851595007
+              },
+              {
+                "bin": 5,
+                "count": 2,
+                "mean_prediction": 0.5019758508223617,
+                "observed_fraction": 1.0
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 712,
+              "false_positive": 0,
+              "true_negative": 730,
+              "true_positive": 2
+            },
+            "events": 1444,
+            "unlock_to_buy": 714,
+            "unlock_to_sell": 730
+          },
+          "C_age_price_cause": {
+            "accuracy_at_fixed_0_5": 0.5311634349030471,
+            "auc": 0.5487145543148766,
+            "brier_score": 0.24824768614068574,
+            "calibration": [
+              {
+                "bin": 3,
+                "count": 46,
+                "mean_prediction": 0.39941797584403427,
+                "observed_fraction": 0.4782608695652174
+              },
+              {
+                "bin": 4,
+                "count": 593,
+                "mean_prediction": 0.465339444947409,
+                "observed_fraction": 0.45699831365935917
+              },
+              {
+                "bin": 5,
+                "count": 805,
+                "mean_prediction": 0.5216869562024824,
+                "observed_fraction": 0.5229813664596273
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 293,
+              "false_positive": 384,
+              "true_negative": 346,
+              "true_positive": 421
+            },
+            "events": 1444,
+            "unlock_to_buy": 714,
+            "unlock_to_sell": 730
+          }
+        },
+        "comparisons": {
+          "C_age_price_cause_minus_A_age_cause": {
+            "ci95_high": 0.00034732978831945204,
+            "ci95_low": 5.880478195997703e-05,
+            "cluster_count": 1444,
+            "draws": 5000,
+            "familywise_one_sided_low": 8.220971183108568e-05,
+            "mean": 0.00020510863521262874
+          },
+          "C_age_price_cause_minus_B_price_cause": {
+            "ci95_high": 0.007381786453146594,
+            "ci95_low": -0.0009597874688868797,
+            "cluster_count": 1444,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.00030103098166391534,
+            "mean": 0.0032617182469008967
+          }
+        },
+        "daily": [
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.00035913716379204095,
+            "C_age_price_cause_minus_B_price_cause_mean": 0.0055324553730661035,
+            "events": 299,
+            "session_date": "2026-07-20"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": -6.973964284117784e-06,
+            "C_age_price_cause_minus_B_price_cause_mean": 0.0059017352987903934,
+            "events": 250,
+            "session_date": "2026-07-21"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.0001290044386504002,
+            "C_age_price_cause_minus_B_price_cause_mean": 0.0019599914628839273,
+            "events": 273,
+            "session_date": "2026-07-22"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.0002497108305348647,
+            "C_age_price_cause_minus_B_price_cause_mean": 0.001680394691178809,
+            "events": 622,
+            "session_date": "2026-07-23"
+          }
+        ],
+        "events": 1444,
+        "groups": 1444
+      },
+      "internal_reuse": {
+        "ablations": {
+          "boundary_side": {
+            "ci95_high": 5.70598911595975e-05,
+            "ci95_low": -1.1899142986652062e-05,
+            "cluster_count": 295,
+            "draws": 5000,
+            "familywise_one_sided_low": -1.6820961286448837e-05,
+            "mean": 2.150711303113933e-05
+          },
+          "momentum": {
+            "ci95_high": 0.0001130377801095896,
+            "ci95_low": -0.00010853066277356101,
+            "cluster_count": 295,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.00012178540969018839,
+            "mean": 3.933258611712303e-06
+          },
+          "range_location": {
+            "ci95_high": 0.0003293769983307905,
+            "ci95_low": -0.0001606549819769347,
+            "cluster_count": 295,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.00018964428456832373,
+            "mean": 8.673124975307789e-05
+          },
+          "state_path": {
+            "ci95_high": 9.526744000549028e-05,
+            "ci95_low": -0.00011921708632230405,
+            "cluster_count": 295,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.00013418650733576466,
+            "mean": -1.3415750176025115e-05
+          }
+        },
+        "classification": {
+          "A_age_cause": {
+            "accuracy_at_fixed_0_5": 0.4745762711864407,
+            "auc": 0.46923611111111113,
+            "brier_score": 0.25354936719979315,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 118,
+                "mean_prediction": 0.4597847726661285,
+                "observed_fraction": 0.5847457627118644
+              },
+              {
+                "bin": 5,
+                "count": 177,
+                "mean_prediction": 0.5222803255881647,
+                "observed_fraction": 0.5141242937853108
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 69,
+              "false_positive": 86,
+              "true_negative": 49,
+              "true_positive": 91
+            },
+            "events": 295,
+            "unlock_to_buy": 160,
+            "unlock_to_sell": 135
+          },
+          "A_const_cause": {
+            "accuracy_at_fixed_0_5": 0.4576271186440678,
+            "auc": 0.5,
+            "brier_score": 0.25049983166722106,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 295,
+                "mean_prediction": 0.49446366782006923,
+                "observed_fraction": 0.5423728813559322
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 160,
+              "false_positive": 0,
+              "true_negative": 135,
+              "true_positive": 0
+            },
+            "events": 295,
+            "unlock_to_buy": 160,
+            "unlock_to_sell": 135
+          },
+          "B_price_cause": {
+            "accuracy_at_fixed_0_5": 0.4576271186440678,
+            "auc": 0.5134722222222222,
+            "brier_score": 0.25046759933710266,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 295,
+                "mean_prediction": 0.49446549497669284,
+                "observed_fraction": 0.5423728813559322
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 160,
+              "false_positive": 0,
+              "true_negative": 135,
+              "true_positive": 0
+            },
+            "events": 295,
+            "unlock_to_buy": 160,
+            "unlock_to_sell": 135
+          },
+          "C_age_price_cause": {
+            "accuracy_at_fixed_0_5": 0.4745762711864407,
+            "auc": 0.4666666666666667,
+            "brier_score": 0.2535021808246807,
+            "calibration": [
+              {
+                "bin": 3,
+                "count": 3,
+                "mean_prediction": 0.3992494517308785,
+                "observed_fraction": 0.6666666666666666
+              },
+              {
+                "bin": 4,
+                "count": 115,
+                "mean_prediction": 0.46154218149946175,
+                "observed_fraction": 0.5826086956521739
+              },
+              {
+                "bin": 5,
+                "count": 177,
+                "mean_prediction": 0.5223467202016822,
+                "observed_fraction": 0.5141242937853108
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 69,
+              "false_positive": 86,
+              "true_negative": 49,
+              "true_positive": 91
+            },
+            "events": 295,
+            "unlock_to_buy": 160,
+            "unlock_to_sell": 135
+          }
+        },
+        "comparisons": {
+          "C_age_price_cause_minus_A_age_cause": {
+            "ci95_high": 0.0003893474090574615,
+            "ci95_low": -0.00019884873253629275,
+            "cluster_count": 295,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.00015734096314161093,
+            "mean": 9.421998335278555e-05
+          },
+          "C_age_price_cause_minus_B_price_cause": {
+            "ci95_high": 0.0029519155631830005,
+            "ci95_low": -0.01525958843745584,
+            "cluster_count": 295,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.013865266292021257,
+            "mean": -0.006150443454994596
+          }
+        },
+        "daily": [
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 9.421998335278555e-05,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.006150443454994596,
+            "events": 295,
+            "session_date": "2026-07-24"
+          }
+        ],
+        "events": 295,
+        "groups": 295
+      },
+      "seen_external_reuse_diagnostic": {
+        "ablations": {
+          "boundary_side": {
+            "ci95_high": 1.0419827058065593e-05,
+            "ci95_low": -2.4588867902030303e-05,
+            "cluster_count": 1282,
+            "draws": 5000,
+            "familywise_one_sided_low": -2.6868270192224484e-05,
+            "mean": -6.918461010042217e-06
+          },
+          "momentum": {
+            "ci95_high": 0.0002060959675310639,
+            "ci95_low": 3.384686974419195e-05,
+            "cluster_count": 1282,
+            "draws": 5000,
+            "familywise_one_sided_low": 2.339925892667526e-05,
+            "mean": 0.00011772906757418687
+          },
+          "range_location": {
+            "ci95_high": 0.0003295497464274491,
+            "ci95_low": 9.462668240488398e-05,
+            "cluster_count": 1282,
+            "draws": 5000,
+            "familywise_one_sided_low": 7.725381210085689e-05,
+            "mean": 0.00021230135742852753
+          },
+          "state_path": {
+            "ci95_high": 0.00011921470537020108,
+            "ci95_low": -2.0071395418324933e-05,
+            "cluster_count": 1282,
+            "draws": 5000,
+            "familywise_one_sided_low": -3.297743194984192e-05,
+            "mean": 4.743919940463473e-05
+          }
+        },
+        "classification": {
+          "A_age_cause": {
+            "accuracy_at_fixed_0_5": 0.4960998439937597,
+            "auc": 0.4967495904995905,
+            "brier_score": 0.2512359011115871,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 554,
+                "mean_prediction": 0.45880302943479834,
+                "observed_fraction": 0.48194945848375453
+              },
+              {
+                "bin": 5,
+                "count": 728,
+                "mean_prediction": 0.5245942181242622,
+                "observed_fraction": 0.4793956043956044
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 267,
+              "false_positive": 379,
+              "true_negative": 287,
+              "true_positive": 349
+            },
+            "events": 1282,
+            "unlock_to_buy": 616,
+            "unlock_to_sell": 666
+          },
+          "A_const_cause": {
+            "accuracy_at_fixed_0_5": 0.5195007800312013,
+            "auc": 0.5,
+            "brier_score": 0.24981472538196556,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 1282,
+                "mean_prediction": 0.49446366782006923,
+                "observed_fraction": 0.48049921996879874
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 616,
+              "false_positive": 0,
+              "true_negative": 666,
+              "true_positive": 0
+            },
+            "events": 1282,
+            "unlock_to_buy": 616,
+            "unlock_to_sell": 666
+          },
+          "B_price_cause": {
+            "accuracy_at_fixed_0_5": 0.5202808112324493,
+            "auc": 0.5724547599547599,
+            "brier_score": 0.24962191375934784,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 1281,
+                "mean_prediction": 0.494441911277919,
+                "observed_fraction": 0.48009367681498827
+              },
+              {
+                "bin": 5,
+                "count": 1,
+                "mean_prediction": 0.5007631817555136,
+                "observed_fraction": 1.0
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 615,
+              "false_positive": 0,
+              "true_negative": 666,
+              "true_positive": 1
+            },
+            "events": 1282,
+            "unlock_to_buy": 616,
+            "unlock_to_sell": 666
+          },
+          "C_age_price_cause": {
+            "accuracy_at_fixed_0_5": 0.4968798751950078,
+            "auc": 0.5082460707460708,
+            "brier_score": 0.25104934223263414,
+            "calibration": [
+              {
+                "bin": 3,
+                "count": 34,
+                "mean_prediction": 0.399261440936479,
+                "observed_fraction": 0.35294117647058826
+              },
+              {
+                "bin": 4,
+                "count": 519,
+                "mean_prediction": 0.4625999662433155,
+                "observed_fraction": 0.48940269749518306
+              },
+              {
+                "bin": 5,
+                "count": 729,
+                "mean_prediction": 0.5247400682751843,
+                "observed_fraction": 0.48010973936899864
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 266,
+              "false_positive": 379,
+              "true_negative": 287,
+              "true_positive": 350
+            },
+            "events": 1282,
+            "unlock_to_buy": 616,
+            "unlock_to_sell": 666
+          }
+        },
+        "comparisons": {
+          "C_age_price_cause_minus_A_age_cause": {
+            "ci95_high": 0.0005520460094028348,
+            "ci95_low": 0.00020310032081541062,
+            "cluster_count": 1282,
+            "draws": 5000,
+            "familywise_one_sided_low": 0.00022717758166532136,
+            "mean": 0.0003739430986411424
+          },
+          "C_age_price_cause_minus_B_price_cause": {
+            "ci95_high": 0.001620361667018394,
+            "ci95_low": -0.007282266323622531,
+            "cluster_count": 1282,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.006698814685296611,
+            "mean": -0.0028624071213938745
+          }
+        },
+        "daily": [
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.000562581001707831,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.004200872281161252,
+            "events": 435,
+            "session_date": "2026-07-27"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.0002767740448011293,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.0019067139259640795,
+            "events": 165,
+            "session_date": "2026-07-28"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.00027713284358189404,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.0022399101019614817,
+            "events": 682,
+            "session_date": "2026-07-29"
+          }
+        ],
+        "events": 1282,
+        "groups": 1282
+      }
+    },
+    "500": {
+      "development": {
+        "ablations": {
+          "boundary_side": {
+            "ci95_high": 3.8549611099168474e-05,
+            "ci95_low": -4.427563752264298e-06,
+            "cluster_count": 1445,
+            "draws": 5000,
+            "familywise_one_sided_low": -7.523052010705911e-06,
+            "mean": 1.71482847343133e-05
+          },
+          "momentum": {
+            "ci95_high": 0.00029955251127575456,
+            "ci95_low": 3.412334859640713e-05,
+            "cluster_count": 1445,
+            "draws": 5000,
+            "familywise_one_sided_low": 1.4760030843177051e-05,
+            "mean": 0.0001654363040363604
+          },
+          "range_location": {
+            "ci95_high": 0.0004971202554219066,
+            "ci95_low": 8.866431699767251e-05,
+            "cluster_count": 1445,
+            "draws": 5000,
+            "familywise_one_sided_low": 5.780450296888788e-05,
+            "mean": 0.0002922921926429493
+          },
+          "state_path": {
+            "ci95_high": 5.190367621744797e-05,
+            "ci95_low": -1.4063456573983706e-05,
+            "cluster_count": 1445,
+            "draws": 5000,
+            "familywise_one_sided_low": -1.9139070736771093e-05,
+            "mean": 1.8846582646784768e-05
+          }
+        },
+        "classification": {
+          "A_age_cause": {
+            "accuracy_at_fixed_0_5": 0.5301038062283737,
+            "auc": 0.5410776894338538,
+            "brier_score": 0.24834221150778163,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 641,
+                "mean_prediction": 0.4605280274703051,
+                "observed_fraction": 0.46021840873634945
+              },
+              {
+                "bin": 5,
+                "count": 804,
+                "mean_prediction": 0.5222944773663136,
+                "observed_fraction": 0.5223880597014925
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 295,
+              "false_positive": 384,
+              "true_negative": 346,
+              "true_positive": 420
+            },
+            "events": 1445,
+            "unlock_to_buy": 715,
+            "unlock_to_sell": 730
+          },
+          "A_const_cause": {
+            "accuracy_at_fixed_0_5": 0.5051903114186851,
+            "auc": 0.5,
+            "brier_score": 0.24997306068026104,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 1445,
+                "mean_prediction": 0.49481327800829883,
+                "observed_fraction": 0.49480968858131485
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 715,
+              "false_positive": 0,
+              "true_negative": 730,
+              "true_positive": 0
+            },
+            "events": 1445,
+            "unlock_to_buy": 715,
+            "unlock_to_sell": 730
+          },
+          "B_price_cause": {
+            "accuracy_at_fixed_0_5": 0.5252595155709343,
+            "auc": 0.552813487881981,
+            "brier_score": 0.24861536108983226,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 830,
+                "mean_prediction": 0.4823443195995869,
+                "observed_fraction": 0.4734939759036145
+              },
+              {
+                "bin": 5,
+                "count": 615,
+                "mean_prediction": 0.5116328695062428,
+                "observed_fraction": 0.5235772357723577
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 393,
+              "false_positive": 293,
+              "true_negative": 437,
+              "true_positive": 322
+            },
+            "events": 1445,
+            "unlock_to_buy": 715,
+            "unlock_to_sell": 730
+          },
+          "C_age_price_cause": {
+            "accuracy_at_fixed_0_5": 0.5335640138408304,
+            "auc": 0.5507175016764058,
+            "brier_score": 0.24808349172077407,
+            "calibration": [
+              {
+                "bin": 3,
+                "count": 54,
+                "mean_prediction": 0.39781483782065824,
+                "observed_fraction": 0.42592592592592593
+              },
+              {
+                "bin": 4,
+                "count": 578,
+                "mean_prediction": 0.4660348882901041,
+                "observed_fraction": 0.458477508650519
+              },
+              {
+                "bin": 5,
+                "count": 813,
+                "mean_prediction": 0.5220811482485023,
+                "observed_fraction": 0.5252152521525215
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 288,
+              "false_positive": 386,
+              "true_negative": 344,
+              "true_positive": 427
+            },
+            "events": 1445,
+            "unlock_to_buy": 715,
+            "unlock_to_sell": 730
+          }
+        },
+        "comparisons": {
+          "C_age_price_cause_minus_A_age_cause": {
+            "ci95_high": 0.0008394187874221956,
+            "ci95_low": 0.00017892470017206866,
+            "cluster_count": 1445,
+            "draws": 5000,
+            "familywise_one_sided_low": 0.0002321019487840475,
+            "mean": 0.0005156190560833489
+          },
+          "C_age_price_cause_minus_B_price_cause": {
+            "ci95_high": 0.005403397806582342,
+            "ci95_low": -0.0032426139580416743,
+            "cluster_count": 1445,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.0027188266470124438,
+            "mean": 0.0010729511629346926
+          }
+        },
+        "daily": [
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.00021800105098791268,
+            "C_age_price_cause_minus_B_price_cause_mean": 0.0030780130154102305,
+            "events": 300,
+            "session_date": "2026-07-20"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 5.143107432968641e-05,
+            "C_age_price_cause_minus_B_price_cause_mean": 0.0059385490490199595,
+            "events": 250,
+            "session_date": "2026-07-21"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": -9.538619985081896e-05,
+            "C_age_price_cause_minus_B_price_cause_mean": 0.002657295239128787,
+            "events": 273,
+            "session_date": "2026-07-22"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.0011139097825095135,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.002545125943279079,
+            "events": 622,
+            "session_date": "2026-07-23"
+          }
+        ],
+        "events": 1445,
+        "groups": 1445
+      },
+      "internal_reuse": {
+        "ablations": {
+          "boundary_side": {
+            "ci95_high": 9.36850754178756e-05,
+            "ci95_low": 3.4095832278902064e-06,
+            "cluster_count": 297,
+            "draws": 5000,
+            "familywise_one_sided_low": -2.1340070492297203e-06,
+            "mean": 4.805777905506809e-05
+          },
+          "momentum": {
+            "ci95_high": 0.00032000923988239396,
+            "ci95_low": -0.0002526956584170158,
+            "cluster_count": 297,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.0002975609937865201,
+            "mean": 3.605848635101526e-05
+          },
+          "range_location": {
+            "ci95_high": 0.0009088258425041671,
+            "ci95_low": 8.431017201776175e-06,
+            "cluster_count": 297,
+            "draws": 5000,
+            "familywise_one_sided_low": -5.353134223501342e-05,
+            "mean": 0.0004642751603763794
+          },
+          "state_path": {
+            "ci95_high": 6.104715647446479e-05,
+            "ci95_low": -8.929276709045561e-05,
+            "cluster_count": 297,
+            "draws": 5000,
+            "familywise_one_sided_low": -9.944833843348634e-05,
+            "mean": -1.3771292074716696e-05
+          }
+        },
+        "classification": {
+          "A_age_cause": {
+            "accuracy_at_fixed_0_5": 0.4713804713804714,
+            "auc": 0.4688640510948905,
+            "brier_score": 0.25364006170802,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 118,
+                "mean_prediction": 0.4597847726661285,
+                "observed_fraction": 0.5847457627118644
+              },
+              {
+                "bin": 5,
+                "count": 179,
+                "mean_prediction": 0.5227403602595393,
+                "observed_fraction": 0.5083798882681564
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 69,
+              "false_positive": 88,
+              "true_negative": 49,
+              "true_positive": 91
+            },
+            "events": 297,
+            "unlock_to_buy": 160,
+            "unlock_to_sell": 137
+          },
+          "A_const_cause": {
+            "accuracy_at_fixed_0_5": 0.4612794612794613,
+            "auc": 0.5,
+            "brier_score": 0.2504285674244439,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 297,
+                "mean_prediction": 0.4948132780082988,
+                "observed_fraction": 0.5387205387205387
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 160,
+              "false_positive": 0,
+              "true_negative": 137,
+              "true_positive": 0
+            },
+            "events": 297,
+            "unlock_to_buy": 160,
+            "unlock_to_sell": 137
+          },
+          "B_price_cause": {
+            "accuracy_at_fixed_0_5": 0.5656565656565656,
+            "auc": 0.5607664233576642,
+            "brier_score": 0.2489923941669884,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 170,
+                "mean_prediction": 0.4818846323427218,
+                "observed_fraction": 0.4764705882352941
+              },
+              {
+                "bin": 5,
+                "count": 127,
+                "mean_prediction": 0.5108701306581166,
+                "observed_fraction": 0.6220472440944882
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 81,
+              "false_positive": 48,
+              "true_negative": 89,
+              "true_positive": 79
+            },
+            "events": 297,
+            "unlock_to_buy": 160,
+            "unlock_to_sell": 137
+          },
+          "C_age_price_cause": {
+            "accuracy_at_fixed_0_5": 0.4882154882154882,
+            "auc": 0.4738594890510949,
+            "brier_score": 0.2533641876349819,
+            "calibration": [
+              {
+                "bin": 3,
+                "count": 5,
+                "mean_prediction": 0.39791578563631747,
+                "observed_fraction": 0.6
+              },
+              {
+                "bin": 4,
+                "count": 108,
+                "mean_prediction": 0.461142094100179,
+                "observed_fraction": 0.5648148148148148
+              },
+              {
+                "bin": 5,
+                "count": 184,
+                "mean_prediction": 0.5220276815566656,
+                "observed_fraction": 0.5217391304347826
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 64,
+              "false_positive": 88,
+              "true_negative": 49,
+              "true_positive": 96
+            },
+            "events": 297,
+            "unlock_to_buy": 160,
+            "unlock_to_sell": 137
+          }
+        },
+        "comparisons": {
+          "C_age_price_cause_minus_A_age_cause": {
+            "ci95_high": 0.001257939193202888,
+            "ci95_low": -0.00015919146951312745,
+            "cluster_count": 297,
+            "draws": 5000,
+            "familywise_one_sided_low": -4.240830941824196e-05,
+            "mean": 0.000554510508338177
+          },
+          "C_age_price_cause_minus_B_price_cause": {
+            "ci95_high": 0.000791113202882288,
+            "ci95_low": -0.01870230836070067,
+            "cluster_count": 297,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.01699075835930818,
+            "mean": -0.00882259505237679
+          }
+        },
+        "daily": [
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.000554510508338177,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.00882259505237679,
+            "events": 297,
+            "session_date": "2026-07-24"
+          }
+        ],
+        "events": 297,
+        "groups": 297
+      },
+      "seen_external_reuse_diagnostic": {
+        "ablations": {
+          "boundary_side": {
+            "ci95_high": 2.082513119524185e-05,
+            "ci95_low": -2.235934845416729e-05,
+            "cluster_count": 1284,
+            "draws": 5000,
+            "familywise_one_sided_low": -2.5952033101837215e-05,
+            "mean": -1.0898960351341385e-06
+          },
+          "momentum": {
+            "ci95_high": 0.00036851197580938406,
+            "ci95_low": -5.20778555057129e-06,
+            "cluster_count": 1284,
+            "draws": 5000,
+            "familywise_one_sided_low": -3.56028612364144e-05,
+            "mean": 0.0001882868597637987
+          },
+          "range_location": {
+            "ci95_high": 0.0007564038077278104,
+            "ci95_low": 0.000315908142504307,
+            "cluster_count": 1284,
+            "draws": 5000,
+            "familywise_one_sided_low": 0.0002832436381490403,
+            "mean": 0.000537467287389613
+          },
+          "state_path": {
+            "ci95_high": 8.414353628247081e-05,
+            "ci95_low": -1.5423948729637255e-05,
+            "cluster_count": 1284,
+            "draws": 5000,
+            "familywise_one_sided_low": -2.216945098130236e-05,
+            "mean": 3.284790518289628e-05
+          }
+        },
+        "classification": {
+          "A_age_cause": {
+            "accuracy_at_fixed_0_5": 0.4961059190031153,
+            "auc": 0.4973538352379726,
+            "brier_score": 0.2512168399990754,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 554,
+                "mean_prediction": 0.4588030294347984,
+                "observed_fraction": 0.48194945848375453
+              },
+              {
+                "bin": 5,
+                "count": 730,
+                "mean_prediction": 0.5250059787300658,
+                "observed_fraction": 0.4794520547945205
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 267,
+              "false_positive": 380,
+              "true_negative": 287,
+              "true_positive": 350
+            },
+            "events": 1284,
+            "unlock_to_buy": 617,
+            "unlock_to_sell": 667
+          },
+          "A_const_cause": {
+            "accuracy_at_fixed_0_5": 0.5194704049844237,
+            "auc": 0.5,
+            "brier_score": 0.24982492692957914,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 1284,
+                "mean_prediction": 0.49481327800829883,
+                "observed_fraction": 0.48052959501557635
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 617,
+              "false_positive": 0,
+              "true_negative": 667,
+              "true_positive": 0
+            },
+            "events": 1284,
+            "unlock_to_buy": 617,
+            "unlock_to_sell": 667
+          },
+          "B_price_cause": {
+            "accuracy_at_fixed_0_5": 0.5700934579439252,
+            "auc": 0.5872225961573508,
+            "brier_score": 0.24755354086457157,
+            "calibration": [
+              {
+                "bin": 4,
+                "count": 755,
+                "mean_prediction": 0.481739556787662,
+                "observed_fraction": 0.423841059602649
+              },
+              {
+                "bin": 5,
+                "count": 529,
+                "mean_prediction": 0.5122403664302505,
+                "observed_fraction": 0.5614366729678639
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 320,
+              "false_positive": 232,
+              "true_negative": 435,
+              "true_positive": 297
+            },
+            "events": 1284,
+            "unlock_to_buy": 617,
+            "unlock_to_sell": 667
+          },
+          "C_age_price_cause": {
+            "accuracy_at_fixed_0_5": 0.5007788161993769,
+            "auc": 0.5108312942394281,
+            "brier_score": 0.2508231043982198,
+            "calibration": [
+              {
+                "bin": 3,
+                "count": 39,
+                "mean_prediction": 0.3972754120689216,
+                "observed_fraction": 0.358974358974359
+              },
+              {
+                "bin": 4,
+                "count": 495,
+                "mean_prediction": 0.46189312049803666,
+                "observed_fraction": 0.48484848484848486
+              },
+              {
+                "bin": 5,
+                "count": 750,
+                "mean_prediction": 0.5245384830283547,
+                "observed_fraction": 0.484
+              }
+            ],
+            "confusion_matrix_at_fixed_0_5": {
+              "false_negative": 254,
+              "false_positive": 387,
+              "true_negative": 280,
+              "true_positive": 363
+            },
+            "events": 1284,
+            "unlock_to_buy": 617,
+            "unlock_to_sell": 667
+          }
+        },
+        "comparisons": {
+          "C_age_price_cause_minus_A_age_cause": {
+            "ci95_high": 0.0011625043124042149,
+            "ci95_low": 0.00041332240528379024,
+            "cluster_count": 1284,
+            "draws": 5000,
+            "familywise_one_sided_low": 0.0004660378347941689,
+            "mean": 0.0007880833681570886
+          },
+          "C_age_price_cause_minus_B_price_cause": {
+            "ci95_high": -0.0016533065108418287,
+            "ci95_low": -0.011230750511558009,
+            "cluster_count": 1284,
+            "draws": 5000,
+            "familywise_one_sided_low": -0.010520969444133646,
+            "mean": -0.006549785881346954
+          }
+        },
+        "daily": [
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.0023789759175538282,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.013739356213497558,
+            "events": 436,
+            "session_date": "2026-07-27"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": 0.0001903308200097538,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.0027571850550275577,
+            "events": 166,
+            "session_date": "2026-07-28"
+          },
+          {
+            "C_age_price_cause_minus_A_age_cause_mean": -8.347415170291315e-05,
+            "C_age_price_cause_minus_B_price_cause_mean": -0.0028766466912463033,
+            "events": 682,
+            "session_date": "2026-07-29"
+          }
+        ],
+        "events": 1284,
+        "groups": 1284
+      }
+    }
+  },
+  "estimand": "P(UNLOCK_TO_BUY | eligible unlock occurred)",
+  "event_accounting": {
+    "1000": {
+      "development": {
+        "causes": {
+          "UNLOCK_TO_BUY": 714,
+          "UNLOCK_TO_SELL": 730
+        },
+        "excluded_by_first_reason": {
+          "h2_2s_invalid": 3,
+          "window_2s_invalid": 1
+        },
+        "joint_valid_events": 1444,
+        "target_events": 1448
+      },
+      "internal_reuse": {
+        "causes": {
+          "UNLOCK_TO_BUY": 160,
+          "UNLOCK_TO_SELL": 135
+        },
+        "excluded_by_first_reason": {
+          "h2_2s_invalid": 2
+        },
+        "joint_valid_events": 295,
+        "target_events": 297
+      },
+      "seen_external_reuse_diagnostic": {
+        "causes": {
+          "UNLOCK_TO_BUY": 616,
+          "UNLOCK_TO_SELL": 666
+        },
+        "excluded_by_first_reason": {
+          "h2_2s_invalid": 2,
+          "state_age_before_5s": 1,
+          "window_2s_invalid": 3,
+          "window_5s_invalid": 1
+        },
+        "joint_valid_events": 1282,
+        "target_events": 1289
+      }
+    },
+    "500": {
+      "development": {
+        "causes": {
+          "UNLOCK_TO_BUY": 715,
+          "UNLOCK_TO_SELL": 730
+        },
+        "excluded_by_first_reason": {
+          "h2_2s_invalid": 2,
+          "window_2s_invalid": 1
+        },
+        "joint_valid_events": 1445,
+        "target_events": 1448
+      },
+      "internal_reuse": {
+        "causes": {
+          "UNLOCK_TO_BUY": 160,
+          "UNLOCK_TO_SELL": 137
+        },
+        "excluded_by_first_reason": {},
+        "joint_valid_events": 297,
+        "target_events": 297
+      },
+      "seen_external_reuse_diagnostic": {
+        "causes": {
+          "UNLOCK_TO_BUY": 617,
+          "UNLOCK_TO_SELL": 667
+        },
+        "excluded_by_first_reason": {
+          "h2_2s_invalid": 2,
+          "state_age_before_5s": 1,
+          "window_2s_invalid": 2
+        },
+        "joint_valid_events": 1284,
+        "target_events": 1289
+      }
+    }
+  },
+  "frozen_manifest_sha256": "38169823c993529c746f0f4775536ab140effd3638f0e45a4b1002adbf561709",
+  "leave_one_session_out_development_diagnostic": {
+    "1000": [
+      {
+        "held_session": "2026-07-20",
+        "selected_lambdas": {
+          "B_price_cause": 10.0,
+          "C_age_price_cause": 10.0
+        },
+        "summary": {
+          "ablations": {
+            "boundary_side": {
+              "ci95_high": 2.980615991475064e-06,
+              "ci95_low": -6.602219054491477e-05,
+              "cluster_count": 299,
+              "draws": 5000,
+              "familywise_one_sided_low": -7.148086129025425e-05,
+              "mean": -3.2219600344315504e-05
+            },
+            "momentum": {
+              "ci95_high": 1.427045733944009e-05,
+              "ci95_low": -0.0006482145101910655,
+              "cluster_count": 299,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0006885703510799882,
+              "mean": -0.0003106508423715599
+            },
+            "range_location": {
+              "ci95_high": 0.00018846570813330993,
+              "ci95_low": -0.0005810380625613912,
+              "cluster_count": 299,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0006414888287153231,
+              "mean": -0.00018989907552177025
+            },
+            "state_path": {
+              "ci95_high": -6.30130130324324e-05,
+              "ci95_low": -0.0001951775754162239,
+              "cluster_count": 299,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.00020405627632222206,
+              "mean": -0.00012661023547468905
+            }
+          },
+          "classification": {
+            "A_age_cause": {
+              "accuracy_at_fixed_0_5": 0.5050167224080268,
+              "auc": 0.5503420649923485,
+              "brier_score": 0.24809287581355682,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 71,
+                  "mean_prediction": 0.4521761919207735,
+                  "observed_fraction": 0.4084507042253521
+                },
+                {
+                  "bin": 5,
+                  "count": 228,
+                  "mean_prediction": 0.5216853477352051,
+                  "observed_fraction": 0.4780701754385965
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 29,
+                "false_positive": 119,
+                "true_negative": 42,
+                "true_positive": 109
+              },
+              "events": 299,
+              "unlock_to_buy": 138,
+              "unlock_to_sell": 161
+            },
+            "A_const_cause": {
+              "accuracy_at_fixed_0_5": 0.46153846153846156,
+              "auc": 0.5,
+              "brier_score": 0.25024425839747516,
+              "calibration": [
+                {
+                  "bin": 5,
+                  "count": 299,
+                  "mean_prediction": 0.5030541012216405,
+                  "observed_fraction": 0.46153846153846156
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 0,
+                "false_positive": 161,
+                "true_negative": 0,
+                "true_positive": 138
+              },
+              "events": 299,
+              "unlock_to_buy": 138,
+              "unlock_to_sell": 161
+            },
+            "B_price_cause": {
+              "accuracy_at_fixed_0_5": 0.451505016722408,
+              "auc": 0.44639481501485284,
+              "brier_score": 0.2505827729750317,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 65,
+                  "mean_prediction": 0.49849000189045345,
+                  "observed_fraction": 0.5230769230769231
+                },
+                {
+                  "bin": 5,
+                  "count": 234,
+                  "mean_prediction": 0.5041520887381632,
+                  "observed_fraction": 0.4444444444444444
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 34,
+                "false_positive": 130,
+                "true_negative": 31,
+                "true_positive": 104
+              },
+              "events": 299,
+              "unlock_to_buy": 138,
+              "unlock_to_sell": 161
+            },
+            "C_age_price_cause": {
+              "accuracy_at_fixed_0_5": 0.5050167224080268,
+              "auc": 0.5408677648753263,
+              "brier_score": 0.24844425695214936,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 83,
+                  "mean_prediction": 0.4586057665268143,
+                  "observed_fraction": 0.42168674698795183
+                },
+                {
+                  "bin": 5,
+                  "count": 216,
+                  "mean_prediction": 0.5229987662731327,
+                  "observed_fraction": 0.47685185185185186
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 35,
+                "false_positive": 113,
+                "true_negative": 48,
+                "true_positive": 103
+              },
+              "events": 299,
+              "unlock_to_buy": 138,
+              "unlock_to_sell": 161
+            }
+          },
+          "comparisons": {
+            "C_age_price_cause_minus_A_age_cause": {
+              "ci95_high": 4.815708781672872e-05,
+              "ci95_low": -0.0014632994816453611,
+              "cluster_count": 299,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0013321496354415532,
+              "mean": -0.0007060032361630551
+            },
+            "C_age_price_cause_minus_B_price_cause": {
+              "ci95_high": 0.01206388406526004,
+              "ci95_low": -0.003579858293423317,
+              "cluster_count": 299,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0023531761243246853,
+              "mean": 0.0043057447289459455
+            }
+          },
+          "daily": [
+            {
+              "C_age_price_cause_minus_A_age_cause_mean": -0.0007060032361630551,
+              "C_age_price_cause_minus_B_price_cause_mean": 0.0043057447289459455,
+              "events": 299,
+              "session_date": "2026-07-20"
+            }
+          ],
+          "events": 299,
+          "groups": 299
+        },
+        "training_events": 1145,
+        "training_sessions": [
+          "2026-07-21",
+          "2026-07-22",
+          "2026-07-23"
+        ],
+        "validation_events": 299
+      },
+      {
+        "held_session": "2026-07-21",
+        "selected_lambdas": {
+          "B_price_cause": 1.0,
+          "C_age_price_cause": 10.0
+        },
+        "summary": {
+          "ablations": {
+            "boundary_side": {
+              "ci95_high": 4.693295614103044e-05,
+              "ci95_low": -6.211172557657638e-05,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -7.129629064911284e-05,
+              "mean": -8.124530777289252e-06
+            },
+            "momentum": {
+              "ci95_high": 0.0001642267356155596,
+              "ci95_low": -0.00026096758113384365,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.00029131732231715303,
+              "mean": -4.987885011310489e-05
+            },
+            "range_location": {
+              "ci95_high": 0.0003261450186595467,
+              "ci95_low": -0.00034185714568000315,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0003830206461849161,
+              "mean": -1.341185343164586e-05
+            },
+            "state_path": {
+              "ci95_high": 0.00013440480796711205,
+              "ci95_low": -0.00021569791140065817,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0002434451035450349,
+              "mean": -4.185389888391677e-05
+            }
+          },
+          "classification": {
+            "A_age_cause": {
+              "accuracy_at_fixed_0_5": 0.488,
+              "auc": 0.5219645732689211,
+              "brier_score": 0.25092277875614677,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 139,
+                  "mean_prediction": 0.45475297684218036,
+                  "observed_fraction": 0.5467625899280576
+                },
+                {
+                  "bin": 5,
+                  "count": 111,
+                  "mean_prediction": 0.5067340551040055,
+                  "observed_fraction": 0.5315315315315315
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 76,
+                "false_positive": 52,
+                "true_negative": 63,
+                "true_positive": 59
+              },
+              "events": 250,
+              "unlock_to_buy": 135,
+              "unlock_to_sell": 115
+            },
+            "A_const_cause": {
+              "accuracy_at_fixed_0_5": 0.46,
+              "auc": 0.5,
+              "brier_score": 0.2514319077046971,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 250,
+                  "mean_prediction": 0.48493723849372383,
+                  "observed_fraction": 0.54
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 135,
+                "false_positive": 0,
+                "true_negative": 115,
+                "true_positive": 0
+              },
+              "events": 250,
+              "unlock_to_buy": 135,
+              "unlock_to_sell": 115
+            },
+            "B_price_cause": {
+              "accuracy_at_fixed_0_5": 0.44,
+              "auc": 0.46743961352657004,
+              "brier_score": 0.25199181912763796,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 197,
+                  "mean_prediction": 0.4825207401194576,
+                  "observed_fraction": 0.5634517766497462
+                },
+                {
+                  "bin": 5,
+                  "count": 53,
+                  "mean_prediction": 0.5048540734637633,
+                  "observed_fraction": 0.4528301886792453
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 111,
+                "false_positive": 29,
+                "true_negative": 86,
+                "true_positive": 24
+              },
+              "events": 250,
+              "unlock_to_buy": 135,
+              "unlock_to_sell": 115
+            },
+            "C_age_price_cause": {
+              "accuracy_at_fixed_0_5": 0.492,
+              "auc": 0.5214814814814814,
+              "brier_score": 0.2509774285824376,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 9,
+                  "mean_prediction": 0.3988065548137023,
+                  "observed_fraction": 0.6666666666666666
+                },
+                {
+                  "bin": 4,
+                  "count": 143,
+                  "mean_prediction": 0.4626415189709697,
+                  "observed_fraction": 0.5314685314685315
+                },
+                {
+                  "bin": 5,
+                  "count": 98,
+                  "mean_prediction": 0.5085343816855861,
+                  "observed_fraction": 0.5408163265306123
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 82,
+                "false_positive": 45,
+                "true_negative": 70,
+                "true_positive": 53
+              },
+              "events": 250,
+              "unlock_to_buy": 135,
+              "unlock_to_sell": 115
+            }
+          },
+          "comparisons": {
+            "C_age_price_cause_minus_A_age_cause": {
+              "ci95_high": 0.00042375838994744986,
+              "ci95_low": -0.0006452703054234518,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0005614746534345176,
+              "mean": -0.00011786629809346838
+            },
+            "C_age_price_cause_minus_B_price_cause": {
+              "ci95_high": 0.01198889327236927,
+              "ci95_low": -0.007729550074043837,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.006062149630700847,
+              "mean": 0.0020288699115749154
+            }
+          },
+          "daily": [
+            {
+              "C_age_price_cause_minus_A_age_cause_mean": -0.00011786629809346838,
+              "C_age_price_cause_minus_B_price_cause_mean": 0.0020288699115749145,
+              "events": 250,
+              "session_date": "2026-07-21"
+            }
+          ],
+          "events": 250,
+          "groups": 250
+        },
+        "training_events": 1194,
+        "training_sessions": [
+          "2026-07-20",
+          "2026-07-22",
+          "2026-07-23"
+        ],
+        "validation_events": 250
+      },
+      {
+        "held_session": "2026-07-22",
+        "selected_lambdas": {
+          "B_price_cause": 10.0,
+          "C_age_price_cause": 10.0
+        },
+        "summary": {
+          "ablations": {
+            "boundary_side": {
+              "ci95_high": 3.0488946807699913e-05,
+              "ci95_low": -7.133486543141949e-05,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -7.972070239790604e-05,
+              "mean": -2.0112574570156298e-05
+            },
+            "momentum": {
+              "ci95_high": 0.00020313606723981672,
+              "ci95_low": -2.3459285815070227e-05,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -3.733920966918027e-05,
+              "mean": 8.12911973323556e-05
+            },
+            "range_location": {
+              "ci95_high": 0.0003021494260139704,
+              "ci95_low": -0.0003616620137821897,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0004035328997481824,
+              "mean": -2.915428441056256e-05
+            },
+            "state_path": {
+              "ci95_high": 0.0001482834716078898,
+              "ci95_low": -6.84820486656598e-05,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -8.940839439449316e-05,
+              "mean": 4.114639217950198e-05
+            }
+          },
+          "classification": {
+            "A_age_cause": {
+              "accuracy_at_fixed_0_5": 0.5128205128205128,
+              "auc": 0.5127853143841516,
+              "brier_score": 0.24992436744274654,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 33,
+                  "mean_prediction": 0.3924731182795699,
+                  "observed_fraction": 0.42424242424242425
+                },
+                {
+                  "bin": 4,
+                  "count": 84,
+                  "mean_prediction": 0.4742513763163247,
+                  "observed_fraction": 0.4642857142857143
+                },
+                {
+                  "bin": 5,
+                  "count": 156,
+                  "mean_prediction": 0.5306712244968294,
+                  "observed_fraction": 0.48717948717948717
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 53,
+                "false_positive": 80,
+                "true_negative": 64,
+                "true_positive": 76
+              },
+              "events": 273,
+              "unlock_to_buy": 129,
+              "unlock_to_sell": 144
+            },
+            "A_const_cause": {
+              "accuracy_at_fixed_0_5": 0.5274725274725275,
+              "auc": 0.5,
+              "brier_score": 0.24997674128251512,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 273,
+                  "mean_prediction": 0.4995733788395905,
+                  "observed_fraction": 0.4725274725274725
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 129,
+                "false_positive": 0,
+                "true_negative": 144,
+                "true_positive": 0
+              },
+              "events": 273,
+              "unlock_to_buy": 129,
+              "unlock_to_sell": 144
+            },
+            "B_price_cause": {
+              "accuracy_at_fixed_0_5": 0.4945054945054945,
+              "auc": 0.5045219638242894,
+              "brier_score": 0.24994867982082516,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 156,
+                  "mean_prediction": 0.4984571630902575,
+                  "observed_fraction": 0.4807692307692308
+                },
+                {
+                  "bin": 5,
+                  "count": 117,
+                  "mean_prediction": 0.5012155375813485,
+                  "observed_fraction": 0.46153846153846156
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 75,
+                "false_positive": 63,
+                "true_negative": 81,
+                "true_positive": 54
+              },
+              "events": 273,
+              "unlock_to_buy": 129,
+              "unlock_to_sell": 144
+            },
+            "C_age_price_cause": {
+              "accuracy_at_fixed_0_5": 0.5128205128205128,
+              "auc": 0.5177110249784669,
+              "brier_score": 0.2498858282848169,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 33,
+                  "mean_prediction": 0.39294250227842764,
+                  "observed_fraction": 0.42424242424242425
+                },
+                {
+                  "bin": 4,
+                  "count": 84,
+                  "mean_prediction": 0.4746337598271281,
+                  "observed_fraction": 0.4642857142857143
+                },
+                {
+                  "bin": 5,
+                  "count": 156,
+                  "mean_prediction": 0.5307715916508656,
+                  "observed_fraction": 0.48717948717948717
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 53,
+                "false_positive": 80,
+                "true_negative": 64,
+                "true_positive": 76
+              },
+              "events": 273,
+              "unlock_to_buy": 129,
+              "unlock_to_sell": 144
+            }
+          },
+          "comparisons": {
+            "C_age_price_cause_minus_A_age_cause": {
+              "ci95_high": 0.0004649499134008374,
+              "ci95_low": -0.00032131848806818734,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0002607370820318161,
+              "mean": 7.455812243778977e-05
+            },
+            "C_age_price_cause_minus_B_price_cause": {
+              "ci95_high": 0.011528456188848466,
+              "ci95_low": -0.011375566991027096,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.009533972690957923,
+              "mean": 0.00011991675233045875
+            }
+          },
+          "daily": [
+            {
+              "C_age_price_cause_minus_A_age_cause_mean": 7.455812243778977e-05,
+              "C_age_price_cause_minus_B_price_cause_mean": 0.00011991675233045875,
+              "events": 273,
+              "session_date": "2026-07-22"
+            }
+          ],
+          "events": 273,
+          "groups": 273
+        },
+        "training_events": 1171,
+        "training_sessions": [
+          "2026-07-20",
+          "2026-07-21",
+          "2026-07-23"
+        ],
+        "validation_events": 273
+      },
+      {
+        "held_session": "2026-07-23",
+        "selected_lambdas": {
+          "B_price_cause": 0.1,
+          "C_age_price_cause": 0.1
+        },
+        "summary": {
+          "ablations": {
+            "boundary_side": {
+              "ci95_high": -0.0006047063909743769,
+              "ci95_low": -0.004834429499012615,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.00516777103588706,
+              "mean": -0.0026628042157325884
+            },
+            "momentum": {
+              "ci95_high": -0.0017840048943772832,
+              "ci95_low": -0.012158446732308365,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.012995696994609254,
+              "mean": -0.006858246805163942
+            },
+            "range_location": {
+              "ci95_high": 0.0029659939464591347,
+              "ci95_low": -0.0014665368494305709,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0017886391589357644,
+              "mean": 0.0007928029106086646
+            },
+            "state_path": {
+              "ci95_high": 0.0014725745436511254,
+              "ci95_low": -0.0024328544828568317,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0026958620966136475,
+              "mean": -0.0004952495744606917
+            }
+          },
+          "classification": {
+            "A_age_cause": {
+              "accuracy_at_fixed_0_5": 0.522508038585209,
+              "auc": 0.5204869727047147,
+              "brier_score": 0.250276423286984,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 90,
+                  "mean_prediction": 0.3910818713450292,
+                  "observed_fraction": 0.4444444444444444
+                },
+                {
+                  "bin": 4,
+                  "count": 63,
+                  "mean_prediction": 0.4845679012345677,
+                  "observed_fraction": 0.47619047619047616
+                },
+                {
+                  "bin": 5,
+                  "count": 469,
+                  "mean_prediction": 0.5279957702113688,
+                  "observed_fraction": 0.5159914712153518
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 70,
+                "false_positive": 227,
+                "true_negative": 83,
+                "true_positive": 242
+              },
+              "events": 622,
+              "unlock_to_buy": 312,
+              "unlock_to_sell": 310
+            },
+            "A_const_cause": {
+              "accuracy_at_fixed_0_5": 0.4983922829581994,
+              "auc": 0.5,
+              "brier_score": 0.2501547500849029,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 622,
+                  "mean_prediction": 0.48906439854191974,
+                  "observed_fraction": 0.5016077170418006
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 312,
+                "false_positive": 0,
+                "true_negative": 310,
+                "true_positive": 0
+              },
+              "events": 622,
+              "unlock_to_buy": 312,
+              "unlock_to_sell": 310
+            },
+            "B_price_cause": {
+              "accuracy_at_fixed_0_5": 0.45819935691318325,
+              "auc": 0.4345843672456576,
+              "brier_score": 0.25898200544988054,
+              "calibration": [
+                {
+                  "bin": 2,
+                  "count": 2,
+                  "mean_prediction": 0.25235039254834013,
+                  "observed_fraction": 0.5
+                },
+                {
+                  "bin": 3,
+                  "count": 29,
+                  "mean_prediction": 0.37676897884684063,
+                  "observed_fraction": 0.6551724137931034
+                },
+                {
+                  "bin": 4,
+                  "count": 322,
+                  "mean_prediction": 0.46269190678620103,
+                  "observed_fraction": 0.5279503105590062
+                },
+                {
+                  "bin": 5,
+                  "count": 253,
+                  "mean_prediction": 0.5357811765910214,
+                  "observed_fraction": 0.4505928853754941
+                },
+                {
+                  "bin": 6,
+                  "count": 14,
+                  "mean_prediction": 0.6362050598059505,
+                  "observed_fraction": 0.5
+                },
+                {
+                  "bin": 7,
+                  "count": 2,
+                  "mean_prediction": 0.7264630389952729,
+                  "observed_fraction": 0.5
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 190,
+                "false_positive": 147,
+                "true_negative": 163,
+                "true_positive": 122
+              },
+              "events": 622,
+              "unlock_to_buy": 312,
+              "unlock_to_sell": 310
+            },
+            "C_age_price_cause": {
+              "accuracy_at_fixed_0_5": 0.4694533762057878,
+              "auc": 0.4610008271298594,
+              "brier_score": 0.2593965403710499,
+              "calibration": [
+                {
+                  "bin": 2,
+                  "count": 4,
+                  "mean_prediction": 0.2826137170218582,
+                  "observed_fraction": 0.5
+                },
+                {
+                  "bin": 3,
+                  "count": 53,
+                  "mean_prediction": 0.36806780465077277,
+                  "observed_fraction": 0.3584905660377358
+                },
+                {
+                  "bin": 4,
+                  "count": 215,
+                  "mean_prediction": 0.46063522510174504,
+                  "observed_fraction": 0.5813953488372093
+                },
+                {
+                  "bin": 5,
+                  "count": 289,
+                  "mean_prediction": 0.54469925581917,
+                  "observed_fraction": 0.49480968858131485
+                },
+                {
+                  "bin": 6,
+                  "count": 56,
+                  "mean_prediction": 0.6283092372881997,
+                  "observed_fraction": 0.35714285714285715
+                },
+                {
+                  "bin": 7,
+                  "count": 5,
+                  "mean_prediction": 0.733439205815151,
+                  "observed_fraction": 0.6
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 146,
+                "false_positive": 184,
+                "true_negative": 126,
+                "true_positive": 166
+              },
+              "events": 622,
+              "unlock_to_buy": 312,
+              "unlock_to_sell": 310
+            }
+          },
+          "comparisons": {
+            "C_age_price_cause_minus_A_age_cause": {
+              "ci95_high": -0.009351657048422194,
+              "ci95_low": -0.028423202849630992,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.027065545380533695,
+              "mean": -0.018788820846276397
+            },
+            "C_age_price_cause_minus_B_price_cause": {
+              "ci95_high": 0.007289207863365208,
+              "ci95_low": -0.009442512792924152,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.008219121366109576,
+              "mean": -0.001137473712628136
+            }
+          },
+          "daily": [
+            {
+              "C_age_price_cause_minus_A_age_cause_mean": -0.018788820846276397,
+              "C_age_price_cause_minus_B_price_cause_mean": -0.001137473712628136,
+              "events": 622,
+              "session_date": "2026-07-23"
+            }
+          ],
+          "events": 622,
+          "groups": 622
+        },
+        "training_events": 822,
+        "training_sessions": [
+          "2026-07-20",
+          "2026-07-21",
+          "2026-07-22"
+        ],
+        "validation_events": 622
+      }
+    ],
+    "500": [
+      {
+        "held_session": "2026-07-20",
+        "selected_lambdas": {
+          "B_price_cause": 10.0,
+          "C_age_price_cause": 10.0
+        },
+        "summary": {
+          "ablations": {
+            "boundary_side": {
+              "ci95_high": -6.156068460552956e-06,
+              "ci95_low": -0.0001231829883013713,
+              "cluster_count": 300,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.00013212192506883476,
+              "mean": -6.435671082764846e-05
+            },
+            "momentum": {
+              "ci95_high": 0.0003650718873906726,
+              "ci95_low": -0.0006637855202009467,
+              "cluster_count": 300,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0007440526476152555,
+              "mean": -0.00013923749590405248
+            },
+            "range_location": {
+              "ci95_high": 0.0005170349323904661,
+              "ci95_low": -0.0006497572569681359,
+              "cluster_count": 300,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0007297404682883078,
+              "mean": -6.208097641737465e-05
+            },
+            "state_path": {
+              "ci95_high": -9.474969711948736e-05,
+              "ci95_low": -0.00031312723086344865,
+              "cluster_count": 300,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0003289691301481033,
+              "mean": -0.00020167538550266577
+            }
+          },
+          "classification": {
+            "A_age_cause": {
+              "accuracy_at_fixed_0_5": 0.5066666666666667,
+              "auc": 0.5508289020957148,
+              "brier_score": 0.2480235162906088,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 71,
+                  "mean_prediction": 0.4521761919207735,
+                  "observed_fraction": 0.4084507042253521
+                },
+                {
+                  "bin": 5,
+                  "count": 229,
+                  "mean_prediction": 0.5216922056662893,
+                  "observed_fraction": 0.48034934497816595
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 29,
+                "false_positive": 119,
+                "true_negative": 42,
+                "true_positive": 110
+              },
+              "events": 300,
+              "unlock_to_buy": 139,
+              "unlock_to_sell": 161
+            },
+            "A_const_cause": {
+              "accuracy_at_fixed_0_5": 0.4633333333333333,
+              "auc": 0.5,
+              "brier_score": 0.2502332949571923,
+              "calibration": [
+                {
+                  "bin": 5,
+                  "count": 300,
+                  "mean_prediction": 0.5030541012216406,
+                  "observed_fraction": 0.4633333333333333
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 0,
+                "false_positive": 161,
+                "true_negative": 0,
+                "true_positive": 139
+              },
+              "events": 300,
+              "unlock_to_buy": 139,
+              "unlock_to_sell": 161
+            },
+            "B_price_cause": {
+              "accuracy_at_fixed_0_5": 0.47,
+              "auc": 0.47955672728897625,
+              "brier_score": 0.25044529940821625,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 96,
+                  "mean_prediction": 0.49712494672709945,
+                  "observed_fraction": 0.4895833333333333
+                },
+                {
+                  "bin": 5,
+                  "count": 204,
+                  "mean_prediction": 0.5056700201775619,
+                  "observed_fraction": 0.45098039215686275
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 47,
+                "false_positive": 112,
+                "true_negative": 49,
+                "true_positive": 92
+              },
+              "events": 300,
+              "unlock_to_buy": 139,
+              "unlock_to_sell": 161
+            },
+            "C_age_price_cause": {
+              "accuracy_at_fixed_0_5": 0.49,
+              "auc": 0.54591357969525,
+              "brier_score": 0.2482699132534021,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 80,
+                  "mean_prediction": 0.45622601059725404,
+                  "observed_fraction": 0.45
+                },
+                {
+                  "bin": 5,
+                  "count": 220,
+                  "mean_prediction": 0.5231030957719067,
+                  "observed_fraction": 0.4681818181818182
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 36,
+                "false_positive": 117,
+                "true_negative": 44,
+                "true_positive": 103
+              },
+              "events": 300,
+              "unlock_to_buy": 139,
+              "unlock_to_sell": 161
+            }
+          },
+          "comparisons": {
+            "C_age_price_cause_minus_A_age_cause": {
+              "ci95_high": 0.0006772354337226006,
+              "ci95_low": -0.0016550941952166956,
+              "cluster_count": 300,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0014590961776296159,
+              "mean": -0.0004957161453398058
+            },
+            "C_age_price_cause_minus_B_price_cause": {
+              "ci95_high": 0.0120896836575828,
+              "ci95_low": -0.0035695198693600164,
+              "cluster_count": 300,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.002222463171104452,
+              "mean": 0.004379877242710723
+            }
+          },
+          "daily": [
+            {
+              "C_age_price_cause_minus_A_age_cause_mean": -0.0004957161453398058,
+              "C_age_price_cause_minus_B_price_cause_mean": 0.004379877242710723,
+              "events": 300,
+              "session_date": "2026-07-20"
+            }
+          ],
+          "events": 300,
+          "groups": 300
+        },
+        "training_events": 1145,
+        "training_sessions": [
+          "2026-07-21",
+          "2026-07-22",
+          "2026-07-23"
+        ],
+        "validation_events": 300
+      },
+      {
+        "held_session": "2026-07-21",
+        "selected_lambdas": {
+          "B_price_cause": 0.1,
+          "C_age_price_cause": 1.0
+        },
+        "summary": {
+          "ablations": {
+            "boundary_side": {
+              "ci95_high": 0.00079136068758972,
+              "ci95_low": -0.0002939035112335608,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.00038805099402919454,
+              "mean": 0.00024013203256158388
+            },
+            "momentum": {
+              "ci95_high": 0.0013976190290373011,
+              "ci95_low": -0.0020363012310785425,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0023184310180092023,
+              "mean": -0.0002906960492825996
+            },
+            "range_location": {
+              "ci95_high": 0.0028236153556738786,
+              "ci95_low": -0.002887289998217276,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.00328095228020315,
+              "mean": -3.871596851952086e-05
+            },
+            "state_path": {
+              "ci95_high": 0.0008114367861160147,
+              "ci95_low": -0.0017258442368266779,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.00192120202542909,
+              "mean": -0.00045759826602574026
+            }
+          },
+          "classification": {
+            "A_age_cause": {
+              "accuracy_at_fixed_0_5": 0.488,
+              "auc": 0.5219645732689211,
+              "brier_score": 0.25086095766297867,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 139,
+                  "mean_prediction": 0.45475297684218036,
+                  "observed_fraction": 0.5467625899280576
+                },
+                {
+                  "bin": 5,
+                  "count": 111,
+                  "mean_prediction": 0.5081672760237183,
+                  "observed_fraction": 0.5315315315315315
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 76,
+                "false_positive": 52,
+                "true_negative": 63,
+                "true_positive": 59
+              },
+              "events": 250,
+              "unlock_to_buy": 135,
+              "unlock_to_sell": 115
+            },
+            "A_const_cause": {
+              "accuracy_at_fixed_0_5": 0.46,
+              "auc": 0.5,
+              "brier_score": 0.25138466711781754,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 250,
+                  "mean_prediction": 0.48536789297658867,
+                  "observed_fraction": 0.54
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 135,
+                "false_positive": 0,
+                "true_negative": 115,
+                "true_positive": 0
+              },
+              "events": 250,
+              "unlock_to_buy": 135,
+              "unlock_to_sell": 115
+            },
+            "B_price_cause": {
+              "accuracy_at_fixed_0_5": 0.456,
+              "auc": 0.4867632850241546,
+              "brier_score": 0.2534374072642256,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 4,
+                  "mean_prediction": 0.39321198828510195,
+                  "observed_fraction": 0.25
+                },
+                {
+                  "bin": 4,
+                  "count": 131,
+                  "mean_prediction": 0.45614721906667693,
+                  "observed_fraction": 0.5877862595419847
+                },
+                {
+                  "bin": 5,
+                  "count": 111,
+                  "mean_prediction": 0.5356188593557918,
+                  "observed_fraction": 0.4774774774774775
+                },
+                {
+                  "bin": 6,
+                  "count": 4,
+                  "mean_prediction": 0.6139159297262589,
+                  "observed_fraction": 1.0
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 78,
+                "false_positive": 58,
+                "true_negative": 57,
+                "true_positive": 57
+              },
+              "events": 250,
+              "unlock_to_buy": 135,
+              "unlock_to_sell": 115
+            },
+            "C_age_price_cause": {
+              "accuracy_at_fixed_0_5": 0.532,
+              "auc": 0.5377777777777778,
+              "brier_score": 0.25106690672320564,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 12,
+                  "mean_prediction": 0.38344506753320196,
+                  "observed_fraction": 0.5
+                },
+                {
+                  "bin": 4,
+                  "count": 136,
+                  "mean_prediction": 0.4604882152554272,
+                  "observed_fraction": 0.5073529411764706
+                },
+                {
+                  "bin": 5,
+                  "count": 102,
+                  "mean_prediction": 0.5251173592904262,
+                  "observed_fraction": 0.5882352941176471
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 75,
+                "false_positive": 42,
+                "true_negative": 73,
+                "true_positive": 60
+              },
+              "events": 250,
+              "unlock_to_buy": 135,
+              "unlock_to_sell": 115
+            }
+          },
+          "comparisons": {
+            "C_age_price_cause_minus_A_age_cause": {
+              "ci95_high": 0.005135065764403397,
+              "ci95_low": -0.006036132124644228,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0051806655101800155,
+              "mean": -0.0004832949662441961
+            },
+            "C_age_price_cause_minus_B_price_cause": {
+              "ci95_high": 0.01699800677421987,
+              "ci95_low": -0.007503984116039623,
+              "cluster_count": 250,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.005175662843612946,
+              "mean": 0.004681200573684597
+            }
+          },
+          "daily": [
+            {
+              "C_age_price_cause_minus_A_age_cause_mean": -0.0004832949662441961,
+              "C_age_price_cause_minus_B_price_cause_mean": 0.004681200573684597,
+              "events": 250,
+              "session_date": "2026-07-21"
+            }
+          ],
+          "events": 250,
+          "groups": 250
+        },
+        "training_events": 1195,
+        "training_sessions": [
+          "2026-07-20",
+          "2026-07-22",
+          "2026-07-23"
+        ],
+        "validation_events": 250
+      },
+      {
+        "held_session": "2026-07-22",
+        "selected_lambdas": {
+          "B_price_cause": 0.1,
+          "C_age_price_cause": 1.0
+        },
+        "summary": {
+          "ablations": {
+            "boundary_side": {
+              "ci95_high": 0.0004538660783111487,
+              "ci95_low": -0.0006313719428037551,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0007017314045623995,
+              "mean": -8.340370787235211e-05
+            },
+            "momentum": {
+              "ci95_high": 0.0013930841431302402,
+              "ci95_low": -0.0009675809298423741,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0011591360903161199,
+              "mean": 0.0001849827711858073
+            },
+            "range_location": {
+              "ci95_high": 0.0017611516634654372,
+              "ci95_low": -0.004680313741180294,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.005038885718226944,
+              "mean": -0.001493137403574949
+            },
+            "state_path": {
+              "ci95_high": 0.0010279127393088186,
+              "ci95_low": -0.000514707636923002,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0006564919944589616,
+              "mean": 0.0002634283596293847
+            }
+          },
+          "classification": {
+            "A_age_cause": {
+              "accuracy_at_fixed_0_5": 0.5128205128205128,
+              "auc": 0.5127853143841516,
+              "brier_score": 0.24998725171410932,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 33,
+                  "mean_prediction": 0.3924731182795699,
+                  "observed_fraction": 0.42424242424242425
+                },
+                {
+                  "bin": 4,
+                  "count": 84,
+                  "mean_prediction": 0.4742513763163247,
+                  "observed_fraction": 0.4642857142857143
+                },
+                {
+                  "bin": 5,
+                  "count": 156,
+                  "mean_prediction": 0.5315868519320086,
+                  "observed_fraction": 0.48717948717948717
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 53,
+                "false_positive": 80,
+                "true_negative": 64,
+                "true_positive": 76
+              },
+              "events": 273,
+              "unlock_to_buy": 129,
+              "unlock_to_sell": 144
+            },
+            "A_const_cause": {
+              "accuracy_at_fixed_0_5": 0.4725274725274725,
+              "auc": 0.5,
+              "brier_score": 0.25,
+              "calibration": [
+                {
+                  "bin": 5,
+                  "count": 273,
+                  "mean_prediction": 0.5,
+                  "observed_fraction": 0.4725274725274725
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 0,
+                "false_positive": 144,
+                "true_negative": 0,
+                "true_positive": 129
+              },
+              "events": 273,
+              "unlock_to_buy": 129,
+              "unlock_to_sell": 144
+            },
+            "B_price_cause": {
+              "accuracy_at_fixed_0_5": 0.5018315018315018,
+              "auc": 0.4937015503875969,
+              "brier_score": 0.25266029016759195,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 2,
+                  "mean_prediction": 0.37900448854041924,
+                  "observed_fraction": 0.5
+                },
+                {
+                  "bin": 4,
+                  "count": 132,
+                  "mean_prediction": 0.46106413717955963,
+                  "observed_fraction": 0.4696969696969697
+                },
+                {
+                  "bin": 5,
+                  "count": 138,
+                  "mean_prediction": 0.5407366906823071,
+                  "observed_fraction": 0.47101449275362317
+                },
+                {
+                  "bin": 6,
+                  "count": 1,
+                  "mean_prediction": 0.6790706334060516,
+                  "observed_fraction": 1.0
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 63,
+                "false_positive": 73,
+                "true_negative": 71,
+                "true_positive": 66
+              },
+              "events": 273,
+              "unlock_to_buy": 129,
+              "unlock_to_sell": 144
+            },
+            "C_age_price_cause": {
+              "accuracy_at_fixed_0_5": 0.48717948717948717,
+              "auc": 0.522071490094746,
+              "brier_score": 0.25074058196923216,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 14,
+                  "mean_prediction": 0.3793956046339592,
+                  "observed_fraction": 0.35714285714285715
+                },
+                {
+                  "bin": 4,
+                  "count": 78,
+                  "mean_prediction": 0.45199255240008857,
+                  "observed_fraction": 0.5
+                },
+                {
+                  "bin": 5,
+                  "count": 181,
+                  "mean_prediction": 0.5306172142817279,
+                  "observed_fraction": 0.4696132596685083
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 44,
+                "false_positive": 96,
+                "true_negative": 48,
+                "true_positive": 85
+              },
+              "events": 273,
+              "unlock_to_buy": 129,
+              "unlock_to_sell": 144
+            }
+          },
+          "comparisons": {
+            "C_age_price_cause_minus_A_age_cause": {
+              "ci95_high": 0.003732410744991221,
+              "ci95_low": -0.006597912530544924,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.005859137670619865,
+              "mean": -0.001530803257713881
+            },
+            "C_age_price_cause_minus_B_price_cause": {
+              "ci95_high": 0.018104829534503226,
+              "ci95_low": -0.010406715934854526,
+              "cluster_count": 273,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.00822617440916833,
+              "mean": 0.0038169381748560903
+            }
+          },
+          "daily": [
+            {
+              "C_age_price_cause_minus_A_age_cause_mean": -0.001530803257713881,
+              "C_age_price_cause_minus_B_price_cause_mean": 0.0038169381748560903,
+              "events": 273,
+              "session_date": "2026-07-22"
+            }
+          ],
+          "events": 273,
+          "groups": 273
+        },
+        "training_events": 1172,
+        "training_sessions": [
+          "2026-07-20",
+          "2026-07-21",
+          "2026-07-23"
+        ],
+        "validation_events": 273
+      },
+      {
+        "held_session": "2026-07-23",
+        "selected_lambdas": {
+          "B_price_cause": 0.1,
+          "C_age_price_cause": 1.0
+        },
+        "summary": {
+          "ablations": {
+            "boundary_side": {
+              "ci95_high": 2.12530786195752e-05,
+              "ci95_low": -0.001036237278316632,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.001111802795684153,
+              "mean": -0.0005143863094662968
+            },
+            "momentum": {
+              "ci95_high": -0.0007074409693787271,
+              "ci95_low": -0.00388858441845055,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.004102288300376044,
+              "mean": -0.0022354824081234678
+            },
+            "range_location": {
+              "ci95_high": 0.00030586498500859095,
+              "ci95_low": -0.0004506493482605844,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.000503210346614463,
+              "mean": -7.234656774663866e-05
+            },
+            "state_path": {
+              "ci95_high": 0.00026285983975879104,
+              "ci95_low": -0.0013452046318587216,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.001447576028147722,
+              "mean": -0.0005495562682155124
+            }
+          },
+          "classification": {
+            "A_age_cause": {
+              "accuracy_at_fixed_0_5": 0.522508038585209,
+              "auc": 0.5204869727047147,
+              "brier_score": 0.25025092177603536,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 90,
+                  "mean_prediction": 0.3910818713450292,
+                  "observed_fraction": 0.4444444444444444
+                },
+                {
+                  "bin": 4,
+                  "count": 63,
+                  "mean_prediction": 0.4845679012345677,
+                  "observed_fraction": 0.47619047619047616
+                },
+                {
+                  "bin": 5,
+                  "count": 469,
+                  "mean_prediction": 0.5283821325380296,
+                  "observed_fraction": 0.5159914712153518
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 70,
+                "false_positive": 227,
+                "true_negative": 83,
+                "true_positive": 242
+              },
+              "events": 622,
+              "unlock_to_buy": 312,
+              "unlock_to_sell": 310
+            },
+            "A_const_cause": {
+              "accuracy_at_fixed_0_5": 0.4983922829581994,
+              "auc": 0.5,
+              "brier_score": 0.2501395791608562,
+              "calibration": [
+                {
+                  "bin": 4,
+                  "count": 622,
+                  "mean_prediction": 0.48968446601941745,
+                  "observed_fraction": 0.5016077170418006
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 312,
+                "false_positive": 0,
+                "true_negative": 310,
+                "true_positive": 0
+              },
+              "events": 622,
+              "unlock_to_buy": 312,
+              "unlock_to_sell": 310
+            },
+            "B_price_cause": {
+              "accuracy_at_fixed_0_5": 0.4678456591639871,
+              "auc": 0.46054590570719606,
+              "brier_score": 0.25757693556278954,
+              "calibration": [
+                {
+                  "bin": 2,
+                  "count": 2,
+                  "mean_prediction": 0.2616331015520055,
+                  "observed_fraction": 0.5
+                },
+                {
+                  "bin": 3,
+                  "count": 26,
+                  "mean_prediction": 0.3704933160454057,
+                  "observed_fraction": 0.5384615384615384
+                },
+                {
+                  "bin": 4,
+                  "count": 339,
+                  "mean_prediction": 0.46369787392196066,
+                  "observed_fraction": 0.528023598820059
+                },
+                {
+                  "bin": 5,
+                  "count": 239,
+                  "mean_prediction": 0.5372209148957071,
+                  "observed_fraction": 0.4686192468619247
+                },
+                {
+                  "bin": 6,
+                  "count": 15,
+                  "mean_prediction": 0.6262946094572452,
+                  "observed_fraction": 0.4
+                },
+                {
+                  "bin": 8,
+                  "count": 1,
+                  "mean_prediction": 0.8158554341074546,
+                  "observed_fraction": 0.0
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 194,
+                "false_positive": 137,
+                "true_negative": 173,
+                "true_positive": 118
+              },
+              "events": 622,
+              "unlock_to_buy": 312,
+              "unlock_to_sell": 310
+            },
+            "C_age_price_cause": {
+              "accuracy_at_fixed_0_5": 0.5096463022508039,
+              "auc": 0.46782464846980976,
+              "brier_score": 0.2527263286655447,
+              "calibration": [
+                {
+                  "bin": 3,
+                  "count": 61,
+                  "mean_prediction": 0.3843310392069565,
+                  "observed_fraction": 0.3770491803278688
+                },
+                {
+                  "bin": 4,
+                  "count": 130,
+                  "mean_prediction": 0.4689293625769584,
+                  "observed_fraction": 0.5384615384615384
+                },
+                {
+                  "bin": 5,
+                  "count": 430,
+                  "mean_prediction": 0.5331378316676534,
+                  "observed_fraction": 0.5093023255813953
+                },
+                {
+                  "bin": 6,
+                  "count": 1,
+                  "mean_prediction": 0.6366647813674242,
+                  "observed_fraction": 0.0
+                }
+              ],
+              "confusion_matrix_at_fixed_0_5": {
+                "false_negative": 93,
+                "false_positive": 212,
+                "true_negative": 98,
+                "true_positive": 219
+              },
+              "events": 622,
+              "unlock_to_buy": 312,
+              "unlock_to_sell": 310
+            }
+          },
+          "comparisons": {
+            "C_age_price_cause_minus_A_age_cause": {
+              "ci95_high": -0.0019919936213506307,
+              "ci95_low": -0.007923870941595334,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": -0.0074385976136359016,
+              "mean": -0.004990871955733753
+            },
+            "C_age_price_cause_minus_B_price_cause": {
+              "ci95_high": 0.02086158050916576,
+              "ci95_low": -0.0004942802474892743,
+              "cluster_count": 622,
+              "draws": 5000,
+              "familywise_one_sided_low": 0.0010406749469941143,
+              "mean": 0.010105051954478955
+            }
+          },
+          "daily": [
+            {
+              "C_age_price_cause_minus_A_age_cause_mean": -0.004990871955733753,
+              "C_age_price_cause_minus_B_price_cause_mean": 0.010105051954478955,
+              "events": 622,
+              "session_date": "2026-07-23"
+            }
+          ],
+          "events": 622,
+          "groups": 622
+        },
+        "training_events": 823,
+        "training_sessions": [
+          "2026-07-20",
+          "2026-07-21",
+          "2026-07-22"
+        ],
+        "validation_events": 622
+      }
+    ]
+  },
+  "limitations": [
+    "Cause classification is conditional on an eligible unlock already occurring.",
+    "Report timestamps have one-second resolution; sub-second triggers are not identified.",
+    "Internal and seen-reuse diagnostics cannot validate the frozen package.",
+    "No profitability, execution feasibility, or tradeable edge is established."
+  ],
+  "milestone": "M5-004",
+  "output_hashes": {
+    "audit": {
+      "dataframe_sha256": "3ec6cf9d84ae60e97bd2c76a792ab4f2636b477b3151cbd19d7d899698e5bc3f",
+      "file_sha256": "fcd175569a6776c15eedf3229ce550723ea796801df023315d06d5ef1a6b03c9",
+      "rows": 6068
+    },
+    "predictions": {
+      "dataframe_sha256": "4d7423732d51d13c3c80d6f02412c78fc322dba044e2f27a68022387fd4f3bd1",
+      "file_sha256": "36fa50a62f72a104171208ba54ef81711720d294c92ea920f6a9ab216f063847",
+      "rows": 6047
+    },
+    "predictors": {
+      "dataframe_sha256": "3bac6cf7bf1a043dbedf09af3160ff597a1e834131931b547e18cba3c8b16317",
+      "file_sha256": "08c9367542b57045bb896dfa19a49076e12091ae7596b0983c997be1a5b77d54",
+      "rows": 6047
+    },
+    "targets": {
+      "dataframe_sha256": "94d0b02ff73d7be9acdc6d8f4f3824d808730243e4ce6b1afd59d50d9545b106",
+      "file_sha256": "711f79323f77b07cdc22fe2fa34c6c56d54e54fd4df1d81a39eba77895620eff",
+      "rows": 6047
+    }
+  },
+  "predictor_allowlist": [
+    "mid_change_2s",
+    "mid_change_5s",
+    "tick_imbalance_2s",
+    "tick_imbalance_5s",
+    "range_position_2s",
+    "range_position_5s",
+    "range_position_10s",
+    "prior_upper_boundary_touch_2s",
+    "prior_lower_boundary_touch_2s",
+    "prior_upper_boundary_touch_5s",
+    "prior_lower_boundary_touch_5s",
+    "state_start_displacement"
+  ],
+  "schema_version": 1,
+  "status": "development_package_frozen_future_external_pending",
+  "validation_gates": {
+    "all_prediction_probabilities_finite_and_bounded": true,
+    "canonical_m2_to_m5_003_outputs_unchanged": true,
+    "development_only_fit_sessions": true,
+    "future_external_not_loaded": true,
+    "group_key_collision_safe": true,
+    "internal_reuse_not_loaded_for_fit": true,
+    "known_internal_event_counts_reconcile": true,
+    "labels_absent_from_predictors": true,
+    "metadata_absent_from_predictor_allowlist": true,
+    "no_tradeable_edge_claim": true,
+    "one_row_per_unlock_event": true,
+    "predictor_allowlist_exact": true,
+    "seen_reuse_loaded_only_after_manifest_write": true,
+    "upstream_provenance_reconciles": true
+  }
+}

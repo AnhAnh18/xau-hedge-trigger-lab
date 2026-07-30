@@ -205,3 +205,24 @@
 - Locked blind structural intake, pre-weekend report context, replicated-gap
   handling, and outcome-independent fallback criteria.
 - Stopped before M5-004 feature construction, fitting, or external loading.
+
+## 2026-07-30 — M5-004 development package freeze
+
+- Merged the independently approved provenance amendment as PR #11 before
+  implementation.
+- Built one event row per eligible unlock and recomputed the exact 12
+  raw-directional predictors from causal tick windows.
+- Reconciled the preregistered internal counts exactly at both 1,000 ms and
+  500 ms.
+- Fit `A_const_cause`, `A_age_cause`, `B_price_cause`, and
+  `C_age_price_cause` on 2026-07-20 through 2026-07-23 only, with grouped
+  fold-local preprocessing and independently selected penalties.
+- Wrote the frozen manifest before loading 2026-07-27 through 2026-07-29.
+  The 2026-07-24 and seen-external-reuse sessions remained diagnostics only.
+- Preserved a null M5-004 verdict. The diagnostic C-minus-A increments were
+  small and positive, while C-minus-B was negative on both reuse cohorts.
+- Rebuilt all four local Parquet outputs and three committed report artifacts
+  twice with 7/7 byte-identical hashes.
+- Kept the August primary and fallback blocks unloaded. Because this is a
+  single-developer implementation, independent Claude re-review is required
+  before merge.
