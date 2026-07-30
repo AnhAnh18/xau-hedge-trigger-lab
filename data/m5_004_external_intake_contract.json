@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "contract_id": "m5_004_external_intake_v1",
+  "registered_on": "2026-07-30",
+  "status": "pre_data_external_infrastructure_contract",
+  "symbol": "XAUUSD",
+  "server_timezone": "UTC+03:00",
+  "blocks": {
+    "primary": {
+      "role": "untouched_external_gate",
+      "sessions": [
+        "2026-08-03",
+        "2026-08-04",
+        "2026-08-05",
+        "2026-08-06",
+        "2026-08-07"
+      ],
+      "report_context_start": "2026-07-31",
+      "report_context_end": "2026-08-08",
+      "fallback_authorized": false
+    },
+    "fallback": {
+      "role": "external_gate_only_after_reviewed_primary_structural_failure",
+      "sessions": [
+        "2026-08-10",
+        "2026-08-11",
+        "2026-08-12",
+        "2026-08-13",
+        "2026-08-14"
+      ],
+      "report_context_start": "2026-08-07",
+      "report_context_end": "2026-08-15",
+      "requires_reviewed_primary_failure_authorization": true
+    }
+  },
+  "tick_export": {
+    "allowed_suffixes": [
+      ".csv",
+      ".tsv"
+    ],
+    "required_columns": [
+      "DATE",
+      "TIME",
+      "BID",
+      "ASK",
+      "LAST",
+      "VOLUME",
+      "FLAGS"
+    ],
+    "first_tick_no_later_than_server_time": "01:05:00",
+    "last_tick_no_earlier_than_server_time": "23:50:00",
+    "preserve_duplicate_milliseconds": true
+  },
+  "trade_report": {
+    "allowed_suffixes": [
+      ".html",
+      ".htm"
+    ],
+    "required_sections": [
+      "positions",
+      "orders",
+      "deals",
+      "open_positions",
+      "summary"
+    ]
+  },
+  "gap_policy": {
+    "threshold_seconds": 60,
+    "scheduled_classification_min_recurring_sessions": 3,
+    "same_server_clock_tolerance_seconds": 120,
+    "accepted_unscheduled_classification": "replicated_source_quote_gap",
+    "replica_requires_distinct_export_run_id": true,
+    "replica_requires_identical_boundary_ticks": true,
+    "interpolation_allowed": false,
+    "crossing_lookbacks_valid": false
+  },
+  "structural_failure_allowlist": [
+    "missing_or_unparseable_registered_session",
+    "wrong_symbol_or_server_date",
+    "report_context_incomplete",
+    "boundary_coverage_failure",
+    "timestamp_order_failure",
+    "duplicate_preservation_failure",
+    "financial_reconciliation_failure",
+    "inventory_reconciliation_failure",
+    "lifecycle_completeness_failure",
+    "unknown_or_nonreplicated_material_quote_gap"
+  ],
+  "fallback_forbidden_reasons": [
+    "low_sample_size",
+    "no_eligible_unlock_on_a_day",
+    "unlock_direction_class_imbalance",
+    "feature_label_association",
+    "prediction_or_likelihood_result",
+    "daily_or_pooled_model_performance"
+  ],
+  "blind_output_forbidden_keys": [
+    "cause_label",
+    "unlock_to_buy",
+    "unlock_to_sell",
+    "class_balance",
+    "eligible_unlock",
+    "feature",
+    "coefficient",
+    "prediction",
+    "likelihood",
+    "log_loss",
+    "brier",
+    "auc",
+    "calibration",
+    "profit",
+    "balance"
+  ],
+  "frozen_package": {
+    "base_commit": "618a38fea1a3b9973149a271f2fa8184a6b9efe0",
+    "manifest_path": "reports/phase_05/m5_004_frozen_model_manifest.json",
+    "manifest_canonical_sha256": "38169823c993529c746f0f4775536ab140effd3638f0e45a4b1002adbf561709",
+    "manifest_raw_file_sha256": "6c5b111265771d510600b248613a006cf4e99e73cc0d3ee3c1b883a7e875082b",
+    "manifest_canonical_text_file_sha256": "7fe784ae5d7b4a5d9f486c2bf48e51e198df0e17544297a4443464394ca7dfcb",
+    "development_report_path": "reports/phase_05/m5_004_unlock_cause_report.json",
+    "development_report_deterministic_sha256": "ae517c43ef0884e2e98c6579cc32a34ba3c7f247fb6148e12e1a4d0da9a8a9ca",
+    "development_report_raw_file_sha256": "9791c951856c215b82fb9bb79fb1bb824e9fe76a1fac6a250b7eab544a4a1081",
+    "development_report_canonical_text_file_sha256": "9aff4d1757aa11bf4250295713a97e633a50c3cf852632fe6b3d156072e6fcb4",
+    "raw_file_hash_role": "windows_checkout_attestation_canonical_text_hash_is_cross_platform_gate"
+  },
+  "evaluation": {
+    "widths_ms": [
+      1000,
+      500
+    ],
+    "headline_width_ms": 1000,
+    "bootstrap_draws": 5000,
+    "bootstrap_seed": 5004,
+    "cluster_key": "cohort_id:interval_id",
+    "required_positive_daily_means": 3,
+    "sensitivity_can_change_verdict": false,
+    "resume_same_evaluation_after_crash_allowed": true,
+    "resume_requires_identical_code_input_acceptance_and_manifest_hashes": true
+  },
+  "claims": {
+    "profitability": "not_tested",
+    "tradeable_edge": "not_claimed",
+    "occurrence_trigger": "not_estimated",
+    "causality": "not_claimed"
+  }
+}

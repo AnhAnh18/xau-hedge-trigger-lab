@@ -2,8 +2,8 @@
 
 ## Current phase
 
-M5 — Trigger Inference (M5-004 development package frozen; fresh August
-external evaluation pending)
+M5 — Trigger Inference (M5-004 development package frozen and external
+evaluation infrastructure prepared; fresh August external data pending)
 
 ## Completed
 
@@ -23,6 +23,13 @@ external evaluation pending)
 - Frozen development-only M5-004 model manifest
 - Internal 2026-07-24 and seen-external-reuse 2026-07-27 through 2026-07-29
   diagnostics, with no verdict
+- Independent review and squash merge of the M5-004 development package at
+  `618a38f`
+- Pre-data blind-intake and frozen-evaluation infrastructure, using synthetic
+  fixtures only
+- Owner-authorized cold self-review of the pre-data infrastructure while the
+  independent reviewer was unavailable; the review added missing descriptive
+  five-session LOSO output and stricter fallback/consumption tamper checks
 
 ## Current finding
 
@@ -58,14 +65,12 @@ charts, or performance summaries before the intake gate.
 
 ## Next executable task
 
-Obtain independent Claude re-review of the single-developer M5-004
-implementation. After approval, merge the frozen package. Acquire the
-registered 2026-08-03 through 2026-08-07 report/ticks only after the block is
-complete, run the blind structural intake, and evaluate once if accepted.
+Acquire the registered 2026-08-03 through 2026-08-07 ticks after the block
+closes and the covering report after 2026-08-08 context is exportable. Run
+blind structural intake, then evaluate the frozen package once if accepted.
 
 ## Current blockers
 
-- M5-004 implementation requires independent re-review before merge
 - Future external labels and model outputs must remain uninspected until the
   blind structural intake passes
 - Server timezone remains a window-scoped UTC+3 inference
