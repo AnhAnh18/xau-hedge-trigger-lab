@@ -30,5 +30,7 @@
 - [x] T-028 Amend M5-004 provenance before any fit on already observed sessions
 - [x] T-029 Obtain independent review of the M5-004 provenance amendment
 - [x] T-030 Freeze M5-004 before blind intake of the August external block
-- [ ] T-031 Obtain independent re-review of the M5-004 implementation
+- [x] T-031 Obtain independent re-review of the M5-004 implementation
 - [ ] T-032 Blind-intake and evaluate the 2026-08-03 through 2026-08-07 block
+- [x] T-033 Implement pre-data M5-004 blind-intake and frozen-evaluator infrastructure
+- [ ] T-034 Obtain independent review of M5-004 external infrastructure

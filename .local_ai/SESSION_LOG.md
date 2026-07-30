@@ -226,3 +226,23 @@
 - Kept the August primary and fallback blocks unloaded. Because this is a
   single-developer implementation, independent Claude re-review is required
   before merge.
+
+## 2026-07-30 — M5-004 pre-data external infrastructure
+
+- Preserved the locked M5-004 preregistration, provenance amendment, frozen
+  model manifest, and development report byte-for-byte.
+- Added a five-session blind-intake contract with separate raw-file and
+  canonical package hashes.
+- Implemented information-firewalled structural intake for coverage,
+  duplicate ticks, gaps, independent replica evidence, report context,
+  financial reconciliation, inventory conservation, and aggregate lifecycle
+  completeness.
+- Kept lifecycle behavior and unlock-direction derivation out of blind intake;
+  labels are first created only after the exclusive evaluation lock succeeds.
+- Added a no-fit frozen evaluator, exact one-second verdict branches,
+  non-gating 500-millisecond sensitivity, crash-safe identical-hash resume,
+  consumed-evaluation refusal, and reviewed fallback authorization.
+- Tested the complete two-stage workflow using anonymized synthetic fixtures
+  only. No August file was acquired, opened, parsed, or inspected.
+- Frozen runtime and protected-file hashes in the external infrastructure
+  manifest. Independent review remains required before merge.

@@ -400,3 +400,26 @@ outputs. A fallback may be activated only by a locked structural failure,
 never by sample size, class balance, or model performance. M5-004 remains
 unimplemented and unfitted pending independent amendment review and separate
 authorization.
+
+## M5-004 pre-data external infrastructure — 2026-07-30
+
+The development package was independently reviewed and merged at `618a38f`.
+Before any August input exists, the operational external contract is frozen in:
+
+- `data/m5_004_external_intake_contract.json`;
+- `reports/phase_05/m5_004_external_infrastructure_manifest.json`.
+
+The workflow has two enforced stages. Blind intake may parse structural and
+financial inputs but cannot derive or publish unlock-direction labels, feature
+values, predictions, or performance. Frozen evaluation requires a complete
+accepted five-session intake, records the Windows raw-file attestations,
+verifies cross-platform canonical-text and embedded package hashes, creates
+an exclusive evaluation lock before deriving labels, and contains no fit,
+selection, calibration, or threshold path.
+
+An interrupted run may resume only under the same deterministic evaluation ID
+and identical input, acceptance, model, and infrastructure hashes. Fallback
+requires both a primary structural-failure record and a separately reviewed
+authorization artifact. Synthetic fixtures can test the infrastructure but
+cannot create an external verdict. The locked preregistration and provenance
+amendment remain byte-identical.

@@ -1,0 +1,83 @@
+{
+  "base_commit": "618a38fea1a3b9973149a271f2fa8184a6b9efe0",
+  "bootstrap": {
+    "cluster_key": "cohort_id:interval_id",
+    "draws": 5000,
+    "seed": 5004
+  },
+  "contract_canonical_sha256": "bcabda91fcaaf1b7a6e69efa1601ffd05567e9475a3436c6ebc916674a6b8da1",
+  "contract_id": "m5_004_external_intake_v1",
+  "contract_raw_file_sha256": "25d67b8f0d3613a1da809452ed93ef2e64701ee79ebd13d272ea327e342ae7d0",
+  "external_data_seen": false,
+  "external_evaluation_consumed": false,
+  "frozen_package": {
+    "base_commit": "618a38fea1a3b9973149a271f2fa8184a6b9efe0",
+    "development_report_canonical_text_file_sha256": "9aff4d1757aa11bf4250295713a97e633a50c3cf852632fe6b3d156072e6fcb4",
+    "development_report_deterministic_sha256": "ae517c43ef0884e2e98c6579cc32a34ba3c7f247fb6148e12e1a4d0da9a8a9ca",
+    "development_report_path": "reports/phase_05/m5_004_unlock_cause_report.json",
+    "development_report_raw_file_sha256": "9791c951856c215b82fb9bb79fb1bb824e9fe76a1fac6a250b7eab544a4a1081",
+    "manifest_canonical_sha256": "38169823c993529c746f0f4775536ab140effd3638f0e45a4b1002adbf561709",
+    "manifest_canonical_text_file_sha256": "7fe784ae5d7b4a5d9f486c2bf48e51e198df0e17544297a4443464394ca7dfcb",
+    "manifest_path": "reports/phase_05/m5_004_frozen_model_manifest.json",
+    "manifest_raw_file_sha256": "6c5b111265771d510600b248613a006cf4e99e73cc0d3ee3c1b883a7e875082b",
+    "raw_file_hash_role": "windows_checkout_attestation_canonical_text_hash_is_cross_platform_gate"
+  },
+  "infrastructure_manifest_sha256": "90032ff8e4c567230e7f57cae347d0a7279954dfb20173deb0221b1205ee94ab",
+  "m6_started": false,
+  "milestone": "M5-004-external-infrastructure",
+  "protected_canonical_text_sha256": {
+    ".local_ai/M5_004_PREREGISTRATION.md": "d60c4e12dc84e72ab13da79402111acb00d66a814c02d4718d6cfa5a88059056",
+    ".local_ai/M5_004_PROVENANCE_AMENDMENT.md": "4c8537abcc2604ae11be4fdc937cb4fb1ac6b24a5bca6f25f34b2a0a4c6565ad",
+    "data/m5_004_preregistration.json": "f28a8eb35b236b8196788008e43ff613ad674c8815bf711a861067c453be8fea",
+    "data/m5_004_provenance_amendment.json": "50bef8e873f801fd7c23ae63678e195f2c500e3a6d48cf6f0411c9b27358a442",
+    "reports/phase_02/state_reconstruction_report.json": "c3fa3e7afce2673f47c510286423bc3412669b8c7652cd004a0e8374e29a63c9",
+    "reports/phase_03/event_tick_alignment_report.json": "da60353c001e0f90251df4b7ad860c16d6432d6f662bccd782bc4541bace2ef5",
+    "reports/phase_04/trigger_dataset_report.json": "fcc1518a7a0ec7d6a54efaea738c07711556d68d758557892b828c5e2f37fc00",
+    "reports/phase_05/m5_002_state_age_pilot.json": "3ed07c38aecb8c6a64f000afd31b31cccaa574fbfb74de32647484fa13e68e11",
+    "reports/phase_05/m5_003_external_validation_report.json": "e4a701b0f0482030b136c20ed8b7ac52b9b139d2ed36527bdd5983777714ab0a",
+    "reports/phase_05/m5_003_frozen_model_manifest.json": "4e6e1015a8ed5ede5dcbd85eeedc70b150f9e1fe04182717b040f1518652e4f0",
+    "reports/phase_05/m5_003_price_increment_report.json": "2027c458b2a3e7f63354c7be64632e5fa5541704bf88f8ee86bb5992c924ae47",
+    "reports/phase_05/m5_004_frozen_model_manifest.json": "7fe784ae5d7b4a5d9f486c2bf48e51e198df0e17544297a4443464394ca7dfcb",
+    "reports/phase_05/m5_004_unlock_cause_report.json": "9aff4d1757aa11bf4250295713a97e633a50c3cf852632fe6b3d156072e6fcb4"
+  },
+  "registered_blocks": {
+    "fallback": {
+      "report_context_end": "2026-08-15",
+      "report_context_start": "2026-08-07",
+      "requires_reviewed_primary_failure_authorization": true,
+      "role": "external_gate_only_after_reviewed_primary_structural_failure",
+      "sessions": [
+        "2026-08-10",
+        "2026-08-11",
+        "2026-08-12",
+        "2026-08-13",
+        "2026-08-14"
+      ]
+    },
+    "primary": {
+      "fallback_authorized": false,
+      "report_context_end": "2026-08-08",
+      "report_context_start": "2026-07-31",
+      "role": "untouched_external_gate",
+      "sessions": [
+        "2026-08-03",
+        "2026-08-04",
+        "2026-08-05",
+        "2026-08-06",
+        "2026-08-07"
+      ]
+    }
+  },
+  "runtime_canonical_text_sha256": {
+    "data/m5_004_external_intake_contract.json": "25d67b8f0d3613a1da809452ed93ef2e64701ee79ebd13d272ea327e342ae7d0",
+    "reports/phase_05/m5_004_external_infrastructure.md": "094f0fa1db74985fb3da9c24306887c93453f5e06f4a595be042e49d7e59325a",
+    "scripts/evaluate_m5_004_external.py": "49baf1b867a02e071da85a6accd19a692b232364d8219a4725c754604ff6a7ae",
+    "scripts/freeze_m5_004_external_infrastructure.py": "9e72558f04ff5e6fb01487e97e9dbef3c096ecbe6545f588f3d5ebe2d6eaf5f5",
+    "scripts/intake_m5_004_external.py": "9e29dd413ce2af2bedf54eff05b58c34fc33123b4175f8f4c61527e9b1799ad4",
+    "src/xau_trigger/m5_004_external_intake.py": "3f4c2707bd2da06d575625f6eb5cd0234e0171a3e397282d19a678452e55d61e",
+    "src/xau_trigger/m5_004_frozen_evaluator.py": "c6d9e9f6f05928529f1caabc8ae82e6437b29a8aa3bceb9b404d58ff7512f0c2",
+    "src/xau_trigger/unlock_cause.py": "9990483ba76b87fcdc38debd68ab8f2517881e196103eb1b15d08f3182b9d19e"
+  },
+  "schema_version": 1,
+  "status": "external_infrastructure_ready_data_unseen"
+}
