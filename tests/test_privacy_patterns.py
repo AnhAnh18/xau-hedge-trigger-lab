@@ -1,11 +1,20 @@
 from __future__ import annotations
 
+import importlib.util
+from pathlib import Path
 import re
 
-from scripts.check_privacy import DEFAULT_PATTERNS
 
+ROOT = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location(
+    "check_privacy_script",
+    ROOT / "scripts" / "check_privacy.py",
+)
+assert SPEC is not None and SPEC.loader is not None
+MODULE = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(MODULE)
 
-MATCHER = re.compile("|".join(DEFAULT_PATTERNS), re.I)
+MATCHER = re.compile("|".join(MODULE.DEFAULT_PATTERNS), re.I)
 
 
 def test_nine_digit_account_like_token_is_blocked() -> None:
