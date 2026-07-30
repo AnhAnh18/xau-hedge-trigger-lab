@@ -189,3 +189,19 @@
 - Rebuilt all 12 local/report artifacts twice with zero byte changes.
 - Kept the branch unmerged pending independent review and made no tradeable-edge
   claim. M5-004 remains out of scope.
+
+## 2026-07-30 — M5-004 provenance amendment
+
+- Preserved the original M5-004 human and machine preregistration files and
+  added a separate effective companion amendment.
+- Replaced Draft PR #8 provenance with merged M5-003 commit `bd4715d` and
+  pinned the external-report hash.
+- Permanently reassigned 2026-07-27..29 to seen external reuse diagnostics.
+- Registered untouched primary 2026-08-03..07 and structural fallback
+  2026-08-10..14 blocks before implementation or acquisition.
+- Adapted only the daily coherence count from two of three to three of five;
+  retained the one-sided headline bound, rejection rule, seed, cluster unit,
+  descriptive LOSO, and non-gating 500-millisecond sensitivity.
+- Locked blind structural intake, pre-weekend report context, replicated-gap
+  handling, and outcome-independent fallback criteria.
+- Stopped before M5-004 feature construction, fitting, or external loading.

@@ -374,3 +374,29 @@ tradeable-edge, profitability, causal-trigger, or broker-ownership claim.
 Independent review is required before merge. M5-004 remains a separate,
 unimplemented estimand and requires a provenance amendment before fitting
 because these external sessions are no longer untouched for later research.
+
+## M5-004 provenance amendment — 2026-07-30
+
+The original M5-004 estimand and model contract remain unchanged. Its effective
+companion amendment is:
+
+- `.local_ai/M5_004_PROVENANCE_AMENDMENT.md`;
+- `data/m5_004_provenance_amendment.json`.
+
+The amendment replaces Draft PR provenance with merged M5-003 commit
+`bd4715d0f06791e60ab01a44146a87d1297a6e56`, assigns 2026-07-27..29 to
+permanent seen external reuse diagnostics, and registers 2026-08-03..07 as the
+new untouched five-session external gate. The pre-registered structural
+fallback is 2026-08-10..14.
+
+Only the coherence count changes from two of three to three of five strictly
+positive daily means. The one-sided headline bound, ordinary two-sided
+rejection rule, 5,000 draws, seed 5004, `cohort_id:interval_id` clustering,
+descriptive LOSO, and non-gating 500-millisecond sensitivity remain fixed.
+
+Blind intake can inspect structural acquisition status but cannot expose
+unlock direction counts, class balance, feature associations, or model
+outputs. A fallback may be activated only by a locked structural failure,
+never by sample size, class balance, or model performance. M5-004 remains
+unimplemented and unfitted pending independent amendment review and separate
+authorization.

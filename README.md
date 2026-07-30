@@ -42,8 +42,11 @@ disclosed; only manifests, aggregate reports, and reproducible processing logic
 are committed.
 
 M5-004's conditional unlock-cause design is pre-registered but contains no
-feature implementation or fit. It requires separate authorization and a dated
-provenance amendment because the external sessions are no longer untouched.
+feature implementation or fit. Its dated provenance amendment permanently
+reclassifies 2026-07-27 through 2026-07-29 as seen diagnostics and registers
+2026-08-03 through 2026-08-07 as the fresh untouched external block, with
+2026-08-10 through 2026-08-14 as a structural fallback. Implementation still
+requires independent amendment review and separate authorization.
 
 Rebuild the local M5-002 pilot outputs and aggregate report with:
 

@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "amendment_id": "m5_004_provenance_amendment_2026_07_30",
+  "recorded_on": "2026-07-30",
+  "status": "preregistered_amendment_only_no_implementation_no_fit",
+  "base_contract": {
+    "plan_id": "m5_004_unlock_cause_v1",
+    "human_readable_path": ".local_ai/M5_004_PREREGISTRATION.md",
+    "human_readable_sha256": "d60c4e12dc84e72ab13da79402111acb00d66a814c02d4718d6cfa5a88059056",
+    "machine_readable_path": "data/m5_004_preregistration.json",
+    "machine_readable_sha256": "f28a8eb35b236b8196788008e43ff613ad674c8815bf711a861067c453be8fea",
+    "unchanged_except_explicit_amendment_fields": true
+  },
+  "scope": {
+    "amendment_only": true,
+    "implementation_authorized": false,
+    "model_fit_authorized": false,
+    "feature_construction_started": false,
+    "model_fit_started": false,
+    "canonical_m2_through_m5_003_outputs_mutable": false,
+    "tradeable_edge_claim_allowed": false
+  },
+  "explicit_deltas": {
+    "upstream_reference": {
+      "old": "draft_pr_8_head_7434505e9e6fcff7d8c427a51943ea6b571c3328",
+      "new": "main_merge_bd4715d0f06791e60ab01a44146a87d1297a6e56",
+      "reason": "replace_mutable_draft_provenance"
+    },
+    "seen_external_role": {
+      "sessions": [
+        "2026-07-27",
+        "2026-07-28",
+        "2026-07-29"
+      ],
+      "old": "only_verdict_gate",
+      "new": "seen_external_reuse_diagnostic",
+      "reason": "m5_003_evaluated_and_selected_operational_screenshots_seen"
+    },
+    "external_block": {
+      "old_session_count": 3,
+      "new_session_count": 5,
+      "reason": "fresh_untouched_external_replacement"
+    },
+    "session_coherence": {
+      "old": "at_least_2_of_3_strictly_positive",
+      "new": "at_least_3_of_5_strictly_positive",
+      "reason": "mechanical_adaptation_to_five_sessions"
+    }
+  },
+  "unchanged_inference_contract": {
+    "headline": "external_1000ms_C_age_price_cause_minus_A_age_cause",
+    "secondary": "external_1000ms_C_age_price_cause_minus_B_price_cause",
+    "support_pooled_mean_strictly_positive": true,
+    "support_one_sided_95pct_lower_strictly_positive": true,
+    "rejection_ordinary_two_sided_95pct_upper_at_or_below_zero": true,
+    "bootstrap_draws": 5000,
+    "bootstrap_seed": 5004,
+    "bootstrap_cluster": "cohort_id_colon_interval_id",
+    "loso_role": "required_descriptive_only_no_verdict",
+    "sensitivity_500ms_role": "timing_sensitivity_only_no_verdict_no_gate",
+    "ablation_adjustment": "Bonferroni_alpha_divided_by_4"
+  },
+  "upstream_provenance": {
+    "m5_003_merge_commit": "bd4715d0f06791e60ab01a44146a87d1297a6e56",
+    "m5_003_external_report_sha256": "f4e12813d091030a61a843251a172fe356b8261313bf56efc913a28e7af431bf",
+    "existing_locked_hashes_unchanged": {
+      "m5_003_preregistration_sha256": "4da95ca8b787e201a77f03fcfe1bf40145752bb967d4d847325349c528f50616",
+      "m5_003_report_sha256": "9b6cc69feea7fd031c039a7af7f6cf8900c6fcc21cd952f6eb1a4ea5d6824eb1",
+      "m5_003_frozen_manifest_sha256": "da2f9e0c66bdf8e51a349bc77db67fc3bbd1f8dc100d359890ac7ee54b14e747",
+      "m5_003_feature_audit_dataframe_sha256": "44183dbf388a9dc86344d3beaea480f0db3242488c66afa937ddef0475ce78b4",
+      "m5_003_joint_valid_dataframe_sha256": "69deadc6a6d2ed45ff12c15ef7659a73cf09ace74d27b496938dd057569800f2",
+      "m5_002_risk_bin_dataframe_sha256": "62f0f0fa4f961b699461c2c3ba935c460d853b4553142130187c503fb4698520"
+    }
+  },
+  "cohorts": {
+    "development": {
+      "sessions": [
+        "2026-07-20",
+        "2026-07-21",
+        "2026-07-22",
+        "2026-07-23"
+      ],
+      "role": "fit_and_selection_only_no_verdict"
+    },
+    "internal_reuse": {
+      "sessions": [
+        "2026-07-24"
+      ],
+      "role": "diagnostic_only_no_fit_no_verdict"
+    },
+    "seen_external_reuse": {
+      "sessions": [
+        "2026-07-27",
+        "2026-07-28",
+        "2026-07-29"
+      ],
+      "role": "seen_external_reuse_diagnostic",
+      "evaluate_before_model_freeze_allowed": false,
+      "fit_preprocess_select_calibrate_or_gate_allowed": false,
+      "pool_with_future_external_allowed": false
+    },
+    "primary_external": {
+      "sessions": [
+        "2026-08-03",
+        "2026-08-04",
+        "2026-08-05",
+        "2026-08-06",
+        "2026-08-07"
+      ],
+      "role": "only_external_verdict_gate",
+      "report_context_start": "2026-07-31",
+      "report_coverage_end": "2026-08-08",
+      "load_before_model_freeze_allowed": false
+    },
+    "fallback_external": {
+      "sessions": [
+        "2026-08-10",
+        "2026-08-11",
+        "2026-08-12",
+        "2026-08-13",
+        "2026-08-14"
+      ],
+      "role": "external_verdict_gate_only_after_primary_structural_failure",
+      "report_context_start": "2026-08-07",
+      "report_coverage_end": "2026-08-15",
+      "load_before_model_freeze_allowed": false
+    }
+  },
+  "blind_intake": {
+    "symbol": "XAUUSD",
+    "server_timezone": "UTC+03:00",
+    "tick_required_columns": [
+      "DATE",
+      "TIME",
+      "BID",
+      "ASK",
+      "LAST",
+      "VOLUME",
+      "FLAGS"
+    ],
+    "first_tick_no_later_than_server_time": "01:05:00",
+    "last_tick_no_earlier_than_server_time": "23:50:00",
+    "preserve_duplicate_milliseconds": true,
+    "coverage_gap_threshold_seconds": 60,
+    "scheduled_classification_min_recurring_sessions": 3,
+    "same_server_clock_tolerance_seconds": 120,
+    "accepted_unscheduled_gap_classification": "replicated_source_quote_gap",
+    "replicated_gap_requires_independent_export_and_identical_boundary_ticks": true,
+    "interpolation_allowed": false,
+    "exclude_gap_time_and_crossing_lookbacks": true,
+    "complete_five_session_block_required": true,
+    "subset_verdict_allowed": false,
+    "allowed_outputs": [
+      "generated_file_aliases",
+      "sha256",
+      "parser_schema_status",
+      "symbol_and_server_date_coverage",
+      "timestamp_ordering",
+      "duplicate_millisecond_preservation",
+      "boundary_coverage",
+      "quote_gap_boundaries_and_structural_classification",
+      "report_tick_overlap",
+      "financial_reconciliation_status",
+      "inventory_reconciliation_status",
+      "aggregate_lifecycle_completeness_without_unlock_direction_counts"
+    ],
+    "forbidden_outputs": [
+      "unlock_direction_balance",
+      "directional_daily_event_counts",
+      "feature_label_associations",
+      "predictions",
+      "coefficients",
+      "calibration",
+      "model_performance"
+    ],
+    "structural_fallback_reasons": [
+      "missing_or_unparseable_registered_session",
+      "wrong_symbol_or_server_date",
+      "boundary_coverage_failure",
+      "financial_reconciliation_failure",
+      "inventory_reconciliation_failure",
+      "unknown_or_nonreplicated_material_quote_gap"
+    ],
+    "forbidden_fallback_reasons": [
+      "low_sample_size",
+      "no_eligible_unlock_on_a_day",
+      "unlock_direction_class_imbalance",
+      "feature_label_association",
+      "prediction_or_likelihood_result",
+      "daily_or_pooled_model_performance"
+    ]
+  },
+  "effective_decision_rule": {
+    "supported": "headline_mean_strictly_positive_and_one_sided_95pct_lower_strictly_positive_and_at_least_3_of_5_daily_means_strictly_positive_and_all_validation_gates_pass",
+    "weak_or_inconclusive": "pooled_mean_positive_but_inferential_or_session_coherence_gate_fails",
+    "mixed_or_inconclusive": "pooled_one_sided_bound_positive_but_fewer_than_3_daily_means_strictly_positive",
+    "rejected_for_this_design": "ordinary_two_sided_95pct_upper_at_or_below_zero",
+    "all_other_outcomes": "inconclusive",
+    "zero_eligible_event_day": "daily_mean_undefined_counts_as_not_positive_no_fallback",
+    "loso_can_create_or_override_verdict": false,
+    "sensitivity_500ms_can_create_or_override_verdict": false,
+    "development_internal_seen_external_reuse_or_M4_verdict_allowed": false,
+    "occurrence_profitability_causality_broker_ownership_or_tradeable_edge_claim_allowed": false
+  },
+  "inherited_by_reference": {
+    "estimand_and_event_construction": true,
+    "causal_anchors_and_windows": true,
+    "exact_12_feature_allowlist": true,
+    "forbidden_predictors": true,
+    "joint_validity_and_outputs": true,
+    "models_and_preprocessing": true,
+    "selection_and_diagnostics": true,
+    "ablations_and_multiplicity": true,
+    "implementation_merge_gate": true,
+    "group_and_bootstrap_key": "cohort_id_colon_interval_id",
+    "m5_003_predictions_or_residuals_as_predictors_allowed": false
+  },
+  "authorization": {
+    "independent_review_required_before_merge": true,
+    "separate_implementation_authorization_required": true,
+    "future_external_acquisition_before_model_freeze_allowed": false,
+    "evaluate_future_external_exactly_once_after_blind_intake": true
+  }
+}
