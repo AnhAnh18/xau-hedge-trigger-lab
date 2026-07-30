@@ -349,3 +349,28 @@ The contract is stacked on Draft PR #8. Any upstream review change requires a
 dated pre-fit hash amendment. Development and internal reuse cannot create a
 verdict; only the frozen 2026-07-27..29 evaluation can. Implementation and
 fitting require separate authorization after review.
+
+## M5-003 external evaluation — 2026-07-30
+
+The registered 2026-07-27 through 2026-07-29 cohort is now acquired and
+evaluated with the frozen M5-003 manifest. A dated amendment was committed
+before external feature construction or prediction:
+
+- `.local_ai/M5_003_EXTERNAL_AMENDMENT.md`;
+- `data/m5_003_external_amendment.json`.
+
+The amendment changes neither model nor gate. It discloses that selected
+operational screenshots from 2026-07-27 and 2026-07-28 were seen and classifies
+one independently replicated 106.357-second source quote gap. Gap time and
+crossing lookback windows are excluded without interpolation; reported events
+remain in lifecycle and accounting.
+
+The one-second `C_session - A_session` headline passes the locked pooled
+familywise and two-of-three positive-session rules for all three endpoints.
+The 500-millisecond output remains causal-anchor sensitivity. These are
+occurrence-likelihood model comparisons only. They do not authorize a
+tradeable-edge, profitability, causal-trigger, or broker-ownership claim.
+
+Independent review is required before merge. M5-004 remains a separate,
+unimplemented estimand and requires a provenance amendment before fitting
+because these external sessions are no longer untouched for later research.

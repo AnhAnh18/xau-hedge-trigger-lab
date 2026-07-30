@@ -12,11 +12,9 @@ Project memory and the current execution state live in [`.local_ai/`](.local_ai/
 
 **M5 — Trigger Inference**
 
-M0–M4 are complete. M5-002 has implemented a bounded state-age-only hazard
-pilot on locked causal support. Frozen age buckets improve internal holdout
-cause-specific occurrence likelihood for all three endpoints, with the
-approximate six-second unlock timer floor transporting most clearly. External
-validation remains pending and no tradeable-edge claim is made.
+M0–M4 are complete. M5-002 implemented a bounded state-age-only occurrence
+pilot on locked causal support. M5-003 now has a frozen external evaluation on
+the registered 2026-07-27 through 2026-07-29 sessions.
 
 The M5-003 causal price-increment pipeline is implemented and frozen under the
 pre-registered contract in `.local_ai/M5_003_PREREGISTRATION.md` and
@@ -30,17 +28,22 @@ external data was loaded. The frozen headline is now
 audit. Fixed server-time blocks, fully refit LOSO diagnostics, and the reduced
 shape diagnostic are documented in the M5-003 report.
 
-Claude independently reproduced and accepted the remediated implementation.
-The bounded review follow-ups add an external two-of-three positive-session
-gate and stricter interpretation limits without changing the fitted model. The
-remaining data task is to acquire the pre-registered 2026-07-27 through
-2026-07-29 XAUUSD tick sessions and the covering MT5 report. Raw files remain
-in external, access-controlled storage; only manifests, aggregate reports, and
-reproducible processing logic are committed.
+Claude independently reproduced and accepted the pre-external remediated
+implementation. The frozen external headline passes its locked rule for all
+three endpoints, but the gain is session-concentrated and the two re-hedge
+combined models underperform price-only B. The result supports only that the
+frozen feature package adds occurrence information beyond the age/session
+baseline. It does not identify the bot's rule or establish a tradeable edge.
+Independent re-review of the external evaluator is required before merge.
 
-M5-004's conditional unlock-cause design is now pre-registered on a separate
-stacked branch. It contains no feature implementation or model fit and requires
-separate authorization after the M5-003 review.
+Raw files remain in local access-controlled storage. A replicated source quote
+gap is excluded without interpolation, and selected screenshot exposure is
+disclosed; only manifests, aggregate reports, and reproducible processing logic
+are committed.
+
+M5-004's conditional unlock-cause design is pre-registered but contains no
+feature implementation or fit. It requires separate authorization and a dated
+provenance amendment because the external sessions are no longer untouched.
 
 Rebuild the local M5-002 pilot outputs and aggregate report with:
 
@@ -53,6 +56,13 @@ reports with:
 
 ```bash
 python scripts/build_m5_price_increment.py
+```
+
+Evaluate the frozen M5-003 model on the locally supplied registered external
+inputs with:
+
+```bash
+python scripts/evaluate_m5_external.py
 ```
 
 ## Layout

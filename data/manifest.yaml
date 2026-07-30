@@ -156,6 +156,30 @@ m5_003_external_amendment:
   replicated_source_quote_gap_seconds: 106.357
   model_or_gate_changed: false
 
+m5_003_external_evaluation:
+  status: external_evaluation_complete_independent_review_pending
+  evaluated_on: "2026-07-30"
+  sessions:
+    - "2026-07-27"
+    - "2026-07-28"
+    - "2026-07-29"
+  headline_comparison: C_session_minus_A_session
+  primary_bin_width_ms: 1000
+  anchor_sensitivity_width_ms: 500
+  frozen_model_refit: false
+  endpoint_verdicts:
+    rehedge_buy_occurrence: supported
+    rehedge_sell_occurrence: supported
+    unlock_occurrence: supported
+  acquisition_report: reports/phase_05/m5_001_external_acquisition_report.json
+  aggregate_report_json: reports/phase_05/m5_003_external_validation_report.json
+  aggregate_report_markdown: reports/phase_05/m5_003_external_validation_report.md
+  local_output_directory: data/interim/m5_003_external
+  analyst_blinded: false
+  independent_review_required_before_merge: true
+  tradeable_edge_claimed: false
+  raw_files_committed_to_git: false
+
 m5_004_preregistration:
   id: m5_004_unlock_cause_v1
   registered_on: "2026-07-27"

@@ -187,3 +187,42 @@ independent review accepted the remediation, and only the frozen
 2026-07-27..29 evaluation may create the M5-003 headline verdicts. Likelihood
 increments are not scale-free across endpoints or sessions. No result
 establishes a tradeable edge.
+
+## F-010 — Frozen price package transports beyond the age/session baseline
+
+Status: External headline gate passed; independent review pending
+Confidence: Moderate
+
+Evidence on the registered 2026-07-27 through 2026-07-29 one-second cohort:
+
+| Endpoint | C_session−A_session | Familywise lower bound | Positive sessions |
+| --- | ---: | ---: | ---: |
+| rehedge_buy_occurrence | +0.231269 | +0.195982 | 3/3 |
+| rehedge_sell_occurrence | +0.166665 | +0.131774 | 2/3 |
+| unlock_occurrence | +0.221639 | +0.191840 | 2/3 |
+
+All three comparisons use the frozen M5-003 manifest, identical A/B/C
+evaluation rows, 5,000 deterministic interval-cluster bootstrap draws, and the
+pre-registered familywise and two-of-three session rules. No external row was
+used for fitting, preprocessing, feature selection, regularization, or
+calibration.
+
+Finding: The frozen full price package adds occurrence information beyond the
+frozen state-age/session baseline on the registered external cohort. This is a
+model-comparison finding, not proof of the bot's actual rule or a tradeable
+edge.
+
+Limitations:
+
+- 2026-07-29 contributes most of the pooled increment; 2026-07-28 is negative
+  for rehedge-sell and unlock.
+- `C_session - B` is negative for both re-hedge endpoints, so the full
+  age/session-plus-price architecture is not settled by the headline.
+- The external sessions are not analyst-blinded because selected operational
+  screenshots were seen before evaluation. The model and gate were already
+  frozen, and this exposure is disclosed in a dated amendment.
+- A replicated 106.357-second source quote gap on 2026-07-27 is excluded
+  without interpolation. Events in that gap remain in lifecycle accounting.
+- Three sessions cannot estimate between-session population uncertainty.
+- Likelihood improvement does not establish profitability, execution quality,
+  broker ownership, or a causal trigger.

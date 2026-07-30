@@ -7,6 +7,7 @@ from xau_trigger.price_features import (
     CausalTickFeatureEngine,
     _RangeMinMax,
     attach_first_exclusion_reason,
+    prepare_candidate_bins,
 )
 
 
@@ -23,6 +24,41 @@ def test_vectorized_range_min_max_matches_half_open_slices() -> None:
     assert np.allclose(maximum[:3], [9.0, 7.0, 7.0])
     assert np.isnan(minimum[3])
     assert np.isnan(maximum[3])
+
+
+def test_candidate_role_mapping_can_name_a_separate_external_cohort() -> None:
+    risk_bins = pd.DataFrame(
+        {
+            "risk_bin_id": ["external:1000:1:0"],
+            "cohort_id": ["external_2026_07_27_29"],
+            "interval_id": ["1"],
+            "endpoint": ["rehedge_sell_occurrence"],
+            "bin_width_ms": [1000],
+            "bin_start": [pd.Timestamp("2026-07-27 12:00:00")],
+            "bin_end": [pd.Timestamp("2026-07-27 12:00:01")],
+            "state_age_seconds": [10.0],
+            "target_label": [0],
+            "is_common_hours": [True],
+            "is_cross_split_interval": [False],
+        }
+    )
+    interval_audit = pd.DataFrame(
+        {
+            "cohort_id": ["external_2026_07_27_29"],
+            "interval_id": ["1"],
+            "bin_width_ms": [1000],
+            "start_time": [pd.Timestamp("2026-07-27 11:59:50")],
+        }
+    )
+
+    candidates = prepare_candidate_bins(
+        risk_bins,
+        interval_audit,
+        role_by_date={"2026-07-27": "external"},
+    )
+
+    assert candidates["analysis_role"].tolist() == ["external"]
+    assert candidates["session_date"].tolist() == ["2026-07-27"]
 
 
 def _ticks() -> pd.DataFrame:

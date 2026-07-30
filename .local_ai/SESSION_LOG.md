@@ -169,3 +169,23 @@
   from creating a verdict.
 - Stopped before cause-feature construction or model fitting; implementation
   requires review and separate authorization.
+
+## 2026-07-30 — M5-003 registered external evaluation
+
+- Validated separate tick exports for 2026-07-27, 2026-07-28, and 2026-07-29
+  plus the covering MT5 report; raw inputs remain ignored and untracked.
+- Registered a pre-prediction amendment disclosing selected screenshot
+  exposure and a replicated 106.357-second source quote gap.
+- Reconstructed the external lifecycle independently and evaluated the frozen
+  M5-003 manifest without refitting preprocessing, regularization, calibration,
+  or model parameters.
+- Excluded quote-gap time and any crossing price windows without interpolation;
+  retained affected events in lifecycle and stage accounting.
+- Passed the pre-registered one-second headline gate for all three endpoints,
+  while preserving negative `C_session - B` re-hedge diagnostics and strong
+  session concentration in the interpretation.
+- Added endpoint/width accounting from lifecycle events through representable,
+  common/floor, and joint-valid targets.
+- Rebuilt all 12 local/report artifacts twice with zero byte changes.
+- Kept the branch unmerged pending independent review and made no tradeable-edge
+  claim. M5-004 remains out of scope.

@@ -11,7 +11,11 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_PATTERNS = [r"[A-Za-z]:\\Users\\", r"/home/[^/]+/", r"(?<![A-Za-z0-9_])\d{9}(?!\d)"]
+DEFAULT_PATTERNS = [
+    r"[A-Za-z]:\\Users\\",
+    r"/home/[^/]+/",
+    r"(?<![A-Za-z0-9_])\d{9}(?![A-Za-z0-9_])",
+]
 EXCLUDED = {"scripts/check_privacy.py"}
 
 def tracked_files() -> list[Path]:
