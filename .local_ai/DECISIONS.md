@@ -379,3 +379,30 @@ Consequences: The pooled and two-of-three session gates remain unchanged.
 External findings receive a disclosed qualitative-exposure limitation. No
 model refit, feature change, session substitution, or tradeable-edge claim is
 permitted.
+
+## D-018 — Replace the burned M5-004 external block before implementation
+
+Date: 2026-07-30
+Status: Pre-fit amendment pending independent review; supersedes D-016 only
+for upstream provenance, external cohort roles, and session coherence
+
+Decision: Permanently assign 2026-07-27 through 2026-07-29 the M5-004 role
+`seen_external_reuse_diagnostic`. Register 2026-08-03 through 2026-08-07 as
+the primary untouched external block and 2026-08-10 through 2026-08-14 as a
+fallback usable only after a locked structural intake failure. Replace the
+two-of-three strictly positive session clause with three-of-five strictly
+positive sessions. Preserve the one-sided headline bound, ordinary two-sided
+rejection rule, seed 5004, `cohort_id:interval_id` cluster, descriptive LOSO,
+and non-gating 500-millisecond sensitivity.
+
+Reason: The July 27–29 sessions were evaluated by M5-003 and selected
+operational screenshots were discussed. They cannot honestly validate the
+later unlock-direction model. A new block is required, but that necessity
+does not justify silently changing unrelated inference rules.
+
+Consequences: The exact M5-004 estimand, event rows, 12-feature allowlist,
+A/B/C models, development protocol, ablations, outputs, and claim restrictions
+remain inherited from the locked base preregistration. M5-004 implementation
+and fitting remain unauthorized until this amendment is independently
+reviewed and merged. Future external files cannot be loaded before the
+development package is frozen.

@@ -157,7 +157,7 @@ m5_003_external_amendment:
   model_or_gate_changed: false
 
 m5_003_external_evaluation:
-  status: external_evaluation_complete_independent_review_pending
+  status: merged_independent_review_accepted
   evaluated_on: "2026-07-30"
   sessions:
     - "2026-07-27"
@@ -198,6 +198,39 @@ m5_004_preregistration:
     - "2026-07-27"
     - "2026-07-28"
     - "2026-07-29"
+
+m5_004_provenance_amendment:
+  id: m5_004_provenance_amendment_2026_07_30
+  recorded_on: "2026-07-30"
+  status: preregistered_amendment_only_independent_review_pending
+  human_readable_plan: .local_ai/M5_004_PROVENANCE_AMENDMENT.md
+  human_readable_sha256: 4c8537abcc2604ae11be4fdc937cb4fb1ac6b24a5bca6f25f34b2a0a4c6565ad
+  machine_readable_plan: data/m5_004_provenance_amendment.json
+  machine_readable_sha256: 50bef8e873f801fd7c23ae63678e195f2c500e3a6d48cf6f0411c9b27358a442
+  base_preregistration_rewritten: false
+  implementation_authorized: false
+  model_fit_authorized: false
+  upstream_merge_commit: bd4715d0f06791e60ab01a44146a87d1297a6e56
+  seen_external_reuse_sessions:
+    - "2026-07-27"
+    - "2026-07-28"
+    - "2026-07-29"
+  primary_external_sessions:
+    - "2026-08-03"
+    - "2026-08-04"
+    - "2026-08-05"
+    - "2026-08-06"
+    - "2026-08-07"
+  fallback_external_sessions:
+    - "2026-08-10"
+    - "2026-08-11"
+    - "2026-08-12"
+    - "2026-08-13"
+    - "2026-08-14"
+  headline_gate: pooled_positive_one_sided_lower_positive_and_3_of_5_daily_means_strictly_positive
+  loso_role: descriptive_only
+  sensitivity_500ms_role: non_gating_timing_sensitivity
+  future_external_loaded_before_model_freeze: false
 
 datasets:
   - id: trades_week_2026_06_28_07_04
