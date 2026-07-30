@@ -2,8 +2,8 @@
 
 ## Current phase
 
-M5 — Trigger Inference (M5-003 externally evaluated and merged; M5-004
-provenance amendment registered without implementation or fit)
+M5 — Trigger Inference (M5-004 development package frozen; fresh August
+external evaluation pending)
 
 ## Completed
 
@@ -19,6 +19,10 @@ provenance amendment registered without implementation or fit)
   permanently to seen external reuse diagnostics
 - Fresh M5-004 primary and fallback external blocks registered before
   implementation, fitting, acquisition, or inspection
+- M5-004 event-level directional feature builder and A/B/C cause models
+- Frozen development-only M5-004 model manifest
+- Internal 2026-07-24 and seen-external-reuse 2026-07-27 through 2026-07-29
+  diagnostics, with no verdict
 
 ## Current finding
 
@@ -33,7 +37,11 @@ M5-004 asks a different question:
 P(UNLOCK_TO_BUY | an eligible unlock occurred)
 ```
 
-Its model has not been implemented or fit.
+Its development package is now implemented and frozen. Diagnostic results
+show very small positive `C_age_price_cause - A_age_cause` increments, while
+`C_age_price_cause - B_price_cause` is negative on both 2026-07-24 and the
+seen 2026-07-27 through 2026-07-29 reuse block. These are non-gating
+diagnostics and do not establish external support.
 
 ## Effective M5-004 cohorts
 
@@ -43,25 +51,23 @@ Its model has not been implemented or fit.
 - Primary untouched external gate: 2026-08-03 through 2026-08-07
 - Structural fallback block: 2026-08-10 through 2026-08-14
 
-The primary and fallback dates must remain untouched until the full M5-004
-development package is frozen. Do not inspect or discuss their unlock
-directions, screenshots, class balance, charts, or performance summaries.
+The development package is frozen. The primary and fallback dates must still
+remain outcome-blind until their registered structural intake is complete.
+Do not inspect or discuss unlock directions, class balance, predictions,
+charts, or performance summaries before the intake gate.
 
 ## Next executable task
 
-Obtain independent review of the M5-004 provenance amendment. After that
-amendment is merged, the owner may separately authorize implementation on
-development data only.
-
-Implementation must freeze the package before any August external file is
-loaded. External acquisition and one-time evaluation happen only after the
-freeze.
+Obtain independent Claude re-review of the single-developer M5-004
+implementation. After approval, merge the frozen package. Acquire the
+registered 2026-08-03 through 2026-08-07 report/ticks only after the block is
+complete, run the blind structural intake, and evaluate once if accepted.
 
 ## Current blockers
 
-- M5-004 provenance amendment requires independent review before merge
-- M5-004 implementation and model fitting are not yet authorized
-- Future external data must remain uninspected before package freeze
+- M5-004 implementation requires independent re-review before merge
+- Future external labels and model outputs must remain uninspected until the
+  blind structural intake passes
 - Server timezone remains a window-scoped UTC+3 inference
 - MT5 report event time has only second-level resolution
 - The 0–6 second structural support limitation remains tracked in issue #3

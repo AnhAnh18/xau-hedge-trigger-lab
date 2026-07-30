@@ -23,10 +23,12 @@
 - [x] T-021 Implement M5-003 causal price-increment pipeline
 - [x] T-022 Obtain independent Claude re-review of M5-003 implementation
 - [x] T-023 Draft M5-004 conditional unlock-cause preregistration before fit
-- [ ] T-024 Review and authorize M5-004 implementation
-- [ ] T-025 Implement M5-004 conditional unlock-cause model
+- [x] T-024 Review and authorize M5-004 implementation
+- [x] T-025 Implement M5-004 conditional unlock-cause model
 - [x] T-026 Evaluate the frozen M5-003 models on registered external sessions
 - [x] T-027 Obtain independent review of M5-003 external validation
 - [x] T-028 Amend M5-004 provenance before any fit on already observed sessions
-- [ ] T-029 Obtain independent review of the M5-004 provenance amendment
-- [ ] T-030 Freeze M5-004 before blind intake of the August external block
+- [x] T-029 Obtain independent review of the M5-004 provenance amendment
+- [x] T-030 Freeze M5-004 before blind intake of the August external block
+- [ ] T-031 Obtain independent re-review of the M5-004 implementation
+- [ ] T-032 Blind-intake and evaluate the 2026-08-03 through 2026-08-07 block
