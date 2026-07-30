@@ -22,7 +22,7 @@
     "manifest_raw_file_sha256": "6c5b111265771d510600b248613a006cf4e99e73cc0d3ee3c1b883a7e875082b",
     "raw_file_hash_role": "windows_checkout_attestation_canonical_text_hash_is_cross_platform_gate"
   },
-  "infrastructure_manifest_sha256": "90032ff8e4c567230e7f57cae347d0a7279954dfb20173deb0221b1205ee94ab",
+  "infrastructure_manifest_sha256": "cbd85116c7382bc822f125d72efa4a0b57c8f033f1db6bc0849c7e8e7c49a89a",
   "m6_started": false,
   "milestone": "M5-004-external-infrastructure",
   "protected_canonical_text_sha256": {
@@ -70,12 +70,12 @@
   },
   "runtime_canonical_text_sha256": {
     "data/m5_004_external_intake_contract.json": "25d67b8f0d3613a1da809452ed93ef2e64701ee79ebd13d272ea327e342ae7d0",
-    "reports/phase_05/m5_004_external_infrastructure.md": "094f0fa1db74985fb3da9c24306887c93453f5e06f4a595be042e49d7e59325a",
-    "scripts/evaluate_m5_004_external.py": "49baf1b867a02e071da85a6accd19a692b232364d8219a4725c754604ff6a7ae",
+    "reports/phase_05/m5_004_external_infrastructure.md": "09a1e5609dbde2587162a78dcdaed407704b53a0f0b0f3cff81551d0a1f71cf0",
+    "scripts/evaluate_m5_004_external.py": "ede5e7032be71add887c03d2f54a46a0b35b4dfb30d4a58747185c9f111d3d85",
     "scripts/freeze_m5_004_external_infrastructure.py": "9e72558f04ff5e6fb01487e97e9dbef3c096ecbe6545f588f3d5ebe2d6eaf5f5",
     "scripts/intake_m5_004_external.py": "9e29dd413ce2af2bedf54eff05b58c34fc33123b4175f8f4c61527e9b1799ad4",
-    "src/xau_trigger/m5_004_external_intake.py": "3f4c2707bd2da06d575625f6eb5cd0234e0171a3e397282d19a678452e55d61e",
-    "src/xau_trigger/m5_004_frozen_evaluator.py": "c6d9e9f6f05928529f1caabc8ae82e6437b29a8aa3bceb9b404d58ff7512f0c2",
+    "src/xau_trigger/m5_004_external_intake.py": "bfad3b57566c5312f50f5b1a1db20d1cb7576016ded303f473defd912e57ef23",
+    "src/xau_trigger/m5_004_frozen_evaluator.py": "be63049dbd49203ca3e275a9f1eafc959d73847d46f7c17629b7bb8a1b4d3277",
     "src/xau_trigger/unlock_cause.py": "9990483ba76b87fcdc38debd68ab8f2517881e196103eb1b15d08f3182b9d19e"
   },
   "schema_version": 1,

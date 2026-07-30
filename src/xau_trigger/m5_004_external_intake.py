@@ -603,6 +603,13 @@ def validate_fallback_authorization(
     primary_failure: dict,
     infrastructure_sha256: str,
 ) -> None:
+    primary_source = dict(primary_failure)
+    stored_record_id = primary_source.pop("record_id", None)
+    if (
+        not stored_record_id
+        or canonical_json_sha256(primary_source) != stored_record_id
+    ):
+        raise ValueError("Primary structural failure record hash changed")
     if primary_failure.get("block_id") != "primary":
         raise ValueError("Fallback requires a primary structural record")
     if primary_failure.get("accepted") is not False:

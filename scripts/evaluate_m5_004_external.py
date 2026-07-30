@@ -81,8 +81,9 @@ def _render_markdown(report: dict) -> str:
         f"- C-A pooled mean: `{metric['mean']:.9f}`",
         f"- One-sided 95% lower bound: `{metric['familywise_one_sided_low']:.9f}`",
         f"- Positive daily means: `{decision['positive_daily_means']}/5`",
+        f"- Descriptive LOSO omissions: `{len(headline['leave_one_session_out'])}/5`",
         "",
-        "The 500 ms analysis is non-gating. This result does not establish",
+        "LOSO and the 500 ms analysis are non-gating. This result does not establish",
         "profitability, causality, an occurrence trigger, or a tradeable edge.",
         "",
     ]

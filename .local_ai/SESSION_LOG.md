@@ -246,3 +246,18 @@
   only. No August file was acquired, opened, parsed, or inspected.
 - Frozen runtime and protected-file hashes in the external infrastructure
   manifest. Independent review remains required before merge.
+
+## 2026-07-30 — M5-004 infrastructure cold self-review
+
+- Performed a fresh full-diff review after the independent reviewer became
+  temporarily unavailable; the owner explicitly authorized self-review and
+  merge if no blocker remained.
+- Found and remediated one contract omission: external reports now publish
+  five descriptive leave-one-session-out omissions for both registered widths
+  without refitting and without affecting the headline verdict.
+- Added primary structural-failure record hash verification before fallback
+  authorization and rechecked the persisted started guard before consuming an
+  evaluation.
+- Kept every frozen model parameter, predictor, decision threshold, bootstrap
+  setting, external date, and M2–M5-004 canonical artifact unchanged.
+- This was a transparent self-review, not an independent-review claim.

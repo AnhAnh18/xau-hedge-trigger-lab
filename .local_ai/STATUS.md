@@ -27,6 +27,9 @@ evaluation infrastructure prepared; fresh August external data pending)
   `618a38f`
 - Pre-data blind-intake and frozen-evaluation infrastructure, using synthetic
   fixtures only
+- Owner-authorized cold self-review of the pre-data infrastructure while the
+  independent reviewer was unavailable; the review added missing descriptive
+  five-session LOSO output and stricter fallback/consumption tamper checks
 
 ## Current finding
 
@@ -62,15 +65,12 @@ charts, or performance summaries before the intake gate.
 
 ## Next executable task
 
-Obtain independent Claude re-review of the pre-data external infrastructure.
-After approval, merge it before any August file is opened. Acquire the
-registered 2026-08-03 through 2026-08-07 ticks after the block closes and the
-covering report after 2026-08-08 context is exportable. Run blind structural
-intake, then evaluate the frozen package once if accepted.
+Acquire the registered 2026-08-03 through 2026-08-07 ticks after the block
+closes and the covering report after 2026-08-08 context is exportable. Run
+blind structural intake, then evaluate the frozen package once if accepted.
 
 ## Current blockers
 
-- M5-004 external infrastructure requires independent re-review before merge
 - Future external labels and model outputs must remain uninspected until the
   blind structural intake passes
 - Server timezone remains a window-scoped UTC+3 inference

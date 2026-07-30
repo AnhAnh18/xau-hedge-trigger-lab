@@ -134,6 +134,8 @@ def consume_evaluation(
         raise RuntimeError("Cannot consume an evaluation that never started")
     if consumed.exists():
         raise RuntimeError("External evaluation is already consumed")
+    if json.loads(started.read_text(encoding="utf-8")) != guard_payload:
+        raise RuntimeError("Started evaluation guard hashes changed before consume")
     receipt = {
         "schema_version": 1,
         "evaluation_id": evaluation_id,
@@ -365,12 +367,40 @@ def summarize_frozen_external(
         result = {
             **summary,
             "daily": daily,
+            "leave_one_session_out": [],
             "role": (
                 "headline_external_gate"
                 if width_ms == contract["evaluation"]["headline_width_ms"]
                 else "timing_sensitivity_non_gating"
             ),
         }
+        for omitted_day in block["sessions"]:
+            retained = frame[~frame["session_date"].eq(omitted_day)].copy()
+            if retained.empty:
+                omitted_events = 0
+                omitted_groups = 0
+                omitted_comparisons = None
+                omitted_status = "undefined_no_retained_events"
+            else:
+                omitted_summary = summarize_cause_predictions(
+                    retained,
+                    bootstrap_draws=contract["evaluation"]["bootstrap_draws"],
+                    bootstrap_seed=contract["evaluation"]["bootstrap_seed"],
+                )
+                omitted_events = int(omitted_summary["events"])
+                omitted_groups = int(omitted_summary["groups"])
+                omitted_comparisons = omitted_summary["comparisons"]
+                omitted_status = "computed"
+            result["leave_one_session_out"].append(
+                {
+                    "omitted_server_date": omitted_day,
+                    "events": omitted_events,
+                    "groups": omitted_groups,
+                    "comparisons": omitted_comparisons,
+                    "status": omitted_status,
+                    "role": "descriptive_non_gating_no_refit",
+                }
+            )
         if width_ms == contract["evaluation"]["headline_width_ms"]:
             result["headline_decision"] = external_cause_verdict(
                 summary["comparisons"][
@@ -414,9 +444,26 @@ def summarize_frozen_external(
             "all_registered_days_published": all(
                 len(width["daily"]) == 5 for width in widths.values()
             ),
+            "loso_five_sessions_published": all(
+                len(width["leave_one_session_out"]) == 5
+                and {
+                    row["omitted_server_date"]
+                    for row in width["leave_one_session_out"]
+                }
+                == set(block["sessions"])
+                and all(
+                    row["role"] == "descriptive_non_gating_no_refit"
+                    for row in width["leave_one_session_out"]
+                )
+                for width in widths.values()
+            ),
             "sensitivity_non_gating": widths["500"]["role"]
             == "timing_sensitivity_non_gating",
-            "tradeable_edge_claim_absent": True,
+            "tradeable_edge_claim_absent": (
+                contract["claims"].get("tradeable_edge") == "not_claimed"
+                and contract["claims"].get("profitability") == "not_tested"
+                and contract["claims"].get("causality") == "not_claimed"
+            ),
         },
     }
     if not all(payload["validation_gates"].values()):

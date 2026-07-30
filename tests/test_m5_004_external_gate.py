@@ -414,6 +414,25 @@ def test_guard_requires_explicit_identical_resume_and_refuses_consumed(
         acquire_evaluation_guard(tmp_path, payload, resume=True)
 
 
+def test_consume_rejects_tampered_started_guard(tmp_path: Path) -> None:
+    payload = {
+        "evaluation_id": "evaluation-tamper",
+        "block_id": "primary",
+        "acceptance_id": "acceptance-abc",
+        "input_set_sha256": "input-abc",
+        "frozen_manifest_sha256": "manifest-abc",
+        "infrastructure_manifest_sha256": "infra-abc",
+        "status": "started",
+    }
+    started = acquire_evaluation_guard(tmp_path, payload)
+    started.write_text(
+        json.dumps({**payload, "input_set_sha256": "changed"}),
+        encoding="utf-8",
+    )
+    with pytest.raises(RuntimeError, match="guard hashes changed"):
+        consume_evaluation(tmp_path, payload, {"report": "hash"})
+
+
 def test_evaluation_id_binds_acceptance_input_model_and_runtime() -> None:
     acceptance = {
         "block_id": "primary",
@@ -523,6 +542,13 @@ def test_summary_publishes_zero_event_day_as_null_and_500ms_is_nongating() -> No
     assert missing_day["server_date"] == "2026-08-07"
     assert missing_day["events"] == 0
     assert missing_day["C_age_price_cause_minus_A_age_cause_mean"] is None
+    loso = report["widths"]["1000"]["leave_one_session_out"]
+    assert len(loso) == 5
+    assert {row["omitted_server_date"] for row in loso} == set(
+        contract["blocks"]["primary"]["sessions"]
+    )
+    assert all(row["role"] == "descriptive_non_gating_no_refit" for row in loso)
+    assert report["validation_gates"]["loso_five_sessions_published"] is True
 
 
 def test_frozen_end_to_end_fixture_scores_without_refit(
@@ -650,12 +676,12 @@ def test_fallback_requires_reviewed_primary_failure() -> None:
     primary = {
         "block_id": "primary",
         "accepted": False,
-        "record_id": "failure-a",
         "failure_codes": ["boundary_coverage_failure"],
     }
+    primary["record_id"] = canonical_json_sha256(primary)
     authorization = {
         "reviewed": True,
-        "primary_failure_record_id": "failure-a",
+        "primary_failure_record_id": primary["record_id"],
         "infrastructure_manifest_sha256": "infra-a",
         "reason_codes": ["boundary_coverage_failure"],
     }
@@ -663,6 +689,12 @@ def test_fallback_requires_reviewed_primary_failure() -> None:
     with pytest.raises(ValueError, match="explicit reviewed"):
         validate_fallback_authorization(
             {**authorization, "reviewed": False}, primary, "infra-a"
+        )
+    with pytest.raises(ValueError, match="record hash changed"):
+        validate_fallback_authorization(
+            authorization,
+            {**primary, "failure_codes": ["financial_reconciliation_failure"]},
+            "infra-a",
         )
 
 

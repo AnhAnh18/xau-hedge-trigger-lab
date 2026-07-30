@@ -80,6 +80,12 @@ direction labels. An interrupted run can resume only with
 `--resume-identical` and unchanged input, acceptance, model, and runtime
 hashes. A consumed evaluation cannot run again.
 
+The result publishes pooled, daily, ablation, and descriptive five-session
+leave-one-session-out summaries. LOSO reuses the frozen predictions without
+refitting and cannot affect the one-second headline verdict. The persisted
+started guard is reverified immediately before consumption, and fallback
+authorization rejects a structurally tampered primary-failure record.
+
 Blind intake publishes structural statuses only. It never publishes unlock
 direction, eligible-event counts, features, predictions, coefficients,
 likelihoods, financial amounts, or model performance.
