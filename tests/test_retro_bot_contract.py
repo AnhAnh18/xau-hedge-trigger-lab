@@ -10,7 +10,7 @@ CONTRACT = ROOT / "docs" / "retro_bot" / "RETRO-BOT-001-contract.md"
 INVENTORY = ROOT / "docs" / "retro_bot" / "RETRO-BOT-001-firewall-inventory.json"
 CONFIG = ROOT / "docs" / "retro_bot" / "RETRO-BOT-001-config.json"
 EXPECTED_INVENTORY_SHA256 = "34628d77374130ab8aa47aa00d5c1b4dfda8aac53bd9bb19e3b98ad5c9a4ec03"
-EXPECTED_CONFIG_SHA256 = "a1fcf30d7d1a8a57ad96bad2b69d92d157c683a179da70bcebb438deb4770c0c"
+EXPECTED_CONFIG_SHA256 = "b420d9d014c2cac67461eda9603a200b2a48d0ad1fa0299baaf1c8cdeded5c52"
 
 
 def _inventory_digest(payload: dict) -> str:
@@ -69,6 +69,7 @@ def test_retro_bot_machine_config_is_exact_and_self_hashed() -> None:
     eu_dst = document["clock_scenarios"][2]
     assert eu_dst["id"] == "eu_dst_2025_2026"
     assert eu_dst["inverse_report_time_policy"] == "exclude_interval_clock_unresolved_when_zero_or_multiple_utc_candidates"
+    assert document["lead_time_measure"] == "observed_rehedge_utc_minus_action_tick_utc_after_unique_inverse_mapping"
     ticks = document["source_receipt"]["tick_aliases"]
     assert len(ticks) == document["source_receipt"]["tick_alias_count"] == 39
     assert ticks == sorted(ticks)

@@ -28,7 +28,7 @@ The only raw inputs are the exact generated aliases accepted by
 
 `RETRO-BOT-001-config.json` is the machine-readable lock for this contract.
 Its canonical payload digest is
-`a1fcf30d7d1a8a57ad96bad2b69d92d157c683a179da70bcebb438deb4770c0c`.
+`b420d9d014c2cac67461eda9603a200b2a48d0ad1fa0299baaf1c8cdeded5c52`.
 The implementation must verify that self-digest before accepting a run.
 
 The fixed population is server time in the half-open interval
@@ -138,8 +138,9 @@ re-hedge but no valid tick occurs before it, retain no action and count
 or later is always censored, never an action. The observed following re-hedge
 is used only to classify the policy result, not to change the policy delay.
 
-For emitted actions, `lead_seconds = observed_rehedge_time - action_time` and
-the only timing bands are `0_to_under_60_seconds`,
+For emitted actions, `lead_seconds = observed_rehedge_utc - action_tick_utc`
+after both report boundaries have a unique inverse mapping. The only timing
+bands are `0_to_under_60_seconds`,
 `60_to_under_300_seconds`, `300_to_under_900_seconds`,
 `900_to_under_3600_seconds`, and `at_least_3600_seconds`. Direction matching
 is an invariant, not a fitted metric: `ONE_BUY` emits a conceptual sell and

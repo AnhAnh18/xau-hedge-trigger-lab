@@ -16,7 +16,7 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "docs" / "retro_bot" / "RETRO-BOT-001-config.json"
-LOCKED_CONFIG_SHA256 = "a1fcf30d7d1a8a57ad96bad2b69d92d157c683a179da70bcebb438deb4770c0c"
+LOCKED_CONFIG_SHA256 = "b420d9d014c2cac67461eda9603a200b2a48d0ad1fa0299baaf1c8cdeded5c52"
 
 
 class RetroBotInputError(ValueError):
@@ -317,3 +317,181 @@ def first_valid_tick(
     if earliest is None:
         return TickLookup("right_censored_no_valid_tick", None, valid_count)
     return TickLookup("emitted", earliest, valid_count)
+
+
+@dataclass(frozen=True)
+class EligibleInterval:
+    """Minimal, non-financial input for one observed one-sided interval."""
+
+    report_alias: str
+    interval_id: int
+    state: str
+    unlock_time_server: pd.Timestamp
+    observed_rehedge_time_server: pd.Timestamp
+    duration_seconds: int
+
+    @property
+    def action_side(self) -> str:
+        return "sell" if self.state == "ONE_BUY" else "buy"
+
+
+@dataclass(frozen=True)
+class ReplayOutcome:
+    report_alias: str
+    interval_id: int
+    policy_id: str
+    clock_id: str
+    status: str
+    action_side: str | None
+    lead_seconds: float | None
+    valid_tick_count: int
+
+
+def filter_xauusd_tables(tables: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
+    """Return only XAUUSD position snapshots before lifecycle reconstruction."""
+    filtered = dict(tables)
+    for name in ("positions", "open_positions"):
+        table = tables[name]
+        if "symbol" not in table.columns:
+            raise RetroBotInputError(f"{name} is missing the symbol column")
+        filtered[name] = table[table["symbol"].astype(str).str.upper() == "XAUUSD"].copy()
+    return filtered
+
+
+def eligible_intervals(
+    report_alias: str,
+    lifecycle: pd.DataFrame,
+    events: pd.DataFrame,
+    intervals: pd.DataFrame,
+    lifecycle_exceptions: pd.DataFrame,
+    state_exceptions: pd.DataFrame,
+    config: RetroBotConfig,
+) -> tuple[EligibleInterval, ...]:
+    """Apply the predeclared report-level and interval-level eligibility rule."""
+    if lifecycle.empty:
+        return ()
+    if "symbol" not in lifecycle.columns:
+        raise RetroBotInputError("eligible interval input is missing the XAUUSD lifecycle")
+    symbols = lifecycle["symbol"].astype(str).str.upper()
+    if not symbols.eq("XAUUSD").all():
+        raise RetroBotInputError("eligible interval input contains a non-XAUUSD lifecycle")
+    if not lifecycle_exceptions.empty or intervals.empty:
+        return ()
+    eligibility = config.eligibility
+    required = {"start_time", "end_time", "duration_seconds", "state", "preceding_event_type", "following_event_type", "interval_id"}
+    if required - set(intervals.columns):
+        raise RetroBotInputError("state intervals do not expose the registered eligibility fields")
+    if {"event_time", "ordering_quality", "behavior_type"} - set(events.columns):
+        raise RetroBotInputError("state events do not expose deterministic boundary fields")
+    exception_times: tuple[pd.Timestamp, ...] = ()
+    if not state_exceptions.empty:
+        if "event_time" not in state_exceptions.columns:
+            raise RetroBotInputError("state exceptions cannot be placed on the timeline")
+        exception_times = tuple(pd.Timestamp(value) for value in state_exceptions["event_time"].dropna())
+    outputs: list[EligibleInterval] = []
+    for _, row in intervals.iterrows():
+        start = pd.Timestamp(row["start_time"])
+        end = pd.Timestamp(row["end_time"])
+        state = str(row["state"])
+        if pd.isna(start) or pd.isna(end) or not (config.population.start_server <= start < end <= config.population.end_server_exclusive):
+            continue
+        actual_duration = float((end - start).total_seconds())
+        reported_duration = float(row["duration_seconds"])
+        if abs(actual_duration - reported_duration) > 1e-6:
+            continue
+        if state not in eligibility["states"] or actual_duration < int(eligibility["minimum_duration_seconds"]):
+            continue
+        expected_before = eligibility["preceding_event_by_state"][state]
+        expected_after = eligibility["following_event_by_state"][state]
+        if row["preceding_event_type"] != expected_before:
+            continue
+        if row["following_event_type"] != expected_after:
+            continue
+        boundary = events[events["event_time"].isin([start, end])]
+        if len(boundary) != 2 or (boundary["ordering_quality"] != "deterministic").any():
+            continue
+        start_events = boundary[boundary["event_time"] == start]
+        end_events = boundary[boundary["event_time"] == end]
+        if len(start_events) != 1 or len(end_events) != 1:
+            continue
+        if start_events.iloc[0]["behavior_type"] != expected_before or end_events.iloc[0]["behavior_type"] != expected_after:
+            continue
+        if any(start <= exception_time <= end for exception_time in exception_times):
+            continue
+        outputs.append(
+            EligibleInterval(
+                report_alias=report_alias,
+                interval_id=int(row["interval_id"]),
+                state=state,
+                unlock_time_server=start,
+                observed_rehedge_time_server=end,
+                duration_seconds=int(actual_duration),
+            )
+        )
+    return tuple(outputs)
+
+
+def replay_rehedge_policy(
+    interval: EligibleInterval,
+    policy: Policy,
+    clock: ClockScenario,
+    config: RetroBotConfig,
+    tick_paths: Iterable[Path],
+) -> ReplayOutcome:
+    """Replay one fixed-delay policy without allowing an action after re-hedge."""
+    locked_config = load_config()
+    registered_policies = {item.id: item for item in locked_config.policies}
+    registered_clocks = {item.id: item for item in locked_config.clocks}
+    if config.config_sha256 != LOCKED_CONFIG_SHA256 or policy.id not in registered_policies or policy != registered_policies[policy.id]:
+        raise RetroBotInputError("replay policy is not one of the locked RETRO-BOT policies")
+    if clock.id not in registered_clocks or clock != registered_clocks[clock.id]:
+        raise RetroBotInputError("replay clock is not one of the locked RETRO-BOT scenarios")
+    target_server = interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds)
+    base = {
+        "report_alias": interval.report_alias,
+        "interval_id": interval.interval_id,
+        "policy_id": policy.id,
+        "clock_id": clock.id,
+    }
+    if target_server >= interval.observed_rehedge_time_server:
+        return ReplayOutcome(**base, status="right_censored_delay_not_reached", action_side=None, lead_seconds=None, valid_tick_count=0)
+    mappings = [
+        clock.map_server_to_utc(interval.unlock_time_server),
+        clock.map_server_to_utc(target_server),
+        clock.map_server_to_utc(interval.observed_rehedge_time_server),
+    ]
+    if any(mapping.status != "unique" for mapping in mappings):
+        return ReplayOutcome(**base, status="excluded_clock_unresolved", action_side=None, lead_seconds=None, valid_tick_count=0)
+    target_utc = mappings[1].timestamp_utc
+    rehedge_utc = mappings[2].timestamp_utc
+    if target_utc is None or rehedge_utc is None or target_utc >= rehedge_utc:
+        return ReplayOutcome(**base, status="right_censored_delay_not_reached", action_side=None, lead_seconds=None, valid_tick_count=0)
+    lookup = first_valid_tick(tick_paths, target_utc, rehedge_utc)
+    if lookup.status != "emitted" or lookup.timestamp_utc is None:
+        return ReplayOutcome(
+            **base,
+            status=lookup.status,
+            action_side=None,
+            lead_seconds=None,
+            valid_tick_count=lookup.valid_tick_count,
+        )
+    lead_seconds = float((rehedge_utc - lookup.timestamp_utc).total_seconds())
+    if lead_seconds <= 0:
+        raise RetroBotInputError("half-open tick accessor emitted an action at or after re-hedge")
+    return ReplayOutcome(
+        **base,
+        status="emitted",
+        action_side=interval.action_side,
+        lead_seconds=lead_seconds,
+        valid_tick_count=lookup.valid_tick_count,
+    )
+
+
+def lead_time_band(lead_seconds: float, config: RetroBotConfig) -> str:
+    if lead_seconds < 0:
+        raise RetroBotInputError("lead time cannot be negative")
+    for band in config.lead_time_bands:
+        maximum = band["maximum_exclusive"]
+        if lead_seconds >= float(band["minimum_inclusive"]) and (maximum is None or lead_seconds < float(maximum)):
+            return str(band["id"])
+    raise RetroBotInputError("lead time does not fit the registered bands")

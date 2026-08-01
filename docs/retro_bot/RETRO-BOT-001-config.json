@@ -117,5 +117,6 @@
     {"id": "900_to_under_3600_seconds", "minimum_inclusive": 900, "maximum_exclusive": 3600},
     {"id": "at_least_3600_seconds", "minimum_inclusive": 3600, "maximum_exclusive": null}
   ],
-  "config_sha256": "a1fcf30d7d1a8a57ad96bad2b69d92d157c683a179da70bcebb438deb4770c0c"
+  "lead_time_measure": "observed_rehedge_utc_minus_action_tick_utc_after_unique_inverse_mapping",
+  "config_sha256": "b420d9d014c2cac67461eda9603a200b2a48d0ad1fa0299baaf1c8cdeded5c52"
 }
