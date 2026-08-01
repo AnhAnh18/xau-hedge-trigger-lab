@@ -13,17 +13,19 @@ from xau_trigger.m5_004_external_intake import (
     canonical_json_sha256,
     canonical_text_sha256,
     load_external_contract,
+    runtime_environment_fingerprint,
 )
 
 
 RUNTIME_FILES = (
     "data/m5_004_external_intake_contract.json",
-    "src/xau_trigger/m5_004_external_intake.py",
-    "src/xau_trigger/m5_004_frozen_evaluator.py",
+    *tuple(
+        path.relative_to(ROOT).as_posix()
+        for path in sorted((ROOT / "src" / "xau_trigger").rglob("*.py"))
+    ),
     "scripts/intake_m5_004_external.py",
     "scripts/evaluate_m5_004_external.py",
     "scripts/freeze_m5_004_external_infrastructure.py",
-    "src/xau_trigger/unlock_cause.py",
     "reports/phase_05/m5_004_external_infrastructure.md",
 )
 
@@ -81,6 +83,7 @@ def main() -> None:
             "seed": contract["evaluation"]["bootstrap_seed"],
             "cluster_key": contract["evaluation"]["cluster_key"],
         },
+        "runtime_environment": runtime_environment_fingerprint(),
         "external_data_seen": False,
         "external_evaluation_consumed": False,
         "m6_started": False,

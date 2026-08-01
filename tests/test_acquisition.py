@@ -62,7 +62,7 @@ def test_synthetic_acquisition_passes_and_is_deterministic(tmp_path: Path) -> No
     assert first == second
     assert first["status"] == "PASS"
     assert first["deterministic_validation_sha256"] == (
-        "2ab041565dfed4750e5740e2fe7335549bc37ecf34a8b548665a8aad1425f6b9"
+        "175aa445601fca4bd1c53f9b2ae871e7b33a8f8a53196befea0cbd31bbb38d62"
     )
     assert all(
         session["status"] == "PASS" for session in first["ticks"]["sessions"]

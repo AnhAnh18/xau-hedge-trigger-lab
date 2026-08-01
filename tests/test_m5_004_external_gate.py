@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from hashlib import sha256
 import json
 from pathlib import Path
 import shutil
@@ -16,9 +17,12 @@ from xau_trigger.m5_004_external_intake import (
     build_blind_intake,
     build_structural_record,
     canonical_json_sha256,
+    build_primary_intake_registration,
     load_external_contract,
     load_input_aliases,
     validate_fallback_authorization,
+    verify_primary_intake_registration,
+    verify_primary_structural_failure,
 )
 from xau_trigger.m5_004_frozen_evaluator import (
     acquire_evaluation_guard,
@@ -40,6 +44,42 @@ CONTRACT_PATH = ROOT / "data" / "m5_004_external_intake_contract.json"
 
 def _contract() -> dict:
     return load_external_contract(CONTRACT_PATH)
+
+
+def _refresh_tick_provenance(item: dict) -> None:
+    tick_path = Path(item["path"])
+    provenance_path = Path(
+        item.get(
+            "provenance_path",
+            tick_path.with_name(f"{tick_path.stem}.{item['alias']}.provenance.json"),
+        )
+    )
+    provenance = {
+        "schema_version": 1,
+        "source": "mt5_tick_export",
+        "symbol": "XAUUSD",
+        "export_run_id": item["export_run_id"],
+        "server_dates": item["server_dates"],
+        "tick_export_sha256": sha256(tick_path.read_bytes()).hexdigest(),
+    }
+    provenance_path.write_text(
+        json.dumps(provenance, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    item["provenance_path"] = str(provenance_path)
+
+
+def _cli_sandbox(tmp_path: Path) -> Path:
+    sandbox_root = tmp_path / "sandbox"
+    for directory in ("data", "reports", "scripts", "src", ".local_ai"):
+        shutil.copytree(
+            ROOT / directory,
+            sandbox_root / directory,
+            ignore=shutil.ignore_patterns(
+                "raw", "interim", "processed", "private", "temp", "__pycache__"
+            ),
+        )
+    return sandbox_root
 
 
 def _synthetic_inputs(tmp_path: Path) -> tuple[dict, dict]:
@@ -90,6 +130,18 @@ def _synthetic_inputs(tmp_path: Path) -> tuple[dict, dict]:
             "declared_context_end": block["report_context_end"],
         },
     }
+    _refresh_tick_provenance(inputs["tick_exports"][0])
+    return contract, inputs
+
+
+def _fallback_inputs(tmp_path: Path) -> tuple[dict, dict]:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    block = contract["blocks"]["fallback"]
+    inputs["block_id"] = "fallback"
+    inputs["tick_exports"][0]["server_dates"] = block["sessions"]
+    inputs["report"]["declared_context_start"] = block["report_context_start"]
+    inputs["report"]["declared_context_end"] = block["report_context_end"]
+    _refresh_tick_provenance(inputs["tick_exports"][0])
     return contract, inputs
 
 
@@ -126,8 +178,9 @@ def _cause_fixture_inputs(tmp_path: Path) -> tuple[dict, dict]:
     tick_path.write_text("\n".join(tick_lines) + "\n", encoding="utf-8")
 
     report_path = tmp_path / "cause_report.html"
+    fixture_id = sha256(str(tmp_path).encode("utf-8")).hexdigest()[:16]
     lines = [
-        "<html><body><table>",
+        f'<html><head><meta name="fixture-id" content="{fixture_id}"></head><body><table>',
         '<tr><th colspan="14">Positions</th></tr>',
         "<tr><th>Time</th><th>Position</th><th>Symbol</th><th>Type</th>"
         "<th>Volume</th><th>Price</th><th>S / L</th><th>T / P</th>"
@@ -158,6 +211,16 @@ def _cause_fixture_inputs(tmp_path: Path) -> tuple[dict, dict]:
             "<tr><th>Open Time</th><th>Order</th><th>Symbol</th>"
             "<th>Type</th><th>Volume</th><th>Price</th><th>S / L</th>"
             "<th>T / P</th><th>Time</th><th>State</th><th>Comment</th></tr>",
+            f"<tr><td>{block['report_context_start'].replace('-', '.')} 00:00:00</td>"
+            "<td>9001</td><td>XAUUSD</td><td>buy</td><td>0.0 / 0.0</td>"
+            "<td>market</td><td></td><td></td>"
+            f"<td>{block['report_context_start'].replace('-', '.')} 00:00:00</td>"
+            "<td>canceled</td><td>context fixture</td></tr>",
+            f"<tr><td>{block['report_context_end'].replace('-', '.')} 00:00:00</td>"
+            "<td>9002</td><td>XAUUSD</td><td>buy</td><td>0.0 / 0.0</td>"
+            "<td>market</td><td></td><td></td>"
+            f"<td>{block['report_context_end'].replace('-', '.')} 00:00:00</td>"
+            "<td>canceled</td><td>context fixture</td></tr>",
             '<tr><th colspan="15">Deals</th></tr>',
             "<tr><th>Time</th><th>Deal</th><th>Symbol</th><th>Type</th>"
             "<th>Direction</th><th>Volume</th><th>Price</th><th>Order</th>"
@@ -194,6 +257,7 @@ def _cause_fixture_inputs(tmp_path: Path) -> tuple[dict, dict]:
             "declared_context_end": block["report_context_end"],
         },
     }
+    _refresh_tick_provenance(inputs["tick_exports"][0])
     return contract, inputs
 
 
@@ -222,10 +286,46 @@ def test_infrastructure_manifest_reconciles_runtime_hashes() -> None:
     )
     infrastructure = json.loads(path.read_text(encoding="utf-8"))
 
-    verify_infrastructure_manifest(ROOT, infrastructure)
+    contract = _contract()
+    verify_infrastructure_manifest(ROOT, infrastructure, contract)
     assert infrastructure["external_data_seen"] is False
     assert infrastructure["external_evaluation_consumed"] is False
     assert infrastructure["m6_started"] is False
+    runtime = infrastructure["runtime_canonical_text_sha256"]
+    for dependency in (
+        "src/xau_trigger/acquisition.py",
+        "src/xau_trigger/hazard_bins.py",
+        "src/xau_trigger/parsers/mt5_report.py",
+        "src/xau_trigger/parsers/tick_export.py",
+        "src/xau_trigger/price_features.py",
+        "src/xau_trigger/price_inference.py",
+        "src/xau_trigger/risk_time.py",
+        "src/xau_trigger/state_reconstruction.py",
+        "src/xau_trigger/validation/dataset_checks.py",
+    ):
+        assert dependency in runtime
+    changed_contract = {
+        **contract,
+        "evaluation": {
+            **contract["evaluation"],
+            "required_positive_daily_means": 1,
+        },
+    }
+    with pytest.raises(AssertionError, match="differs from frozen"):
+        verify_infrastructure_manifest(ROOT, infrastructure, changed_contract)
+    changed_environment = {
+        **infrastructure,
+        "runtime_environment": {"python": "0.0.0", "packages": {}},
+    }
+    changed_environment["infrastructure_manifest_sha256"] = canonical_json_sha256(
+        {
+            key: value
+            for key, value in changed_environment.items()
+            if key != "infrastructure_manifest_sha256"
+        }
+    )
+    with pytest.raises(AssertionError, match="runtime environment"):
+        verify_infrastructure_manifest(ROOT, changed_environment, contract)
 
 
 def test_intake_has_no_model_import_and_evaluator_has_no_fit_path() -> None:
@@ -253,6 +353,45 @@ def test_intake_has_no_model_import_and_evaluator_has_no_fit_path() -> None:
     assert cli_source.index("acquire_evaluation_guard(") < cli_source.index(
         "build_frozen_external_predictions("
     )
+
+
+@pytest.mark.parametrize(
+    ("script", "required", "forbidden"),
+    [
+        (
+            "scripts/intake_m5_004_external.py",
+            ["--inputs", "inputs.json"],
+            ("--contract", "--infrastructure"),
+        ),
+        (
+            "scripts/evaluate_m5_004_external.py",
+            ["--inputs", "inputs.json", "--intake", "intake.json", "--acceptance", "acceptance.json"],
+            ("--contract", "--infrastructure", "--guard-dir"),
+        ),
+    ],
+)
+def test_frozen_cli_rejects_contract_and_infrastructure_overrides(
+    script: str,
+    required: list[str],
+    forbidden: tuple[str, ...],
+    tmp_path: Path,
+) -> None:
+    for flag in forbidden:
+        result = subprocess.run(
+            [
+                sys.executable,
+                script,
+                *required,
+                flag,
+                str(tmp_path / "override.json"),
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+
+        assert result.returncode != 0
+        assert "unrecognized arguments" in (result.stdout + result.stderr)
 
 
 def test_blind_intake_accepts_complete_fixture_and_is_deterministic(
@@ -287,6 +426,7 @@ def test_missing_session_is_structural_failure(tmp_path: Path) -> None:
         + "\n",
         encoding="utf-8",
     )
+    _refresh_tick_provenance(inputs["tick_exports"][0])
 
     intake, _ = build_blind_intake(contract, inputs)
 
@@ -300,6 +440,7 @@ def test_duplicate_milliseconds_are_preserved(tmp_path: Path) -> None:
     lines = tick_path.read_text(encoding="utf-8").splitlines()
     lines.insert(2, lines[1])
     tick_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    _refresh_tick_provenance(inputs["tick_exports"][0])
 
     intake, _ = build_blind_intake(contract, inputs)
 
@@ -308,6 +449,73 @@ def test_duplicate_milliseconds_are_preserved(tmp_path: Path) -> None:
     assert intake["ticks"]["sessions"][0][
         "duplicate_preservation_status"
     ] == "PASS"
+
+
+def test_tick_provenance_binds_the_symbol_and_tick_bytes(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    provenance_path = Path(inputs["tick_exports"][0]["provenance_path"])
+    provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+    provenance["symbol"] = "EURUSD"
+    provenance_path.write_text(json.dumps(provenance), encoding="utf-8")
+
+    intake, _ = build_blind_intake(contract, inputs)
+
+    assert intake["structural_status"] == "structural_failure"
+    assert "wrong_symbol_or_server_date" in intake["failure_codes"]
+    assert intake["ticks"]["files"][0]["provenance_status"] == "FAIL"
+    assert any(record["kind"] == "tick_provenance" for record in intake["files"])
+    assert str(tmp_path).lower() not in json.dumps(intake).lower()
+
+
+def test_missing_tick_provenance_is_structural_failure(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    inputs["tick_exports"][0].pop("provenance_path")
+
+    intake, _ = build_blind_intake(contract, inputs)
+
+    assert intake["structural_status"] == "structural_failure"
+    assert "wrong_symbol_or_server_date" in intake["failure_codes"]
+    assert intake["ticks"]["files"][0]["provenance_status"] == "FAIL"
+
+
+def test_duplicate_tick_source_is_structural_failure(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    duplicate = {
+        **inputs["tick_exports"][0],
+        "alias": "primary_ticks_duplicate",
+        "export_run_id": "primary-run-b",
+    }
+    _refresh_tick_provenance(duplicate)
+    inputs["tick_exports"].append(duplicate)
+
+    intake, _ = build_blind_intake(contract, inputs)
+
+    assert intake["structural_status"] == "structural_failure"
+    assert "duplicate_source_tick_data" in intake["failure_codes"]
+    assert intake["ticks"]["cross_source_duplicate_rows"] > 0
+
+
+def test_excessive_recurring_gap_is_not_scheduled(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    tick_path = Path(inputs["tick_exports"][0]["path"])
+    lines = tick_path.read_text(encoding="utf-8").splitlines()
+    header, rows = lines[0], lines[1:]
+    sparse = [header]
+    for day in contract["blocks"]["primary"]["sessions"]:
+        day_rows = [row for row in rows if row.startswith(day.replace("-", "."))]
+        sparse.extend([day_rows[0], day_rows[-1]])
+    tick_path.write_text("\n".join(sparse) + "\n", encoding="utf-8")
+    _refresh_tick_provenance(inputs["tick_exports"][0])
+
+    intake, _ = build_blind_intake(contract, inputs)
+
+    assert intake["structural_status"] == "structural_failure"
+    assert "unknown_or_nonreplicated_material_quote_gap" in intake["failure_codes"]
+    assert any(
+        gap["duration_seconds"] > contract["gap_policy"]["maximum_accepted_gap_seconds"]
+        and not gap["accepted"]
+        for gap in intake["ticks"]["gaps"]
+    )
 
 
 def _insert_replicated_gap(
@@ -329,17 +537,18 @@ def _insert_replicated_gap(
         )
     ]
     primary.write_text("\n".join(filtered) + "\n", encoding="utf-8")
+    _refresh_tick_provenance(inputs["tick_exports"][0])
     if include_replica:
         replica = primary.with_name("independent_replica.tsv")
         shutil.copyfile(primary, replica)
-        inputs["replica_exports"] = [
-            {
-                "alias": "primary_ticks_replica",
-                "path": str(replica),
-                "export_run_id": "independent-run-b",
-                "server_dates": ["2026-08-03"],
-            }
-        ]
+        replica_item = {
+            "alias": "primary_ticks_replica",
+            "path": str(replica),
+            "export_run_id": "independent-run-b",
+            "server_dates": inputs["tick_exports"][0]["server_dates"],
+        }
+        _refresh_tick_provenance(replica_item)
+        inputs["replica_exports"] = [replica_item]
 
 
 def test_unknown_material_gap_requires_replica(tmp_path: Path) -> None:
@@ -373,6 +582,34 @@ def test_identical_independent_replica_accepts_material_gap(
     assert replicated[0]["interpolation_allowed"] is False
 
 
+def test_truncated_replica_cannot_accept_material_gap(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    _insert_replicated_gap(inputs, include_replica=True)
+    replica_path = Path(inputs["replica_exports"][0]["path"])
+    lines = replica_path.read_text(encoding="utf-8").splitlines()
+    replica_path.write_text(
+        "\n".join(
+            [
+                lines[0],
+                *[
+                    line
+                    for line in lines[1:]
+                    if line.startswith("2026.08.03 12:00:00")
+                    or line.startswith("2026.08.03 12:03:00")
+                ],
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    _refresh_tick_provenance(inputs["replica_exports"][0])
+
+    intake, _ = build_blind_intake(contract, inputs)
+
+    assert intake["structural_status"] == "structural_failure"
+    assert "unknown_or_nonreplicated_material_quote_gap" in intake["failure_codes"]
+
+
 def test_report_context_declaration_is_locked(tmp_path: Path) -> None:
     contract, inputs = _synthetic_inputs(tmp_path)
     inputs["report"]["declared_context_end"] = "2026-08-07"
@@ -380,6 +617,194 @@ def test_report_context_declaration_is_locked(tmp_path: Path) -> None:
     intake, _ = build_blind_intake(contract, inputs)
 
     assert "report_context_incomplete" in intake["failure_codes"]
+
+
+def test_report_context_requires_actual_timestamp_coverage(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    report_path = Path(inputs["report"]["path"])
+    lines = report_path.read_text(encoding="utf-8").splitlines()
+    report_path.write_text(
+        "\n".join(
+            line
+            for line in lines
+            if "2026.07.31 00:00:00" not in line
+            and "2026.08.08 00:00:00" not in line
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    intake, _ = build_blind_intake(contract, inputs)
+
+    assert intake["structural_status"] == "structural_failure"
+    assert "report_context_incomplete" in intake["failure_codes"]
+    assert (
+        intake["trade_report"]["report_context_timestamp_coverage_status"]
+        == "FAIL"
+    )
+
+
+def test_tick_parser_failure_creates_structural_record(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    tick_path = Path(inputs["tick_exports"][0]["path"])
+    lines = tick_path.read_text(encoding="utf-8").splitlines()
+    lines[1] = lines[1].replace("01:00:00.000", "invalid-time")
+    tick_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    _refresh_tick_provenance(inputs["tick_exports"][0])
+
+    intake, _ = build_blind_intake(contract, inputs)
+    record = build_structural_record(intake, "infra-a")
+
+    assert intake["structural_status"] == "structural_failure"
+    assert "missing_or_unparseable_registered_session" in intake["failure_codes"]
+    assert intake["ticks"]["files"][0]["parser_status"] == "FAIL"
+    assert record["accepted"] is False
+
+
+@pytest.mark.parametrize("empty", [False, True])
+def test_missing_or_empty_tick_export_creates_structural_record(
+    tmp_path: Path,
+    empty: bool,
+) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    tick_path = Path(inputs["tick_exports"][0]["path"])
+    if empty:
+        tick_path.write_text(
+            "<DATE>\t<TIME>\t<BID>\t<ASK>\t<LAST>\t<VOLUME>\t<FLAGS>\n",
+            encoding="utf-8",
+        )
+        _refresh_tick_provenance(inputs["tick_exports"][0])
+    else:
+        inputs["tick_exports"][0]["path"] = str(tmp_path / "missing.tsv")
+
+    intake, _ = build_blind_intake(contract, inputs)
+
+    assert intake["structural_status"] == "structural_failure"
+    assert intake["ticks"]["files"][0]["parser_status"] == "FAIL"
+
+
+def test_input_manifest_enforces_registered_suffixes(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    inputs["tick_exports"][0]["path"] = str(tmp_path / "ticks.txt")
+
+    manifest_path = tmp_path / "input_aliases.local.json"
+    manifest_path.write_text(json.dumps(inputs), encoding="utf-8")
+    with pytest.raises(ValueError, match="suffix"):
+        load_input_aliases(manifest_path, contract)
+
+
+def test_intake_cli_persists_parser_failure_record(tmp_path: Path) -> None:
+    sandbox_root = _cli_sandbox(tmp_path)
+    _, inputs = _synthetic_inputs(tmp_path)
+    tick_path = Path(inputs["tick_exports"][0]["path"])
+    lines = tick_path.read_text(encoding="utf-8").splitlines()
+    lines[1] = lines[1].replace("01:00:00.000", "invalid-time")
+    tick_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    _refresh_tick_provenance(inputs["tick_exports"][0])
+    inputs_path = tmp_path / "input_aliases.local.json"
+    inputs_path.write_text(json.dumps(inputs), encoding="utf-8")
+    output = tmp_path / "reports"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/intake_m5_004_external.py",
+            "--inputs",
+            str(inputs_path),
+            "--output-dir",
+            str(output),
+            "--allow-synthetic-fixture",
+        ],
+        cwd=sandbox_root,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 2
+    intake = json.loads((output / "m5_004_primary_blind_intake.json").read_text())
+    record = json.loads(
+        (output / "m5_004_primary_structural_failure.json").read_text()
+    )
+    assert intake["ticks"]["files"][0]["parser_status"] == "FAIL"
+    assert record["accepted"] is False
+
+
+
+
+def test_fallback_intake_rejects_before_snapshotting_raw_inputs(
+    tmp_path: Path,
+) -> None:
+    sandbox_root = _cli_sandbox(tmp_path)
+    _, inputs = _fallback_inputs(tmp_path)
+    inputs_path = tmp_path / "fallback_inputs.local.json"
+    inputs_path.write_text(json.dumps(inputs), encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/intake_m5_004_external.py",
+            "--inputs",
+            str(inputs_path),
+            "--allow-synthetic-fixture",
+        ],
+        cwd=sandbox_root,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode != 0
+    assert "fallback requires reviewed authorization" in (
+        result.stdout + result.stderr
+    ).lower()
+    assert not (
+        sandbox_root
+        / "data"
+        / "interim"
+        / "m5_004_external"
+        / "intake_snapshots"
+    ).exists()
+
+
+def test_fallback_evaluation_rejects_before_rebuilding_intake(
+    tmp_path: Path,
+) -> None:
+    sandbox_root = _cli_sandbox(tmp_path)
+    _, inputs = _fallback_inputs(tmp_path)
+    inputs_path = tmp_path / "fallback_inputs.local.json"
+    inputs_path.write_text(json.dumps(inputs), encoding="utf-8")
+    intake_path = tmp_path / "fallback_intake.json"
+    acceptance_path = tmp_path / "fallback_acceptance.json"
+    intake_path.write_text("{}", encoding="utf-8")
+    acceptance_path.write_text("{}", encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/evaluate_m5_004_external.py",
+            "--inputs",
+            str(inputs_path),
+            "--intake",
+            str(intake_path),
+            "--acceptance",
+            str(acceptance_path),
+            "--allow-synthetic-fixture",
+        ],
+        cwd=sandbox_root,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode != 0
+    assert "fallback requires reviewed authorization" in (
+        result.stdout + result.stderr
+    ).lower()
+    assert not (
+        sandbox_root
+        / "data"
+        / "interim"
+        / "m5_004_external"
+        / "evaluation_guard"
+    ).exists()
 
 
 def test_firewall_rejects_directional_or_performance_field() -> None:
@@ -433,14 +858,14 @@ def test_consume_rejects_tampered_started_guard(tmp_path: Path) -> None:
         consume_evaluation(tmp_path, payload, {"report": "hash"})
 
 
-def test_evaluation_id_binds_acceptance_input_model_and_runtime() -> None:
+def test_evaluation_id_binds_registered_block_model_and_runtime() -> None:
     acceptance = {
         "block_id": "primary",
         "record_id": "acceptance-a",
         "input_set_sha256": "input-a",
     }
     first = deterministic_evaluation_id(acceptance, "model-a", "infra-a")
-    assert first != deterministic_evaluation_id(
+    assert first == deterministic_evaluation_id(
         {**acceptance, "input_set_sha256": "input-b"},
         "model-a",
         "infra-a",
@@ -451,6 +876,45 @@ def test_evaluation_id_binds_acceptance_input_model_and_runtime() -> None:
     assert first != deterministic_evaluation_id(
         acceptance, "model-a", "infra-b"
     )
+    assert first != deterministic_evaluation_id(
+        {**acceptance, "block_id": "fallback"}, "model-a", "infra-a"
+    )
+
+
+def test_block_guard_refuses_realiased_second_evaluation(tmp_path: Path) -> None:
+    first_acceptance = {
+        "block_id": "primary",
+        "record_id": "acceptance-a",
+        "input_set_sha256": "input-a",
+    }
+    re_aliased_acceptance = {
+        **first_acceptance,
+        "record_id": "acceptance-b",
+        "input_set_sha256": "input-b",
+    }
+    first_id = deterministic_evaluation_id(first_acceptance, "model-a", "infra-a")
+    second_id = deterministic_evaluation_id(
+        re_aliased_acceptance, "model-a", "infra-a"
+    )
+    assert first_id == second_id
+    first_payload = {
+        "evaluation_id": first_id,
+        "block_id": "primary",
+        "acceptance_id": "acceptance-a",
+        "input_set_sha256": "input-a",
+        "frozen_manifest_sha256": "model-a",
+        "infrastructure_manifest_sha256": "infra-a",
+        "status": "started",
+    }
+    acquire_evaluation_guard(tmp_path, first_payload)
+    consume_evaluation(tmp_path, first_payload, {"report": "hash"})
+    second_payload = {
+        **first_payload,
+        "acceptance_id": "acceptance-b",
+        "input_set_sha256": "input-b",
+    }
+    with pytest.raises(RuntimeError, match="consumed"):
+        acquire_evaluation_guard(tmp_path, second_payload)
 
 
 @pytest.mark.parametrize(
@@ -612,6 +1076,9 @@ def test_frozen_end_to_end_fixture_scores_without_refit(
 
 
 def test_two_stage_cli_fixture_and_consumption_guard(tmp_path: Path) -> None:
+    # Run the immutable CLI guard in an isolated repository so this fixture
+    # cannot consume the workspace's registered primary-block evaluation.
+    sandbox_root = _cli_sandbox(tmp_path)
     _, inputs = _cause_fixture_inputs(tmp_path)
     inputs_path = tmp_path / "input_aliases.local.json"
     inputs_path.write_text(
@@ -629,7 +1096,7 @@ def test_two_stage_cli_fixture_and_consumption_guard(tmp_path: Path) -> None:
     ]
     intake_run = subprocess.run(
         intake_command,
-        cwd=ROOT,
+        cwd=sandbox_root,
         check=True,
         capture_output=True,
         text=True,
@@ -650,13 +1117,11 @@ def test_two_stage_cli_fixture_and_consumption_guard(tmp_path: Path) -> None:
         str(output),
         "--local-dir",
         str(tmp_path / "local"),
-        "--guard-dir",
-        str(tmp_path / "guard"),
         "--allow-synthetic-fixture",
     ]
     first = subprocess.run(
         evaluate_command,
-        cwd=ROOT,
+        cwd=sandbox_root,
         check=True,
         capture_output=True,
         text=True,
@@ -664,7 +1129,7 @@ def test_two_stage_cli_fixture_and_consumption_guard(tmp_path: Path) -> None:
     assert json.loads(first.stdout)["status"] == "consumed"
     repeated = subprocess.run(
         evaluate_command,
-        cwd=ROOT,
+        cwd=sandbox_root,
         capture_output=True,
         text=True,
     )
@@ -677,25 +1142,110 @@ def test_fallback_requires_reviewed_primary_failure() -> None:
         "block_id": "primary",
         "accepted": False,
         "failure_codes": ["boundary_coverage_failure"],
+        "infrastructure_manifest_sha256": "infra-a",
     }
     primary["record_id"] = canonical_json_sha256(primary)
     authorization = {
         "reviewed": True,
         "primary_failure_record_id": primary["record_id"],
+        "primary_registration_id": "primary-registration-a",
         "infrastructure_manifest_sha256": "infra-a",
         "reason_codes": ["boundary_coverage_failure"],
     }
-    validate_fallback_authorization(authorization, primary, "infra-a")
+    validate_fallback_authorization(
+        authorization, primary, "infra-a", "primary-registration-a"
+    )
     with pytest.raises(ValueError, match="explicit reviewed"):
         validate_fallback_authorization(
-            {**authorization, "reviewed": False}, primary, "infra-a"
+            {**authorization, "reviewed": False},
+            primary,
+            "infra-a",
+            "primary-registration-a",
         )
     with pytest.raises(ValueError, match="record hash changed"):
         validate_fallback_authorization(
             authorization,
             {**primary, "failure_codes": ["financial_reconciliation_failure"]},
             "infra-a",
+            "primary-registration-a",
         )
+    with pytest.raises(ValueError, match="another primary intake"):
+        validate_fallback_authorization(
+            authorization,
+            primary,
+            "infra-a",
+            "primary-registration-b",
+        )
+
+
+def test_fallback_primary_failure_must_reproduce_from_inputs(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    tick_path = Path(inputs["tick_exports"][0]["path"])
+    tick_path.write_text(
+        "\n".join(
+            line
+            for line in tick_path.read_text(encoding="utf-8").splitlines()
+            if not line.startswith("2026.08.05")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    _refresh_tick_provenance(inputs["tick_exports"][0])
+    intake, _ = build_blind_intake(contract, inputs)
+    failure = build_structural_record(intake, "infra-a")
+    verify_primary_structural_failure(
+        contract, inputs, intake, failure, "infra-a"
+    )
+    forged = {**failure, "accepted": True}
+    forged["record_id"] = canonical_json_sha256(
+        {key: value for key, value in forged.items() if key != "record_id"}
+    )
+    with pytest.raises(AssertionError, match="does not reproduce"):
+        verify_primary_structural_failure(
+            contract, inputs, intake, forged, "infra-a"
+        )
+
+
+def test_primary_registration_is_bound_before_fallback(tmp_path: Path) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    tick_path = Path(inputs["tick_exports"][0]["path"])
+    tick_path.write_text(
+        "\n".join(
+            line
+            for line in tick_path.read_text(encoding="utf-8").splitlines()
+            if not line.startswith("2026.08.05")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    _refresh_tick_provenance(inputs["tick_exports"][0])
+    intake, _ = build_blind_intake(contract, inputs)
+    failure = build_structural_record(intake, "infra-a")
+    registration = build_primary_intake_registration(
+        inputs, intake, failure, "infra-a"
+    )
+
+    registered_inputs, registered_intake, registered_failure = (
+        verify_primary_intake_registration(contract, registration, "infra-a")
+    )
+    authorization = {
+        "reviewed": True,
+        "primary_failure_record_id": failure["record_id"],
+        "primary_registration_id": registration["registration_id"],
+        "infrastructure_manifest_sha256": "infra-a",
+        "reason_codes": failure["failure_codes"],
+    }
+    validate_fallback_authorization(
+        authorization,
+        registered_failure,
+        "infra-a",
+        registration["registration_id"],
+    )
+    assert registered_inputs == inputs
+    assert registered_intake == intake
+    assert "authorization[\"primary_input_manifest_path\"]" not in (
+        ROOT / "scripts" / "evaluate_m5_004_external.py"
+    ).read_text(encoding="utf-8")
 
 
 def test_structural_record_does_not_auto_authorize_fallback(
@@ -730,4 +1280,33 @@ def test_intake_or_acceptance_tampering_is_rejected(tmp_path: Path) -> None:
     with pytest.raises(AssertionError, match="acceptance record hash"):
         verify_intake_and_acceptance(
             contract, inputs, intake, changed_acceptance, "infra-a"
+        )
+
+
+def test_recomputed_forged_acceptance_cannot_skip_blind_intake(
+    tmp_path: Path,
+) -> None:
+    contract, inputs = _synthetic_inputs(tmp_path)
+    tick_path = Path(inputs["tick_exports"][0]["path"])
+    tick_path.write_text(
+        "\n".join(
+            line
+            for line in tick_path.read_text(encoding="utf-8").splitlines()
+            if not line.startswith("2026.08.05")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    _refresh_tick_provenance(inputs["tick_exports"][0])
+    intake, _ = build_blind_intake(contract, inputs)
+    forged = build_structural_record(intake, "infra-a")
+    forged["accepted"] = True
+    forged["complete_five_session_block"] = True
+    forged["record_id"] = canonical_json_sha256(
+        {key: value for key, value in forged.items() if key != "record_id"}
+    )
+
+    with pytest.raises(AssertionError, match="does not reproduce"):
+        verify_intake_and_acceptance(
+            contract, inputs, intake, forged, "infra-a"
         )

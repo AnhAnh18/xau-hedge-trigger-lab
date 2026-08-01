@@ -5,9 +5,9 @@
     "draws": 5000,
     "seed": 5004
   },
-  "contract_canonical_sha256": "bcabda91fcaaf1b7a6e69efa1601ffd05567e9475a3436c6ebc916674a6b8da1",
+  "contract_canonical_sha256": "7ad9a315a2b8a6f9c85e9e647cb9fd93d3172733d34c2604dada6ee4a0a7de5b",
   "contract_id": "m5_004_external_intake_v1",
-  "contract_raw_file_sha256": "25d67b8f0d3613a1da809452ed93ef2e64701ee79ebd13d272ea327e342ae7d0",
+  "contract_raw_file_sha256": "02d76016cd5934161b86cdeecc7a82af4a27ad9f35632887e622e1c5e7c4eaf3",
   "external_data_seen": false,
   "external_evaluation_consumed": false,
   "frozen_package": {
@@ -22,7 +22,7 @@
     "manifest_raw_file_sha256": "6c5b111265771d510600b248613a006cf4e99e73cc0d3ee3c1b883a7e875082b",
     "raw_file_hash_role": "windows_checkout_attestation_canonical_text_hash_is_cross_platform_gate"
   },
-  "infrastructure_manifest_sha256": "cbd85116c7382bc822f125d72efa4a0b57c8f033f1db6bc0849c7e8e7c49a89a",
+  "infrastructure_manifest_sha256": "6d8822934e644cbd3aaf5f775451ee867924026cbd4ce4a1852d8e358e14ec10",
   "m6_started": false,
   "milestone": "M5-004-external-infrastructure",
   "protected_canonical_text_sha256": {
@@ -69,14 +69,40 @@
     }
   },
   "runtime_canonical_text_sha256": {
-    "data/m5_004_external_intake_contract.json": "25d67b8f0d3613a1da809452ed93ef2e64701ee79ebd13d272ea327e342ae7d0",
-    "reports/phase_05/m5_004_external_infrastructure.md": "09a1e5609dbde2587162a78dcdaed407704b53a0f0b0f3cff81551d0a1f71cf0",
-    "scripts/evaluate_m5_004_external.py": "ede5e7032be71add887c03d2f54a46a0b35b4dfb30d4a58747185c9f111d3d85",
-    "scripts/freeze_m5_004_external_infrastructure.py": "9e72558f04ff5e6fb01487e97e9dbef3c096ecbe6545f588f3d5ebe2d6eaf5f5",
-    "scripts/intake_m5_004_external.py": "9e29dd413ce2af2bedf54eff05b58c34fc33123b4175f8f4c61527e9b1799ad4",
-    "src/xau_trigger/m5_004_external_intake.py": "bfad3b57566c5312f50f5b1a1db20d1cb7576016ded303f473defd912e57ef23",
-    "src/xau_trigger/m5_004_frozen_evaluator.py": "be63049dbd49203ca3e275a9f1eafc959d73847d46f7c17629b7bb8a1b4d3277",
-    "src/xau_trigger/unlock_cause.py": "9990483ba76b87fcdc38debd68ab8f2517881e196103eb1b15d08f3182b9d19e"
+    "data/m5_004_external_intake_contract.json": "d8656dc789d180520570210c02f1c28c4de95c67c4fa0604fc8f7e5c1f71a9d6",
+    "reports/phase_05/m5_004_external_infrastructure.md": "97993362dbae5f2be5351fd49f9e99ea35c4a59f57b80f0181fbbe782d8c91bd",
+    "scripts/evaluate_m5_004_external.py": "dad052691dbf52baf55f2e3508b1666a5d7c57f825ace7ecc54462b2a912fc60",
+    "scripts/freeze_m5_004_external_infrastructure.py": "142179baf060991d448bb0c0feefadc3138cf9f51be11c43f6880dc03ae61187",
+    "scripts/intake_m5_004_external.py": "0f40eb586ad2183802b3a9b2a31050bde1db96a50fe9897f19d81572ece00f55",
+    "src/xau_trigger/__init__.py": "b10baef2058c203003122effd56aa40d0ac4cbcdbc1361732d4bf44f02821f66",
+    "src/xau_trigger/acquisition.py": "189476d440e773f676ea778203bd075625e318543a90721b39e8d6530dab1fac",
+    "src/xau_trigger/event_tick_alignment.py": "67d4923da7fa0940b98fc1acf01c65cf24749c807ee7e5a6ad9c8ac86b2fc231",
+    "src/xau_trigger/external_validation.py": "89cbaca2501759d2a39cfbcf0549e2df34c0c2499c88d69dec978b003cdc3b40",
+    "src/xau_trigger/hazard_bins.py": "07c2adeec5c5446abc8406a64c58564ad2e670a0f6196b1ec31ec2c53ccacd19",
+    "src/xau_trigger/m5_004_external_intake.py": "ec99ee59be04a7d834bab91ab9adee05cba3aee5b3d235483078ef69ffdaa5cf",
+    "src/xau_trigger/m5_004_frozen_evaluator.py": "298fc47c495de429d493cc8b87ebc66ef2ceff58fc5a5b067bcecc229a7f21f2",
+    "src/xau_trigger/parsers/__init__.py": "8639cc8e43c49a652a379bca0e13e5cda122d9f57176f19736fc810ba6da15f7",
+    "src/xau_trigger/parsers/mt5_report.py": "e40ae3bb32720b0c04af88ac93fc63da736638eed7d1cdccfbb45156993ee5bb",
+    "src/xau_trigger/parsers/tick_export.py": "0a638a47d7dbc23ff26c195a40151d36e4547bf9853c8e675c4c3a24817e4224",
+    "src/xau_trigger/price_features.py": "9203c1ebcdccd52cba1732d6f526d03c2ee6392bf8a6ef92637f526ef444dae7",
+    "src/xau_trigger/price_inference.py": "6e510af594d6bf3f8c1f469b2c7d56cebda35a94a6200567153d683150ec15a2",
+    "src/xau_trigger/risk_time.py": "26d034a90d0783377196843958b94f0201133c605b5e0402d3cec0186a9ed19e",
+    "src/xau_trigger/schemas.py": "ad10570087885a83f93b459bbbe809d3e3b27c5a8028b29431d429bf72dd8c11",
+    "src/xau_trigger/state_age_hazard.py": "30c1e9e099e77bbe55d80f882e60a7ad50dafc501b3e570f8ed38dc640b14925",
+    "src/xau_trigger/state_reconstruction.py": "a04d159c21edeeb3a984b8f9f8c85e44c1e18f81cd74975a1e8eb6e568986b4f",
+    "src/xau_trigger/trigger_dataset.py": "630488ed82e54c30b1a01d8e0ede52c54d5adbb61805c9c23ec40680befc4e5e",
+    "src/xau_trigger/unlock_cause.py": "9990483ba76b87fcdc38debd68ab8f2517881e196103eb1b15d08f3182b9d19e",
+    "src/xau_trigger/validation/__init__.py": "de107985d949a1a7a336ab3f52059e6475b62d1cefd77b2f0f449cb4842a0d0c",
+    "src/xau_trigger/validation/dataset_checks.py": "c15b6a3a78ace58f5ff84edda8466bddd3b0115b11657adf07d49920e973da82"
+  },
+  "runtime_environment": {
+    "packages": {
+      "lxml": "6.1.1",
+      "numpy": "2.5.1",
+      "pandas": "3.0.5",
+      "pyarrow": "25.0.0"
+    },
+    "python": "3.14.2"
   },
   "schema_version": 1,
   "status": "external_infrastructure_ready_data_unseen"

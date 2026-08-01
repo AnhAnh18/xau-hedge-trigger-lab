@@ -39,6 +39,7 @@ and local paths:
     {
       "alias": "primary_ticks_d1",
       "path": "<local tick export>",
+      "provenance_path": "<local content-bound MT5 tick provenance JSON>",
       "export_run_id": "run-a",
       "server_dates": ["2026-08-03"]
     }
@@ -55,7 +56,13 @@ and local paths:
 
 Add all five registered tick sessions. A replica export is needed only for an
 unknown material quote gap and must use a distinct export run ID with identical
-boundary ticks.
+boundary ticks. MT5 tick rows do not encode their symbol, so every tick export
+and replica must also have an untracked JSON sidecar that declares `XAUUSD`,
+the export run and server dates, and `tick_export_sha256` for exactly the tick
+file supplied. Intake rejects a missing, mismatched, or stale sidecar.
+This content-binds the operator's export attestation to the supplied bytes;
+MT5's unsigned tick format cannot independently prove broker-side provenance
+without a separately trusted signed export source.
 
 ## Commands
 
@@ -75,16 +82,23 @@ python scripts/evaluate_m5_004_external.py \
   --acceptance reports/phase_05/m5_004_primary_structural_acceptance.json
 ```
 
-The evaluator locks the deterministic evaluation ID before deriving unlock
-direction labels. An interrupted run can resume only with
+The evaluator locks one deterministic ID per registered block before deriving
+unlock-direction labels. An interrupted run can resume only with
 `--resume-identical` and unchanged input, acceptance, model, and runtime
-hashes. A consumed evaluation cannot run again.
+hashes. A consumed block cannot run again under another alias, input manifest,
+or guard location.
 
 The result publishes pooled, daily, ablation, and descriptive five-session
 leave-one-session-out summaries. LOSO reuses the frozen predictions without
 refitting and cannot affect the one-second headline verdict. The persisted
 started guard is reverified immediately before consumption, and fallback
 authorization rejects a structurally tampered primary-failure record.
+Primary intake additionally persists a content-bound local registration under
+`data/interim/m5_004_external/primary_intake_registration.json`; fallback
+authorization must name that registration ID and cannot select alternate
+primary input, intake, or failure paths. Both fallback intake and evaluation
+require `--fallback-authorization <reviewed authorization JSON>` before they
+snapshot or parse any fallback raw file.
 
 Blind intake publishes structural statuses only. It never publishes unlock
 direction, eligible-event counts, features, predictions, coefficients,

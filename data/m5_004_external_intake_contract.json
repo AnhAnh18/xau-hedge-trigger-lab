@@ -49,7 +49,23 @@
     ],
     "first_tick_no_later_than_server_time": "01:05:00",
     "last_tick_no_earlier_than_server_time": "23:50:00",
-    "preserve_duplicate_milliseconds": true
+    "preserve_duplicate_milliseconds": true,
+    "provenance": {
+      "allowed_suffixes": [
+        ".json"
+      ],
+      "schema_version": 1,
+      "source": "mt5_tick_export",
+      "content_sha256_field": "tick_export_sha256",
+      "required_fields": [
+        "schema_version",
+        "source",
+        "symbol",
+        "export_run_id",
+        "server_dates",
+        "tick_export_sha256"
+      ]
+    }
   },
   "trade_report": {
     "allowed_suffixes": [
@@ -66,6 +82,7 @@
   },
   "gap_policy": {
     "threshold_seconds": 60,
+    "maximum_accepted_gap_seconds": 7200,
     "scheduled_classification_min_recurring_sessions": 3,
     "same_server_clock_tolerance_seconds": 120,
     "accepted_unscheduled_classification": "replicated_source_quote_gap",
@@ -81,6 +98,7 @@
     "boundary_coverage_failure",
     "timestamp_order_failure",
     "duplicate_preservation_failure",
+    "duplicate_source_tick_data",
     "financial_reconciliation_failure",
     "inventory_reconciliation_failure",
     "lifecycle_completeness_failure",

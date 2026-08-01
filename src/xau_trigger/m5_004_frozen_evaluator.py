@@ -1,7 +1,9 @@
 """Frozen, one-time external evaluation for M5-004."""
 from __future__ import annotations
 
+from contextlib import contextmanager
 import json
+import os
 from pathlib import Path
 from typing import Iterable
 
@@ -13,9 +15,14 @@ from xau_trigger.hazard_bins import (
     dataframe_sha256,
 )
 from xau_trigger.m5_004_external_intake import (
+    assert_blind_firewall,
+    build_blind_intake,
+    build_structural_record,
     canonical_json_sha256,
     canonical_text_sha256,
     input_set_records,
+    runtime_environment_fingerprint,
+    snapshot_input_manifest,
 )
 from xau_trigger.parsers.mt5_report import parse_report
 from xau_trigger.parsers.tick_export import parse_ticks
@@ -60,12 +67,24 @@ def verify_frozen_package(root: Path, contract: dict) -> tuple[dict, dict]:
     return manifest, report
 
 
-def verify_infrastructure_manifest(root: Path, infrastructure: dict) -> None:
+def verify_infrastructure_manifest(
+    root: Path,
+    infrastructure: dict,
+    contract: dict,
+) -> None:
     stored = infrastructure.get("infrastructure_manifest_sha256")
     source = dict(infrastructure)
     source.pop("infrastructure_manifest_sha256", None)
     if not stored or canonical_json_sha256(source) != stored:
         raise AssertionError("External infrastructure manifest hash changed")
+    if (
+        infrastructure.get("contract_id") != contract.get("contract_id")
+        or infrastructure.get("contract_canonical_sha256")
+        != canonical_json_sha256(contract)
+    ):
+        raise AssertionError("Selected external contract differs from frozen infrastructure")
+    if infrastructure.get("runtime_environment") != runtime_environment_fingerprint():
+        raise AssertionError("Frozen external runtime environment changed")
     for registry, label in (
         ("runtime_canonical_text_sha256", "runtime"),
         ("protected_canonical_text_sha256", "protected artifact"),
@@ -82,11 +101,10 @@ def deterministic_evaluation_id(
     manifest_sha256: str,
     infrastructure_sha256: str,
 ) -> str:
+    """Return the one permitted scoring identity for a registered block."""
     return canonical_json_sha256(
         {
             "block_id": acceptance["block_id"],
-            "acceptance_id": acceptance["record_id"],
-            "input_set_sha256": acceptance["input_set_sha256"],
             "manifest_sha256": manifest_sha256,
             "infrastructure_sha256": infrastructure_sha256,
         }
@@ -119,6 +137,59 @@ def acquire_evaluation_guard(
         if existing != guard_payload:
             raise RuntimeError("Evaluation resume hashes differ from the started run")
     return started
+
+
+@contextmanager
+def hold_evaluation_lock(guard_dir: str | Path, evaluation_id: str):
+    """Hold a process-wide lock while an evaluation derives external labels."""
+    directory = Path(guard_dir)
+    directory.mkdir(parents=True, exist_ok=True)
+    lock_path = directory / f"{evaluation_id}.lock"
+    handle = lock_path.open("a+b")
+    try:
+        handle.seek(0)
+        if not handle.read(1):
+            handle.seek(0)
+            handle.write(b"0")
+            handle.flush()
+        handle.seek(0)
+        if os.name == "nt":
+            import msvcrt
+
+            try:
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            except OSError as error:
+                raise RuntimeError("External evaluation is already running") from error
+            unlock = lambda: msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            try:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError as error:
+                raise RuntimeError("External evaluation is already running") from error
+            unlock = lambda: fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        try:
+            yield
+        finally:
+            handle.seek(0)
+            unlock()
+    finally:
+        handle.close()
+
+
+def verify_active_evaluation_guard(
+    guard_dir: str | Path,
+    guard_payload: dict,
+) -> None:
+    directory = Path(guard_dir)
+    evaluation_id = guard_payload["evaluation_id"]
+    started = directory / f"{evaluation_id}.started.json"
+    consumed = directory / f"{evaluation_id}.consumed.json"
+    if consumed.exists():
+        raise RuntimeError("This deterministic external evaluation is consumed")
+    if not started.exists() or json.loads(started.read_text(encoding="utf-8")) != guard_payload:
+        raise RuntimeError("Started evaluation guard hashes changed before scoring")
 
 
 def consume_evaluation(
@@ -527,3 +598,12 @@ def verify_intake_and_acceptance(
     ):
         raise AssertionError("Frozen evaluation requires an accepted full block")
     verify_input_set(input_manifest, acceptance)
+    rebuilt_intake, _ = build_blind_intake(contract, input_manifest)
+    assert_blind_firewall(rebuilt_intake, contract)
+    if rebuilt_intake != intake:
+        raise AssertionError("Blind intake does not reproduce from external inputs")
+    rebuilt_acceptance = build_structural_record(
+        rebuilt_intake, infrastructure_sha256
+    )
+    if rebuilt_acceptance != acceptance:
+        raise AssertionError("Structural acceptance does not reproduce from blind intake")

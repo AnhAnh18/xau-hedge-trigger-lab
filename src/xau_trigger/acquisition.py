@@ -676,6 +676,20 @@ def build_synthetic_acquisition_files(
             f"<td>market</td><td></td><td></td><td>{date} 12:00:00</td>"
             "<td>filled</td><td></td></tr>"
         )
+    for index, context_day in enumerate(
+        (
+            plan["trade_report"]["required_period_start"],
+            plan["trade_report"]["required_period_end"],
+        ),
+        start=1,
+    ):
+        date = pd.Timestamp(context_day).strftime("%Y.%m.%d")
+        lines.append(
+            f"<tr><td>{date} 00:00:00</td><td>{900 + index}</td>"
+            "<td>XAUUSD</td><td>buy</td><td>0.0 / 0.0</td>"
+            f"<td>market</td><td></td><td></td><td>{date} 00:00:00</td>"
+            "<td>canceled</td><td>context-boundary fixture</td></tr>"
+        )
     lines.extend(
         [
             '<tr><th colspan="15">Deals</th></tr>',
