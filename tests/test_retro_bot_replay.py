@@ -13,6 +13,8 @@ from xau_trigger.retro_bot import (
     lead_time_band,
     load_config,
     replay_rehedge_policy,
+    replay_rehedge_policies,
+    replay_rehedge_intervals,
 )
 
 
@@ -121,3 +123,39 @@ def test_replay_rehedge_policy_excludes_dst_unresolved_interval(tmp_path: Path) 
     outcome = replay_rehedge_policy(interval, policy, clock, config, [tmp_path / "not-opened.csv"])
     assert outcome.status == "excluded_clock_unresolved"
     assert outcome.action_side is None
+
+
+def test_batched_replay_matches_single_interval_replay(tmp_path: Path) -> None:
+    config = load_config()
+    clock = next(clock for clock in config.clocks if clock.id == "utc_plus_2")
+    interval_a = EligibleInterval(
+        report_alias="report-001.html",
+        interval_id=1,
+        state="ONE_BUY",
+        unlock_time_server=pd.Timestamp("2026-01-01 02:00:00"),
+        observed_rehedge_time_server=pd.Timestamp("2026-01-01 02:10:00"),
+        duration_seconds=600,
+    )
+    interval_b = EligibleInterval(
+        report_alias="report-001.html",
+        interval_id=2,
+        state="ONE_SELL",
+        unlock_time_server=pd.Timestamp("2026-01-02 02:00:00"),
+        observed_rehedge_time_server=pd.Timestamp("2026-01-02 02:20:00"),
+        duration_seconds=1200,
+    )
+    ticks = tmp_path / "ticks.csv"
+    ticks.write_text(
+        "time_utc,bid,ask\n"
+        "2026-01-01T00:05:00Z,1,2\n"
+        "2026-01-02T00:10:00Z,1,2\n",
+        encoding="utf-8",
+    )
+    single = tuple(
+        replay_rehedge_policies(interval, config.policies, clock, config, [ticks])
+        for interval in (interval_a, interval_b)
+    )
+    batched = replay_rehedge_intervals((interval_a, interval_b), config, [ticks])
+    expected = tuple(outcome for group in single for outcome in group if outcome.clock_id == clock.id)
+    actual = tuple(outcome for outcome in batched if outcome.clock_id == clock.id)
+    assert actual == expected

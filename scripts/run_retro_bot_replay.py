@@ -14,7 +14,7 @@ from xau_trigger.retro_bot import (
     eligible_intervals,
     filter_xauusd_tables,
     load_config,
-    replay_rehedge_policies,
+    replay_rehedge_intervals,
     verify_registered_source_manifest,
 )
 from xau_trigger.state_reconstruction import merge_lifecycles, reconstruct_states
@@ -83,7 +83,7 @@ def run(args: argparse.Namespace) -> dict:
     report_paths = verify_registered_source_manifest(report_run, quarantine_root, config, "reports")
     tick_paths = verify_registered_source_manifest(tick_run, quarantine_root, config, "ticks")
     ordered_ticks = [tick_paths[alias] for alias in config.source_receipt["tick_aliases"]]
-    outcomes = []
+    candidates_by_report = []
     for report_alias in config.source_receipt["report_aliases"]:
         tables = filter_xauusd_tables(parse_report(report_paths[report_alias], report_id=report_alias))
         lifecycle, lifecycle_exceptions, _ = merge_lifecycles(tables["positions"], tables["open_positions"])
@@ -97,9 +97,8 @@ def run(args: argparse.Namespace) -> dict:
             state_exceptions,
             config,
         )
-        for interval in candidates:
-            for clock in config.clocks:
-                outcomes.extend(replay_rehedge_policies(interval, config.policies, clock, config, ordered_ticks))
+        candidates_by_report.extend(candidates)
+    outcomes = replay_rehedge_intervals(candidates_by_report, config, ordered_ticks)
     aggregate = aggregate_outcomes(
         outcomes,
         config,

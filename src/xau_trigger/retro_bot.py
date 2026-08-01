@@ -357,6 +357,65 @@ def first_valid_ticks(
     return results
 
 
+def first_valid_ticks_for_windows(
+    paths: Iterable[Path],
+    windows: Iterable[tuple[object, pd.Timestamp, pd.Timestamp]],
+    *,
+    chunksize: int = 250_000,
+) -> dict[object, TickLookup]:
+    """Scan each tick source once and resolve many half-open windows."""
+    normalized: dict[object, tuple[pd.Timestamp, pd.Timestamp]] = {}
+    for key, start_utc, end_utc_exclusive in windows:
+        if key in normalized:
+            raise RetroBotInputError("duplicate tick replay window key")
+        normalized[key] = (ClockScenario._utc(start_utc), ClockScenario._utc(end_utc_exclusive))
+    results = {
+        key: TickLookup("right_censored_delay_not_reached", None, 0)
+        for key, (start, end) in normalized.items()
+        if start >= end
+    }
+    active = {key: (start, end) for key, (start, end) in normalized.items() if start < end}
+    earliest: dict[object, pd.Timestamp | None] = {key: None for key in active}
+    valid_counts = {key: 0 for key in active}
+    if not active:
+        return results
+    for path in paths:
+        overlapping = {
+            key: window
+            for key, window in active.items()
+            if _path_overlaps_utc_window(path, window[0], window[1])
+        }
+        if not overlapping:
+            continue
+        broad_start = min(window[0] for window in overlapping.values())
+        broad_end = max(window[1] for window in overlapping.values())
+        valid_chunks: list[pd.Series] = []
+        for chunk in pd.read_csv(path, usecols=["time_utc", "bid", "ask"], chunksize=chunksize):
+            timestamps = pd.to_datetime(chunk["time_utc"], utc=True, errors="coerce")
+            bid = pd.to_numeric(chunk["bid"], errors="coerce")
+            ask = pd.to_numeric(chunk["ask"], errors="coerce")
+            valid = timestamps.notna() & bid.notna() & ask.notna()
+            valid &= (bid > 0) & (ask > 0) & (ask >= bid)
+            valid &= (timestamps >= broad_start) & (timestamps < broad_end)
+            if bool(valid.any()):
+                valid_chunks.append(timestamps[valid])
+        if not valid_chunks:
+            continue
+        tick_times = pd.DatetimeIndex(pd.concat(valid_chunks, ignore_index=True)).sort_values()
+        for key, (start, end) in overlapping.items():
+            left = int(tick_times.searchsorted(start, side="left"))
+            right = int(tick_times.searchsorted(end, side="left"))
+            valid_counts[key] += right - left
+            if left < right and (earliest[key] is None or tick_times[left] < earliest[key]):
+                earliest[key] = tick_times[left]
+    for key in active:
+        if earliest[key] is None:
+            results[key] = TickLookup("right_censored_no_valid_tick", None, valid_counts[key])
+        else:
+            results[key] = TickLookup("emitted", earliest[key], valid_counts[key])
+    return results
+
+
 def _legacy_first_valid_tick(
     paths: Iterable[Path],
     start_utc: pd.Timestamp,
@@ -568,6 +627,104 @@ def replay_rehedge_policies(
             raise RetroBotInputError("half-open tick accessor emitted an action at or after re-hedge")
         outcomes[index] = ReplayOutcome(**base, policy_id=policy.id, status="emitted", action_side=interval.action_side, lead_seconds=lead_seconds, valid_tick_count=lookup.valid_tick_count)
     return tuple(outcome for outcome in outcomes if outcome is not None)
+
+
+def replay_rehedge_intervals(
+    intervals: Iterable[EligibleInterval],
+    config: RetroBotConfig,
+    tick_paths: Iterable[Path],
+) -> tuple[ReplayOutcome, ...]:
+    """Replay all registered clocks and policies while scanning ticks once."""
+    locked_config = load_config()
+    if config.config_sha256 != LOCKED_CONFIG_SHA256:
+        raise RetroBotInputError("replay config is not locked")
+    policies = locked_config.policies
+    clocks = locked_config.clocks
+    ordered_keys: list[tuple[int, str, str]] = []
+    resolved: dict[tuple[int, str, str], ReplayOutcome] = {}
+    pending: dict[tuple[int, str, str], tuple[EligibleInterval, Policy, pd.Timestamp]] = {}
+    for interval_index, interval in enumerate(intervals):
+        for clock in clocks:
+            base = {
+                "report_alias": interval.report_alias,
+                "interval_id": interval.interval_id,
+                "clock_id": clock.id,
+            }
+            unlock_mapping = clock.map_server_to_utc(interval.unlock_time_server)
+            end_mapping = clock.map_server_to_utc(interval.observed_rehedge_time_server)
+            for policy in policies:
+                key = (interval_index, clock.id, policy.id)
+                ordered_keys.append(key)
+                if unlock_mapping.status != "unique" or end_mapping.status != "unique":
+                    resolved[key] = ReplayOutcome(
+                        **base,
+                        policy_id=policy.id,
+                        status="excluded_clock_unresolved",
+                        action_side=None,
+                        lead_seconds=None,
+                        valid_tick_count=0,
+                    )
+                    continue
+                target_server = interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds)
+                if target_server >= interval.observed_rehedge_time_server:
+                    resolved[key] = ReplayOutcome(
+                        **base,
+                        policy_id=policy.id,
+                        status="right_censored_delay_not_reached",
+                        action_side=None,
+                        lead_seconds=None,
+                        valid_tick_count=0,
+                    )
+                    continue
+                target_mapping = clock.map_server_to_utc(target_server)
+                rehedge_utc = end_mapping.timestamp_utc
+                target_utc = target_mapping.timestamp_utc
+                if target_mapping.status != "unique" or target_utc is None or rehedge_utc is None or target_utc >= rehedge_utc:
+                    resolved[key] = ReplayOutcome(
+                        **base,
+                        policy_id=policy.id,
+                        status="excluded_clock_unresolved",
+                        action_side=None,
+                        lead_seconds=None,
+                        valid_tick_count=0,
+                    )
+                    continue
+                pending[key] = (interval, policy, rehedge_utc)
+    mapped_windows = []
+    for key, (interval, policy, end_utc) in pending.items():
+        clock_id = key[1]
+        clock = next(clock for clock in clocks if clock.id == clock_id)
+        target_mapping = clock.map_server_to_utc(interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds))
+        mapped_windows.append((key, target_mapping.timestamp_utc, end_utc))
+    lookups = first_valid_ticks_for_windows(tick_paths, mapped_windows) if mapped_windows else {}
+    for key, (interval, policy, rehedge_utc) in pending.items():
+        lookup = lookups[key]
+        base = {
+            "report_alias": interval.report_alias,
+            "interval_id": interval.interval_id,
+            "clock_id": key[1],
+            "policy_id": policy.id,
+        }
+        if lookup.status != "emitted" or lookup.timestamp_utc is None:
+            resolved[key] = ReplayOutcome(
+                **base,
+                status=lookup.status,
+                action_side=None,
+                lead_seconds=None,
+                valid_tick_count=lookup.valid_tick_count,
+            )
+            continue
+        lead_seconds = float((rehedge_utc - lookup.timestamp_utc).total_seconds())
+        if lead_seconds <= 0:
+            raise RetroBotInputError("half-open tick accessor emitted an action at or after re-hedge")
+        resolved[key] = ReplayOutcome(
+            **base,
+            status="emitted",
+            action_side=interval.action_side,
+            lead_seconds=lead_seconds,
+            valid_tick_count=lookup.valid_tick_count,
+        )
+    return tuple(resolved[key] for key in ordered_keys)
 
 
 def lead_time_band(lead_seconds: float, config: RetroBotConfig) -> str:
