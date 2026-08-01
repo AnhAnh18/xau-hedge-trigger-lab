@@ -157,6 +157,9 @@ may label a fact as **observed**, **compatible**, or **unresolved**. An
 independent reviewer may read a named ignored aggregate payload only after the
 privacy-schema validator accepts it; that exception never permits access to
 quarantine sources, raw rows, detailed traces, or any other ignored file.
+Each replay output must be a previously nonexistent direct child of the
+registered `data/raw/passview_quarantine/retro-bot-001/replay_runs` directory,
+and it must not overlap either verified source run.
 
 The following remain prohibited claims: the actual bot trigger, manual action,
 broker timezone, profitability, ownership, a tradeable edge, or safe live

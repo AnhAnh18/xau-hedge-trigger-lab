@@ -9,6 +9,7 @@ from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
+import re
 from typing import Iterable, Sequence
 
 import pandas as pd
@@ -17,6 +18,7 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "docs" / "retro_bot" / "RETRO-BOT-001-config.json"
 LOCKED_CONFIG_SHA256 = "b420d9d014c2cac67461eda9603a200b2a48d0ad1fa0299baaf1c8cdeded5c52"
+TICK_ALIAS_RANGE_RE = re.compile(r"XAUUSD_ticks_(\d{4}-\d{2}-\d{2})_to_(\d{4}-\d{2}-\d{2})\.csv$")
 
 
 class RetroBotInputError(ValueError):
@@ -293,6 +295,76 @@ def first_valid_tick(
     chunksize: int = 250_000,
 ) -> TickLookup:
     """Return the earliest valid tick timestamp in a half-open UTC window."""
+    return first_valid_ticks(paths, [start_utc], end_utc_exclusive, chunksize=chunksize)[ClockScenario._utc(start_utc)]
+
+
+def _path_overlaps_utc_window(path: Path, start_utc: pd.Timestamp, end_utc: pd.Timestamp) -> bool:
+    """Skip irrelevant weekly exports from their generated, non-private alias."""
+    match = TICK_ALIAS_RANGE_RE.fullmatch(path.name)
+    if match is None:
+        return True
+    source_start = pd.Timestamp(match.group(1), tz="UTC")
+    source_end = pd.Timestamp(match.group(2), tz="UTC")
+    return source_start < end_utc and start_utc < source_end
+
+
+def first_valid_ticks(
+    paths: Iterable[Path],
+    start_times_utc: Iterable[pd.Timestamp],
+    end_utc_exclusive: pd.Timestamp,
+    *,
+    chunksize: int = 250_000,
+) -> dict[pd.Timestamp, TickLookup]:
+    """Stream each source once and find one first valid tick for each target."""
+    starts = tuple(sorted({ClockScenario._utc(value) for value in start_times_utc}))
+    end = ClockScenario._utc(end_utc_exclusive)
+    if not starts:
+        return {}
+    earliest: dict[pd.Timestamp, pd.Timestamp | None] = {start: None for start in starts}
+    valid_counts = {start: 0 for start in starts}
+    active_starts = tuple(start for start in starts if start < end)
+    if active_starts:
+        earliest_start = active_starts[0]
+        for path in paths:
+            if not _path_overlaps_utc_window(path, earliest_start, end):
+                continue
+            for chunk in pd.read_csv(path, usecols=["time_utc", "bid", "ask"], chunksize=chunksize):
+                timestamps = pd.to_datetime(chunk["time_utc"], utc=True, errors="coerce")
+                bid = pd.to_numeric(chunk["bid"], errors="coerce")
+                ask = pd.to_numeric(chunk["ask"], errors="coerce")
+                valid = timestamps.notna() & bid.notna() & ask.notna()
+                valid &= (bid > 0) & (ask > 0) & (ask >= bid)
+                valid &= (timestamps >= earliest_start) & (timestamps < end)
+                if not bool(valid.any()):
+                    continue
+                valid_timestamps = timestamps[valid]
+                for start in active_starts:
+                    candidates = valid_timestamps[valid_timestamps >= start]
+                    if candidates.empty:
+                        continue
+                    valid_counts[start] += int(len(candidates))
+                    candidate = candidates.min()
+                    if earliest[start] is None or candidate < earliest[start]:
+                        earliest[start] = candidate
+    results: dict[pd.Timestamp, TickLookup] = {}
+    for start in starts:
+        if start >= end:
+            results[start] = TickLookup("right_censored_delay_not_reached", None, 0)
+        elif earliest[start] is None:
+            results[start] = TickLookup("right_censored_no_valid_tick", None, valid_counts[start])
+        else:
+            results[start] = TickLookup("emitted", earliest[start], valid_counts[start])
+    return results
+
+
+def _legacy_first_valid_tick(
+    paths: Iterable[Path],
+    start_utc: pd.Timestamp,
+    end_utc_exclusive: pd.Timestamp,
+    *,
+    chunksize: int = 250_000,
+) -> TickLookup:
+    """Compatibility implementation retained for an auditable one-target path."""
     start = ClockScenario._utc(start_utc)
     end = ClockScenario._utc(end_utc_exclusive)
     if start >= end:
@@ -439,52 +511,63 @@ def replay_rehedge_policy(
     tick_paths: Iterable[Path],
 ) -> ReplayOutcome:
     """Replay one fixed-delay policy without allowing an action after re-hedge."""
+    return replay_rehedge_policies(interval, (policy,), clock, config, tick_paths)[0]
+
+
+def replay_rehedge_policies(
+    interval: EligibleInterval,
+    policies: Sequence[Policy],
+    clock: ClockScenario,
+    config: RetroBotConfig,
+    tick_paths: Iterable[Path],
+) -> tuple[ReplayOutcome, ...]:
+    """Replay all registered policies for one interval with one tick pass."""
     locked_config = load_config()
     registered_policies = {item.id: item for item in locked_config.policies}
     registered_clocks = {item.id: item for item in locked_config.clocks}
-    if config.config_sha256 != LOCKED_CONFIG_SHA256 or policy.id not in registered_policies or policy != registered_policies[policy.id]:
-        raise RetroBotInputError("replay policy is not one of the locked RETRO-BOT policies")
+    for policy in policies:
+        if config.config_sha256 != LOCKED_CONFIG_SHA256 or policy.id not in registered_policies or policy != registered_policies[policy.id]:
+            raise RetroBotInputError("replay policy is not one of the locked RETRO-BOT policies")
     if clock.id not in registered_clocks or clock != registered_clocks[clock.id]:
         raise RetroBotInputError("replay clock is not one of the locked RETRO-BOT scenarios")
-    target_server = interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds)
-    base = {
-        "report_alias": interval.report_alias,
-        "interval_id": interval.interval_id,
-        "policy_id": policy.id,
-        "clock_id": clock.id,
-    }
-    if target_server >= interval.observed_rehedge_time_server:
-        return ReplayOutcome(**base, status="right_censored_delay_not_reached", action_side=None, lead_seconds=None, valid_tick_count=0)
-    mappings = [
-        clock.map_server_to_utc(interval.unlock_time_server),
-        clock.map_server_to_utc(target_server),
-        clock.map_server_to_utc(interval.observed_rehedge_time_server),
-    ]
-    if any(mapping.status != "unique" for mapping in mappings):
-        return ReplayOutcome(**base, status="excluded_clock_unresolved", action_side=None, lead_seconds=None, valid_tick_count=0)
-    target_utc = mappings[1].timestamp_utc
-    rehedge_utc = mappings[2].timestamp_utc
-    if target_utc is None or rehedge_utc is None or target_utc >= rehedge_utc:
-        return ReplayOutcome(**base, status="right_censored_delay_not_reached", action_side=None, lead_seconds=None, valid_tick_count=0)
-    lookup = first_valid_tick(tick_paths, target_utc, rehedge_utc)
-    if lookup.status != "emitted" or lookup.timestamp_utc is None:
-        return ReplayOutcome(
-            **base,
-            status=lookup.status,
-            action_side=None,
-            lead_seconds=None,
-            valid_tick_count=lookup.valid_tick_count,
+    end_mapping = clock.map_server_to_utc(interval.observed_rehedge_time_server)
+    unlock_mapping = clock.map_server_to_utc(interval.unlock_time_server)
+    base = {"report_alias": interval.report_alias, "interval_id": interval.interval_id, "clock_id": clock.id}
+    if end_mapping.status != "unique" or unlock_mapping.status != "unique":
+        return tuple(
+            ReplayOutcome(**base, policy_id=policy.id, status="excluded_clock_unresolved", action_side=None, lead_seconds=None, valid_tick_count=0)
+            for policy in policies
         )
-    lead_seconds = float((rehedge_utc - lookup.timestamp_utc).total_seconds())
-    if lead_seconds <= 0:
-        raise RetroBotInputError("half-open tick accessor emitted an action at or after re-hedge")
-    return ReplayOutcome(
-        **base,
-        status="emitted",
-        action_side=interval.action_side,
-        lead_seconds=lead_seconds,
-        valid_tick_count=lookup.valid_tick_count,
-    )
+    rehedge_utc = end_mapping.timestamp_utc
+    outcomes: list[ReplayOutcome | None] = []
+    pending: list[tuple[Policy, pd.Timestamp]] = []
+    for policy in policies:
+        target_server = interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds)
+        if target_server >= interval.observed_rehedge_time_server:
+            outcomes.append(ReplayOutcome(**base, policy_id=policy.id, status="right_censored_delay_not_reached", action_side=None, lead_seconds=None, valid_tick_count=0))
+            continue
+        target_mapping = clock.map_server_to_utc(target_server)
+        if target_mapping.status != "unique" or target_mapping.timestamp_utc is None or rehedge_utc is None or target_mapping.timestamp_utc >= rehedge_utc:
+            outcomes.append(ReplayOutcome(**base, policy_id=policy.id, status="excluded_clock_unresolved", action_side=None, lead_seconds=None, valid_tick_count=0))
+            continue
+        outcomes.append(None)
+        pending.append((policy, target_mapping.timestamp_utc))
+    lookups = first_valid_ticks(tick_paths, [target for _, target in pending], rehedge_utc) if pending and rehedge_utc is not None else {}
+    pending_index = 0
+    for index, outcome in enumerate(outcomes):
+        if outcome is not None:
+            continue
+        policy, target_utc = pending[pending_index]
+        pending_index += 1
+        lookup = lookups[target_utc]
+        if lookup.status != "emitted" or lookup.timestamp_utc is None:
+            outcomes[index] = ReplayOutcome(**base, policy_id=policy.id, status=lookup.status, action_side=None, lead_seconds=None, valid_tick_count=lookup.valid_tick_count)
+            continue
+        lead_seconds = float((rehedge_utc - lookup.timestamp_utc).total_seconds())
+        if lead_seconds <= 0:
+            raise RetroBotInputError("half-open tick accessor emitted an action at or after re-hedge")
+        outcomes[index] = ReplayOutcome(**base, policy_id=policy.id, status="emitted", action_side=interval.action_side, lead_seconds=lead_seconds, valid_tick_count=lookup.valid_tick_count)
+    return tuple(outcome for outcome in outcomes if outcome is not None)
 
 
 def lead_time_band(lead_seconds: float, config: RetroBotConfig) -> str:
@@ -495,3 +578,206 @@ def lead_time_band(lead_seconds: float, config: RetroBotConfig) -> str:
         if lead_seconds >= float(band["minimum_inclusive"]) and (maximum is None or lead_seconds < float(maximum)):
             return str(band["id"])
     raise RetroBotInputError("lead time does not fit the registered bands")
+
+
+AGGREGATE_SCHEMA_VERSION = 1
+_FORBIDDEN_AGGREGATE_KEY_PARTS = ("price", "ticket", "account", "comment", "path", "timestamp", "interval_id", "report_alias")
+
+
+def _assert_aggregate_keys(value: object) -> None:
+    if isinstance(value, dict):
+        for key, nested in value.items():
+            lowered = str(key).casefold()
+            if any(part in lowered for part in _FORBIDDEN_AGGREGATE_KEY_PARTS):
+                raise RetroBotInputError(f"aggregate contains a prohibited key: {key}")
+            _assert_aggregate_keys(nested)
+    elif isinstance(value, list):
+        for nested in value:
+            _assert_aggregate_keys(nested)
+
+
+def aggregate_outcomes(
+    outcomes: Iterable[ReplayOutcome],
+    config: RetroBotConfig,
+    *,
+    report_manifest_sha256: str,
+    tick_manifest_sha256: str,
+) -> dict:
+    """Reduce interval-level replay outcomes to a redacted canonical payload."""
+    if config.config_sha256 != LOCKED_CONFIG_SHA256:
+        raise RetroBotInputError("aggregate config is not locked")
+    config = load_config()
+    rows = []
+    materialized = tuple(outcomes)
+    expected_statuses = {
+        "emitted",
+        "right_censored_delay_not_reached",
+        "right_censored_no_valid_tick",
+        "excluded_clock_unresolved",
+    }
+    policy_order = {policy.id: index for index, policy in enumerate(config.policies)}
+    clock_order = {clock.id: index for index, clock in enumerate(config.clocks)}
+    expected_pairs = {(clock.id, policy.id) for clock in config.clocks for policy in config.policies}
+    pair_keys: dict[tuple[str, str], set[tuple[str, int]]] = {pair: set() for pair in expected_pairs}
+    for item in materialized:
+        pair = (item.clock_id, item.policy_id)
+        if pair not in expected_pairs:
+            raise RetroBotInputError("aggregate contains an unregistered policy/clock pair")
+        key = (item.report_alias, item.interval_id)
+        if key in pair_keys[pair]:
+            raise RetroBotInputError("aggregate contains a duplicate interval outcome")
+        pair_keys[pair].add(key)
+    if materialized:
+        if any(not pair_keys[pair] for pair in expected_pairs):
+            raise RetroBotInputError("aggregate is missing a policy/clock coverage set")
+        coverage_sets = {frozenset(keys) for keys in pair_keys.values()}
+        if len(coverage_sets) != 1:
+            raise RetroBotInputError("aggregate policy/clock coverage sets do not match")
+    for clock in config.clocks:
+        for policy in config.policies:
+            selected = tuple(item for item in materialized if item.clock_id == clock.id and item.policy_id == policy.id)
+            if any(item.status not in expected_statuses for item in selected):
+                raise RetroBotInputError("aggregate contains an unknown replay status")
+            counts = {status: sum(item.status == status for item in selected) for status in expected_statuses}
+            bands = {band["id"]: 0 for band in config.lead_time_bands}
+            for item in selected:
+                if item.status == "emitted":
+                    if item.lead_seconds is None or item.action_side not in {"buy", "sell"}:
+                        raise RetroBotInputError("emitted aggregate row is incomplete")
+                    bands[lead_time_band(item.lead_seconds, config)] += 1
+            rows.append(
+                {
+                    "clock_id": clock.id,
+                    "policy_id": policy.id,
+                    "eligible_interval_count": len(selected),
+                    "emitted_count": counts["emitted"],
+                    "right_censored_delay_not_reached_count": counts["right_censored_delay_not_reached"],
+                    "right_censored_no_valid_tick_count": counts["right_censored_no_valid_tick"],
+                    "excluded_clock_unresolved_count": counts["excluded_clock_unresolved"],
+                    "direction_match_count": counts["emitted"],
+                    "lead_time_bands": bands,
+                }
+            )
+    rows.sort(key=lambda row: (clock_order[row["clock_id"]], policy_order[row["policy_id"]]))
+    payload = {
+        "schema_version": AGGREGATE_SCHEMA_VERSION,
+        "case_id": config.case_id,
+        "config_sha256": config.config_sha256,
+        "source_manifest_digests": {
+            "report_manifest_sha256": report_manifest_sha256,
+            "tick_manifest_sha256": tick_manifest_sha256,
+        },
+        "policy_clock_rows": rows,
+        "aggregate_sha256": "TO_BE_FILLED",
+    }
+    payload["aggregate_sha256"] = _canonical_digest(payload, "aggregate_sha256")
+    validate_aggregate_payload(payload, config)
+    return payload
+
+
+def validate_aggregate_payload(payload: dict, config: RetroBotConfig) -> None:
+    """Fail closed if an aggregate is tampered with or contains raw-like fields."""
+    if not isinstance(payload, dict):
+        raise RetroBotInputError("aggregate payload is not an object")
+    if config.config_sha256 != LOCKED_CONFIG_SHA256:
+        raise RetroBotInputError("aggregate config object is not locked")
+    config = load_config()
+    expected_digest = payload.get("aggregate_sha256")
+    if not isinstance(expected_digest, str) or _canonical_digest(payload, "aggregate_sha256") != expected_digest:
+        raise RetroBotInputError("aggregate self-digest mismatch")
+    if type(payload.get("schema_version")) is not int or payload.get("schema_version") != AGGREGATE_SCHEMA_VERSION or payload.get("case_id") != config.case_id:
+        raise RetroBotInputError("aggregate schema/case is not pinned")
+    root_keys = {
+        "schema_version",
+        "case_id",
+        "config_sha256",
+        "source_manifest_digests",
+        "policy_clock_rows",
+        "aggregate_sha256",
+    }
+    if set(payload) != root_keys:
+        raise RetroBotInputError("aggregate root schema contains unknown fields")
+    if payload.get("config_sha256") != LOCKED_CONFIG_SHA256:
+        raise RetroBotInputError("aggregate config digest is not locked")
+    digests = payload.get("source_manifest_digests")
+    receipt = config.source_receipt
+    if not isinstance(digests, dict) or set(digests) != {"report_manifest_sha256", "tick_manifest_sha256"} or digests != {
+        "report_manifest_sha256": receipt["report_manifest_sha256"],
+        "tick_manifest_sha256": receipt["tick_manifest_sha256"],
+    }:
+        raise RetroBotInputError("aggregate source digests are not registered")
+    rows = payload.get("policy_clock_rows")
+    if not isinstance(rows, list):
+        raise RetroBotInputError("aggregate policy/clock rows are not a list")
+    expected_pairs = {(clock.id, policy.id) for clock in config.clocks for policy in config.policies}
+    if any(not isinstance(row, dict) for row in rows):
+        raise RetroBotInputError("aggregate policy/clock row is not an object")
+    actual_pairs = {(row.get("clock_id"), row.get("policy_id")) for row in rows}
+    if actual_pairs != expected_pairs or len(rows or []) != len(expected_pairs):
+        raise RetroBotInputError("aggregate policy/clock row set is not pinned")
+    band_ids = {band["id"] for band in config.lead_time_bands}
+    for row in rows:
+        row_keys = {
+            "clock_id",
+            "policy_id",
+            "eligible_interval_count",
+            "emitted_count",
+            "right_censored_delay_not_reached_count",
+            "right_censored_no_valid_tick_count",
+            "excluded_clock_unresolved_count",
+            "direction_match_count",
+            "lead_time_bands",
+        }
+        if set(row) != row_keys or not isinstance(row["clock_id"], str) or not isinstance(row["policy_id"], str):
+            raise RetroBotInputError("aggregate row schema contains unknown or invalid fields")
+        count_fields = (
+            "eligible_interval_count",
+            "emitted_count",
+            "right_censored_delay_not_reached_count",
+            "right_censored_no_valid_tick_count",
+            "excluded_clock_unresolved_count",
+            "direction_match_count",
+        )
+        if any(type(row.get(field)) is not int or row[field] < 0 for field in count_fields):
+            raise RetroBotInputError("aggregate count is invalid")
+        if sum(row[field] for field in count_fields[1:5]) != row["eligible_interval_count"]:
+            raise RetroBotInputError("aggregate status counts do not reconcile")
+        if row["direction_match_count"] != row["emitted_count"]:
+            raise RetroBotInputError("aggregate direction invariant failed")
+        bands = row.get("lead_time_bands")
+        if not isinstance(bands, dict) or set(bands) != band_ids or any(type(value) is not int or value < 0 for value in bands.values()) or sum(bands.values()) != row["emitted_count"]:
+            raise RetroBotInputError("aggregate lead-time bands do not reconcile")
+    _assert_aggregate_keys(payload)
+
+
+def render_aggregate_markdown(payload: dict, config: RetroBotConfig) -> str:
+    """Render only redacted aggregate facts; never include interval details."""
+    validate_aggregate_payload(payload, config)
+    lines = [
+        "# RETRO-BOT-001 Aggregate Replay Result",
+        "",
+        "Status: descriptive RETRO evidence; no M5 input or verdict.",
+        "",
+        f"Aggregate digest: `{payload['aggregate_sha256']}`.",
+        "",
+        "All registered policies and clock scenarios are reported side by side; "
+        "no policy or clock is selected as a winner.",
+        "",
+        "| Clock | Policy | Eligible | Emitted | Delay-censored | No-tick-censored | Clock-unresolved |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for row in payload["policy_clock_rows"]:
+        lines.append(
+            f"| `{row['clock_id']}` | `{row['policy_id']}` | {row['eligible_interval_count']} | "
+            f"{row['emitted_count']} | {row['right_censored_delay_not_reached_count']} | "
+            f"{row['right_censored_no_valid_tick_count']} | {row['excluded_clock_unresolved_count']} |"
+        )
+    lines.extend(
+        [
+            "",
+            "Observed outputs are compatible with the registered surrogate policies only; "
+            "they do not identify the original trigger, manual intervention, profitability, "
+            "broker ownership, or a tradeable edge.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
