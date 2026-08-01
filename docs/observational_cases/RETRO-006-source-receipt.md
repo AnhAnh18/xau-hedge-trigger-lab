@@ -1,0 +1,17 @@
+# RETRO-006 Source Receipt
+
+Status: accepted; source objects remain quarantine-only.
+
+Authorization: owner full-RETRO request in the current task, 2026-08-01.
+Retention: until project close or earlier owner revocation.
+
+| Role | Generated alias | SHA-256 | Bytes | Status |
+| --- | --- | --- | ---: | --- |
+| Report | `report-009.html` | `0640f4b54a9fe7d40a03ae467eff600a2c675bfbb427fc4fe64373cb51f912f9` | 36,487,236 | accepted |
+| UTC tick archive | `XAUUSD_ticks_2026-06-27_to_2026-07-04.csv` | `383800055701a106ec759c834238955805e93fac229f7e3fa9b6b9ca96def346` | 86,879,339 | accepted |
+
+Report manifest digest: `88a5c98f919dad69da3eb97fba8bc2c8fd878fc2b3ce8d02011ea268d9642f30`.
+Tick manifest digest: `a9350b541ba0138b6d86b5ce013ad9e7ddb83cde9d7742e2d3d7deb2c38a1f0c`.
+
+No credentials, journal, private paths, raw rows, or detailed timeline are
+accepted. This source pair is outside every M5 input manifest.
