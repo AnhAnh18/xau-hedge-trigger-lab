@@ -10,7 +10,7 @@ CONTRACT = ROOT / "docs" / "retro_bot" / "RETRO-BOT-001-contract.md"
 INVENTORY = ROOT / "docs" / "retro_bot" / "RETRO-BOT-001-firewall-inventory.json"
 CONFIG = ROOT / "docs" / "retro_bot" / "RETRO-BOT-001-config.json"
 EXPECTED_INVENTORY_SHA256 = "34628d77374130ab8aa47aa00d5c1b4dfda8aac53bd9bb19e3b98ad5c9a4ec03"
-EXPECTED_CONFIG_SHA256 = "32c65422bb774e0a9096884097dbd866a48d36be7d2bff346bd21ff98da8ca86"
+EXPECTED_CONFIG_SHA256 = "a1fcf30d7d1a8a57ad96bad2b69d92d157c683a179da70bcebb438deb4770c0c"
 
 
 def _inventory_digest(payload: dict) -> str:

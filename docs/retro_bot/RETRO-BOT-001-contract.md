@@ -28,7 +28,7 @@ The only raw inputs are the exact generated aliases accepted by
 
 `RETRO-BOT-001-config.json` is the machine-readable lock for this contract.
 Its canonical payload digest is
-`32c65422bb774e0a9096884097dbd866a48d36be7d2bff346bd21ff98da8ca86`.
+`a1fcf30d7d1a8a57ad96bad2b69d92d157c683a179da70bcebb438deb4770c0c`.
 The implementation must verify that self-digest before accepting a run.
 
 The fixed population is server time in the half-open interval

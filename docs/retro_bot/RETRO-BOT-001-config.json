@@ -25,6 +25,7 @@
       "report-009.html"
     ],
     "tick_manifest_sha256": "a9350b541ba0138b6d86b5ce013ad9e7ddb83cde9d7742e2d3d7deb2c38a1f0c",
+    "manifest_canonical_sort_keys": {"reports": true, "ticks": false},
     "tick_alias_count": 39,
     "tick_alias_pattern": "XAUUSD_ticks_<start>_to_<end>.csv",
     "tick_aliases": [
@@ -116,5 +117,5 @@
     {"id": "900_to_under_3600_seconds", "minimum_inclusive": 900, "maximum_exclusive": 3600},
     {"id": "at_least_3600_seconds", "minimum_inclusive": 3600, "maximum_exclusive": null}
   ],
-  "config_sha256": "32c65422bb774e0a9096884097dbd866a48d36be7d2bff346bd21ff98da8ca86"
+  "config_sha256": "a1fcf30d7d1a8a57ad96bad2b69d92d157c683a179da70bcebb438deb4770c0c"
 }
