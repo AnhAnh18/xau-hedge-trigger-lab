@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "case_id": "RETRO-BOT-001",
+  "population": {
+    "start_server": "2025-11-01 00:00:00",
+    "end_server_exclusive": "2026-07-31 00:00:00",
+    "excluded_server_windows": [
+      "2026-07-31..2026-08-01",
+      "2026-08-03..2026-08-07",
+      "2026-08-10..2026-08-14"
+    ]
+  },
+  "source_receipt": {
+    "path": "docs/observational_cases/RETRO-003-2025-11_to_2026-07-history-screening-receipt.md",
+    "report_manifest_sha256": "88a5c98f919dad69da3eb97fba8bc2c8fd878fc2b3ce8d02011ea268d9642f30",
+    "report_aliases": [
+      "report-001.html",
+      "report-002.html",
+      "report-003.html",
+      "report-004.html",
+      "report-005.html",
+      "report-006.html",
+      "report-007.html",
+      "report-008.html",
+      "report-009.html"
+    ],
+    "tick_manifest_sha256": "a9350b541ba0138b6d86b5ce013ad9e7ddb83cde9d7742e2d3d7deb2c38a1f0c",
+    "tick_alias_count": 39,
+    "tick_alias_pattern": "XAUUSD_ticks_<start>_to_<end>.csv",
+    "tick_aliases": [
+      "XAUUSD_ticks_2025-11-01_to_2025-11-08.csv",
+      "XAUUSD_ticks_2025-11-08_to_2025-11-15.csv",
+      "XAUUSD_ticks_2025-11-15_to_2025-11-22.csv",
+      "XAUUSD_ticks_2025-11-22_to_2025-11-29.csv",
+      "XAUUSD_ticks_2025-11-29_to_2025-12-06.csv",
+      "XAUUSD_ticks_2025-12-06_to_2025-12-13.csv",
+      "XAUUSD_ticks_2025-12-13_to_2025-12-20.csv",
+      "XAUUSD_ticks_2025-12-20_to_2025-12-27.csv",
+      "XAUUSD_ticks_2025-12-27_to_2026-01-03.csv",
+      "XAUUSD_ticks_2026-01-03_to_2026-01-10.csv",
+      "XAUUSD_ticks_2026-01-10_to_2026-01-17.csv",
+      "XAUUSD_ticks_2026-01-17_to_2026-01-24.csv",
+      "XAUUSD_ticks_2026-01-24_to_2026-01-31.csv",
+      "XAUUSD_ticks_2026-01-31_to_2026-02-07.csv",
+      "XAUUSD_ticks_2026-02-07_to_2026-02-14.csv",
+      "XAUUSD_ticks_2026-02-14_to_2026-02-21.csv",
+      "XAUUSD_ticks_2026-02-21_to_2026-02-28.csv",
+      "XAUUSD_ticks_2026-02-28_to_2026-03-07.csv",
+      "XAUUSD_ticks_2026-03-07_to_2026-03-14.csv",
+      "XAUUSD_ticks_2026-03-14_to_2026-03-21.csv",
+      "XAUUSD_ticks_2026-03-21_to_2026-03-28.csv",
+      "XAUUSD_ticks_2026-03-28_to_2026-04-04.csv",
+      "XAUUSD_ticks_2026-04-04_to_2026-04-11.csv",
+      "XAUUSD_ticks_2026-04-11_to_2026-04-18.csv",
+      "XAUUSD_ticks_2026-04-18_to_2026-04-25.csv",
+      "XAUUSD_ticks_2026-04-25_to_2026-05-02.csv",
+      "XAUUSD_ticks_2026-05-02_to_2026-05-09.csv",
+      "XAUUSD_ticks_2026-05-09_to_2026-05-16.csv",
+      "XAUUSD_ticks_2026-05-16_to_2026-05-23.csv",
+      "XAUUSD_ticks_2026-05-23_to_2026-05-30.csv",
+      "XAUUSD_ticks_2026-05-30_to_2026-06-06.csv",
+      "XAUUSD_ticks_2026-06-06_to_2026-06-13.csv",
+      "XAUUSD_ticks_2026-06-13_to_2026-06-20.csv",
+      "XAUUSD_ticks_2026-06-20_to_2026-06-27.csv",
+      "XAUUSD_ticks_2026-06-27_to_2026-07-04.csv",
+      "XAUUSD_ticks_2026-07-04_to_2026-07-11.csv",
+      "XAUUSD_ticks_2026-07-11_to_2026-07-18.csv",
+      "XAUUSD_ticks_2026-07-18_to_2026-07-25.csv",
+      "XAUUSD_ticks_2026-07-25_to_2026-08-01.csv"
+    ]
+  },
+  "policies": [
+    {"id": "first_available_tick", "delay_seconds": 0},
+    {"id": "wait_300_seconds", "delay_seconds": 300},
+    {"id": "wait_900_seconds", "delay_seconds": 900},
+    {"id": "wait_3600_seconds", "delay_seconds": 3600}
+  ],
+  "clock_scenarios": [
+    {"id": "utc_plus_2", "kind": "fixed", "offset_hours": 2},
+    {"id": "utc_plus_3", "kind": "fixed", "offset_hours": 3},
+    {
+      "id": "eu_dst_2025_2026",
+      "kind": "piecewise_utc_to_server",
+      "segments": [
+        {"utc_start_inclusive": null, "utc_end_exclusive": "2025-03-30T01:00:00Z", "offset_hours": 2},
+        {"utc_start_inclusive": "2025-03-30T01:00:00Z", "utc_end_exclusive": "2025-10-26T01:00:00Z", "offset_hours": 3},
+        {"utc_start_inclusive": "2025-10-26T01:00:00Z", "utc_end_exclusive": "2026-03-29T01:00:00Z", "offset_hours": 2},
+        {"utc_start_inclusive": "2026-03-29T01:00:00Z", "utc_end_exclusive": "2026-10-25T01:00:00Z", "offset_hours": 3},
+        {"utc_start_inclusive": "2026-10-25T01:00:00Z", "utc_end_exclusive": null, "offset_hours": 2}
+      ],
+      "inverse_report_time_policy": "exclude_interval_clock_unresolved_when_zero_or_multiple_utc_candidates"
+    }
+  ],
+  "eligibility": {
+    "symbol": "XAUUSD",
+    "states": ["ONE_BUY", "ONE_SELL"],
+    "minimum_duration_seconds": 300,
+    "cross_midnight": "allowed_when_entire_interval_is_inside_population",
+    "require_deterministic_boundary_ordering": true,
+    "reject_report_with_any_lifecycle_exception": true,
+    "reject_interval_with_inclusive_state_exception": true,
+    "preceding_event_by_state": {"ONE_BUY": "UNLOCK_TO_BUY", "ONE_SELL": "UNLOCK_TO_SELL"},
+    "following_event_by_state": {"ONE_BUY": "REHEDGE_SELL", "ONE_SELL": "REHEDGE_BUY"}
+  },
+  "censoring": {
+    "valid_tick": "parseable_utc_timestamp_positive_bid_ask_and_ask_not_below_bid",
+    "search_interval": "[unlock_time_plus_delay, observed_rehedge_time)",
+    "target_at_or_after_observed_rehedge": "right_censored_delay_not_reached",
+    "no_valid_tick_before_observed_rehedge": "right_censored_no_valid_tick",
+    "clock_inverse_unresolved": "excluded_clock_unresolved"
+  },
+  "lead_time_bands_seconds": [
+    {"id": "0_to_under_60_seconds", "minimum_inclusive": 0, "maximum_exclusive": 60},
+    {"id": "60_to_under_300_seconds", "minimum_inclusive": 60, "maximum_exclusive": 300},
+    {"id": "300_to_under_900_seconds", "minimum_inclusive": 300, "maximum_exclusive": 900},
+    {"id": "900_to_under_3600_seconds", "minimum_inclusive": 900, "maximum_exclusive": 3600},
+    {"id": "at_least_3600_seconds", "minimum_inclusive": 3600, "maximum_exclusive": null}
+  ],
+  "config_sha256": "32c65422bb774e0a9096884097dbd866a48d36be7d2bff346bd21ff98da8ca86"
+}
