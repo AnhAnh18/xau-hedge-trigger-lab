@@ -63,3 +63,9 @@ Commit: `retro-bot: publish historical replay aggregate`.
 Price-sensitive trigger candidates, execution accounting, shadow observation,
 and a demo/paper EA are separate follow-on contracts. They cannot be inferred
 from a v1 fixed-delay replay and must not be silently added to this roadmap.
+
+## RB-006 -- Bounded Paper Accounting
+
+Deliverable: locked RETRO-BOT-002 contract, stream-only synthetic paper accounting harness, CLI, redacted result writer, and ignored paper-run root.
+
+Gate: fixed quantity-1.0 opposite-side actions use bid/ask semantics and mark only at the observed re-hedge anchor; outputs are privacy-safe, reproducible, and never used for fitting, selection, M5 evaluation, or live orders.
