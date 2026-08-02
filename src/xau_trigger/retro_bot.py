@@ -573,6 +573,22 @@ def replay_rehedge_policy(
     return replay_rehedge_policies(interval, (policy,), clock, config, tick_paths)[0]
 
 
+def _policy_target_mappings(
+    interval: EligibleInterval,
+    policies: Sequence[Policy],
+    clock: ClockScenario,
+) -> dict[str, tuple[pd.Timestamp, ClockMapping]]:
+    return {
+        policy.id: (
+            interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds),
+            clock.map_server_to_utc(
+                interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds)
+            ),
+        )
+        for policy in policies
+    }
+
+
 def replay_rehedge_policies(
     interval: EligibleInterval,
     policies: Sequence[Policy],
@@ -592,7 +608,12 @@ def replay_rehedge_policies(
     end_mapping = clock.map_server_to_utc(interval.observed_rehedge_time_server)
     unlock_mapping = clock.map_server_to_utc(interval.unlock_time_server)
     base = {"report_alias": interval.report_alias, "interval_id": interval.interval_id, "clock_id": clock.id}
-    if end_mapping.status != "unique" or unlock_mapping.status != "unique":
+    all_target_mappings = _policy_target_mappings(interval, locked_config.policies, clock)
+    if (
+        end_mapping.status != "unique"
+        or unlock_mapping.status != "unique"
+        or any(mapping.status != "unique" or mapping.timestamp_utc is None for _, mapping in all_target_mappings.values())
+    ):
         return tuple(
             ReplayOutcome(**base, policy_id=policy.id, status="excluded_clock_unresolved", action_side=None, lead_seconds=None, valid_tick_count=0)
             for policy in policies
@@ -601,13 +622,12 @@ def replay_rehedge_policies(
     outcomes: list[ReplayOutcome | None] = []
     pending: list[tuple[Policy, pd.Timestamp]] = []
     for policy in policies:
-        target_server = interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds)
+        target_server, target_mapping = all_target_mappings[policy.id]
         if target_server >= interval.observed_rehedge_time_server:
             outcomes.append(ReplayOutcome(**base, policy_id=policy.id, status="right_censored_delay_not_reached", action_side=None, lead_seconds=None, valid_tick_count=0))
             continue
-        target_mapping = clock.map_server_to_utc(target_server)
-        if target_mapping.status != "unique" or target_mapping.timestamp_utc is None or rehedge_utc is None or target_mapping.timestamp_utc >= rehedge_utc:
-            outcomes.append(ReplayOutcome(**base, policy_id=policy.id, status="excluded_clock_unresolved", action_side=None, lead_seconds=None, valid_tick_count=0))
+        if target_mapping.timestamp_utc is None or rehedge_utc is None or target_mapping.timestamp_utc >= rehedge_utc:
+            outcomes.append(ReplayOutcome(**base, policy_id=policy.id, status="right_censored_delay_not_reached", action_side=None, lead_seconds=None, valid_tick_count=0))
             continue
         outcomes.append(None)
         pending.append((policy, target_mapping.timestamp_utc))
@@ -642,7 +662,7 @@ def replay_rehedge_intervals(
     clocks = locked_config.clocks
     ordered_keys: list[tuple[int, str, str]] = []
     resolved: dict[tuple[int, str, str], ReplayOutcome] = {}
-    pending: dict[tuple[int, str, str], tuple[EligibleInterval, Policy, pd.Timestamp]] = {}
+    pending: dict[tuple[int, str, str], tuple[EligibleInterval, Policy, pd.Timestamp, pd.Timestamp]] = {}
     for interval_index, interval in enumerate(intervals):
         for clock in clocks:
             base = {
@@ -652,10 +672,16 @@ def replay_rehedge_intervals(
             }
             unlock_mapping = clock.map_server_to_utc(interval.unlock_time_server)
             end_mapping = clock.map_server_to_utc(interval.observed_rehedge_time_server)
+            all_target_mappings = _policy_target_mappings(interval, policies, clock)
+            clock_unresolved = (
+                unlock_mapping.status != "unique"
+                or end_mapping.status != "unique"
+                or any(mapping.status != "unique" or mapping.timestamp_utc is None for _, mapping in all_target_mappings.values())
+            )
             for policy in policies:
                 key = (interval_index, clock.id, policy.id)
                 ordered_keys.append(key)
-                if unlock_mapping.status != "unique" or end_mapping.status != "unique":
+                if clock_unresolved:
                     resolved[key] = ReplayOutcome(
                         **base,
                         policy_id=policy.id,
@@ -665,7 +691,7 @@ def replay_rehedge_intervals(
                         valid_tick_count=0,
                     )
                     continue
-                target_server = interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds)
+                target_server, target_mapping = all_target_mappings[policy.id]
                 if target_server >= interval.observed_rehedge_time_server:
                     resolved[key] = ReplayOutcome(
                         **base,
@@ -676,28 +702,24 @@ def replay_rehedge_intervals(
                         valid_tick_count=0,
                     )
                     continue
-                target_mapping = clock.map_server_to_utc(target_server)
                 rehedge_utc = end_mapping.timestamp_utc
                 target_utc = target_mapping.timestamp_utc
-                if target_mapping.status != "unique" or target_utc is None or rehedge_utc is None or target_utc >= rehedge_utc:
+                if target_utc is None or rehedge_utc is None or target_utc >= rehedge_utc:
                     resolved[key] = ReplayOutcome(
                         **base,
                         policy_id=policy.id,
-                        status="excluded_clock_unresolved",
+                        status="right_censored_delay_not_reached",
                         action_side=None,
                         lead_seconds=None,
                         valid_tick_count=0,
                     )
                     continue
-                pending[key] = (interval, policy, rehedge_utc)
+                pending[key] = (interval, policy, target_utc, rehedge_utc)
     mapped_windows = []
-    for key, (interval, policy, end_utc) in pending.items():
-        clock_id = key[1]
-        clock = next(clock for clock in clocks if clock.id == clock_id)
-        target_mapping = clock.map_server_to_utc(interval.unlock_time_server + pd.Timedelta(seconds=policy.delay_seconds))
-        mapped_windows.append((key, target_mapping.timestamp_utc, end_utc))
+    for key, (_, _, target_utc, end_utc) in pending.items():
+        mapped_windows.append((key, target_utc, end_utc))
     lookups = first_valid_ticks_for_windows(tick_paths, mapped_windows) if mapped_windows else {}
-    for key, (interval, policy, rehedge_utc) in pending.items():
+    for key, (interval, policy, _, rehedge_utc) in pending.items():
         lookup = lookups[key]
         base = {
             "report_alias": interval.report_alias,

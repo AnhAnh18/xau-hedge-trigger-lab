@@ -125,6 +125,32 @@ def test_replay_rehedge_policy_excludes_dst_unresolved_interval(tmp_path: Path) 
     assert outcome.action_side is None
 
 
+def test_dst_target_unresolved_excludes_every_policy_for_the_interval(tmp_path: Path) -> None:
+    config = load_config()
+    clock = next(clock for clock in config.clocks if clock.id == "eu_dst_2025_2026")
+    interval = EligibleInterval(
+        report_alias="report-005.html",
+        interval_id=10,
+        state="ONE_BUY",
+        unlock_time_server=pd.Timestamp("2026-03-29 02:50:00"),
+        observed_rehedge_time_server=pd.Timestamp("2026-03-29 04:20:00"),
+        duration_seconds=5400,
+    )
+    ticks = tmp_path / "ticks.csv"
+    ticks.write_text(
+        "time_utc,bid,ask\n2026-03-29T00:00:00Z,1,2\n",
+        encoding="utf-8",
+    )
+
+    outcomes = replay_rehedge_policies(interval, config.policies, clock, config, [ticks])
+    assert len(outcomes) == len(config.policies)
+    assert {outcome.status for outcome in outcomes} == {"excluded_clock_unresolved"}
+
+    batched = replay_rehedge_intervals((interval,), config, [ticks])
+    dst_outcomes = [outcome for outcome in batched if outcome.clock_id == clock.id]
+    assert {outcome.status for outcome in dst_outcomes} == {"excluded_clock_unresolved"}
+
+
 def test_batched_replay_matches_single_interval_replay(tmp_path: Path) -> None:
     config = load_config()
     clock = next(clock for clock in config.clocks if clock.id == "utc_plus_2")
