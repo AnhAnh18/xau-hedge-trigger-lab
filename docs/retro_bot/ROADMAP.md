@@ -69,3 +69,15 @@ from a v1 fixed-delay replay and must not be silently added to this roadmap.
 Deliverable: locked RETRO-BOT-002 contract, stream-only synthetic paper accounting harness, CLI, redacted result writer, and ignored paper-run root.
 
 Gate: fixed quantity-1.0 opposite-side actions use bid/ask semantics and mark only at the observed re-hedge anchor; outputs are privacy-safe, reproducible, and never used for fitting, selection, M5 evaluation, or live orders.
+
+## RB-007 -- Sequential Multi-Cycle Wrapper
+
+Deliverable: locked RETRO-BOT-003 contract, chronological multi-cycle wrapper
+over RB-006 outcomes, fail-closed overlap/invalid-order accounting, CLI,
+redacted result writer, synthetic tests, and ignored multi-cycle run root.
+
+Gate: cycles remain in caller-provided chronological order; malformed or
+overlapping cycles cannot contribute actions, marks, or return bands; all
+registered clock/policy rows report aggregate counts side by side. No new
+source, `.ex5`, August/M5 data, live API, fitting, or policy selection is
+allowed, and historical raw replay requires a separate owner decision.
