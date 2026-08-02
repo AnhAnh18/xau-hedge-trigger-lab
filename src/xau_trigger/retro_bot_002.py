@@ -113,27 +113,31 @@ def paper_backtest_intervals(intervals: Iterable[EligibleInterval], config: Retr
             action_indexes = tick_times.searchsorted(action_starts, side="left")
             action_valid = action_indexes < len(valid_rows)
             action_valid &= tick_times.take(np.minimum(action_indexes, len(valid_rows) - 1)) < action_ends
-            action_valid &= np.fromiter((first_action[key] is None for key in window_keys), dtype=bool)
             for index in np.flatnonzero(action_valid):
                 row_index = int(action_indexes[index])
                 quote_row = valid_rows.iloc[row_index]
-                first_action[window_keys[index]] = (
+                quote = (
                     tick_times[row_index],
                     float(quote_row["bid"]),
                     float(quote_row["ask"]),
                 )
+                key = window_keys[index]
+                if first_action[key] is None or quote[0] < first_action[key][0]:
+                    first_action[key] = quote
             mark_indexes = tick_times.searchsorted(mark_starts, side="left")
             mark_valid = mark_indexes < len(valid_rows)
             mark_valid &= tick_times.take(np.minimum(mark_indexes, len(valid_rows) - 1)) < mark_ends
-            mark_valid &= np.fromiter((first_mark[key] is None for key in window_keys), dtype=bool)
             for index in np.flatnonzero(mark_valid):
                 row_index = int(mark_indexes[index])
                 quote_row = valid_rows.iloc[row_index]
-                first_mark[window_keys[index]] = (
+                quote = (
                     tick_times[row_index],
                     float(quote_row["bid"]),
                     float(quote_row["ask"]),
                 )
+                key = window_keys[index]
+                if first_mark[key] is None or quote[0] < first_mark[key][0]:
+                    first_mark[key] = quote
     for key in windows:
         _, clock_id, policy_id = key
         action = first_action[key]

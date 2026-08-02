@@ -17,8 +17,8 @@ Authorization: owner-authorized RETRO follow-on to RETRO-BOT-001, 2026-08-02.
 
 ## Run and reproducibility record
 
-- Two fresh paper aggregates were written as direct children of the ignored
-  RETRO-BOT-002 paper-run root.
+- After the cross-chunk/path ordering remediation, two fresh paper aggregates
+  were written as direct children of the ignored RETRO-BOT-002 paper-run root.
 - Both aggregates passed schema/digest validation, were byte-identical, and
   produced digest
   `4f40faae72bb4cd32df8ea5b24fcea9238912f77c3b0ca0bbd69deba088148f6`.
@@ -31,5 +31,6 @@ credentials, or source paths are retained in tracked artifacts. The result is
 descriptive synthetic accounting only and is not an M5 input, model,
 evaluation, threshold, gate, profitability claim, or live-execution bot.
 
-Validation: focused RETRO-BOT-002 tests passed 7; full suite passed 215; the
-privacy checker and independent RB-006 review passed with no P0-P3 findings.
+Validation: focused RETRO-BOT-002 tests passed 8; full suite passed 216; the
+privacy checker, py_compile, diff check, and independent post-remediation
+RB-006 review passed with no P0-P3 findings.

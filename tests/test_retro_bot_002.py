@@ -54,6 +54,25 @@ def test_single_interval_honors_requested_policy_and_clock(tmp_path: Path) -> No
     assert outcome.status == "right_censored_delay_not_reached"
 
 
+def test_stream_scan_keeps_earliest_quote_across_chunks(tmp_path: Path) -> None:
+    config = load_config()
+    clock = next(item for item in config.clocks if item.id == "utc_plus_2")
+    policy = next(item for item in config.policies if item.id == "wait_300_seconds")
+    rows = pd.DataFrame(
+        {
+            "time_utc": ["2026-01-01T00:06:00Z"] * 100_000
+            + ["2026-01-01T00:05:00Z", "2026-01-01T00:10:00Z"],
+            "bid": [10.0] * 100_000 + [13.0, 16.0],
+            "ask": [12.0] * 100_000 + [15.0, 18.0],
+        }
+    )
+    ticks = tmp_path / "out_of_order_chunks.csv"
+    rows.to_csv(ticks, index=False)
+    outcome = paper_backtest_interval(_interval("ONE_SELL"), policy, clock, config, [ticks])
+    assert outcome.status == "emitted_marked"
+    assert outcome.net_return == pytest.approx(1.0)
+
+
 def test_aggregate_reconciles_and_rejects_tamper() -> None:
     config = load_config()
     outcomes = paper_backtest_intervals((), config, [])
