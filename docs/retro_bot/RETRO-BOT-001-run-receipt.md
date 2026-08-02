@@ -24,10 +24,11 @@ secret, or private-key material was accepted.
 
 ## Run and reproducibility record
 
-- Two fresh aggregate runs were written as direct children of the registered
-  ignored RETRO-BOT replay root.
-- Both runs passed aggregate schema validation and produced the identical
-  aggregate digest `09146b45382dcf4380c575e96151eaf1971f4947059c46e014c431b2c4e38fe5`.
+- After the DST fail-closed remediation, two fresh aggregate runs were written
+  as direct children of the registered ignored RETRO-BOT replay root.
+- Both runs passed aggregate schema validation, were byte-identical, and
+  produced the identical aggregate digest
+  `09146b45382dcf4380c575e96151eaf1971f4947059c46e014c431b2c4e38fe5`.
 - The tracked result was generated only by the result writer from the first
   privacy-validated aggregate payload.
 
