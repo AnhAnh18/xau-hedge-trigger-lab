@@ -548,3 +548,24 @@
   `behaviorally-compatible-accounting-inconclusive`; no candidate selection,
   profitability, live execution, or M5 gate claim is made. Next milestone is
   RB-018.
+
+## 2026-08-03 -- RETRO-BOT-014/RB-018 offline-lane terminal seal
+
+- Locked the owner-authorized synthetic/shadow registration, redacted RB-017
+  prerequisite receipt, frozen RB-017 validator hash, two process receipts,
+  canonical JSON/LF framing, exact gate attestation, and terminal receipt
+  schema. No new source, replay, fitting, M5 input, external validation,
+  `.ex5`, or live/demo surface was introduced.
+- Added source-free `seal` and `verify-seal` stages with duplicate-key,
+  non-finite, trailing-byte, strict int/bool/float schema, recursive privacy
+  firewall, provenance/self-digest, nonce, and optional-receipt checks. The
+  terminal status is `offline-lane-closed-synthetic-shadow-only` with the
+  inherited permanent conclusion `behaviorally-compatible-accounting-inconclusive`.
+- Focused RB-018/RB-017/RB-016/RB-015 validation passed 26 tests; isolated
+  full suite passed 327 tests; compileall, privacy, and `git diff --check`
+  passed. Two fresh CLI seal runs were byte-identical with SHA-256
+  `69410d5608d8bac9948335f60ac21a69a23cf5fb8add4381baa8da06dd2f377c`.
+- Independent RB-018 review found one P2 strict-integer issue; it was fixed
+  and a fresh independent re-review returned `PASS` with no P0-P3 findings.
+  The RETRO-BOT offline lane is now closed; future expansion requires a new
+  owner authorization and contract.

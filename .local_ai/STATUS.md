@@ -91,6 +91,12 @@ pending)
   aggregate provenance, deterministic verify-closeout CLI, and independent
   review/re-review PASS; it remains permanently accounting-inconclusive and
   outside all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-014/RB-018 offline-lane terminal seal over two redacted
+  RB-017 reports with pinned registration/prerequisite/validator hashes,
+  process receipts, strict schema/firewall validation, deterministic seal and
+  verify-seal CLI, and independent review/re-review PASS; the offline lane is
+  closed as synthetic/shadow-only and remains outside all M5 inputs, models,
+  evaluations, thresholds, and gates
 
 ## Current finding
 
@@ -130,10 +136,11 @@ Acquire the registered 2026-08-03 through 2026-08-07 ticks after the block
 closes and the covering report after 2026-08-08 context is exportable. Run
 blind structural intake, then evaluate the frozen package once if accepted.
 
-RETRO-BOT next executable task: register and implement RB-018 synthetic/shadow
-retrospective bot closeout; preserve the RB-017 report boundary, RB-016
-package freeze, RB-015 projection, RB-014 paper accounting boundary, RB-013
-fold/candidate freeze, and RB-009 policy/oracle separation.
+RETRO-BOT next executable task: none within the registered offline lane. Any
+new historical source, external validation, tuning, profitability analysis,
+`.ex5`, or live/demo execution requires a new owner decision, source receipt,
+contract, and independent review; preserve the RB-017 report boundary and all
+prior RETRO/M5 firewalls.
 
 ## Current blockers
 
