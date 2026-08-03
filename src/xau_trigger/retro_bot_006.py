@@ -66,6 +66,8 @@ def _time(value: object) -> pd.Timestamp:
 
 def validate_snapshot(snapshot: FeatureSnapshot) -> FeatureSnapshot:
     decision = _time(snapshot.decision_time)
+    if snapshot.oracle_labels:
+        raise RetroBotInputError("RB-010 oracle labels are diagnostic-only")
     if not isinstance(snapshot.values, Mapping) or set(snapshot.values) - ALLOWED_FEATURES:
         raise RetroBotInputError("RB-010 feature allowlist violation")
     feature_times = snapshot.feature_times

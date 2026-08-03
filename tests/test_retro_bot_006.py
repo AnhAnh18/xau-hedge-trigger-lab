@@ -32,7 +32,8 @@ def test_numeric_boundaries_and_parameterless_operators() -> None:
 def test_missing_or_future_oracle_features_fail_closed() -> None:
     assert evaluate_rule(snap(), TriggerRule("missing", (RuleClause("spread_points", "ge", 1),), "CLOSE_BUY")) == "feature_missing"
     changed = FeatureSnapshot(pd.Timestamp("2026-01-01T00:00:00Z"), {"state": "HEDGED"}, ("future_rehedge",))
-    assert evaluate_rule(changed, TriggerRule("state", (RuleClause("state", "always"),), "CLOSE_BUY")) == "candidate_action"
+    with pytest.raises(RetroBotInputError):
+        evaluate_rule(changed, TriggerRule("state", (RuleClause("state", "always"),), "CLOSE_BUY"))
 
 
 def test_invalid_grid_domain_and_digest_are_rejected() -> None:
