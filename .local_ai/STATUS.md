@@ -97,6 +97,12 @@ pending)
   verify-seal CLI, and independent review/re-review PASS; the offline lane is
   closed as synthetic/shadow-only and remains outside all M5 inputs, models,
   evaluations, thresholds, and gates
+- Completed RETRO-BOT-015/RB-019 typed/redacted variable-lot offline paper bot
+  with Decimal Bid/Ask accounting, uneven initial and OPEN quantities,
+  scenario-cost fingerprints, semantic-invalid cycle counting, strict
+  stdin-only replay/verify CLI, deterministic aggregate output, and
+  independent review/re-review PASS; it remains descriptive and outside all
+  raw data, M5 inputs, models, evaluations, thresholds, and live execution
 
 ## Current finding
 

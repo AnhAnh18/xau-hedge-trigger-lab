@@ -569,3 +569,29 @@
   and a fresh independent re-review returned `PASS` with no P0-P3 findings.
   The RETRO-BOT offline lane is now closed; future expansion requires a new
   owner authorization and contract.
+
+## 2026-08-03 -- RETRO-BOT-015/RB-019 variable-lot offline paper bot
+
+- Locked the typed/redacted RB-019 contract and plan after an independent
+  plan-gate PASS. The contract fixes Decimal-only fixed8 parsing, quote and
+  cost bounds, scenario fingerprints, unique cycle ids, per-leg quantity
+  conservation, exact six-key verification framing, and the golden
+  Bid/Ask accounting vector.
+- Implemented `src/xau_trigger/retro_bot_015.py` and the stdin-only
+  `scripts/run_retro_bot_019.py` replay/verify stages. OPEN events now apply
+  their Bid/Ask cash flows, initial and event costs are charged, uneven lot
+  changes are supported, and semantic-invalid cycles are counted without raw
+  retention. No raw source, M5 input, live-order surface, or filesystem input
+  is read.
+- Focused RB-019/RB-018 validation passed 22 tests; isolated full suite passed
+  337 tests with workspace `--basetemp`; compileall and `git diff --check`
+  passed. A static privacy scan found no credentials or private paths in the
+  milestone artifacts; only intentional firewall terms remain in the
+  contract/constant definitions.
+- Two independent CLI replay runs were byte-identical with output SHA-256
+  `3db8ff3dc92c4ea73a70cd5ebb947a4f16476f90e057e783cd6dc8a8f05028ec`;
+  separate `verify-aggregate` passed. Independent implementation review
+  found one P1 aggregate-order issue; it was fixed, and a fresh independent
+  final review returned `PASS` with no P0-P3 findings. RETRO remains
+  descriptive and outside all M5 inputs, models, evaluations, thresholds,
+  and gates.
