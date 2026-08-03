@@ -611,3 +611,24 @@
   credentials, private paths, or M5 inputs were retained or printed. RETRO-
   007 does not establish gap causation, manual intervention, or a tradeable
   edge.
+
+## 2026-08-03 -- RETRO-HIST-001 observed-lot distribution audit
+
+- Locked a new RETRO-HIST contract, source receipt, and authorization record
+  over the exact archived RETRO-003 report/tick manifests and the population
+  `[2025-11-01, 2026-07-31)`. RH-001 reads only report positions and
+  open_positions tables and retains no ordered schedule or raw rows.
+- Implemented Decimal fixed8 quantity validation, side/symbol normalization,
+  duplicate snapshot deduplication, closed-row precedence over missing close
+  snapshots, conflict/censor/boundary handling, fixed aggregate schema, and a
+  redacted CLI. The observed distribution is dominated by `0.10000000`, with
+  nonzero `0.01000000`, `0.02000000`, `0.05000000`, `0.20000000`,
+  `0.30000000`, and `1.00000000` bands on both sides.
+- Focused validation passed 5 tests; isolated full suite passed 342 tests;
+  compileall and `git diff --check` passed. Two real runs were byte-identical
+  at aggregate level with self-digest
+  `777ee6e852fd5f0576008ae8d36a49fec309fb8f14141443c07bf9915c40a383`.
+- Independent contract re-review and fresh implementation re-review returned
+  `VERDICT: PASS` with no P0-P3 findings. RH-001 remains descriptive and
+  outside all M5 inputs, models, evaluations, thresholds, and live execution;
+  RH-002 is the next bounded milestone.

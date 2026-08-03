@@ -107,6 +107,10 @@ pending)
   screening over the registered 2025-11-01 through 2026-07-30 population;
   independent review PASS; it remains aggregate-only, descriptive, and
   outside all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-HIST-001 aggregate-only observed-lot distribution audit;
+  fresh contract and implementation re-reviews PASS; observed quantities are
+  retained as ground truth and the lane remains outside all M5 inputs, models,
+  evaluations, thresholds, and gates
 
 ## Current finding
 
@@ -151,6 +155,11 @@ new historical source, external validation, tuning, profitability analysis,
 `.ex5`, or live/demo execution requires a new owner decision, source receipt,
 contract, and independent review; preserve the RB-017 report boundary and all
 prior RETRO/M5 firewalls.
+
+RETRO-HIST next executable task: RH-002 historical adapter and causal
+lifecycle engine. It requires its own contract and focused synthetic gate;
+RH-001 remains a distribution baseline and does not expose an ordered lot
+schedule.
 
 ## Current blockers
 

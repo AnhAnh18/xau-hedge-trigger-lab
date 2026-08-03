@@ -50,3 +50,4 @@
 - [x] T-048 Implement RETRO-BOT-014/RB-018 retrospective bot closeout
 - [x] T-049 Implement RETRO-BOT-015/RB-019 variable-lot offline paper bot
 - [x] T-050 Complete owner-authorized RETRO-007 concurrent-position screening
+- [x] T-051 Complete RETRO-HIST-001 observed-lot distribution audit
