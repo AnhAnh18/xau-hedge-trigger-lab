@@ -595,3 +595,19 @@
   final review returned `PASS` with no P0-P3 findings. RETRO remains
   descriptive and outside all M5 inputs, models, evaluations, thresholds,
   and gates.
+
+## 2026-08-03 -- RETRO-007 historical concurrent-position screening
+
+- Completed the owner-authorized aggregate-only scan over the exact RETRO-003
+  report and tick manifests for server dates 2025-11-01 through 2026-07-30.
+  The scan found maximum concurrent counts of 7 total, 4 Buy, and 5 Sell;
+  5,422 definite 2-Buy + 2-Sell episodes; and 18 fixed post-gap windows with
+  positive-duration multi-position overlap under both UTC+2 and UTC+3.
+- Synthetic checks passed for close-only ambiguity, four-position overlap,
+  Sunday-to-Monday bucketing, and clipped gap windows. The aggregate
+  self-digest is
+  `1bf1dba84b4a14f1f9b56bbfc711a104e94a8912a02cabc5a4a7bb94c42ac36a`.
+- Independent review verdict: `PASS`, no P0-P3 findings. No raw rows,
+  credentials, private paths, or M5 inputs were retained or printed. RETRO-
+  007 does not establish gap causation, manual intervention, or a tradeable
+  edge.

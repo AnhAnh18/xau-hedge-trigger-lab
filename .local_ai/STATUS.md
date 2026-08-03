@@ -103,6 +103,10 @@ pending)
   stdin-only replay/verify CLI, deterministic aggregate output, and
   independent review/re-review PASS; it remains descriptive and outside all
   raw data, M5 inputs, models, evaluations, thresholds, and live execution
+- Completed owner-authorized RETRO-007 historical concurrent-position
+  screening over the registered 2025-11-01 through 2026-07-30 population;
+  independent review PASS; it remains aggregate-only, descriptive, and
+  outside all M5 inputs, models, evaluations, thresholds, and gates
 
 ## Current finding
 
