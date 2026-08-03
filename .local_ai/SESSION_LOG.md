@@ -261,3 +261,290 @@
 - Kept every frozen model parameter, predictor, decision threshold, bootstrap
   setting, external date, and M2–M5-004 canonical artifact unchanged.
 - This was a transparent self-review, not an independent-review claim.
+
+## 2026-07-31 — M5-004 external infrastructure independent review
+
+- A fresh independent CLI reviewer completed T-034 with `PASS` and no
+  P0-P3 findings; it did not inspect raw exports or edit the worktree.
+- Remediation binds each symbol-free MT5 tick export and replica to a
+  content-hashed XAUUSD provenance sidecar, pins fallback to the original
+  primary intake registration, and requires reviewed fallback authorization
+  before any fallback snapshot or parse.
+- Validation passed with 185 tests and a clean `git diff --check`.
+- Residual operational assumptions remain explicit: provenance sidecars are
+  operator attestations rather than broker-signed records, reviewed fallback
+  authorization and the local primary registration must be retained, and
+  evaluation guard files preserve the one-time constraint.
+
+## 2026-08-01 -- RETRO-001 descriptive case review
+
+- Recorded the owner-authorized, RETRO-only raw-data boundary, exact
+  hash-verified source receipt, deterministic case window, ignored aggregate
+  output, and M5 information firewall.
+- The descriptive case reconstruction found no continuation re-hedge before
+  the selected Buy-only interval ended, followed by a later rotation; manual
+  intervention remains unresolved because no journal was in scope.
+- The tick/report alignment passed inside the registered case window; the
+  result retains aggregate-only conclusions and no raw rows or detailed
+  timeline.
+- A fresh independent review returned `PASS` with no P0-P3 findings. The full
+  test suite passed: 185 tests with an isolated pytest base directory. M5
+  contracts, inputs, models, and blind gates remained unchanged.
+
+## 2026-08-01 -- RETRO-002 tick-source reconciliation
+
+- Re-ran the owner-authorized, hash-verified three-source reconciliation after
+  correcting the archive timestamp rule: only the UTC-declared archive uses
+  the registered UTC+3 conversion; the original's undeclared source clock is
+  diagnostic only.
+- Aggregate digest is `bf58cb62fa3a27511fe14fa6ef2948f4371c5c37ab93817e4742cc37009a2344`; an identical rerun reproduced it.
+- Added pinned quarantine-root, relative-path, and suffix validation before
+  parsing. `py_compile` and the analyzer run passed without raw output.
+- A fresh independent review returned `PASS` with no P0-P3 findings. The
+  registered mapping shows source agreement on the coarse no-below-entry band;
+  the original-source alternate clock remains compatible but unresolved.
+- RETRO-002 remains descriptive and outside all M5 inputs, models, evaluations,
+  thresholds, and gates; no M5 state or task entry changed.
+
+## 2026-08-01 -- RETRO-003 through RETRO-SYNTH full retrospective lane
+
+- Archived and hash-verified nine canonical monthly HTML reports plus the
+  accepted 39-object UTC tick archive under a new RETRO-003 receipt; XLSX/PNG
+  companions, journals, caches, M1, and terminal support sources remained out
+  of scope.
+- Applied the predeclared three-stratum selection rule over 2025-11-01 through
+  2026-07-30. Twenty-one eligible dates yielded three selected starts:
+  2025-11-12, 2026-03-03 (cross-midnight interval), and 2026-07-01.
+- Completed RETRO-004..006 with exact report/tick receipts, bounded padded
+  windows, UTC+2/UTC+3 diagnostics, aggregate-only quote-quality metrics, and
+  no journal inspection. All three reconstructed the one-leg to opposite-side
+  re-hedge transition with no continuation re-hedge inside the interval; all
+  three clock mappings remained ambiguous.
+- Completed RETRO-SYNTH over RETRO-001..006. The repeated wait-then-rehedge
+  sequence is observed/compatible with state-dependent rotation, while trigger,
+  manual action, broker clock, profitability, ownership, and edge remain
+  unresolved.
+- Validation: selected RETRO tests passed (`2 passed`); fresh independent
+  review returned `PASS` with no P0-P3 findings; isolated full suite passed
+  `187 passed` with one cache warning. Aggregate reruns were hash-identical.
+- RETRO remains descriptive and outside all M5 inputs, models, evaluations,
+  thresholds, and gates; M5 task entries and frozen artifacts were unchanged.
+
+## 2026-08-01 -- RETRO-BOT-001 historical replay closeout
+
+- Completed the separately contracted replay-only surrogate over the fixed
+  2025-11 through 2026-07 population. The runner verified the locked
+  9-report and 39-tick manifest sets before in-memory parsing and retained
+  only a privacy-validated aggregate.
+- The aggregate has 189 eligible intervals for every policy/clock row. Two
+  independently named ignored runs were byte-identical and produced digest
+  `09146b45382dcf4380c575e96151eaf1971f4947059c46e014c431b2c4e38fe5`.
+- The tracked result reports all four fixed-delay policies beside all three
+  clock scenarios without selecting a winner. It is compatible only with the
+  registered surrogate policies and does not identify the original trigger,
+  manual action, broker timezone, profitability, ownership, or a tradeable
+  edge.
+- Added a batch tick replay that streams each source at most once per full
+  replay while preserving the fixed half-open timing window and fail-closed
+  DST behavior. No raw rows, prices, tickets, traces, credentials, or source
+  paths were retained in tracked artifacts.
+- A fresh independent closeout review returned `PASS` with no P0-P3 findings.
+  Focused RETRO-BOT validation passed 20 tests; the isolated full suite passed
+  207 tests, both with one existing pytest cache warning. The M5 firewall
+  passed and M5 frozen artifacts, blind August blocks, models, thresholds,
+  and gates were unchanged.
+
+## 2026-08-02 -- RETRO-BOT-001 DST remediation and closeout re-review
+
+- Corrected the replay contract violation so any unresolved clock boundary or
+  locked policy target excludes the whole interval for that clock scenario;
+  a target at or after the observed re-hedge remains right-censored.
+- Rebuilt two fresh aggregate runs from the exact locked source manifests;
+  both were byte-identical with digest
+  `09146b45382dcf4380c575e96151eaf1971f4947059c46e014c431b2c4e38fe5`.
+- Focused validation passed 23 tests in the independent closeout review;
+  full suite passed 208 tests, privacy check passed, and `git diff --check`
+  was clean apart from existing line-ending/cache warnings.
+- A fresh independent reviewer returned `PASS` with no P0-P3 findings. RETRO-BOT
+  remains descriptive and outside all M5 inputs, models, evaluations,
+  thresholds, and gates.
+
+## 2026-08-02 -- RETRO-BOT-002/RB-006 paper-backtest closeout
+
+- Added a bounded paper-only harness with fixed quantity 1.0, Buy-at-Ask /
+  Sell-at-Bid execution, conservative mark at the observed re-hedge anchor,
+  stream-only tick access, and aggregate-only loss/flat/gain bands.
+- Ran the exact locked 9-report/39-tick historical population: 189 eligible
+  intervals for every policy/clock row. Two aggregate runs were byte-identical
+  with digest `4f40faae72bb4cd32df8ea5b24fcea9238912f77c3b0ca0bbd69deba088148f6`.
+- Independent review found and remediated one P1 (single-pair policy/clock
+  selection) and two P2 validation issues (mutable config and boolean schema
+  version). The final independent review returned `PASS` with no P0-P3.
+- Focused RB-006 tests passed 7; full suite passed 215; privacy, py_compile,
+  and diff checks passed. The paper result is synthetic descriptive evidence,
+  not profitability, live execution, model selection, or an M5 gate.
+
+## 2026-08-02 -- RETRO-BOT-002 ordering remediation and final replay
+
+- Independent review found a P1 in the vectorized scanner: an earlier valid
+  tick in a later chunk/path could be ignored. The scanner now keeps the
+  earliest action and mark quote across every chunk and source path, with a
+  100,000-row boundary regression test.
+- Rebuilt two fresh post-remediation aggregates; both remained byte-identical
+  with digest `4f40faae72bb4cd32df8ea5b24fcea9238912f77c3b0ca0bbd69deba088148f6`.
+- Focused tests passed 8 and full suite passed 216; the independent re-review
+  returned `PASS` with no P0-P3 findings. RETRO-BOT remains outside M5.
+
+## 2026-08-02 -- RETRO-BOT-003/RB-007 sequential replay closeout
+
+- Added a chronological multi-cycle wrapper over RB-006 outcomes. It rejects
+  non-increasing, overlapping, malformed, or identity-mismatched cycles and
+  retains only aggregate total/eligible/action/marked/censored/overlap/invalid
+  counts plus loss/flat/gain bands.
+- Independent review found and remediated two P1 issues (RB-006 identity
+  remapping and writer symlink containment) plus strict finite accounting
+  validation. Final independent review returned `PASS` with no P0-P3.
+- Ran the exact locked 9-report/39-tick population twice. Both aggregates were
+  byte-identical with digest
+  `0f803aad89838a45e31e4589897d7019f65c4fc7e888d7d5dfa8c02671cd9831`;
+  189 cycles per policy/clock and zero overlap/invalid cycles were observed.
+- Focused RB-007/RB-006 tests passed 17; full suite passed 225; privacy,
+  py_compile, and diff checks passed. RETRO remains outside M5.
+
+## 2026-08-03 -- RETRO-BOT-004/RB-008 evidence freeze closeout
+
+- Locked the RETRO-only 9-report/39-tick source boundary, chronological
+  report folds, fixed-seed and left-censored bootstrap rows, DST boundary
+  scenarios, censor precedence, minimum-support gates, and privacy/M5 claims.
+- Added deterministic fold/bootstrap/censor accounting, source manifest
+  verification, clock boundary mapping, overlap rejection, redacted aggregate
+  validation, CLI verification, and synthetic regression coverage.
+- Focused contract/RB-008 tests passed 14; isolated full suite passed 235;
+  privacy and py_compile passed; `git diff --check` was clean apart from
+  existing line-ending/cache warnings.
+- A fresh independent final re-review returned PASS with no P0-P3 findings.
+  RB-008 remains descriptive and outside all M5 inputs, models, evaluations,
+  thresholds, and gates. Next RETRO milestone is RB-009 lifecycle/state
+  engine.
+
+## 2026-08-03 -- RETRO-BOT-005/RB-009 lifecycle/state closeout
+
+- Added the causal finite-state reducer with fixed-seed/left-censored
+  bootstrap, separate `PolicyAction` and `OracleLabel` paths, strict
+  transition/chronology/idempotency rules, RB-007 action mapping, and
+  aggregate-only state accounting.
+- Independent review found and remediated post-terminal handling,
+  same-second collisions, anchor eligibility, quantity invariants,
+  cross-fold semantics, action schema, aggregate validation, and timestamp
+  normalization issues.
+- Focused RB-009 tests passed 9; isolated full suite passed 244; privacy,
+  py_compile, and diff checks passed. Fresh independent re-review returned
+  PASS with no P0-P3 findings. RETRO remains outside M5; next milestone is
+  RB-010 causal feature/trigger contract.
+
+## 2026-08-03 -- RETRO-BOT-006/RB-010 causal feature/trigger closeout
+
+- Added the frozen causal feature snapshot and trigger DSL: 60-second
+  lookback anchor, price increment, side-specific adverse excursion, spread,
+  tick rate, quote gap, session bucket, immutable domains, three-clause AND
+  rules, legality mapping, deterministic rule-id ties, and aggregate-only
+  provenance/firewall attestation.
+- Remediated independent review findings for causal tick boundary/private
+  field rejection, huge-number fail-closed handling, immutable numeric DSL
+  parameters, duplicate rule ids, and inherited source digests.
+- Focused RB-010 tests passed 9; isolated full suite passed 253; privacy and
+  py_compile passed. A fresh independent review returned PASS with no P0-P3
+  findings. RETRO remains outside M5; next milestone is RB-011.
+
+## 2026-08-03 -- RETRO-BOT-009/RB-013 walk-forward evaluation closeout
+
+- Locked the four-candidate Cartesian manifest, chronological development /
+  validation / holdout folds, source-safe causal cutoff and report-alias
+  enforcement, component and side support gates, explicit duplicate / invalid
+  / feature-missing / censor accounting, and separate oracle diagnostics.
+- Added frozen policy fingerprints, registered-population orchestration,
+  structural-intake and sealed-aggregate CLI stages, bounded canonical
+  autonomous/oracle schemas, and one-to-one earliest-unused oracle
+  verification. No raw rows, paths, credentials, or M5 inputs were read or
+  retained.
+- Focused RB-013 tests passed 6; isolated full suite passed 268; privacy,
+  compileall, and `git diff --check` passed. A fresh independent re-review
+  returned PASS with no P0-P3 findings. RETRO remains descriptive and outside
+  M5; next milestone is RB-014.
+
+## 2026-08-03 -- RETRO-BOT-010/RB-014 end-to-end paper bot closeout
+
+- Composed the locked RB-009 lifecycle, RB-011/RB-012 causal action engines,
+  RB-013 fold/candidate matrix, and RB-006 paper accounting into a source-free
+  typed replay API and CLI. Replay accepts causal cycles rather than
+  precomputed result rows, verifies frozen policy manifests, state/epoch/action
+  provenance, quote chronology, fixed-decimal scenarios, and M5 isolation.
+- Added conservative Bid/Ask accounting for HEDGED and ONE_BUY/ONE_SELL starts,
+  transaction fee/slippage/latency/margin assumptions, causal censor handling,
+  aggregate unit/action/mark conservation, canonical cycle/scenario identity,
+  and deterministic aggregate self-digests.
+- Focused RB-014 tests passed 10; isolated full suite passed 278; privacy,
+  compileall, and `git diff --check` passed. Direct CLI smoke and two typed
+  fixture runs were deterministic. Fresh independent final review returned
+  PASS with no P0-P3 findings. RETRO remains descriptive and outside all M5
+  inputs, models, evaluations, thresholds, and gates; next milestone is
+  RB-015.
+
+## 2026-08-03 -- RETRO-BOT-011/RB-015 robustness closeout
+
+- Locked the 40-case `RB015_PROJECTION_V1` matrix (digest
+  `4b3f9a2bd98b3827641cafa7807c6b929a2e212243c7a340cb51c97da1c701c3`) across
+  clock, timestamp, quote, cost, coverage, slice, and ablation dimensions.
+- Added typed actionful synthetic fixtures, coupled clock/snapshot transforms,
+  source-first quote fault precedence, action/mark coverage censoring, fixed
+  cost fingerprints, structural feature ablations, direct projection/slice
+  guards, redacted aggregate accounting, and stdin-only `validate-config`,
+  `stress-replay`, and `verify-aggregate` CLI stages.
+- Focused RB-015/RB-014 tests passed 33 in fresh review; isolated full suite
+  passed 301; privacy, compileall, and `git diff --check` passed. Two CLI
+  replays were byte-identical (output SHA-256
+  `98f899d67f20acd5c219e1a107e5afa14b4a0c660879a4e35bc0acabe8816395`),
+  aggregate verification passed, and a fresh independent re-review returned
+  PASS with no P0-P3 findings. RETRO remains descriptive and outside all M5
+  inputs, models, evaluations, thresholds, and gates; next milestone is
+  RB-016.
+
+## 2026-08-03 -- RETRO-BOT-012/RB-016 packaging closeout
+
+- Locked `RB016_PACKAGE_V1` manifest, explicit RB-014 provenance digest
+  `3621048bc7ca84d4be0717b0599cc1bfed5d8d565f5502f20543873aeabfde44`, all
+  inherited RB-015 projection/cost fingerprints, duplicate-key canonical JSON,
+  initial `all`-slice HEDGED state snapshot, and non-cyclic package/receipt/
+  state/aggregate self-digests.
+- Added source-free `package-replay`, `verify-receipt`, and `validate-config`
+  CLI stages, typed canonical fixture digesting, recursive privacy/M5/live
+  firewall, and known-limitations documentation. No raw source, credentials,
+  paths, journals, tickets, `.ex5`, subprocess, network, MT5, or live-order
+  surface is packaged.
+- Focused RB-016/RB-015/RB-014 tests passed 40; isolated full suite passed
+  308; privacy, compileall, and `git diff --check` passed. Two fresh
+  subprocess package runs were byte-identical (output SHA-256
+  `07ddf6c8b01aab14b9d1799b81271055914c88c59ff1e3db7fc5a4f277192045`),
+  verify-receipt passed, and a fresh independent re-review returned PASS with
+  no P0-P3 findings. RETRO remains descriptive and outside all M5 inputs,
+  models, evaluations, thresholds, and gates; next milestone is RB-017.
+
+## 2026-08-03 -- RETRO-BOT-013/RB-017 synthetic/shadow closeout
+
+- Locked a synthetic/shadow holdout boundary over the frozen RB-016 package
+  and typed RB-015 fixture: all four cycles use `fold=holdout`,
+  `report-008.html`, and causal decision records with `future_read=false` and
+  `oracle_used=false`. No new raw source or owner authorization was used.
+- Added a redacted fixed-schema closeout report with recomputed package,
+  aggregate, projection, source-manifest, attestation, fixture, and report
+  digests. `verify-closeout` recomputes from package plus fixture and rejects
+  duplicate keys, tampering, private/M5/live fields, and malformed provenance.
+- Focused RB-017/RB-016/RB-015/RB-014 validation passed 47 tests; isolated full
+  suite passed 315 tests; compileall, privacy, and `git diff --check` passed.
+  Two independent CLI closeout runs were byte-identical with report digest
+  `37ead2e0ddac61f88c5f68f8c782c9d526d3a879701fe7decf2e5916b25c7ca8`.
+- Independent implementation review and a fresh re-review both returned
+  `PASS` with no P0-P3 findings. The terminal status is permanently
+  `behaviorally-compatible-accounting-inconclusive`; no candidate selection,
+  profitability, live execution, or M5 gate claim is made. Next milestone is
+  RB-018.

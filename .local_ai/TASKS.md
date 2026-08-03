@@ -33,4 +33,18 @@
 - [x] T-031 Obtain independent re-review of the M5-004 implementation
 - [ ] T-032 Blind-intake and evaluate the 2026-08-03 through 2026-08-07 block
 - [x] T-033 Implement pre-data M5-004 blind-intake and frozen-evaluator infrastructure
-- [ ] T-034 Obtain independent review of M5-004 external infrastructure
+- [x] T-034 Obtain independent review of M5-004 external infrastructure
+- [x] T-035 Complete isolated RETRO-BOT-001 historical replay surrogate
+- [x] T-036 Complete RETRO-BOT-002/RB-006 historical paper backtest
+- [x] T-037 Complete RETRO-BOT-003/RB-007 sequential multi-cycle replay
+- [x] T-038 Complete RETRO-BOT-004/RB-008 evidence and temporal population freeze
+- [x] T-039 Implement RETRO-BOT-005/RB-009 lifecycle and state engine
+- [x] T-040 Implement RETRO-BOT-006/RB-010 causal feature and trigger contract
+- [x] T-041 Implement RETRO-BOT-007/RB-011 unlock/close candidate engine
+- [x] T-042 Implement RETRO-BOT-008/RB-012 one-leg re-hedge candidate engine
+- [x] T-043 Implement RETRO-BOT-009/RB-013 walk-forward historical evaluation
+- [x] T-044 Implement RETRO-BOT-010/RB-014 end-to-end historical paper bot
+- [x] T-045 Implement RETRO-BOT-011/RB-015 robustness, stress, and ablation layer
+- [x] T-046 Implement RETRO-BOT-012/RB-016 robustness and sensitivity layer
+- [x] T-047 Implement RETRO-BOT-013/RB-017 historical replay CLI/report package
+- [ ] T-048 Implement RETRO-BOT-014/RB-018 retrospective bot closeout
