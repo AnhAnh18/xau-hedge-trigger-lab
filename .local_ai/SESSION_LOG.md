@@ -632,3 +632,21 @@
   `VERDICT: PASS` with no P0-P3 findings. RH-001 remains descriptive and
   outside all M5 inputs, models, evaluations, thresholds, and live execution;
   RH-002 is the next bounded milestone.
+
+## 2026-08-04 -- RETRO-HIST-002 historical lifecycle and stream adapter
+
+- Locked RH-002 to the RH-001/RETRO-003 report and tick receipts over the
+  half-open population `[2025-11-01, 2026-07-31)`. Conflicting snapshots are
+  retained only as conservative censored interval markers; definite
+  OPEN/CLOSE labels never drive the separate policy state.
+- Added hash-verified manifest/path/object validation, global tick ordering
+  before quote/envelope filtering, lexicographic same-time policy action keys,
+  and fixed nested aggregate/digest/firewall checks. No raw rows, credentials,
+  private paths, M5 inputs, or live execution surface were added.
+- Focused RH-002 validation passed 18 tests; isolated full regression passed
+  360 tests; compileall and `git diff --check` passed. Two real archived runs
+  were byte-identical with aggregate digest
+  `8392949ab28491953301d10fbcfe3efab8dab5b08354b68803e53a85c2e34db9`.
+- Fresh independent implementation review returned `VERDICT: PASS` with no
+  P0-P3 findings. RH-002 remains descriptive and outside all M5 inputs,
+  models, evaluations, thresholds, and gates; next milestone is RH-003.
