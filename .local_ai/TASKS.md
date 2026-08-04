@@ -52,3 +52,4 @@
 - [x] T-050 Complete owner-authorized RETRO-007 concurrent-position screening
 - [x] T-051 Complete RETRO-HIST-001 observed-lot distribution audit
 - [x] T-052 Complete RETRO-HIST-002 historical lifecycle and stream adapter
+- [x] T-053 Complete RETRO-HIST-003 causal trigger and observed-sizing reconstruction

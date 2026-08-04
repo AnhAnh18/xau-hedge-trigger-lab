@@ -650,3 +650,24 @@
 - Fresh independent implementation review returned `VERDICT: PASS` with no
   P0-P3 findings. RH-002 remains descriptive and outside all M5 inputs,
   models, evaluations, thresholds, and gates; next milestone is RH-003.
+
+## 2026-08-05 -- RETRO-HIST-003 causal trigger and observed-sizing reconstruction
+
+- Locked RH-003 to the inherited RH-002 report/tick receipt and its exact
+  2025-11-01 through 2026-07-30 population. Implemented Decimal causal
+  feature math, strict state/lot/action invariants, independent policy and
+  oracle paths, bounded stream retention, and a RETRO-only report loader.
+- Remediated FLAT fast-path parity for out-of-window envelope accounting and
+  malformed-timestamp flushing. Added end-to-end future-lot isolation and
+  non-FLAT fail-closed regressions. No raw rows, credentials, private paths,
+  M5 inputs, live execution surface, or new source were added.
+- Focused RH-003 validation passed 25 tests; full regression passed 385 tests;
+  `compileall` and scoped `git diff --check` passed. Two full authorized
+  archive runs were byte-identical with aggregate digest
+  `95311f30fe6c2ce7e2c37503d51900787182285631feb1ab89c5530ceddd4369`, file
+  SHA-256 `2c1683b83ebdb652f81d9343bda74b2ed8d453906bc6734192c4812ce81c2057`,
+  and 27,603 bytes. Aggregate schema/self-digest validation passed.
+- Fresh independent RH-003 re-review returned `VERDICT: PASS` with no P0-P3
+  findings. Bootstrap was `FLAT` for both clock scenarios and no candidate
+  emitted an action; the result is descriptive only. RH-004 is the next
+  bounded milestone.

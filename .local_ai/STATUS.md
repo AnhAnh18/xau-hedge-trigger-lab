@@ -116,6 +116,11 @@ pending)
   isolation, deterministic tick ordering, nested aggregate validation, and
   independent re-review PASS; it remains descriptive and outside all M5
   inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-HIST-003 causal trigger and observed-sizing reconstruction
+  with Decimal causal features, strict policy/oracle isolation, FLAT fast-path
+  replay parity, redacted aggregate output, two byte-identical full archive
+  runs, and independent re-review PASS; it remains descriptive and outside
+  all M5 inputs, models, evaluations, thresholds, and gates
 
 ## Current finding
 
@@ -161,11 +166,11 @@ new historical source, external validation, tuning, profitability analysis,
 contract, and independent review; preserve the RB-017 report boundary and all
 prior RETRO/M5 firewalls.
 
-RETRO-HIST next executable task: RH-003 causal trigger and observed-sizing
-reconstruction. It requires a new bounded contract, source receipt/amendment
-if needed, and independent plan/implementation review; RH-001 and RH-002
-remain descriptive baselines and do not authorize M5 fitting, tuning, or live
-execution.
+RETRO-HIST next executable task: RH-004, a new bounded historical
+reconstruction milestone. It requires a new owner authorization, contract,
+source receipt/amendment if needed, and independent plan/implementation
+review; RH-001 through RH-003 remain descriptive baselines and do not
+authorize M5 fitting, tuning, or live execution.
 
 ## Current blockers
 
