@@ -121,6 +121,13 @@ pending)
   replay parity, redacted aggregate output, two byte-identical full archive
   runs, and independent re-review PASS; it remains descriptive and outside
   all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-HIST-004 observed-lot paper accounting with Decimal Bid/Ask
+  execution, fixed synthetic cost scenarios, latency-aware conservative
+  marking, uneven/partial quantities, strict recursive schema/privacy/M5
+  validation, governance artifact hash pins, two byte-identical archive runs,
+  and independent re-review PASS. The historical result is FLAT/no_action in
+  every scenario and remains descriptive and outside all M5 inputs, models,
+  evaluations, thresholds, and gates
 
 ## Current finding
 
@@ -166,11 +173,12 @@ new historical source, external validation, tuning, profitability analysis,
 contract, and independent review; preserve the RB-017 report boundary and all
 prior RETRO/M5 firewalls.
 
-RETRO-HIST next executable task: RH-004, a new bounded historical
-reconstruction milestone. It requires a new owner authorization, contract,
-source receipt/amendment if needed, and independent plan/implementation
-review; RH-001 through RH-003 remain descriptive baselines and do not
-authorize M5 fitting, tuning, or live execution.
+RETRO-HIST next executable task: none within the authorized RH-001 through
+RH-004 lane. Any RH-005 or new historical source, replay, fitting, tuning,
+profitability analysis, `.ex5`, or live/demo execution requires a new owner
+decision, source receipt, contract, and independent review. RH-001 through
+RH-004 remain descriptive and do not authorize M5 fitting, tuning, or live
+execution.
 
 ## Current blockers
 

@@ -53,3 +53,4 @@
 - [x] T-051 Complete RETRO-HIST-001 observed-lot distribution audit
 - [x] T-052 Complete RETRO-HIST-002 historical lifecycle and stream adapter
 - [x] T-053 Complete RETRO-HIST-003 causal trigger and observed-sizing reconstruction
+- [x] T-054 Complete RETRO-HIST-004 observed-lot paper accounting

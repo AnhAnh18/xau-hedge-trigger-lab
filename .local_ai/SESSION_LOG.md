@@ -671,3 +671,21 @@
   findings. Bootstrap was `FLAT` for both clock scenarios and no candidate
   emitted an action; the result is descriptive only. RH-004 is the next
   bounded milestone.
+
+## 2026-08-05 -- RETRO-HIST-004 observed-lot paper accounting
+
+- Locked RH-004 contract and source receipt to the exact RH-002 report/tick
+  manifests and population `[2025-11-01, 2026-07-31)`. Added Decimal Bid/Ask
+  accounting, fixed synthetic cost scenarios, latency-aware conservative
+  marking, uneven/partial opens and closes, strict conservation, governance
+  artifact hash pins, and recursive privacy/M5 validation.
+- Focused validation passed 26 tests; full regression passed 411 tests;
+  compileall and scoped `git diff --check` passed. Independent implementation
+  re-reviews returned `VERDICT: PASS` with no P0-P3 findings.
+- Two fresh authorized archive runs were byte-identical: aggregate digest
+  `43ad1e09a59e78bbf2777e76d6b94f67cb7d98fe2824281e65e223c8f7b2d2b9`, file
+  SHA-256 `2fd7c8f634dc320b31f7d8ab6ae2de36b58ae957a99da44f9f688e3f7fbec469`,
+  and 5,706 bytes. Bootstrap was `FLAT`; all six inherited policy candidates
+  emitted no actions under both clocks; every accounting scenario was
+  `no_action` with zero quantities. RH-004 remains descriptive and outside
+  all M5 inputs, models, evaluations, thresholds, and gates.
