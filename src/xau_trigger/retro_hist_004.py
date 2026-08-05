@@ -136,7 +136,9 @@ def _sha(value: object) -> str:
 
 def _governance_hash(path: Path) -> str:
     try:
-        return hashlib.sha256(path.read_bytes()).hexdigest()
+        # Pin the artifact content independently of the checkout line ending.
+        content = path.read_bytes().replace(b"\r\n", b"\n")
+        return hashlib.sha256(content).hexdigest()
     except OSError as error:
         raise RetroHistInputError("RH-004 governance artifact is unavailable") from error
 
