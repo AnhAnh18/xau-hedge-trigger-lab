@@ -2,8 +2,9 @@
 
 ## Current phase
 
-M5 — Trigger Inference (M5-004 development package frozen and external
-evaluation infrastructure prepared; fresh August external data pending)
+M5 — Trigger Inference (M5-004 development package frozen; external
+evaluation infrastructure independently reviewed; fresh August external data
+pending)
 
 ## Completed
 
@@ -30,6 +31,103 @@ evaluation infrastructure prepared; fresh August external data pending)
 - Owner-authorized cold self-review of the pre-data infrastructure while the
   independent reviewer was unavailable; the review added missing descriptive
   five-session LOSO output and stricter fallback/consumption tamper checks
+- Independent T-034 review of the remediated pre-data M5-004 external
+  infrastructure, with no P0-P3 findings
+- Completed owner-authorized RETRO-003 historical screening, RETRO-004 through
+  RETRO-006 bounded case analyses, and RETRO-SYNTH; all remain outside M5
+- Completed isolated RETRO-BOT-001 historical replay surrogate with two
+  byte-identical aggregate runs and independent closeout; it remains outside
+  all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-002/RB-006 synthetic paper-backtest harness and two
+  byte-identical historical aggregates; it remains descriptive and outside
+  all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-003/RB-007 sequential multi-cycle wrapper and two
+  byte-identical historical aggregates; it remains descriptive and outside
+  all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-004/RB-008 evidence and temporal population freeze,
+  including locked folds, bootstrap scenarios, censor precedence, and source
+  boundary validation; it remains descriptive and outside all M5 inputs,
+  models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-005/RB-009 causal lifecycle/state engine with separate
+  policy/oracle paths, strict transition invariants, and aggregate validation;
+  it remains descriptive and outside all M5 inputs, models, evaluations,
+  thresholds, and gates
+- Completed RETRO-BOT-006/RB-010 causal feature snapshot and trigger DSL,
+  including causal tick math, immutable domains, fail-closed rule evaluation,
+  source digests, and M5 firewall attestation; it remains descriptive and
+  outside all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-007/RB-011 unlock/close candidate engine with frozen
+  policy actions, one-to-one oracle matching, and aggregate validation; it
+  remains descriptive and outside all M5 inputs, models, evaluations,
+  thresholds, and gates
+- Completed RETRO-BOT-008/RB-012 one-leg re-hedge candidate engine with
+  causal state application, fail-closed censoring, and aggregate validation;
+  it remains descriptive and outside all M5 inputs, models, evaluations,
+  thresholds, and gates
+- Completed RETRO-BOT-009/RB-013 walk-forward historical evaluation with
+  source-safe fold orchestration, frozen Cartesian candidates, component/side
+  support gates, separate oracle verification, canonical aggregate schemas,
+  and deterministic synthetic checks; it remains descriptive and outside all
+  M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-010/RB-014 end-to-end historical paper bot with typed
+  causal replay, conservative accounting, one-leg starts, fixed-cost
+  scenarios, aggregate conservation, CLI verification, and strict M5/privacy
+  firewall; it remains descriptive and outside all M5 inputs, models,
+  evaluations, thresholds, and gates
+- Completed RETRO-BOT-011/RB-015 robustness, stress, and ablation layer with
+  a locked 40-case projection, causal clock/quote/coverage perturbations,
+  actionful slice fixtures, fixed cost scenarios, structural feature ablations,
+  redacted aggregate validation, stdin-only CLI stages, deterministic replay,
+  and strict privacy/M5 firewall; it remains descriptive and outside all M5
+  inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-012/RB-016 offline packaging and freeze with locked
+  manifest/provenance/cost fingerprints, duplicate-key canonicalization,
+  initial-state snapshot format, self-hashed package/receipt/aggregate,
+  stdin-only package/verify CLI, known-limitations documentation, and strict
+  privacy/M5/live-execution firewall; it remains descriptive and outside all
+  M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-013/RB-017 synthetic/shadow historical closeout with
+  fresh holdout replay, redacted fixed-schema report, recomputed package and
+  aggregate provenance, deterministic verify-closeout CLI, and independent
+  review/re-review PASS; it remains permanently accounting-inconclusive and
+  outside all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-BOT-014/RB-018 offline-lane terminal seal over two redacted
+  RB-017 reports with pinned registration/prerequisite/validator hashes,
+  process receipts, strict schema/firewall validation, deterministic seal and
+  verify-seal CLI, and independent review/re-review PASS; the offline lane is
+  closed as synthetic/shadow-only and remains outside all M5 inputs, models,
+  evaluations, thresholds, and gates
+- Completed RETRO-BOT-015/RB-019 typed/redacted variable-lot offline paper bot
+  with Decimal Bid/Ask accounting, uneven initial and OPEN quantities,
+  scenario-cost fingerprints, semantic-invalid cycle counting, strict
+  stdin-only replay/verify CLI, deterministic aggregate output, and
+  independent review/re-review PASS; it remains descriptive and outside all
+  raw data, M5 inputs, models, evaluations, thresholds, and live execution
+- Completed owner-authorized RETRO-007 historical concurrent-position
+  screening over the registered 2025-11-01 through 2026-07-30 population;
+  independent review PASS; it remains aggregate-only, descriptive, and
+  outside all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-HIST-001 aggregate-only observed-lot distribution audit;
+  fresh contract and implementation re-reviews PASS; observed quantities are
+  retained as ground truth and the lane remains outside all M5 inputs, models,
+  evaluations, thresholds, and gates
+- Completed RETRO-HIST-002 hash-verified historical lifecycle and stream
+  adapter with conservative conflict censoring, causal policy/oracle
+  isolation, deterministic tick ordering, nested aggregate validation, and
+  independent re-review PASS; it remains descriptive and outside all M5
+  inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-HIST-003 causal trigger and observed-sizing reconstruction
+  with Decimal causal features, strict policy/oracle isolation, FLAT fast-path
+  replay parity, redacted aggregate output, two byte-identical full archive
+  runs, and independent re-review PASS; it remains descriptive and outside
+  all M5 inputs, models, evaluations, thresholds, and gates
+- Completed RETRO-HIST-004 observed-lot paper accounting with Decimal Bid/Ask
+  execution, fixed synthetic cost scenarios, latency-aware conservative
+  marking, uneven/partial quantities, strict recursive schema/privacy/M5
+  validation, governance artifact hash pins, two byte-identical archive runs,
+  and independent re-review PASS. The historical result is FLAT/no_action in
+  every scenario and remains descriptive and outside all M5 inputs, models,
+  evaluations, thresholds, and gates
 
 ## Current finding
 
@@ -68,6 +166,19 @@ charts, or performance summaries before the intake gate.
 Acquire the registered 2026-08-03 through 2026-08-07 ticks after the block
 closes and the covering report after 2026-08-08 context is exportable. Run
 blind structural intake, then evaluate the frozen package once if accepted.
+
+RETRO-BOT next executable task: none within the registered offline lane. Any
+new historical source, external validation, tuning, profitability analysis,
+`.ex5`, or live/demo execution requires a new owner decision, source receipt,
+contract, and independent review; preserve the RB-017 report boundary and all
+prior RETRO/M5 firewalls.
+
+RETRO-HIST next executable task: none within the authorized RH-001 through
+RH-004 lane. Any RH-005 or new historical source, replay, fitting, tuning,
+profitability analysis, `.ex5`, or live/demo execution requires a new owner
+decision, source receipt, contract, and independent review. RH-001 through
+RH-004 remain descriptive and do not authorize M5 fitting, tuning, or live
+execution.
 
 ## Current blockers
 

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "case_id": "RETRO-BOT-004",
+  "base_config_sha256": "b420d9d014c2cac67461eda9603a200b2a48d0ad1fa0299baaf1c8cdeded5c52",
+  "source_receipt": {
+    "path": "docs/observational_cases/RETRO-003-2025-11_to_2026-07-history-screening-receipt.md",
+    "report_manifest_sha256": "88a5c98f919dad69da3eb97fba8bc2c8fd878fc2b3ce8d02011ea268d9642f30",
+    "tick_manifest_sha256": "a9350b541ba0138b6d86b5ce013ad9e7ddb83cde9d7742e2d3d7deb2c38a1f0c",
+    "base_config_path": "docs/retro_bot/RETRO-BOT-001-config.json"
+  },
+  "population": {
+    "start_server": "2025-11-01 00:00:00",
+    "end_server_exclusive": "2026-07-31 00:00:00",
+    "excluded_server_windows": [
+      "2026-07-31..2026-08-01",
+      "2026-08-03..2026-08-07",
+      "2026-08-10..2026-08-14"
+    ]
+  },
+  "report_ranges": [
+    {"alias": "report-001.html", "start": "2025-11-01", "end": "2025-12-01"},
+    {"alias": "report-002.html", "start": "2025-12-01", "end": "2026-01-01"},
+    {"alias": "report-003.html", "start": "2026-01-01", "end": "2026-02-01"},
+    {"alias": "report-004.html", "start": "2026-02-01", "end": "2026-03-01"},
+    {"alias": "report-005.html", "start": "2026-03-01", "end": "2026-04-01"},
+    {"alias": "report-006.html", "start": "2026-04-01", "end": "2026-05-01"},
+    {"alias": "report-007.html", "start": "2026-05-01", "end": "2026-06-01"},
+    {"alias": "report-008.html", "start": "2026-06-01", "end": "2026-07-01"},
+    {"alias": "report-009.html", "start": "2026-07-01", "end": "2026-07-31"}
+  ],
+  "folds": [
+    {"id": "development", "role": "development", "report_aliases": ["report-001.html", "report-002.html", "report-003.html", "report-004.html", "report-005.html"]},
+    {"id": "validation", "role": "validation", "report_aliases": ["report-006.html", "report-007.html"]},
+    {"id": "holdout", "role": "holdout", "report_aliases": ["report-008.html", "report-009.html"]}
+  ],
+  "bootstrap_scenarios": [
+    {"id": "left_censored", "seed_state": null, "warmup_seconds": null, "assumption_dependent": false},
+    {"id": "fixed_warmup_seed", "seed_state": "HEDGED", "warmup_seconds": 0, "assumption_dependent": true}
+  ],
+  "clock_scenarios": [
+    {"id": "utc_plus_2", "kind": "fixed", "offset_hours": 2},
+    {"id": "utc_plus_3", "kind": "fixed", "offset_hours": 3},
+    {
+      "id": "eu_dst_2025_2026",
+      "kind": "piecewise",
+      "transitions": [
+        {"utc": "2025-03-30T01:00:00Z", "from_offset_hours": 2, "to_offset_hours": 3},
+        {"utc": "2025-10-26T01:00:00Z", "from_offset_hours": 3, "to_offset_hours": 2},
+        {"utc": "2026-03-29T01:00:00Z", "from_offset_hours": 2, "to_offset_hours": 3},
+        {"utc": "2026-10-25T01:00:00Z", "from_offset_hours": 3, "to_offset_hours": 2}
+      ]
+    }
+  ],
+  "censor_precedence": [
+    "clock_unresolved",
+    "invalid_transition",
+    "cross_fold_continuation",
+    "left_censored_unknown_bootstrap",
+    "coverage_censored_no_valid_tick",
+    "right_censored_no_terminal"
+  ],
+  "minimum_support": {
+    "independent_units_per_fold": 2,
+    "eligible_intervals_per_side": 2,
+    "sides": ["ONE_BUY", "ONE_SELL"]
+  },
+  "excluded_sources": ["xlsx", "png", "m1", "journal", "terminal_log", "support_cache", "credentials", "ex5"],
+  "config_sha256": "26fec4baa2b8e2680cc17afaad299bbbb00afba32810865ac60bf28eb2e49ebf"
+}
