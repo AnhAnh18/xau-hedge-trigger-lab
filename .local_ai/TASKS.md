@@ -61,3 +61,4 @@
 - [x] T-059 Implement synthetic RETRO-LIVE-EVIDENCE-005 shadow observer scaffold
 - [x] T-060 Implement synthetic RETRO-LIVE-EVIDENCE-006 safety/readiness scaffold
 - [x] T-061 Add E-002 authorization/source-receipt checklist template
+- [x] T-062 Implement metadata-only E-002 source-receipt validator

@@ -214,6 +214,12 @@ It does not authorize source access; the actual E-002 capture remains pending
 owner completion of the exact aliases, hashes, UTC window, allowlist, parser,
 retention, and receipt digest.
 
+The metadata-only E-002 receipt validator and stdin CLI are implemented and
+independently re-reviewed PASS. They reject impossible UTC timestamps, invalid
+windows, path/private aliases, allowlist expansion, retention tampering,
+execution authorization, M5 contamination, and digest mismatch. They inspect
+receipt metadata only and do not open source objects.
+
 ## Current blockers
 
 - Future external labels and model outputs must remain uninspected until the

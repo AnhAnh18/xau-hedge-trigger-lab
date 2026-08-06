@@ -784,3 +784,16 @@
   exact allowlist, parser/canonicalization versions, retention, blindness, and
   M5/execution firewalls.
 - No source was opened or hashed; the checklist does not authorize E-002.
+
+## 2026-08-06 -- E-002 metadata-only source-receipt validator
+
+- Added strict validation for the future owner-authorized receipt: exact
+  aliases/object types, SHA-256 and positive byte counts, valid calendar UTC
+  timestamps and ordered half-open population, timezone code, field allowlist,
+  fixed redacted retention, retention deadline, and source-receipt digest.
+- Added a stdin-only validator CLI; it never opens, hashes, stores, or prints
+  source rows and rejects paths, credentials/private metadata, M5 contamination,
+  execution authorization, duplicate JSON keys, and malformed values.
+- Focused E-002 receipt/intake tests passed 7; full `uv run --locked pytest`
+  passed 454 tests with a repository-local basetemp; compileall and diff checks
+  passed. Fresh independent re-review returned `PASS` with no P0-P3 findings.

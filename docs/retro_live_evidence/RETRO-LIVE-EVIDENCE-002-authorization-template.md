@@ -22,12 +22,13 @@ path, credential, account number, ticket, terminal cache, or `.ex5` artifact.
 - `source_aliases`: `<opaque aliases>`
 - `object_types`: `<tick/report/observation>`
 - `sha256_by_alias`: `<64-hex digest per alias>`
-- `byte_count_by_alias`: `<non-negative integer per alias>`
+- `byte_count_by_alias`: `<positive integer per alias>`
 - `population_utc_half_open`: `[<start>, <end>)`
 - `source_timezone_code`: `<declared broker timezone or explicit ambiguous>`
 - `allowed_fields_by_alias`: `<exact allowlist>`
 - `canonicalization_version`: `<version>`
 - `parser_version`: `<version>`
+- `retention`: `redacted-aggregates-and-digests-only`
 - `source_receipt_sha256`: `<digest over this receipt without this field>`
 
 ## Required allowlist
