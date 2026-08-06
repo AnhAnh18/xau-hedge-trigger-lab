@@ -28,6 +28,9 @@ def test_intake_rejects_duplicates_raw_surface_and_bad_counts() -> None:
     with pytest.raises(RetroBotInputError): ingest_redacted_cycles([row, row])
     bad = dict(row); bad["raw_rows"] = []
     with pytest.raises(RetroBotInputError): ingest_redacted_cycles([bad])
+    bad = dict(row); bad["eligible_checkpoints"] = 3
+    with pytest.raises(RetroBotInputError): ingest_redacted_cycles([bad])
+    with pytest.raises(RetroBotInputError): ingest_redacted_cycles([row], synthetic_only=1)
     bad = dict(row); bad["state_matches"] = 2
     with pytest.raises(RetroBotInputError): ingest_redacted_cycles([bad])
     bad = dict(row); bad["action_count"] = 0; bad["observed_actions"] = 0

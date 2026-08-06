@@ -745,3 +745,16 @@
 - Focused tests passed 5; compileall and diff checks passed. Fresh independent
   re-review returned `PASS` with no P0-P3 findings. Real actionful capture,
   shadow observation, and demo/canary readiness remain unauthorized.
+
+## 2026-08-06 -- RETRO-LIVE-EVIDENCE-005 synthetic shadow scaffold
+
+- Added a redacted checkpoint-only observer with source/clone state and action
+  parity, timestamp-bound latency, deterministic tie ordering, reconnect-event
+  accounting, recovery failure detection, and fail-closed unsafe divergence.
+- Added a stdin-only CLI and strict aggregate verifier with trusted input
+  digest, explicit numerator/denominator formulas, finite-value checks, and
+  determinism fixed false for the synthetic scaffold.
+- Remediated the E-002 intake denominator boundary and added strict regression
+  coverage for synthetic-only and fixed8 constraints.
+- Focused E-002/E-003/E-005 tests passed 13; compileall and diff checks passed.
+  Real shadow observation and E-006 demo/canary readiness remain unauthorized.

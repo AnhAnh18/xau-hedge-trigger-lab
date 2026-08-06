@@ -196,6 +196,12 @@ source/fold bindings, ordered non-overlapping fold bounds, strict holdout-result
 verification, and fail-closed actionful/gate status. No real source capture or
 shadow/live execution has occurred.
 
+The E-005 synthetic shadow-observer scaffold is also implemented with redacted
+checkpoint-only inputs, timestamp-bound latency, deterministic tie ordering,
+reconnect/recovery safety accounting, trusted input-digest verification, and
+no realtime or execution surface. Real shadow observation remains blocked by
+the missing owner authorization and actionful E-002/E-003/E-004 evidence.
+
 ## Current blockers
 
 - Future external labels and model outputs must remain uninspected until the

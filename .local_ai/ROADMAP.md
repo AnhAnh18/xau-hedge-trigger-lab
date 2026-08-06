@@ -144,5 +144,8 @@ Possible outcomes:
 - E-003 behavioral fidelity and E-004 untouched holdout/robustness synthetic
   scaffolds: complete and independently re-reviewed PASS; real source capture
   remains locked behind a new owner authorization and exact source receipts.
-- E-005 shadow observer and E-006 demo/canary readiness remain locked behind
-  prior gates and are not implemented.
+- E-005 synthetic read-only shadow-observer scaffold: complete; it has no
+  realtime connector or execution surface and remains blocked on real E-002
+  through E-004 evidence and a new owner authorization.
+- E-006 demo/canary readiness remains locked behind prior gates and is not
+  implemented.
