@@ -181,6 +181,11 @@ decision, source receipt, contract, and independent review. RH-001 through
 RH-004 remain descriptive and do not authorize M5 fitting, tuning, or live
 execution.
 
+RETRO-LIVE-EVIDENCE next executable task: E-002 actionful capture, but only
+after a new owner authorization and exact source receipt. E-001 governance and
+gate freeze passed independently and remains synthetic-only; no realtime,
+demo, canary, or live execution is authorized.
+
 ## Current blockers
 
 - Future external labels and model outputs must remain uninspected until the

@@ -701,3 +701,18 @@
   and byte-identical deterministic reruns passed.
 - Result is `no-supported-candidate` because the registered holdout fixture is
   fully censored. No tuning, profitability, M5, or live-execution claim is made.
+
+## 2026-08-06 -- RETRO-LIVE-EVIDENCE-001 governance closeout
+
+- Locked the independent evidence lane contract, source-receipt template,
+  immutable gate registry, timezone/actionful definitions, holdout protocol,
+  oracle isolation, and RETRO/M5/execution firewall using synthetic fixtures
+  only.
+- Independent plan critic recommended `complex`; revised plan was written
+  before implementation. Fresh independent re-review returned `PASS` with no
+  P0-P3 findings after recursive oracle isolation and strict registry/receipt
+  validation fixes.
+- Focused E-001/RB-020 tests passed 19; full regression passed 430 with a
+  repository-local basetemp; compileall and scoped diff checks passed.
+- E-002 requires a new owner authorization/source receipt; no raw source,
+  realtime feed, demo, canary, or live execution was accessed.

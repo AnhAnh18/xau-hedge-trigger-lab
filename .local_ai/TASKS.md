@@ -55,3 +55,4 @@
 - [x] T-053 Complete RETRO-HIST-003 causal trigger and observed-sizing reconstruction
 - [x] T-054 Complete RETRO-HIST-004 observed-lot paper accounting
 - [x] T-055 Complete RETRO-BOT-020 autonomous historical reconstruction milestone
+- [x] T-056 Complete RETRO-LIVE-EVIDENCE-001 governance and gate freeze

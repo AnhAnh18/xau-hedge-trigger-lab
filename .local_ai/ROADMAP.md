@@ -134,3 +134,12 @@ Possible outcomes:
 - The original cannot be cloned, but an independent robust rule exists: split
   it into a separate strategy-research project.
 - Available MT5/tick data cannot identify the trigger: stop rather than overfit.
+
+## RETRO-LIVE-EVIDENCE - independent evidence lane
+
+- E-001 governance and gate freeze: complete; synthetic-only, no source or
+  execution authorization.
+- E-002 actionful capture: pending a new owner authorization and exact source
+  receipt.
+- E-003 behavioral fidelity, E-004 untouched holdout/robustness, E-005 shadow
+  observer, and E-006 demo/canary readiness remain locked behind prior gates.
