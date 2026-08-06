@@ -776,3 +776,11 @@
   independent re-review returned `PASS` with no P0-P3 findings. Real E-002
   actionful capture, untouched holdout, shadow observation, and demo/canary
   readiness remain unauthorized.
+
+## 2026-08-06 -- E-002 authorization checklist
+
+- Added an unfilled owner-authorization/source-receipt checklist covering
+  opaque aliases, hashes, byte counts, UTC half-open window, timezone code,
+  exact allowlist, parser/canonicalization versions, retention, blindness, and
+  M5/execution firewalls.
+- No source was opened or hashed; the checklist does not authorize E-002.

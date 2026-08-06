@@ -208,6 +208,12 @@ validates fixed8 limits, idempotent intents, stop/flatten behavior, and
 operator-acknowledged reconnect recovery. It always returns
 `hold-synthetic-only`; no demo/canary/live readiness or transport is exposed.
 
+An unfilled E-002 authorization/source-receipt checklist is now available at
+`docs/retro_live_evidence/RETRO-LIVE-EVIDENCE-002-authorization-template.md`.
+It does not authorize source access; the actual E-002 capture remains pending
+owner completion of the exact aliases, hashes, UTC window, allowlist, parser,
+retention, and receipt digest.
+
 ## Current blockers
 
 - Future external labels and model outputs must remain uninspected until the
