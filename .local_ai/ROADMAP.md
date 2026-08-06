@@ -141,5 +141,8 @@ Possible outcomes:
   execution authorization.
 - E-002 synthetic intake scaffold: complete; actual actionful capture remains
   pending a new owner authorization and exact source receipt.
-- E-003 behavioral fidelity, E-004 untouched holdout/robustness, E-005 shadow
-  observer, and E-006 demo/canary readiness remain locked behind prior gates.
+- E-003 behavioral fidelity and E-004 untouched holdout/robustness synthetic
+  scaffolds: complete and independently re-reviewed PASS; real source capture
+  remains locked behind a new owner authorization and exact source receipts.
+- E-005 shadow observer and E-006 demo/canary readiness remain locked behind
+  prior gates and are not implemented.

@@ -190,6 +190,12 @@ The E-002 synthetic intake scaffold is implemented and independently reviewed;
 its aggregate alone is not an authenticity boundary. External input/component
 digests must come from a separately retained source receipt.
 
+Synthetic E-003/E-004 scaffolds are implemented and independently re-reviewed
+PASS. They enforce action-checkpoint units, frozen categories, trusted
+source/fold bindings, ordered non-overlapping fold bounds, strict holdout-result
+verification, and fail-closed actionful/gate status. No real source capture or
+shadow/live execution has occurred.
+
 ## Current blockers
 
 - Future external labels and model outputs must remain uninspected until the

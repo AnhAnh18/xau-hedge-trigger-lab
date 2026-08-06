@@ -730,3 +730,18 @@
 - Post-review remediation added aggregate-level conservation and denominator
   invariants; fresh re-review returned `PASS` with no P0-P3 findings. Focused
   regression remained 23 passed.
+
+## 2026-08-06 -- RETRO-LIVE-EVIDENCE-003/004 synthetic scaffolds
+
+- Added redacted action-checkpoint fidelity metrics with exact frozen category
+  vocabulary, finite metric validation, actionful population checks, and a
+  strict aggregate verifier.
+- Added one-shot synthetic holdout sealing with trusted source-receipt and
+  fold-order/bounds digests. Fold bounds are required to be chronological,
+  half-open, and non-overlapping; malformed robustness input does not consume
+  the nonce.
+- Added strict holdout-result verification and fail-closed status when any
+  fold is actionful-insufficient, gate-failing, or robustness-failing.
+- Focused tests passed 5; compileall and diff checks passed. Fresh independent
+  re-review returned `PASS` with no P0-P3 findings. Real actionful capture,
+  shadow observation, and demo/canary readiness remain unauthorized.

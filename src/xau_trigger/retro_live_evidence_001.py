@@ -104,7 +104,8 @@ def validate_synthetic_receipt(value: Mapping[str, Any]) -> bool:
 def assert_firewall_clean(value: object) -> bool:
     def check_text(text: str) -> None:
         lowered = text.lower()
-        if any(term in lowered for term in FORBIDDEN_TERMS) or re.search(r"(?:^[A-Za-z]:[\\/]|^[\\/]{2}|^[\\/]|%[A-Za-z_]+%|\\\\)", text):
+        forbidden = r"(?:^|[_.\\/\- ])(?:credential|password|secret|private|raw|journal|deal|fee|profit|ticket|ex5|m5|mt5|order|realtime|live|demo|canary)(?:$|[_.\\/\- ])"
+        if re.search(forbidden, lowered) or re.search(r"(?:^[A-Za-z]:[\\/]|^[\\/]{2}|^[\\/]|%[A-Za-z_]+%|\\\\)", text):
             raise RetroBotInputError("E-001 forbidden firewall content")
     def walk(node: object) -> None:
         if isinstance(node, Mapping):
