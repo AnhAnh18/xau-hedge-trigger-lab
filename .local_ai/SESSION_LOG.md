@@ -756,5 +756,7 @@
   determinism fixed false for the synthetic scaffold.
 - Remediated the E-002 intake denominator boundary and added strict regression
   coverage for synthetic-only and fixed8 constraints.
-- Focused E-002/E-003/E-005 tests passed 13; compileall and diff checks passed.
-  Real shadow observation and E-006 demo/canary readiness remain unauthorized.
+- Focused E-002/E-003/E-005 tests passed 13; full `uv run --locked pytest`
+  passed 443 tests with a repository-local basetemp; compileall and diff checks
+  passed. Real shadow observation and E-006 demo/canary readiness remain
+  unauthorized.
