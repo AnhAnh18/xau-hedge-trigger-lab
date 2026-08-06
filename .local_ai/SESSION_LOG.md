@@ -727,3 +727,6 @@
 - Fresh independent re-review returned `PASS` for the synthetic scaffold.
   Actual E-002 source capture remains unstarted pending new owner
   authorization, exact aliases/hashes/window, and allowed-field receipt.
+- Post-review remediation added aggregate-level conservation and denominator
+  invariants; fresh re-review returned `PASS` with no P0-P3 findings. Focused
+  regression remained 23 passed.

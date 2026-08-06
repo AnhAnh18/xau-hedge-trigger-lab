@@ -71,6 +71,10 @@ def test_aggregate_tamper_is_rejected_even_with_rehashed_digest() -> None:
     result["status"] = "package-ready"
     result["aggregate_sha256"] = digest({key: result[key] for key in result if key != "aggregate_sha256"})
     with pytest.raises(RetroBotInputError): verify_evidence_aggregate(result, expected_input_digest=result["input_digest"], expected_component_digest=component_digest(ingest_redacted_cycles([_cycle(1)])))
+    result = ingest_redacted_cycles([_cycle(1)])
+    result["totals"]["action_count"] = 0
+    result["aggregate_sha256"] = digest({key: result[key] for key in result if key != "aggregate_sha256"})
+    with pytest.raises(RetroBotInputError): verify_evidence_aggregate(result, expected_input_digest=result["input_digest"], expected_component_digest=component_digest(result))
 
 
 def test_cli_is_stdin_only_and_rejects_extra_fields() -> None:
