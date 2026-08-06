@@ -59,3 +59,4 @@
 - [x] T-057 Implement RETRO-LIVE-EVIDENCE-002 synthetic intake scaffold
 - [x] T-058 Implement synthetic RETRO-LIVE-EVIDENCE-003 fidelity and E-004 holdout scaffold
 - [x] T-059 Implement synthetic RETRO-LIVE-EVIDENCE-005 shadow observer scaffold
+- [x] T-060 Implement synthetic RETRO-LIVE-EVIDENCE-006 safety/readiness scaffold

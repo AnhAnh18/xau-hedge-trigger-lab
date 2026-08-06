@@ -147,5 +147,7 @@ Possible outcomes:
 - E-005 synthetic read-only shadow-observer scaffold: complete; it has no
   realtime connector or execution surface and remains blocked on real E-002
   through E-004 evidence and a new owner authorization.
-- E-006 demo/canary readiness remains locked behind prior gates and is not
-  implemented.
+- E-006 synthetic fail-closed readiness and adapter-safety scaffold: complete;
+  it always returns `hold-synthetic-only` and never emits demo/canary/live
+  readiness. Real readiness remains locked behind actual E-002-E-005 receipts,
+  owner authorization, and a future separately reviewed adapter.

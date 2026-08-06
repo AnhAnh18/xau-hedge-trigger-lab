@@ -760,3 +760,19 @@
   passed 443 tests with a repository-local basetemp; compileall and diff checks
   passed. Real shadow observation and E-006 demo/canary readiness remain
   unauthorized.
+
+## 2026-08-06 -- RETRO-LIVE-EVIDENCE-006 synthetic safety/readiness scaffold
+
+- Added the frozen E-006 contract, plan, safety gate registry, fail-closed
+  readiness evaluator, and stdin-only deterministic CLI. Synthetic inputs
+  always produce `hold-synthetic-only`.
+- Added an offline `SafetyAdapterSimulator` with canonical fixed8 hard limits,
+  idempotent intent receipts, position accounting, action/retry/latency bounds,
+  monotonic stop latch, one simulated non-opening/non-reversing flatten, and
+  operator-acknowledged sequence/snapshot reconnect recovery. Transport calls
+  are structurally zero.
+- Focused E-006 tests passed 8; full `uv run --locked pytest` passed 451 tests
+  with a repository-local basetemp; compileall and diff checks passed. Fresh
+  independent re-review returned `PASS` with no P0-P3 findings. Real E-002
+  actionful capture, untouched holdout, shadow observation, and demo/canary
+  readiness remain unauthorized.

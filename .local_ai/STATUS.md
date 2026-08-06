@@ -202,6 +202,12 @@ reconnect/recovery safety accounting, trusted input-digest verification, and
 no realtime or execution surface. Real shadow observation remains blocked by
 the missing owner authorization and actionful E-002/E-003/E-004 evidence.
 
+The E-006 synthetic safety/readiness scaffold is implemented and independently
+re-reviewed PASS. It freezes the E-001 digest, binds four component digests,
+validates fixed8 limits, idempotent intents, stop/flatten behavior, and
+operator-acknowledged reconnect recovery. It always returns
+`hold-synthetic-only`; no demo/canary/live readiness or transport is exposed.
+
 ## Current blockers
 
 - Future external labels and model outputs must remain uninspected until the
