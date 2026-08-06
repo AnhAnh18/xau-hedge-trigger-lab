@@ -167,7 +167,8 @@ Acquire the registered 2026-08-03 through 2026-08-07 ticks after the block
 closes and the covering report after 2026-08-08 context is exportable. Run
 blind structural intake, then evaluate the frozen package once if accepted.
 
-RETRO-BOT next executable task: none within the registered offline lane. Any
+RETRO-BOT next executable task: none within the registered offline lane; RB-020
+is closed as `no-supported-candidate`. Any
 new historical source, external validation, tuning, profitability analysis,
 `.ex5`, or live/demo execution requires a new owner decision, source receipt,
 contract, and independent review; preserve the RB-017 report boundary and all
@@ -185,5 +186,11 @@ execution.
 - Future external labels and model outputs must remain uninspected until the
   blind structural intake passes
 - Server timezone remains a window-scoped UTC+3 inference
+
+- Completed RETRO-BOT-020 autonomous historical reconstruction with typed causal
+  replay, separate oracle diagnostics, Decimal paper accounting, registered
+  folds, one-shot holdout receipts, strict verification, and independent final
+  re-review PASS. Result: `no-supported-candidate`; RETRO-only and outside all
+  M5 inputs, models, evaluations, thresholds, gates, and live execution.
 - MT5 report event time has only second-level resolution
 - The 0–6 second structural support limitation remains tracked in issue #3

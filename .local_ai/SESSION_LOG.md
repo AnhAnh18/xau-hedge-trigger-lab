@@ -689,3 +689,15 @@
   emitted no actions under both clocks; every accounting scenario was
   `no_action` with zero quantities. RH-004 remains descriptive and outside
   all M5 inputs, models, evaluations, thresholds, and gates.
+
+## 2026-08-06 -- RETRO-BOT-020 closeout
+
+- Completed RB-020 under the accepted RH-002 source receipt and RETRO-only
+  firewall. Autonomous replay remains causally isolated from oracle labels.
+- Holdout receipt/seal and fold metric verifier blocks were remediated;
+  independent final re-review returned `PASS` with no P0-P3 findings.
+- Focused tests passed 13; privacy/RB checks passed 15; full regression passed
+  424 with a repository-local basetemp; compileall, CLI smoke/tamper checks,
+  and byte-identical deterministic reruns passed.
+- Result is `no-supported-candidate` because the registered holdout fixture is
+  fully censored. No tuning, profitability, M5, or live-execution claim is made.
