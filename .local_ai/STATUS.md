@@ -186,6 +186,10 @@ after a new owner authorization and exact source receipt. E-001 governance and
 gate freeze passed independently and remains synthetic-only; no realtime,
 demo, canary, or live execution is authorized.
 
+The E-002 synthetic intake scaffold is implemented and independently reviewed;
+its aggregate alone is not an authenticity boundary. External input/component
+digests must come from a separately retained source receipt.
+
 ## Current blockers
 
 - Future external labels and model outputs must remain uninspected until the

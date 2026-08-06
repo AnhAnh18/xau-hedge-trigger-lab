@@ -139,7 +139,7 @@ Possible outcomes:
 
 - E-001 governance and gate freeze: complete; synthetic-only, no source or
   execution authorization.
-- E-002 actionful capture: pending a new owner authorization and exact source
-  receipt.
+- E-002 synthetic intake scaffold: complete; actual actionful capture remains
+  pending a new owner authorization and exact source receipt.
 - E-003 behavioral fidelity, E-004 untouched holdout/robustness, E-005 shadow
   observer, and E-006 demo/canary readiness remain locked behind prior gates.

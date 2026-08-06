@@ -716,3 +716,14 @@
   repository-local basetemp; compileall and scoped diff checks passed.
 - E-002 requires a new owner authorization/source receipt; no raw source,
   realtime feed, demo, canary, or live execution was accessed.
+
+## 2026-08-06 -- RETRO-LIVE-EVIDENCE-002 synthetic intake scaffold
+
+- Added bounded redacted cycle intake, frozen gate aggregation, Decimal fixed8
+  lot checks, denominator/actionful invariants, strict aggregate verification,
+  stdin-only CLI, trusted external digest parameters, and tamper/firewall tests.
+- Focused E-001/E-002/RB-020 tests passed 23; full regression passed 434 with
+  repository-local basetemp; compileall and scoped diff checks passed.
+- Fresh independent re-review returned `PASS` for the synthetic scaffold.
+  Actual E-002 source capture remains unstarted pending new owner
+  authorization, exact aliases/hashes/window, and allowed-field receipt.

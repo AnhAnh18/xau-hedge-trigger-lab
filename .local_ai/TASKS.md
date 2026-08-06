@@ -56,3 +56,4 @@
 - [x] T-054 Complete RETRO-HIST-004 observed-lot paper accounting
 - [x] T-055 Complete RETRO-BOT-020 autonomous historical reconstruction milestone
 - [x] T-056 Complete RETRO-LIVE-EVIDENCE-001 governance and gate freeze
+- [x] T-057 Implement RETRO-LIVE-EVIDENCE-002 synthetic intake scaffold
