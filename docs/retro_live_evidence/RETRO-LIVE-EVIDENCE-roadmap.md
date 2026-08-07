@@ -1,7 +1,25 @@
 # RETRO-LIVE-EVIDENCE Roadmap
 
-Status: proposed; independent of M5 and closed RB-020. No live orders are
-authorized by this roadmap.
+Status: active, fail-closed; independent of M5 and closed RB-020. No live
+orders are authorized by this roadmap.
+
+## Current lane state
+
+- E-001 contract, source boundary, gate registry, privacy firewall, and
+  holdout protocol are frozen and independently reviewed.
+- E-002 receipt-bound historical captures are complete for the currently
+  authorized population. The original summer and winter/summer-transition
+  expansion results remain `insufficient-actionful-coverage`; Monday-gap is
+  absent and the variable-lot minimum is unmet (`1/6`).
+- E-003 and E-004 are implemented and independently reviewed as synthetic,
+  fail-closed scaffolds. Real fidelity comparison and untouched-holdout
+  consumption have not started because E-002 is insufficient.
+- E-005 and E-006 are implemented and independently reviewed as synthetic,
+  read-only/safety scaffolds. No realtime observer, broker connector, demo,
+  canary, or live execution surface exists.
+- A new source/window requires a new case-specific owner authorization,
+  exact aliases and hashes, UTC window, retention deadline, and receipt. No
+  threshold may be relaxed to bypass the current stop condition.
 
 ## E-001 — Evidence contract and source boundary
 
@@ -11,7 +29,7 @@ retention, preregistered gates, privacy/M5 firewall, and stop conditions.
 ## E-002 — Actionful capture and intake
 
 Collect bounded tick/report/observation blocks with hashes and redacted intake
-receipts. Target at least 20–30 actionful cycles spanning normal hedge,
+receipts. Target at least 30 actionful cycles spanning normal hedge,
 one-leg recovery, Monday gaps, variable lots, both directions, and wide spreads.
 No raw rows are retained in reports.
 

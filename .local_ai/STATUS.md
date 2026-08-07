@@ -257,8 +257,8 @@ receipt metadata only and do not open source objects.
   blind structural intake passes
 - Server timezone remains a window-scoped UTC+3 inference
 - RETRO-LIVE-EVIDENCE E-002 did not meet the frozen actionful population:
-  Monday-gap and variable-lot slices are absent, so E-003/E-004 and all
-  shadow/demo/live readiness claims remain blocked
+  Monday-gap is absent and variable-lot is below the frozen minimum (`1/6`),
+  so E-003/E-004 and all shadow/demo/live readiness claims remain blocked
 
 - Completed RETRO-BOT-020 autonomous historical reconstruction with typed causal
   replay, separate oracle diagnostics, Decimal paper accounting, registered
