@@ -128,6 +128,13 @@ pending)
   and independent re-review PASS. The historical result is FLAT/no_action in
   every scenario and remains descriptive and outside all M5 inputs, models,
   evaluations, thresholds, and gates
+- Completed owner-authorized RETRO-LIVE-EVIDENCE-002 bounded historical
+  capture over 9 reports and 14 summer tick aliases. The redacted result is
+  `insufficient-actionful-coverage` (2,038 cycles; 2,016 eligible; wide-spread
+  593; Monday-gap and variable-lot 0); two independent captures were
+  byte-identical, the capture receipt verifier passed, and independent review
+  returned PASS. It remains RETRO-only and outside all M5 inputs, models,
+  evaluations, thresholds, gates, and execution surfaces.
 
 ## Current finding
 
@@ -181,10 +188,13 @@ decision, source receipt, contract, and independent review. RH-001 through
 RH-004 remain descriptive and do not authorize M5 fitting, tuning, or live
 execution.
 
-RETRO-LIVE-EVIDENCE next executable task: E-002 actionful capture, but only
-after a new owner authorization and exact source receipt. E-001 governance and
-gate freeze passed independently and remains synthetic-only; no realtime,
-demo, canary, or live execution is authorized.
+RETRO-LIVE-EVIDENCE next executable task: none within the authorized E-002
+actionful capture. E-002 is complete but fail-closed at
+`insufficient-actionful-coverage`, so E-003/E-004 real-source work remains
+blocked. Any new source, holdout, shadow, demo, canary, or live work requires
+a new owner decision, source receipt, contract, and independent review.
+E-001 governance and gate freeze passed independently; no realtime, demo,
+canary, or live execution is authorized.
 
 The E-002 synthetic intake scaffold is implemented and independently reviewed;
 its aggregate alone is not an authenticity boundary. External input/component
@@ -193,14 +203,16 @@ digests must come from a separately retained source receipt.
 Synthetic E-003/E-004 scaffolds are implemented and independently re-reviewed
 PASS. They enforce action-checkpoint units, frozen categories, trusted
 source/fold bindings, ordered non-overlapping fold bounds, strict holdout-result
-verification, and fail-closed actionful/gate status. No real source capture or
-shadow/live execution has occurred.
+verification, and fail-closed actionful/gate status. Real E-003/E-004 capture
+has not started because E-002 coverage is insufficient; no shadow/live
+execution has occurred.
 
 The E-005 synthetic shadow-observer scaffold is also implemented with redacted
 checkpoint-only inputs, timestamp-bound latency, deterministic tie ordering,
 reconnect/recovery safety accounting, trusted input-digest verification, and
 no realtime or execution surface. Real shadow observation remains blocked by
-the missing owner authorization and actionful E-002/E-003/E-004 evidence.
+the insufficient E-002 actionful evidence and the unstarted E-003/E-004 real
+capture.
 
 The E-006 synthetic safety/readiness scaffold is implemented and independently
 re-reviewed PASS. It freezes the E-001 digest, binds four component digests,
@@ -208,11 +220,11 @@ validates fixed8 limits, idempotent intents, stop/flatten behavior, and
 operator-acknowledged reconnect recovery. It always returns
 `hold-synthetic-only`; no demo/canary/live readiness or transport is exposed.
 
-An unfilled E-002 authorization/source-receipt checklist is now available at
+An unfilled E-002 authorization/source-receipt checklist remains available at
 `docs/retro_live_evidence/RETRO-LIVE-EVIDENCE-002-authorization-template.md`.
-It does not authorize source access; the actual E-002 capture remains pending
-owner completion of the exact aliases, hashes, UTC window, allowlist, parser,
-retention, and receipt digest.
+It is not an authorization; the active E-002 source receipt and its exact
+aliases, hashes, UTC window, allowlist, parser, retention, and receipt digest
+are recorded in `docs/retro_live_evidence/RETRO-LIVE-EVIDENCE-002-source-receipt.json`.
 
 The metadata-only E-002 receipt validator and stdin CLI are implemented and
 independently re-reviewed PASS. They reject impossible UTC timestamps, invalid
@@ -225,6 +237,9 @@ receipt metadata only and do not open source objects.
 - Future external labels and model outputs must remain uninspected until the
   blind structural intake passes
 - Server timezone remains a window-scoped UTC+3 inference
+- RETRO-LIVE-EVIDENCE E-002 did not meet the frozen actionful population:
+  Monday-gap and variable-lot slices are absent, so E-003/E-004 and all
+  shadow/demo/live readiness claims remain blocked
 
 - Completed RETRO-BOT-020 autonomous historical reconstruction with typed causal
   replay, separate oracle diagnostics, Decimal paper accounting, registered

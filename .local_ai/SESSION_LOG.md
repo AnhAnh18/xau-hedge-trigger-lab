@@ -797,3 +797,30 @@
 - Focused E-002 receipt/intake tests passed 7; full `uv run --locked pytest`
   passed 454 tests with a repository-local basetemp; compileall and diff checks
   passed. Fresh independent re-review returned `PASS` with no P0-P3 findings.
+
+## 2026-08-07 -- RETRO-LIVE-EVIDENCE-002 authorized historical capture
+
+- Applied the owner authorization recorded in
+  `RETRO-LIVE-EVIDENCE-002-source-receipt.json` (receipt SHA-256
+  `ce95e862518a16b896670fd98ac87a1d4cada8f21fb3eeaf4eb93c686d8b9fd2`) over
+  9 report aliases and 14 summer tick aliases. Source manifests, byte counts,
+  hashes, field allowlists, and the RETRO/M5/execution firewall were verified
+  before parsing; raw rows were not emitted or retained.
+- Remediated trusted capture-receipt binding for input/component/aggregate/
+  status digests, exact event-to-tick spread matching including non-maximum
+  ticks and chunk-boundary carry-over, and exclusion of `normal_hedge` when a
+  cycle carries a `monday_gap` flag. Focused E-002 tests passed 17.
+- Two independent canonical captures were byte-identical (file SHA-256
+  `1a47f0173642349c444324a144cdedff2b36dd32a044faf3b59dd3ea3c0d90e`;
+  347,079 bytes). Aggregate SHA-256 is
+  `f7877f7e72d6db2ecdd863ae3cf6bc08bb5e5db9410ba87efe2dae4078a0b141` and the
+  separate capture receipt SHA-256 is
+  `fe7a28fe3bf30bc97ba74fcb78d390339aef70761079c66aad79063542db17d8`.
+- Result: `insufficient-actionful-coverage` with 2,038 total cycles, 2,016
+  eligible cycles, category counts normal hedge 8, one-leg recovery 2,016,
+  Monday gap 0, variable lot 0, wide spread 593, and buy/sell actions
+  2,128/1,926. E-003/E-004 real-source work remains blocked; no M5 or
+  execution claim is made.
+- Full `uv run --locked pytest` passed 467 tests; compileall and scoped
+  `git diff --check` passed. Independent final implementation re-review:
+  `VERDICT: PASS` with no P0/P1 findings.

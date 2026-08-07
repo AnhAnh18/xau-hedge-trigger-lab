@@ -26,7 +26,7 @@ ALIAS_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z")
 FIELD_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,63}\Z")
 ALLOWED_FIELDS = {
     "tick": frozenset({"time_utc", "bid", "ask"}),
-    "report": frozenset({"time_utc", "side", "action", "state", "lot", "direction", "event"}),
+    "report": frozenset({"time_utc", "side", "action", "state", "lot", "direction", "event", "position_id", "symbol", "volume", "open_time", "close_time"}),
     "observation": frozenset({"time_utc", "side", "action", "state", "lot", "direction", "event"}),
 }
 
