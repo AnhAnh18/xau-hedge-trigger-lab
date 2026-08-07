@@ -139,7 +139,15 @@ pending)
   25 historical tick aliases, split into winter `UTC+2-winter` and summer
   `UTC+3-summer` transition-censored scopes. Receipt metadata was copied only
   from the accepted RETRO-003 receipt; no new raw rows were read, retained, or
-  emitted. Expansion capture is a separate pending task.
+  emitted.
+- Completed owner-authorized E-002 winter/summer expansion capture. Winter had
+  1,779 cycles and 1,476 eligible cycles; summer-transition had 9 cycles and
+  0 eligible cycles because all were censored. Both scopes remained
+  `insufficient-actionful-coverage`; two canonical reruns per scope were
+  byte-identical, capture receipt verification passed, and independent
+  post-fix review returned PASS with no P0-P3 findings. The lane remains
+  RETRO-only and outside all M5 inputs, models, evaluations, thresholds,
+  gates, and execution surfaces.
 - Completed RETRO-LIVE-EVIDENCE-004 redacted multi-entry holdout ledger with
   pinned genesis/context vectors, external head/CAS anchoring, trusted input
   digest sets, duplicate holdout/nonce rejection, complete evaluation-proof
@@ -199,13 +207,13 @@ decision, source receipt, contract, and independent review. RH-001 through
 RH-004 remain descriptive and do not authorize M5 fitting, tuning, or live
 execution.
 
-RETRO-LIVE-EVIDENCE next executable task: run the newly authorized bounded
-E-002 winter/summer expansion capture using its two source receipts, then
-recompute actionful coverage. The original summer capture remains
-`insufficient-actionful-coverage`; until the expansion satisfies the frozen
-population, E-003/E-004 real-source work, shadow, demo, canary, and live
-readiness remain blocked. E-001 governance and gate freeze passed
-independently; no realtime, demo, canary, or live execution is authorized.
+RETRO-LIVE-EVIDENCE next executable task: none within the currently authorized
+E-002 scope. The original and expanded captures remain
+`insufficient-actionful-coverage`; E-003/E-004 real-source work, shadow, demo,
+canary, and live readiness remain blocked. Any new source, window, or gate
+change requires a new owner decision, source receipt, contract, and independent
+review. E-001 governance and gate freeze passed independently; no realtime,
+demo, canary, or live execution is authorized.
 
 The E-002 synthetic intake scaffold is implemented and independently reviewed;
 its aggregate alone is not an authenticity boundary. External input/component

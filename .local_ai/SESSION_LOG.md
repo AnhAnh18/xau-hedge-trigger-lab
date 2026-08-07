@@ -849,3 +849,30 @@
   `VERDICT: PASS` with no P0-P3 findings. E-004 remains synthetic governance
   only; expansion capture is the next executable task and E-003/E-004 real
   work remains fail-closed pending actionful coverage.
+
+## 2026-08-07 -- E-002 winter/summer expansion capture closeout
+
+- Ran the newly authorized winter and summer-transition scopes using their
+  exact source receipts. Winter used 9 reports plus 22 ticks over
+  `[2025-10-31T22:00:00Z, 2026-03-27T22:00:00Z)` under `UTC+2-winter`;
+  summer-transition used 9 reports plus 3 ticks over
+  `[2026-04-03T21:00:00Z, 2026-04-24T21:00:00Z)` under `UTC+3-summer`, with
+  the DST transition interval censored. No raw rows were emitted or retained.
+- Winter produced 1,779 cycles, 1,476 eligible, category counts
+  normal-hedge 353, one-leg recovery 1,476, Monday-gap 0, variable-lot 1,
+  wide-spread 6, with eligible buy/sell actions 1,820/1,858. Aggregate SHA
+  `72d8d2b75ecb72521293ffb969f376a40a3cd63a49a3de5b9165364c7d47a733` and
+  canonical file SHA
+  `324fd0e62fe1cc3d4d66d40e3acd7299ca54a8b1dc4bccdb762376bab7a42e84`.
+- Summer-transition produced 9 censored cycles and 0 eligible cycles.
+  Aggregate SHA `aad7c8a3a15b000d6efe4765211705e4a365a0d4950155cd6c88344aa4db141`
+  and canonical file SHA
+  `665dfa00d91df6d61be3c6edb6ed0341a75feade718e6b5b2becb226f7db1922`.
+- Each scope was captured twice with byte-identical output. The stdin capture
+  verifier accepted both aggregate/receipt bindings. A focused review found
+  and the implementation fixed a P2 Monday-gap day-count issue; the fresh
+  post-fix independent review returned `VERDICT: PASS` with no P0-P3 findings.
+- Focused E-002 tests passed 17; full `uv run --locked pytest` passed 488 with
+  one pre-existing pandas warning; compileall and scoped `git diff --check`
+  passed. Result remains `insufficient-actionful-coverage`; E-003/E-004,
+  shadow, demo/canary, and live readiness remain blocked.

@@ -89,6 +89,7 @@ def test_tick_scan_derives_gap_and_spread_day_markers(tmp_path: Path) -> None:
     assert {item.date().isoformat() for item in gaps} == {"2026-05-04"}
     assert wide == set()
     assert stats["valid_rows"] == 3
+    assert stats["monday_gap_days"] == 1
 
 
 def test_wide_spread_matching_keeps_nonmaximum_qualifying_ticks(tmp_path: Path) -> None:
@@ -168,7 +169,7 @@ def test_trusted_capture_digests_reject_receipt_tampering(monkeypatch: pytest.Mo
     receipt = __import__("json").loads((root / "docs/retro_live_evidence/RETRO-LIVE-EVIDENCE-002-source-receipt.json").read_text(encoding="utf-8"))
     import xau_trigger.retro_live_evidence_002_capture as module
 
-    monkeypatch.setattr(module, "_verify_receipt_sources", lambda value: ({}, {}))
+    monkeypatch.setattr(module, "_verify_receipt_sources", lambda value, scope: ({}, {}))
     monkeypatch.setattr(module, "_load_report_positions", lambda paths: [])
     monkeypatch.setattr(module, "_scan_ticks", lambda paths, **kwargs: (set(), set(), {"valid_rows": 0, "monday_gap_days": 0, "wide_spread_days": 0}))
     monkeypatch.setattr(module, "_capture_cycles", lambda positions, **kwargs: ([], {"carry_in": 0, "completed_or_censored_cycles": 0, "censored_cycles": 0}))
@@ -204,6 +205,34 @@ def test_trusted_capture_digests_reject_receipt_tampering(monkeypatch: pytest.Mo
     bad["source_receipt_sha256"] = digest({key: bad[key] for key in bad if key != "source_receipt_sha256"})
     with pytest.raises(RetroBotInputError):
         capture_authorized(bad)
+
+
+def test_capture_verifier_binds_aggregate_to_the_supplied_receipt(monkeypatch: pytest.MonkeyPatch) -> None:
+    root = Path(__file__).parents[1]
+    receipt = __import__("json").loads((root / "docs/retro_live_evidence/RETRO-LIVE-EVIDENCE-002-source-receipt.json").read_text(encoding="utf-8"))
+    expansion = __import__("json").loads((root / "docs/retro_live_evidence/RETRO-LIVE-EVIDENCE-002-expansion-winter-source-receipt.json").read_text(encoding="utf-8"))
+    import xau_trigger.retro_live_evidence_002_capture as module
+
+    monkeypatch.setattr(module, "_verify_receipt_sources", lambda value, scope: ({}, {}))
+    monkeypatch.setattr(module, "_load_report_positions", lambda paths: [])
+    monkeypatch.setattr(module, "_scan_ticks", lambda paths, **kwargs: (set(), set(), {"valid_rows": 0, "monday_gap_days": 0, "wide_spread_days": 0}))
+    monkeypatch.setattr(module, "_capture_cycles", lambda positions, **kwargs: ([], {"carry_in": 0, "completed_or_censored_cycles": 0, "censored_cycles": 0}))
+    result = capture_authorized(receipt)
+    rebound = deepcopy(result)
+    rebound["source_receipt_sha256"] = expansion["source_receipt_sha256"]
+    rebound["population_utc_half_open"] = expansion["population_utc_half_open"]
+    rebound["source_timezone_code"] = expansion["source_timezone_code"]
+    rebound["tick_alias_count"] = 22
+    rebound["aggregate_sha256"] = digest({key: rebound[key] for key in rebound if key != "aggregate_sha256"})
+    with pytest.raises(RetroBotInputError):
+        verify_authorized_capture(
+            rebound,
+            expansion,
+            expected_input_digest=rebound["input_digest"],
+            expected_component_digest=rebound["component_digest"],
+            expected_aggregate_sha256=rebound["aggregate_sha256"],
+            expected_status=rebound["status"],
+        )
 
 
 def test_receipt_file_is_valid_metadata_only() -> None:

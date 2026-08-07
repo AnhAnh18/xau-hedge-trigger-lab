@@ -41,12 +41,50 @@ from .parsers.mt5_report import parse_report
 
 CASE_ID = "RETRO-LIVE-EVIDENCE-002"
 AUTHORIZED_RECEIPT_SHA256 = "ce95e862518a16b896670fd98ac87a1d4cada8f21fb3eeaf4eb93c686d8b9fd2"
+AUTHORIZED_EXPANSION_WINTER_RECEIPT_SHA256 = "37d3d84e52b43ad4bb318c901df12d42edef278c22fcef8317373bd6c3f9f96d"
+AUTHORIZED_EXPANSION_SUMMER_RECEIPT_SHA256 = "3a59c1af6e80f490829adef004cf84925c269db124a57ef8c1b8cc16bbba13d8"
 SERVER_START = pd.Timestamp("2026-05-01 00:00:00")
 SERVER_END = pd.Timestamp("2026-07-31 00:00:00")
 M5_FIREWALL = "RETRO_ONLY_NO_M5_CONTAMINATION"
 REPORT_FIELDS = ("position_id", "symbol", "side", "volume", "open_time", "close_time")
 TICK_FIELDS = ("time_utc", "bid", "ask")
 SPREAD_BUCKET = Decimal("0.00000001")
+
+AUTHORIZED_SCOPE = {
+    AUTHORIZED_RECEIPT_SHA256: {
+        "population_utc_half_open": ["2026-04-30T21:00:00.000000Z", "2026-07-30T21:00:00.000000Z"],
+        "server_start": pd.Timestamp("2026-05-01 00:00:00"),
+        "server_end": pd.Timestamp("2026-07-31 00:00:00"),
+        "utc_start": pd.Timestamp("2026-04-30T21:00:00Z"),
+        "utc_end": pd.Timestamp("2026-07-30T21:00:00Z"),
+        "server_offset_hours": 3,
+        "source_timezone_code": "UTC+3-summer",
+        "report_aliases": frozenset(REPORT_ALIASES),
+        "tick_aliases": frozenset(TICK_ALIASES[25:]),
+    },
+    AUTHORIZED_EXPANSION_WINTER_RECEIPT_SHA256: {
+        "population_utc_half_open": ["2025-10-31T22:00:00.000000Z", "2026-03-27T22:00:00.000000Z"],
+        "server_start": pd.Timestamp("2025-11-01 00:00:00"),
+        "server_end": pd.Timestamp("2026-03-28 00:00:00"),
+        "utc_start": pd.Timestamp("2025-10-31T22:00:00Z"),
+        "utc_end": pd.Timestamp("2026-03-27T22:00:00Z"),
+        "server_offset_hours": 2,
+        "source_timezone_code": "UTC+2-winter",
+        "report_aliases": frozenset(REPORT_ALIASES),
+        "tick_aliases": frozenset(TICK_ALIASES[:22]),
+    },
+    AUTHORIZED_EXPANSION_SUMMER_RECEIPT_SHA256: {
+        "population_utc_half_open": ["2026-04-03T21:00:00.000000Z", "2026-04-24T21:00:00.000000Z"],
+        "server_start": pd.Timestamp("2026-04-04 00:00:00"),
+        "server_end": pd.Timestamp("2026-04-25 00:00:00"),
+        "utc_start": pd.Timestamp("2026-04-03T21:00:00Z"),
+        "utc_end": pd.Timestamp("2026-04-24T21:00:00Z"),
+        "server_offset_hours": 3,
+        "source_timezone_code": "UTC+3-summer",
+        "report_aliases": frozenset(REPORT_ALIASES),
+        "tick_aliases": frozenset(TICK_ALIASES[22:25]),
+    },
+}
 
 
 @dataclass
@@ -79,7 +117,7 @@ class _Cycle:
 
 def _load_report_positions(report_paths: Mapping[str, Path]) -> list[Position]:
     rows: list[dict[str, object]] = []
-    for alias in REPORT_ALIASES:
+    for alias in sorted(report_paths):
         tables = parse_report(report_paths[alias], report_id=alias)
         for section in ("positions", "open_positions"):
             frame = tables[section]
@@ -89,22 +127,22 @@ def _load_report_positions(report_paths: Mapping[str, Path]) -> list[Position]:
     return positions
 
 
-def _events(positions: list[Position]) -> tuple[dict[pd.Timestamp, list[tuple[str, Position]]], bool]:
+def _events(positions: list[Position], *, server_start: pd.Timestamp = SERVER_START, server_end: pd.Timestamp = SERVER_END) -> tuple[dict[pd.Timestamp, list[tuple[str, Position]]], bool]:
     events: dict[pd.Timestamp, list[tuple[str, Position]]] = defaultdict(list)
     active_at_start = [
         item for item in positions
-        if item.open_time < SERVER_START and (item.close_time is None or item.close_time > SERVER_START)
+        if item.open_time < server_start and (item.close_time is None or item.close_time > server_start)
     ]
     for item in positions:
         if item.censored:
-            if SERVER_START <= item.open_time < SERVER_END:
+            if server_start <= item.open_time < server_end:
                 events[item.open_time].append(("CENSOR_START", item))
-            if item.close_time is not None and SERVER_START < item.close_time < SERVER_END:
+            if item.close_time is not None and server_start < item.close_time < server_end:
                 events[item.close_time].append(("CENSOR_END", item))
             continue
-        if SERVER_START <= item.open_time < SERVER_END:
+        if server_start <= item.open_time < server_end:
             events[item.open_time].append(("OPEN", item))
-        if item.close_time is not None and SERVER_START < item.close_time < SERVER_END:
+        if item.close_time is not None and server_start < item.close_time < server_end:
             events[item.close_time].append(("CLOSE", item))
     return events, bool(active_at_start)
 
@@ -113,10 +151,11 @@ def _scan_ticks(
     tick_paths: Mapping[str, Path],
     *,
     event_times: set[pd.Timestamp] | None = None,
+    start_utc: pd.Timestamp = pd.Timestamp("2026-04-30T21:00:00Z"),
+    end_utc: pd.Timestamp = pd.Timestamp("2026-07-30T21:00:00Z"),
+    server_offset_hours: int = 3,
 ) -> tuple[set[pd.Timestamp], set[pd.Timestamp], dict[str, int]]:
     """Derive gap/spread markers without retaining raw tick rows."""
-    start_utc = pd.Timestamp("2026-04-30T21:00:00Z")
-    end_utc = pd.Timestamp("2026-07-30T21:00:00Z")
     broad_start = start_utc - pd.Timedelta(days=2)
     broad_end = end_utc + pd.Timedelta(hours=1)
     spread_hist: defaultdict[int, int] = defaultdict(int)
@@ -161,7 +200,7 @@ def _scan_ticks(
                 gap_mid_delta[0] = abs(mids[0] - prior_mid)
             previous_ns = int(ns[-1])
             previous_mid = float(mids[-1])
-            server_ts = pd.Series(ts) + pd.Timedelta(hours=3)
+            server_ts = pd.Series(ts) + pd.Timedelta(hours=server_offset_hours)
             monday = server_ts.dt.weekday.to_numpy() == 0
             monday_mask = monday & (gap_delta >= int(pd.Timedelta(hours=24).total_seconds() * 1_000_000)) & (gap_mid_delta >= 0.50)
             for tick_time in ts[monday_mask]:
@@ -188,14 +227,18 @@ def _scan_ticks(
                 tail = window_ns >= window_ns[-1] - match_window_ns
                 previous_match_ns = window_ns[tail]
                 previous_match_spread = spread_buckets[tail]
-            day_values = (pd.Series(ts[in_window]).dt.tz_convert("UTC") + pd.Timedelta(hours=3)).dt.date.astype(str).to_numpy()
+            day_values = (pd.Series(ts[in_window]).dt.tz_convert("UTC") + pd.Timedelta(hours=server_offset_hours)).dt.date.astype(str).to_numpy()
             for day in np.unique(day_values):
                 day_mask = day_values == day
                 day_max = int(spread_buckets[day_mask].max())
                 if day_max > daily_max.get(str(day), -1):
                     daily_max[str(day)] = day_max
     if not spread_hist:
-        return monday_gap_times, set(), {"valid_rows": 0, "monday_gap_days": len(monday_gap_times), "wide_spread_days": 0}
+        monday_gap_days = {
+            (pd.Timestamp(item).tz_convert("UTC") + pd.Timedelta(hours=server_offset_hours)).date()
+            for item in monday_gap_times
+        }
+        return monday_gap_times, set(), {"valid_rows": 0, "monday_gap_days": len(monday_gap_days), "wide_spread_days": 0}
     target = max(1, math.ceil(sum(spread_hist.values()) * 0.95))
     cumulative = 0
     threshold = max(spread_hist)
@@ -212,17 +255,21 @@ def _scan_ticks(
     wide_spread_days = {
         day for day, maximum in daily_max.items() if maximum > threshold
     }
-    return monday_gap_times, wide_spread_times, {"valid_rows": valid_rows, "monday_gap_days": len(monday_gap_times), "wide_spread_days": len(wide_spread_days), "wide_spread_threshold_bucket": threshold}
+    monday_gap_days = {
+        (pd.Timestamp(item).tz_convert("UTC") + pd.Timedelta(hours=server_offset_hours)).date()
+        for item in monday_gap_times
+    }
+    return monday_gap_times, wide_spread_times, {"valid_rows": valid_rows, "monday_gap_days": len(monday_gap_days), "wide_spread_days": len(wide_spread_days), "wide_spread_threshold_bucket": threshold}
 
 
-def _capture_cycles(positions: list[Position], *, monday_gap_dates: set[pd.Timestamp] | None = None, wide_spread_dates: set[pd.Timestamp] | None = None) -> tuple[list[dict[str, Any]], dict[str, int]]:
+def _capture_cycles(positions: list[Position], *, monday_gap_dates: set[pd.Timestamp] | None = None, wide_spread_dates: set[pd.Timestamp] | None = None, server_start: pd.Timestamp = SERVER_START, server_end: pd.Timestamp = SERVER_END, server_offset_hours: int = 3) -> tuple[list[dict[str, Any]], dict[str, int]]:
     monday_gap_dates = monday_gap_dates or set()
     wide_spread_dates = wide_spread_dates or set()
-    events, carry_in = _events(positions)
+    events, carry_in = _events(positions, server_start=server_start, server_end=server_end)
     active = {
         item.position_id: item
         for item in positions
-        if item.open_time < SERVER_START and (item.close_time is None or item.close_time > SERVER_START)
+        if item.open_time < server_start and (item.close_time is None or item.close_time > server_start)
     }
     known_flat = not active
     current: _Cycle | None = None
@@ -230,7 +277,7 @@ def _capture_cycles(positions: list[Position], *, monday_gap_dates: set[pd.Times
     ordinal = 0
     kind_rank = {"CENSOR_END": 0, "CLOSE": 1, "CENSOR_START": 2, "OPEN": 3}
     def near_tick(timestamp: pd.Timestamp, candidates: set[pd.Timestamp]) -> bool:
-        event_utc = (timestamp - pd.Timedelta(hours=3)).tz_localize("UTC")
+        event_utc = (timestamp - pd.Timedelta(hours=server_offset_hours)).tz_localize("UTC")
         return any(abs((event_utc - tick_time).total_seconds()) <= 5 for tick_time in candidates)
     for timestamp in sorted(events):
         labels = sorted(events[timestamp], key=lambda item: (kind_rank[item[0]], item[1].side, item[1].position_id))
@@ -315,11 +362,13 @@ def _verify_manifest_subset(run_id: str, expected_digest: str, expected_aliases:
     return paths
 
 
-def _verify_receipt_sources(receipt: Mapping[str, Any]) -> tuple[dict[str, Path], dict[str, Path]]:
+def _verify_receipt_sources(receipt: Mapping[str, Any], scope: Mapping[str, Any]) -> tuple[dict[str, Path], dict[str, Path]]:
     report_aliases = [alias for alias, kind in zip(receipt["source_aliases"], receipt["object_types"]) if kind == "report"]
     tick_aliases = [alias for alias, kind in zip(receipt["source_aliases"], receipt["object_types"]) if kind == "tick"]
     if not report_aliases or not tick_aliases:
         raise RetroBotInputError("E-002 source receipt must bind reports and ticks")
+    if set(report_aliases) != scope["report_aliases"] or set(tick_aliases) != scope["tick_aliases"]:
+        raise RetroBotInputError("E-002 receipt aliases do not match authorized scope")
     report_paths = _verify_manifest_subset(REPORT_RUN_ID, REPORT_MANIFEST_SHA256, set(REPORT_ALIASES), set(report_aliases), sort_keys=True)
     tick_paths = _verify_manifest_subset(TICK_RUN_ID, TICK_MANIFEST_SHA256, set(TICK_ALIASES), set(tick_aliases), sort_keys=False)
     if any(kind not in {"report", "tick"} for kind in receipt["object_types"]):
@@ -344,19 +393,35 @@ def _verify_receipt_sources(receipt: Mapping[str, Any]) -> tuple[dict[str, Path]
 
 def capture_authorized(receipt: Mapping[str, Any]) -> dict[str, Any]:
     validate_source_receipt(receipt)
-    if receipt["source_receipt_sha256"] != AUTHORIZED_RECEIPT_SHA256:
-        raise RetroBotInputError("E-002 receipt is not the frozen authorized summer scope")
-    if receipt["population_utc_half_open"] != ["2026-04-30T21:00:00.000000Z", "2026-07-30T21:00:00.000000Z"]:
-        raise RetroBotInputError("E-002 population scope changed")
-    report_paths, tick_paths = _verify_receipt_sources(receipt)
+    scope = AUTHORIZED_SCOPE.get(receipt["source_receipt_sha256"])
+    if scope is None or receipt["population_utc_half_open"] != scope["population_utc_half_open"] or receipt["source_timezone_code"] != scope["source_timezone_code"]:
+        raise RetroBotInputError("E-002 receipt is not an authorized bounded scope")
+    utc_start = pd.Timestamp(receipt["population_utc_half_open"][0])
+    utc_end = pd.Timestamp(receipt["population_utc_half_open"][1])
+    if utc_start + pd.Timedelta(hours=scope["server_offset_hours"]) != scope["server_start"].tz_localize("UTC") or utc_end + pd.Timedelta(hours=scope["server_offset_hours"]) != scope["server_end"].tz_localize("UTC"):
+        raise RetroBotInputError("E-002 receipt UTC/server scope conversion invalid")
+    report_paths, tick_paths = _verify_receipt_sources(receipt, scope)
     positions = _load_report_positions(report_paths)
-    event_times, _ = _events(positions)
+    event_times, _ = _events(positions, server_start=scope["server_start"], server_end=scope["server_end"])
     event_utc_times = {
-        (timestamp - pd.Timedelta(hours=3)).tz_localize("UTC")
+        (timestamp - pd.Timedelta(hours=scope["server_offset_hours"])).tz_localize("UTC")
         for timestamp in event_times
     }
-    monday_gap_dates, wide_spread_dates, tick_stats = _scan_ticks(tick_paths, event_times=event_utc_times)
-    cycles, cycle_stats = _capture_cycles(positions, monday_gap_dates=monday_gap_dates, wide_spread_dates=wide_spread_dates)
+    monday_gap_dates, wide_spread_dates, tick_stats = _scan_ticks(
+        tick_paths,
+        event_times=event_utc_times,
+        start_utc=scope["utc_start"],
+        end_utc=scope["utc_end"],
+        server_offset_hours=scope["server_offset_hours"],
+    )
+    cycles, cycle_stats = _capture_cycles(
+        positions,
+        monday_gap_dates=monday_gap_dates,
+        wide_spread_dates=wide_spread_dates,
+        server_start=scope["server_start"],
+        server_end=scope["server_end"],
+        server_offset_hours=scope["server_offset_hours"],
+    )
     eligible = [row for row in cycles if not row["censored"]]
     categories = {name: sum(name in row["categories"] for row in eligible) for name in ("normal_hedge", "one_leg_recovery", "monday_gap", "variable_lot", "wide_spread")}
     buy_actions = sum(row["buy_actions"] for row in eligible)
@@ -425,7 +490,7 @@ def build_capture_receipt(value: Mapping[str, Any]) -> dict[str, Any]:
 
 def verify_capture_receipt(value: Mapping[str, Any]) -> bool:
     required = {"case_id", "source_receipt_sha256", "parent_gate_digest", "input_digest", "component_digest", "aggregate_sha256", "status", "receipt_sha256"}
-    if not isinstance(value, Mapping) or set(value) != required or value["case_id"] != CASE_ID or value["source_receipt_sha256"] != AUTHORIZED_RECEIPT_SHA256 or value["parent_gate_digest"] != FROZEN_GATE_DIGEST or value["status"] not in {"insufficient-actionful-coverage", "no-supported-candidate"}:
+    if not isinstance(value, Mapping) or set(value) != required or value["case_id"] != CASE_ID or value["source_receipt_sha256"] not in AUTHORIZED_SCOPE or value["parent_gate_digest"] != FROZEN_GATE_DIGEST or value["status"] not in {"insufficient-actionful-coverage", "no-supported-candidate"}:
         raise RetroBotInputError("E-002 capture receipt identity invalid")
     for field_name in ("source_receipt_sha256", "parent_gate_digest", "input_digest", "component_digest", "aggregate_sha256", "receipt_sha256"):
         if not isinstance(value[field_name], str) or not re.fullmatch(r"[0-9a-f]{64}", value[field_name]):
@@ -455,13 +520,14 @@ def verify_authorized_capture(
     if not isinstance(value, Mapping) or set(value) != required:
         raise RetroBotInputError("E-002 capture aggregate schema invalid")
     validate_source_receipt(receipt)
-    if receipt["source_receipt_sha256"] != AUTHORIZED_RECEIPT_SHA256:
+    if receipt["source_receipt_sha256"] not in AUTHORIZED_SCOPE:
         raise RetroBotInputError("E-002 trusted source receipt digest invalid")
-    if value["schema_version"] != 1 or value["case_id"] != CASE_ID or value["source_receipt_sha256"] != AUTHORIZED_RECEIPT_SHA256 or value["parent_gate_digest"] != FROZEN_GATE_DIGEST or value["source_receipt_present"] is not True or value["synthetic_only"] is not False or value["m5_firewall"] != M5_FIREWALL or value["execution_surface"] is not False or value["source_rows_emitted"] is not False or value["detailed_rows_retained"] is not False:
+    scope = AUTHORIZED_SCOPE[receipt["source_receipt_sha256"]]
+    if value["schema_version"] != 1 or value["case_id"] != CASE_ID or value["source_receipt_sha256"] != receipt["source_receipt_sha256"] or value["parent_gate_digest"] != FROZEN_GATE_DIGEST or value["source_receipt_present"] is not True or value["synthetic_only"] is not False or value["m5_firewall"] != M5_FIREWALL or value["execution_surface"] is not False or value["source_rows_emitted"] is not False or value["detailed_rows_retained"] is not False:
         raise RetroBotInputError("E-002 capture provenance/firewall invalid")
     report_count = sum(kind == "report" for kind in receipt["object_types"])
     tick_count = sum(kind == "tick" for kind in receipt["object_types"])
-    if value["report_manifest_sha256"] != REPORT_MANIFEST_SHA256 or value["tick_manifest_sha256"] != TICK_MANIFEST_SHA256 or value["population_utc_half_open"] != receipt["population_utc_half_open"] or value["source_timezone_code"] != receipt["source_timezone_code"] or value["report_alias_count"] != report_count or value["tick_alias_count"] != tick_count:
+    if value["report_manifest_sha256"] != REPORT_MANIFEST_SHA256 or value["tick_manifest_sha256"] != TICK_MANIFEST_SHA256 or value["population_utc_half_open"] != receipt["population_utc_half_open"] or value["source_timezone_code"] != scope["source_timezone_code"] or value["report_alias_count"] != report_count or value["tick_alias_count"] != tick_count:
         raise RetroBotInputError("E-002 capture source provenance changed")
     if value["aggregate_sha256"] != digest({key: value[key] for key in value if key != "aggregate_sha256"}):
         raise RetroBotInputError("E-002 capture aggregate digest invalid")

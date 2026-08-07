@@ -6,6 +6,8 @@ from pathlib import Path
 import pytest
 
 from xau_trigger.retro_bot import RetroBotInputError
+from xau_trigger.retro_hist_002 import REPORT_ALIASES, TICK_ALIASES
+from xau_trigger.retro_live_evidence_002_capture import AUTHORIZED_SCOPE
 from xau_trigger.retro_live_evidence_002_receipt import validate_source_receipt
 
 
@@ -45,3 +47,18 @@ def test_expansion_receipt_tampering_is_rejected() -> None:
     receipt["sha256_by_alias"]["report-001.html"] = "0" * 64
     with pytest.raises(RetroBotInputError):
         validate_source_receipt(receipt)
+
+
+def test_authorized_scope_registry_matches_receipts_and_half_open_clock() -> None:
+    expected = {
+        "winter": ("UTC+2-winter", set(TICK_ALIASES[:22]), 2),
+        "summer": ("UTC+3-summer", set(TICK_ALIASES[22:25]), 3),
+    }
+    for season, (timezone_code, tick_aliases, offset_hours) in expected.items():
+        receipt = _load(season)
+        scope = AUTHORIZED_SCOPE[receipt["source_receipt_sha256"]]
+        assert scope["source_timezone_code"] == timezone_code
+        assert scope["report_aliases"] == set(REPORT_ALIASES)
+        assert scope["tick_aliases"] == tick_aliases
+        assert scope["server_offset_hours"] == offset_hours
+        assert receipt["population_utc_half_open"][0] != receipt["population_utc_half_open"][1]
