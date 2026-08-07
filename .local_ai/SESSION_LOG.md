@@ -824,3 +824,28 @@
 - Full `uv run --locked pytest` passed 467 tests; compileall and scoped
   `git diff --check` passed. Independent final implementation re-review:
   `VERDICT: PASS` with no P0/P1 findings.
+
+## 2026-08-07 -- E-002 expansion receipts and E-004 ledger
+
+- Applied the owner's authorization for two metadata-only E-002 expansion
+  receipts. The winter receipt binds 9 reports plus 22 tick aliases over
+  `[2025-10-31T22:00:00Z, 2026-03-27T22:00:00Z)` under `UTC+2-winter` and
+  has SHA-256 `37d3d84e52b43ad4bb318c901df12d42edef278c22fcef8317373bd6c3f9f96d`.
+  The summer transition receipt binds 9 reports plus 3 tick aliases over
+  `[2026-04-03T21:00:00Z, 2026-04-24T21:00:00Z)` under `UTC+3-summer` and
+  has SHA-256 `3a59c1af6e80f490829adef004cf84925c269db124a57ef8c1b8cc16bbba13d8`.
+  The 25 tick aliases are disjoint; the transition interval is censored. No
+  new raw source was opened, hashed, retained, or emitted.
+- Revised the E-004 ledger plan through independent critique, then added a
+  pure redacted multi-entry ledger, strict stdin-only verify/append CLI,
+  trusted source/fold context with pinned E-001 gate, external trusted input
+  digest sets, evaluation-proof binding, nonce/holdout uniqueness, external
+  head/CAS checks, and strict privacy/M5/execution firewall.
+- Focused E-003/E-004/expansion tests passed 24; full
+  `uv run --locked pytest -q -o cache_dir=.pytest-e004-final3-cache
+  --basetemp=.pytest-e004-final3-basetemp` passed 486 tests with one existing
+  pandas warning. Compileall and scoped `git diff --check` passed.
+- Independent implementation review and fresh re-review returned
+  `VERDICT: PASS` with no P0-P3 findings. E-004 remains synthetic governance
+  only; expansion capture is the next executable task and E-003/E-004 real
+  work remains fail-closed pending actionful coverage.

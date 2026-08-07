@@ -63,3 +63,5 @@
 - [x] T-061 Add E-002 authorization/source-receipt checklist template
 - [x] T-062 Implement metadata-only E-002 source-receipt validator
 - [x] T-063 Complete owner-authorized RETRO-LIVE-EVIDENCE-002 bounded historical capture
+- [x] T-064 Implement RETRO-LIVE-EVIDENCE-004 redacted multi-entry holdout ledger
+- [ ] T-065 Run owner-authorized E-002 winter/summer expansion capture
